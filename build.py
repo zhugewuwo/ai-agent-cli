@@ -94,7 +94,7 @@ PAGE = """<!DOCTYPE html>
   <div class="topbar-inner">
     <a class="brand" href="index.html">
       <span class="brand-logo">◇</span>
-      <span class="brand-name">掘金课程</span>
+      <span class="brand-name">稀土掘金</span>
       <span class="brand-badge">课程</span>
     </a>
     <div class="topbar-title">{book_title}</div>
@@ -220,7 +220,7 @@ def main():
   <div class="topbar-inner">
     <a class="brand" href="index.html">
       <span class="brand-logo">◇</span>
-      <span class="brand-name">掘金课程</span>
+      <span class="brand-name">稀土掘金</span>
       <span class="brand-badge">课程</span>
     </a>
     <div class="topbar-title">{html.escape(BOOK_TITLE)}</div>
