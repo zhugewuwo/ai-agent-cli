@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>单元格级别差异渲染 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li class="active"><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 24 章 单元格级别差异渲染</h1>
+<p>Ch.23 追溯了终端抖动的根因——Ink 底层依赖的 Yoga 布局引擎在 CJK 字符宽度测量上存在系统性偏差。两层修复方案中的第二层——让核心输入组件绕过 Ink 的渲染管线，直接向终端写入帧数据——正是本章要展开的内容。ChatInput 组件放弃了 Ink 提供的声明式渲染能力，转而在内存中维护一个二维单元格网格（Cell Grid），每次状态变化时将新帧与旧帧逐格比对，仅把发生变化的单元格通过 ANSI 转义序列写到标准输出。这套机制可以类比前端开发者熟悉的虚拟 DOM 差异比对（Virtual DOM Diff）：二者都遵循「在内存中构建新状态 → 与旧状态逐节点比较 → 只更新差异」的范式，最小更新单位都是叶子节点——React 中是 DOM 元素，这里是终端上的单个字符格。不同之处在于，React 最终将差异交给浏览器的 DOM API 执行，浏览器内部保证每次 DOM 更新的渲染原子性；而 ChatInput 直接向标准输出写入字节流，终端没有类似的原子更新保证，因此还需要额外引入 DEC 2026 同步更新协议，将一帧内的所有写入包裹成原子操作，避免用户看到只刷新了一半的中间状态。<!-- analogy: virtual-dom-diff --></p>
+<p>本章从单元格的数据模型出发，依次拆解差异比对算法、原子帧刷新机制、帧内 UI 元素的构成、消息从动态区提交到历史区的流程，最后讨论输入处理管线中的括号粘贴模式（Bracketed Paste Mode）与防抖策略，分为如下几个部分进行介绍。</p>
+<ul>
+<li>24.1 节介绍单元格模型：字符、样式与列宽三合一的数据结构。</li>
+<li>24.2 节讲解逐格比对算法，解释为什么不用逐行重写。</li>
+<li>24.3 节讨论 DEC 2026 同步更新协议如何实现原子帧刷新。</li>
+<li>24.4 节展示帧里画了什么：全部动态元素统一到一张网格。</li>
+<li>24.5 节介绍消息从动态区「毕业」到历史区的提交流程。</li>
+<li>24.6 节解释为什么不用 Ink 的 useInput。</li>
+<li>24.7 节讨论大段粘贴折叠为占位符的处理。</li>
+<li>24.8 节给出本章小结。</li>
+</ul>
+<p>下面这张流程图展示了整条渲染管线从状态变化到屏幕更新的全过程，后续各节将逐段展开。</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/af59aaae1c3d45ff87d638d93f9b05ef~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1289&amp;h=108&amp;s=24155&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<p>为了让上面的管线图不停留在抽象层面，我们用一个贯穿全章的场景来串讲：用户在输入框中键入「帮我重构 src/utils.ts」并按下回车，AI 开始流式回复，随后调用 readFile 工具读取源码——此时屏幕上同时发生着多件事：进度指示器的旋转符号每 200 毫秒切换一帧，流式文本逐段出现在历史区，输入框光标持续闪烁。工具执行完毕后弹出权限对话框，候选项的高亮随用户的方向键移动。所有这些视觉变化——旋转、闪烁、滚动、高亮——都经由同一条渲染管线驱动。下面各节将沿着这条时间线逐步拆解。</p>
+<h2 id="24-1-单元格模型-字符-样式与列宽三合一">24.1 单元格模型：字符、样式与列宽三合一</h2>
+<p>回到示例：用户键入的「帮我重构」四个汉字，每个字在终端上占两列；而后面的 <code>src/utils.ts</code> 中的 ASCII 字符各占一列。这种宽度差异是因为终端仿真器对东亚宽字符（CJK Ideographs）和 ASCII 字符有硬性的列宽规定，任何在终端上做精确定位的渲染器都必须遵守。Ink 的抖动问题正是源于它在测量这一宽度时出了偏差（详见 Ch.23）。ChatInput 的单元格模型将字符、样式和宽度三项信息封装在一起，确保渲染管线在处理每个格子时无需再查外部宽度表：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">// 源码：packages/cli/src/ui/components/chat-input/cells.ts
+interface Cell {
+  char: string   // 一个字符（汉字、ASCII 字符或 emoji）
+  style: string  // ANSI 转义序列（颜色、加粗等）
+  width: number  // 该字符在终端中占几列（1 或 2）
+}
+</code></pre>
+<p>宽度值由项目自行维护的 Unicode 宽度查询函数计算，该函数位于 <code>packages/cli/src/ui/text-width.ts</code>。它根据字符的 Unicode 码位（Code Point）判断是否属于东亚宽字符（East Asian Wide），属于则返回 2，否则返回 1。选择自行维护而非依赖 Ink 内部使用的 <code>string-width</code> 库，原因在于 <code>string-width</code> 内置的静态查表在部分 CJK 字符和组合 emoji 上会返回错误的宽度值（Ch.23 已经讨论过这一问题）。自行维护查表函数可以针对实际遇到的偏差逐个修正，不必等待上游库发版。代价是需要持续跟踪 Unicode 标准的更新——当新版本增加宽字符区间时，查表函数也需要相应更新。</p>
+<p>一行帧数据表示为 <code>Cell[]</code> 数组，整帧表示为 <code>Cell[][]</code>（二维数组）。不过，数组的索引是单元格序号而非终端列号——一个宽度为 2 的 CJK 字符只占数组中的一个位置，但在终端上占据两列。列号通过累加前面所有单元格的宽度值来计算。以「你好」为例：</p>
+<pre><code class="language-text">数组索引:    [0]          [1]
+           ┌───────────┬───────────┐
+    char   │  '你'      │  '好'     │
+    width  │  2         │  2        │
+           └───────────┴───────────┘
+
+列位置由宽度累加得出：
+  cells[0] → 起始列 0，宽度 2，占据列 0–1
+  cells[1] → 起始列 2，宽度 2，占据列 2–3
+
+终端实际显示：
+  列 0  列 1  列 2  列 3
+    ← 你 →     ← 好 →
+</code></pre>
+<p>这一模型的关键特征是数组索引不等于终端列号。好处是避免了为每个宽字符引入占位单元格——如果采用「每列一个 Cell」的方案，宽字符的右半格需要一个空的占位 Cell，数组长度随 CJK 字符数量膨胀，比对逻辑也需要额外跳过占位格。代价是列号必须在遍历时逐格累加宽度值来计算——24.2 节的差异比对代码将展示这一过程。</p>
+<h2 id="24-2-逐格比对而非逐行重写">24.2 逐格比对而非逐行重写</h2>
+<p>用户每敲一个字，屏幕上只有输入行的一个位置发生变化；进度指示器每切换一帧也只改变一个旋转符号——如果为此重绘整个动态区的几十行内容，绝大部分写入量都是浪费的。有了单元格模型，差异比对可以精确到单个字符的粒度。核心逻辑是遍历新帧的每个单元格，与旧帧同一位置比较字符和样式，如果不同，则通过 ANSI 绝对定位转义序列将光标跳转到该位置并写入新字符。以下是经过简化的伪代码（实际实现内联在 ChatInput 的 useEffect 中，包含更多边界处理）：</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 伪代码：简化自 ChatInput.tsx useEffect 中的帧比对逻辑
+for (let row = 0; row &lt; nextFrame.length; row++) {
+  let col = 0
+  for (let c = 0; c &lt; nextFrame[row].length; c++) {
+    const prev = prevFrame[row]?.[c]
+    const next = nextFrame[row][c]
+    if (!prev || prev.char !== next.char || prev.style !== next.style) {
+      write(`\x1b[${row + topRow};${col + 1}H`)  // 绝对定位到 (行, 列)
+      write(`${next.style}${next.char}`)           // 写入样式 + 字符
+    }
+    col += next.width  // 列位置按宽度推进，不是固定 +1
+  }
+}
+prevFrame = nextFrame
+</code></pre>
+<p>这段逻辑有几个值得展开的设计选择。</p>
+<p>（1）使用绝对定位（<code>\x1b[行;列H</code>）而非相对光标移动。Ink 的渲染管线采用「光标退回 N 行 → 逐行擦除 → 重写」的方式，这要求准确记住上一帧占了多少行——一旦宽度计算有误，退回的行数就会错位，且错误会跨帧累积。绝对定位不依赖上一帧的状态，即使某一帧的宽度计算出了偏差，下一帧也能定位到正确的位置，错误不会传播。</p>
+<p>（2）比对粒度是单个字符而非整行。按整行比对虽然实现更简单（只需比较两行的字符串是否相等），但在输入场景中效率偏低：用户每输入一个字符，整行内容只变了一格，按整行比对仍然要重写该行所有列——对于一行 120 列的终端，绝大部分写入量是浪费的。逐格比对在大多数场景下只需写入个位数的字符，减少了标准输出的写入量。</p>
+<p>（3）列位置由 <code>col += next.width</code> 累加得出，与 24.1 节讨论的数据模型一致。这意味着差异比对循环天然支持 CJK 混排——无论一行中 ASCII 和 CJK 字符如何交替出现，每个字符的终端列位置都能被正确计算。</p>
+<p>下面用示意图展示两帧之间的差异比对过程。假设进度指示器的旋转符号从 <code>⠋</code> 变成了 <code>⠹</code>，同时用户在输入行末尾追加了一个中文逗号：</p>
+<pre><code class="language-text">  上一帧                           当前帧
+ ┌──────────────────────┐       ┌──────────────────────┐
+ │ ⠋  T h i n k i n g   │       │ ⠹  T h i n k i n g   │   ← 仅第一格变化
+ │ ─ ─ ─ ─ ─ ─ ─ ─ ─    │       │ ─ ─ ─ ─ ─ ─ ─ ─ ─    │   ← 整行未变
+ │ &gt;  你  好             │       │ &gt;  你  好  ，          │   ← 末尾追加逗号
+ │ ─ ─ ─ ─ ─ ─ ─ ─ ─    │       │ ─ ─ ─ ─ ─ ─ ─ ─ ─    │   ← 整行未变
+ └──────────────────────┘       └──────────────────────┘
+                                         │
+                                         ▼
+                         比对结果：仅 2 个单元格发生变化
+                         （1）旋转符号 ⠋ → ⠹
+                         （2）输入行末尾新增逗号
+                         只对这 2 个位置发送绝对定位 + 写入
+</code></pre>
+<p>这种方式的主要收益是写入量与变化量成正比，而非与帧面积成正比。一个典型的输入帧有数十行、每行一百多列，但每次状态变化通常只影响其中几个格子。逐格比对确保不变的区域完全不产生标准输出写入，终端也不需要为这些区域做任何渲染工作。代价是实现复杂度高于逐行比对——需要维护列位置计数器、处理宽字符跨列的边界情况、确保光标跳转序列的行列号正确——但这些复杂度被封装在一处帧比对逻辑中，不会扩散到其他模块。</p>
+<h2 id="24-3-dec-2026-用协议换原子帧刷新">24.3 DEC 2026：用协议换原子帧刷新</h2>
+<p>逐格比对解决了「写什么」的问题，但一帧的差异可能分散在多个位置——旋转符号在第一行、新字符在第三行——这意味着一次帧更新需要发出多组「光标跳转 + 写入字符」序列。这些序列是串行到达终端的，如果终端边接收边渲染，用户可能看到旋转符号已经更新但逗号还没出现的中间状态，表现为画面撕裂或闪烁。</p>
+<p>DEC 2026 同步更新（Synchronized Update）协议专门解决这一问题。它定义了一对控制序列：BSU（Begin Synchronized Update，<code>\x1b[?2026h</code>）和 ESU（End Synchronized Update，<code>\x1b[?2026l</code>）。终端收到 BSU 后暂停屏幕渲染，将后续收到的所有写入缓冲在内存中；收到 ESU 后一次性将缓冲内容渲染到屏幕上。从用户的视角来看，BSU 与 ESU 之间的所有变化是同时出现的——要么看到完整的旧帧，要么看到完整的新帧，不会看到只更新了一半的中间状态。</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 伪代码：简化自 ChatInput.tsx 的帧提交逻辑
+const buf: string[] = []
+buf.push('\x1b[?2026h')            // BSU：通知终端开始缓冲
+// ...所有差异单元格的定位 + 写入序列...
+buf.push('\x1b[?2026l')            // ESU：通知终端一次性渲染
+process.stdout.write(buf.join('')) // 合并为一次 write 调用
+</code></pre>
+<p>选择 DEC 2026 而非其他原子更新方案的原因在于它的降级行为最友好。现代终端仿真器（iTerm2、Windows Terminal、Alacritty、WezTerm、Kitty 等）均已支持这一协议；不支持的老旧终端会直接忽略 BSU 和 ESU 这两个未知的控制序列，退化为「边接收边渲染」——功能不受影响，仅在高频更新时可能出现轻微的画面撕裂。项目早期曾尝试过 DECSTBM（DEC Set Top and Bottom Margins）方案来限制滚动区域，但 cell buffer 并非总是锚定在终端最底行——顶部 banner 和部分滚动状态可能让它停在屏幕中间——设定的滚动区域因此与帧区域重叠，历史写入撕裂了帧画面，最终回退到了 DEC 2026。DEC 2026 的代价是无法保证所有终端的表现完全一致——在极少数不支持该协议的终端上，用户仍然可能观察到偶发的闪烁，但这属于体验降级而非功能缺陷。</p>
+<h2 id="24-4-帧里画了什么-全部动态元素统一到一张网格">24.4 帧里画了什么：全部动态元素统一到一张网格</h2>
+<p>前面三节讨论了单元格网格的数据模型、差异比对算法和原子刷新机制，接下来需要回答一个问题：这张单元格网格里究竟画了什么？ChatInput 并非只负责渲染输入框本身，它把终端底部动态区内的所有 UI 元素统一纳入同一张单元格网格，由同一条差异比对管线处理。以下是一个帧在特定时刻可能包含的全部元素（每次重建帧时，根据当前状态决定哪些元素存在、哪些为空）：</p>
+<pre><code class="language-text">┌──────────────────────────────────────────────────────┐
+│ [错误行]（可选）                                       │  ← 最近一条运行时错误
+│                                                      │
+│ [工具状态 / 进度指示器]                                │  ← 旋转符号 + 工具名 + 耗时
+│                                                      │
+│ [权限确认对话框]（可选）                                │  ← 文件写入等操作的确认提示
+│                                                      │
+│ [选项对话框]（可选）                                   │  ← 多选项列表 + 可选的预览面板
+│                                                      │
+│ [任务清单面板]（可选）                                  │  ← todoWrite 的实时任务清单
+│ ──────────────────────────────────────────────────    │  ← 输入区顶部分隔线
+│ &gt; 用户输入内容                                        │  ← 输入行（含光标位置）
+│ ──────────────────────────────────────────────────    │  ← 输入区底部分隔线
+│ [状态栏]  ⏸ plan mode · 6.6k / 200k · 3%              │  ← 模式提示 + 上下文占用率
+│ [补全菜单]（可选）                                     │  ← / 命令补全或 @ 文件补全
+└──────────────────────────────────────────────────────┘
+</code></pre>
+<p>有一个容易产生误解的地方需要澄清：AI 的流式回复文本并不在这张单元格网格中。流式文本以消息的形式直接写入终端历史区（Scrollback），不经过单元格差异比对管线。单元格网格只负责终端底部需要频繁重绘的动态区元素（输入框、进度指示器、对话框等）。这种分离的原因在于二者的生命周期完全不同：流式文本一旦写入历史区就是永久的，用户向上滚动时看到的 AI 回复不会被动态区的高频重绘干扰；而动态区的元素每帧都可能变化，需要走差异比对管线来最小化写入量。</p>
+<p>将权限对话框和选项对话框纳入单元格网格而非交给 Ink 子组件渲染，原因在于 Ink 的动态区高度管理存在一个结构性缺陷。当对话框内容较长（候选项多、每项带有多行说明文字）时，渲染高度可能超出屏幕底部的剩余空间，此时终端会触发自动滚屏（Auto-Scroll）——将屏幕顶部的行推入历史区以腾出底部空间。问题出在对话框关闭后：Ink 使用相对光标移动来擦除动态区内容，而被自动滚屏推入历史区的那些行已经超出了 Ink 的管辖范围，无法被擦除。用户向上滚动时会看到残留的对话框片段，表现为 UI 内容泄漏。下面的示意图还原了这个过程：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-text">  ① 弹出前                ② 弹出→自动滚屏             ③ 关闭后→泄漏
+
+  ┈ 历史区 ┈               ┈ 历史区 ┈                   ┈ 历史区 ┈
+                           回复 A  ← 推出屏幕           回复 A
+                           回复 B  ← 推出屏幕           回复 B
+                           回复 C  ← 推出屏幕           回复 C
+                           ┌允许写入?┐← 推出屏幕        ┌允许写入?┐ ← 泄漏!
+  ┌── 屏幕(6行) ──┐        ┌── 屏幕(6行) ──┐           ┌── 屏幕(6行) ──┐
+  │ 回复 A        │        │ │[Y] 允许   │ │           │ ── 输入框 ──  │
+  │ 回复 B        │        │ │[N] 拒绝   │ │           │ &gt; _           │
+  │ 回复 C        │        │ │[A] 始终   │ │           │ 状态栏        │
+  │ ── 输入框 ──  │        │ └──────────┘ │           │               │
+  │ &gt; _           │        │ &gt; _          │           │               │
+  │ 状态栏        │        │ 状态栏       │           │               │
+  └───────────────┘        └──────────────┘           └───────────────┘
+
+  Ink 擦除了屏幕内的对话框选项行，但「允许写入?」已被自动滚屏
+  推入历史区，超出相对光标移动的可达范围——向上滚动即可见残留。
+</code></pre>
+<p>将所有元素统一到 ChatInput 的单元格网格后，防止泄漏的策略变为「让帧永远不超出屏幕高度」——不是事后擦除，而是从源头阻止自动滚屏发生。具体做法是为每个可能变高的组件设定独立的高度预算。以选项对话框为例，渲染前先读取 <code>stdout.rows</code>，计算出除去输入框、状态栏等固定元素后的剩余空间，如果候选项总数超过这个空间能容纳的行数，就启用视口滚动（Viewport Scroll）——只显示一屏能放下的候选项，用户通过上下键翻页浏览，而非一次性全部渲染。输入区文本同样有行数上限（超出后截断并加滚动提示），补全菜单限制最大显示条数，所有内容行在写入单元格前还会经过宽度截断，防止终端因硬换行将一行逻辑内容拆成多行物理行而间接撑高帧。这几层约束叠加后，帧的物理高度始终不超过屏幕行数，终端的自动滚屏机制没有介入的机会，内容泄漏也就从根本上被避免了。</p>
+<h2 id="24-5-消息从动态区-毕业-到历史区">24.5 消息从动态区「毕业」到历史区</h2>
+<p>24.4 节已经介绍了历史区与动态区的分工——前者是永久的可回滚记录，后者是终端底部频繁重绘的交互元素。当一轮对话中产生新消息时，这些消息需要从动态区「毕业」到历史区——提交后成为可滚动查看的永久记录，同时动态区在新的位置重新绘制。</p>
+<p>这个提交过程的实现采用缓冲合并的策略而非直接操作终端光标。ChatInput 在每次渲染循环中检查是否有新增的消息（通过一个引用计数器跟踪已提交的消息数量），如果有，则将新消息渲染为格式化文本并收集到一个缓冲区——不同类型的消息（用户输入、AI 回复、工具调用结果）各有格式化规则，但对提交流程来说它们都是等待写入历史区的文本块。收集完毕后，这段历史区内容与当前帧的差异更新合并为一次标准输出写入，整个过程包裹在 DEC 2026 同步更新中。从用户的视角看，新消息出现在历史区、输入框在下方重新出现，这两个视觉变化是同时发生的——不会看到「消息已出现但输入框消失」或「输入框在旧位置闪了一下」的中间态。</p>
+<pre><code class="language-text">  提交前                                    提交后
+ ┌───────────────────────┐               ┌───────────────────────┐
+ │ ❯ 上一条用户消息       │  ← 历史区     │ ❯ 上一条用户消息       │
+ │ AI: 上一段回复         │               │ AI: 上一段回复         │
+ │                       │               │ ❯ 新提交的用户消息     │  ← 新增
+ │                       │               │ AI: 新的回复内容       │  ← 新增
+ │ ┌── 动态区 ────────┐  │               │ ┌── 动态区 ────────┐  │
+ │ │ ⠋ Thinking...    │  │  ← 实时刷新   │ │ ⠋ Thinking...    │  │
+ │ │ &gt; 正在输入...    │  │               │ │ &gt; 正在输入...    │  │
+ │ └─────────────────┘  │               │ └─────────────────┘  │
+ └───────────────────────┘               └───────────────────────┘
+</code></pre>
+<p>关于光标管理还有一点需要补充。ChatInput 在绘制输入动态区时不使用 DECSC/DECRC（<code>\x1b7</code> / <code>\x1b8</code>）保存和恢复光标位置，而是对每一行都发送绝对定位序列。原因在 Ch.23 的 23.5 节已经用时序图详细讨论过——终端的光标保存寄存器只有一份，Ink 的 <code>log-update</code> 已经在使用它，ChatInput 再使用就会互相覆盖。绝对定位虽然每次多写几个字节，但彻底消除了这一状态冲突。</p>
+<h2 id="24-6-为什么不用-ink-的-useinput">24.6 为什么不用 Ink 的 useInput</h2>
+<p>到目前为止讨论的都是渲染侧——如何把帧画到屏幕上。现在转向输入侧。回到示例：假设用户不是逐字键入「帮我重构 src/utils.ts」，而是从 IDE 复制了一段代码粘贴到输入框中。在 macOS 终端下一切正常，但同样的操作在 Windows Terminal 上出现了诡异的现象——输入框中的内容可能比原文少了几行，并且每次粘贴缺失的位置还不一样。</p>
+<p>根源在于 Windows Terminal 的标准输入实现不保证将一次粘贴操作的全部字节打包为一个 <code>data</code> 事件——几百字符的粘贴可能被拆成若干小段陆续到达。如果应用把每一小段当作独立的键入事件处理，每段都会触发一次 React 状态更新。React 的 <code>setState</code> 是异步批处理的，相邻多次更新可能读取到过期的状态值（闭包竞态），导致某些段在合并时被覆盖——最终表现就是粘贴缺字。macOS 和 Linux 的终端仿真器通常将一次粘贴打包为单个 <code>data</code> 事件，因此不会触发这一竞态。</p>
+<p>解决思路是让应用能区分「用户在粘贴」和「用户在键入」，对粘贴走独立的合并路径而不逐段触发状态更新。终端协议本身提供了这种区分能力：括号粘贴模式（Bracketed Paste Mode）。应用启动时向终端发送 <code>\x1b[?2004h</code> 开启该模式后，用户每次粘贴时终端会在数据前后自动插入开始标记 <code>\x1b[200~</code> 和结束标记 <code>\x1b[201~</code>。然而 Ink 的 <code>useInput</code> 钩子将这两个标记当作未知转义序列丢弃——粘贴内容被按逐字键入处理，上述 Windows 竞态由此产生。因此 ChatInput 绕过 <code>useInput</code>，直接监听 <code>process.stdin</code> 上的 <code>data</code> 事件，自行解析粘贴标记。</p>
+<p><code>usePromptInput</code> 钩子的输入管线分三层处理到达的数据：</p>
+<pre><code class="language-text">stdin data 事件到达
+  │
+  ├─ 检测到 \x1b[200~ 开始标记 → 进入粘贴模式
+  │    └─ 持续累积数据，直到收到 \x1b[201~ 结束标记
+  │         └─ 整块提交：onPaste(归一化后的内容)
+  │
+  └─ 未处于粘贴模式 → 检查数据段内容
+       │
+       ├─ 特殊键（回车、退格、方向键、Tab、Esc、Ctrl+C）
+       │    → 先刷出待处理缓冲，再分发对应的键事件
+       │
+       └─ 普通文本 → 按数据段大小判定处理方式
+            │
+            ├─ 长度 &lt; 32 字节（PASTE_SIZE_THRESHOLD）
+            │    → 视为键入，立即调用 onText 传递给输入框
+            │
+            └─ 长度 ≥ 32 字节
+                 → 视为疑似粘贴，累积到待处理缓冲
+                    启动 30ms 定时器（PASTE_DEBOUNCE_MS）
+                    若 50ms 内未收到结束信号则强制刷出（MAX_BATCH_MS）
+                    → 定时器到期或强制刷出后调用 onPaste 整块提交
+</code></pre>
+<p>三个阈值各自回答一个具体的设计问题。PASTE_SIZE_THRESHOLD 为什么是 32 字节？操作系统在用户按住按键不放时产生的重复事件通常只有一到几个字符，远小于 32——将阈值设在这个位置确保按键重复走立即提交路径，保持实时响应感，不被误判为粘贴而陷入防抖等待。PASTE_DEBOUNCE_MS 为什么是 30 毫秒？这是给 Windows Terminal 拆段到达的后续数据留出的合并窗口——同一次粘贴的各段通常在 10–20 毫秒内全部到达，30 毫秒足以覆盖。MAX_BATCH_MS 为什么是 50 毫秒？这是防止用户快速连续输入（而非粘贴）时防抖定时器不断被重置、文本迟迟不出现在输入框中的强制上限——无论定时器是否到期，50 毫秒后一律刷出缓冲区。</p>
+<p>这三个阈值之间存在权衡。PASTE_SIZE_THRESHOLD 越大，越不容易将正常键入误判为粘贴，但也越容易让小段粘贴走键入路径——在 Windows Terminal 上可能再次触发闭包竞态。PASTE_DEBOUNCE_MS 越短，粘贴后文本出现得越快，但留给后续数据段的合并窗口越窄，可能导致一次粘贴被截断为两块分别提交。当前的 32 / 30 / 50 组合是在 macOS、Linux 和 Windows 上主流终端仿真器中实际测试后的折衷选择。</p>
+<h2 id="24-7-大段粘贴折叠为占位符">24.7 大段粘贴折叠为占位符</h2>
+<p>24.6 节解决了粘贴数据到达时的合并问题，但还有一个显示层面的极端情况。当用户粘贴的内容超过一定行数（例如几百行代码），直接将全部文本显示在输入框中会导致动态区被撑开到几乎占满整个终端窗口——用户既无法看到上方的对话历史，也难以在输入框中编辑粘贴内容前后的文字。占位符机制（Paste Refs）通过折叠显示解决这一问题：大段粘贴内容被存入一个独立的缓存结构，输入框中只显示一行紧凑的占位标记。</p>
+<pre><code class="language-text">&gt; 把这段代码 [Pasted text #1 +247 lines] 转成 TypeScript
+</code></pre>
+<p><code>[Pasted text #N +M lines]</code> 是占位标记，其中 N 是粘贴序号（同一轮对话中递增），M 是原始内容的行数。用户可以在占位标记前后继续输入文字，输入框始终保持紧凑。当用户按下回车提交时，<code>expandPasteRefs</code> 函数遍历输入文本中的所有占位标记，将每个标记替换为对应的原始粘贴内容，还原出完整文本后发送给模型——模型收到的是完整内容，不会看到占位标记。如果用户在提交前删除了某个占位标记，对应的粘贴内容也不会被发送。这种设计将「显示」与「传输」解耦：输入框里看到的是折叠摘要，发出去的是完整原文。代价是用户无法在输入框中直接编辑粘贴内容的细节——如果需要修改其中某几行，必须删除占位标记后重新粘贴修改过的版本。</p>
+<h2 id="24-8-小结">24.8 小结</h2>
+<p>本章从单元格数据模型出发，拆解了 ChatInput 绕过 Ink 自行渲染的完整管线。每个字符连同样式和终端列宽封装为一个 Cell，整帧组织为二维数组；状态变化时逐格比对新旧帧，仅对差异单元格发送绝对定位写入；DEC 2026 同步更新协议将一帧内的所有写入包裹为原子操作，消除画面撕裂。帧内统一管理输入框、进度指示器、权限对话框、选项对话框、任务清单等全部动态 UI 元素，避免 Ink 子组件触发终端自动滚屏导致内容泄漏到历史区。消息提交到历史区时采用缓冲合并策略，与帧更新合并为一次标准输出写入。输入管线通过括号粘贴模式区分粘贴与键入，辅以大小阈值和防抖定时器覆盖 Windows Terminal 的拆段行为，大段粘贴则通过占位符机制保持输入框的紧凑。Ch.25 将进一步展开 ChatInput 内部渲染循环的具体实现细节。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-23.html">← Ink + Yoga：CJK 抖动溯源</a>
+      <a class="next" href="ch-25.html">跨终端渲染：三条工程原则 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#24-1-单元格模型-字符-样式与列宽三合一">24.1 单元格模型：字符、样式与列宽三合一</a></li>
+      <li class="lv2"><a href="#24-2-逐格比对而非逐行重写">24.2 逐格比对而非逐行重写</a></li>
+      <li class="lv2"><a href="#24-3-dec-2026-用协议换原子帧刷新">24.3 DEC 2026：用协议换原子帧刷新</a></li>
+      <li class="lv2"><a href="#24-4-帧里画了什么-全部动态元素统一到一张网格">24.4 帧里画了什么：全部动态元素统一到一张网格</a></li>
+      <li class="lv2"><a href="#24-5-消息从动态区-毕业-到历史区">24.5 消息从动态区「毕业」到历史区</a></li>
+      <li class="lv2"><a href="#24-6-为什么不用-ink-的-useinput">24.6 为什么不用 Ink 的 useInput</a></li>
+      <li class="lv2"><a href="#24-7-大段粘贴折叠为占位符">24.7 大段粘贴折叠为占位符</a></li>
+      <li class="lv2"><a href="#24-8-小结">24.8 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>提示词缓存：跨供应商的缓存策略 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li class="active"><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 33 章 提示词缓存：跨供应商的缓存策略</h1>
+<p>提示词缓存（Prompt Caching）是当前 token 优化中收益最高的单点手段。命中缓存的 token 只按完整输入价格的约 10% 收费（Anthropic 标价），多轮对话累计能节省 70-90% 的输入计费。每家供应商的缓存协议都不一样：Anthropic 用 <code>cache_control</code> 断点、OpenAI 用 <code>promptCacheKey</code> 把同会话路由到同一缓存分片、其他 OpenAI 兼容端点依赖自动前缀缓存。本章讲 X-Code CLI 如何把这些差异统一抽象到一个函数里，以及为什么 system 字段的「字节级稳定」是命中缓存的关键前提。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>33.1 节解释提示词缓存的原理：KV cache 的服务端拓展，以及命中的前提条件。</li>
+<li>33.2 节梳理 Anthropic、OpenAI 和其他供应商的协议差异。</li>
+<li>33.3 节讲解 <code>applyCacheControl</code> 的实现：4 个断点的位置选择和 <code>tagLastTool</code> 的浅拷贝策略。</li>
+<li>33.4 节讨论 <code>systemPromptCache</code> 如何在代码层面保证字节稳定。</li>
+<li>33.5 节介绍缓存命中率的可观测性和常见失效原因的诊断。</li>
+<li>33.6 节给出本章小结。</li>
+</ul>
+<h2 id="33-1-提示词缓存的原理">33.1 提示词缓存的原理</h2>
+<p>Transformer 在生成下一个 token 时，需要计算这个新 token 对前面所有 token 的注意力，意味着每生成一个 token 都要重读整个序列。如果每步都从头计算 prompt 部分，复杂度会随长度二次方膨胀。KV cache 是标配优化：模型在注意力计算中会为每个 token 产生一对 K/V 矩阵（K = key，V = value，可以理解为该 token 的注意力特征向量），并缓存在 GPU 显存里。下一个 token 到来时只需计算自己的 K/V，前面的直接复用，把生成阶段的复杂度从 O(n²) 降到 O(n)。提示词缓存是 KV cache 的服务端拓展：服务端发现同一段前缀的 K/V 矩阵被反复计算时，把它跨请求保存下来，下一次同前缀请求直接复用，因此前缀必须字节级一致（哈希命中）才能复用。</p>
+<p>每轮 X-Code CLI 请求的结构如下：</p>
+<pre><code class="language-text">[ system 字段：基础提示词 + 知识库 ]   ← 固定不变（约 5-15% 总 token）
+[ 历史消息 ]                          ← 部分变化（前面历史固定，最新一轮新增）
+[ 最新用户消息 ]                       ← 完全新增
+</code></pre>
+<p>这里有两个容易产生误解的地方需要先澄清。第一，「基础提示词」和「知识库」不是两个独立通道。<code>buildSystemPrompt()</code> 把它们拼成一段字符串再放入 <code>system</code> 字段，下文讲「system prompt 字节稳定」时把这一整段当一个原子单元在维护。第二，10% 折扣不是 system 字段独享。命中范围是 <code>cache_control</code> 断点之前的整段前缀，里面所有 token 都按约 10% 计费，不分角色：</p>
+<pre><code class="language-text">缓存命中范围（breakpoint 之前的整段前缀）：
+
+   ┌─ system 字段        ←─┐
+   │   基础提示词 + 知识库   │
+   │                       │
+   │ user 消息 1           │
+   │ assistant 回复 1       │  ← 这一整段在命中时
+   │   tool_use            │    都按约 10% 计费
+   │ tool_result 1         │    （不只是 system）
+   │                       │
+   │ user 消息 2           │
+   │ assistant 回复 2       │
+   │   ...                 │
+   ├──── cache_control ────┘     ← breakpoint 位置
+   │
+   │ 最新这一轮新增的消息    ← 不在前缀里，按 100% 计费
+   └─
+</code></pre>
+<p>system 字段之所以反复被讨论，不是因为它有特权折扣，而是因为它是前缀的起点。起点字节变一下，整段前缀的 hash 都会跟着变，后面所有早期消息也跟着失效。因此稳定 system 字段是让「早期消息也能享受折扣」的前提条件。</p>
+<p>缓存命中需要满足几个共性条件。前缀必须字节级稳定，任何字符变化（包括时间戳、随机 ID）都会使缓存失效。长度有最低门槛，Anthropic 各模型阈值不同（Sonnet 4.x 为 1024 token 起算，Haiku 3.5 为 2048 token，Opus 4.5+ / Haiku 4.5 为 4096 token），OpenAI 兼容端点没有文档化但太短的前缀也不会被缓存。TTL 通常为 5 分钟（Anthropic 1 小时档需付费）。</p>
+<p>下面这张反面对照图展示了字节级稳定的含义：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">首轮（建立缓存）：     第二轮 system 字节稳定：   第二轮 system 加了时间戳：
+┌────────────┐         ┌────────────┐             ┌────────────┐
+│ system     │         │ system     │             │ system'    │
+│  hash=A    │  写入    │  hash=A    │  命中       │  hash=B    │  未命中
+│            │  缓存    │            │            │  （多一行  │  （hash 变了
+├────────────┤         ├────────────┤             │   时间戳）  │   整段重算）
+│ msg1       │         │ msg1       │  命中       ├────────────┤
+│ msg2 ...   │         │ msg2 ...   │            │ msg1       │  未命中
+└────────────┘         ├────────────┤             │ msg2 ...   │  （前缀已断
+计费：100%             │ msg-new    │  新增       └────────────┘   后面也重算）
+                       └────────────┘                              ├────────────┤
+                       计费：约 10%（老段）          │ msg-new    │
+                            + 100%（msg-new）       └────────────┘
+                                                    计费：100% 全部重算
+</code></pre>
+<p>中间和最右只差一行时间戳，结果一边按 10% 收费，另一边按 100%。缓存命中是要么全中要么完全不中：前缀任意一字节变化，都会导致整段失效，后面的消息也跟着重算。因此本章后面所有「字节稳定」相关的设计（<code>systemPromptCache</code>、不在 system 里插时间戳、摘要走 user 角色不走 system）都是围绕「保持 hash 不变」展开的。</p>
+<h2 id="33-2-各家协议差异">33.2 各家协议差异</h2>
+<h3 id="anthropic-的-cache_control-模式">Anthropic 的 cache_control 模式</h3>
+<p>Anthropic 采用显式标记：在消息里加 <code>cache_control: { type: 'ephemeral' }</code>。标记位置叫断点（breakpoint），每个断点之前的所有内容会被缓存。每次请求最多 4 个断点。</p>
+<p>X-Code CLI 的策略是 4 个断点全部用满：system prompt 上打一个，最后一个 tool 定义上打一个（把整张 tools schema 折进同一段缓存前缀），最后 2 条非 system 消息各打一个。位置如下：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">请求结构（按 Anthropic API 字段顺序）：
+
+   ┌────────────────────────────────┐
+   │ system 字段                    │ ◀──── breakpoint #1
+   │  基础提示词 + 知识库            │
+   ├────────────────────────────────┤
+   │ tools[0] tools[1] ... tools[K] │
+   │  tools schema（按 buildTools    │
+   │  返回的 key 顺序稳定）          │
+   │                                │ ◀──── breakpoint #2（挂在 tools[K] 上）
+   ├────────────────────────────────┤
+   │ msg1   msg2   ...   msg(N-2)   │
+   │  早期对话历史                   │
+   ├────────────────────────────────┤
+   │ msg(N-1) 倒数第二条             │ ◀──── breakpoint #3
+   ├────────────────────────────────┤
+   │ msgN     最后一条               │ ◀──── breakpoint #4
+   └────────────────────────────────┘
+   （4 个 breakpoint 全用满，Anthropic 上限即 4）
+</code></pre>
+<p>要看懂为什么是这 4 个位置，需要先理解单个断点如何在两轮请求之间接力。每个断点让 Anthropic 写一条缓存，内容是从开头到该断点（含）的整段前缀。下一轮请求来时，Anthropic 拿请求的实际前缀去对照所有已存缓存，找当前请求里最长能匹配的那一条，命中部分按约 10% 计费。下面走一遍具体流程。本轮请求是 <code>[system, msg1, msg2, msg3]</code>，在 system 和 msg3 各打一个断点：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">本轮（第 N 轮）：                 写入缓存（两条）：
+[ system ]    ◀── bp #1           条目 A = [ system ]
+[ msg1 ]                          条目 B = [ system, msg1, msg2, msg3 ]
+[ msg2 ]
+[ msg3 ]      ◀── bp #2
+
+──────────── 5 分钟内下一轮（第 N+1 轮）来了 ────────────
+
+[ system ]                        Anthropic 找最长匹配前缀：
+[ msg1 ]        ─┐                  条目 A = [ system ]              ← 匹配但短
+[ msg2 ]         │ 这一段都          条目 B = [ system, ..., msg3 ]  ← 匹配且长
+[ msg3 ]        ─┘ 命中条目 B
+[ msg4 ] (新)   ←─ 这一条按 100% 计费
+</code></pre>
+<p>前 4 条按 10% 计费，只有 msg4 按 100%。关键结论是：当前轮的最末断点越靠后，下一轮能享受折扣的 token 就越多。因此「最后一条消息上一定要打断点」是 token 经济学层面的硬要求。</p>
+<p>4 个断点各自的作用如下。</p>
+<p>（1）system 断点。跨轮永远稳定的部分。每轮都依赖这条作为基线保障：即使其他缓存都失效，至少 system 加知识库这一段还能命中。</p>
+<p>（2）最后一个 tool 断点。单点收益最大的一条。tools schema 注册满之后通常上千 token，且字节内容跨轮恒定。<code>toolRegistry</code> 是模块级常量，<code>subAgentRegistry</code> 启动期冻结，key 顺序稳定，每次 <code>buildTools</code> 构造出来的序列化结果一致。如果不给 tools 单独打断点，tools schema 就只能作为消息缓存前缀的一部分被缓存，一旦消息历史变化（每轮都会新增消息），整段缓存失效，tools schema 也要跟着重新写入。给 tools 独立打一个断点后，tools 段有自己的缓存条目，不受消息变化的影响，写入只发生在首轮，之后每轮 tools 段都 100% 命中。</p>
+<p>（3）最后一条消息断点。接力主力。下一轮命中的就是这条，覆盖整段对话历史，是节省计费的主要来源。</p>
+<p>（4）倒数第二条消息断点。主备结构中的备份。Anthropic 缓存条目并不保证永远存在（5 分钟 TTL、容量驱逐都可能让条目消失），如果最后一条的条目刚好被驱逐了而倒数第二条还在，下一轮至少还能在倒数第二条处命中，比完全未命中强。</p>
+<p>消息历史还能再多打几个断点吗？不能，4 个断点已经全部用完了，前两个固定给 system 和 tools（跨轮稳定段），剩下 2 个分给消息尾部。而且再往前给消息打断点也没有收益：Anthropic 的缓存写入要多付约 25% 的创建成本（仅首次写入），而更短的前缀总是被更长的前缀完全覆盖（条目 A 永远是条目 B 的前缀），下一轮命中时长缓存优先，短缓存写了也用不上，每多一个消息断点只是白付一份写入费。消息端 2 个断点（主备结构）已经是最优配置。</p>
+<h3 id="openai-兼容端点的前缀缓存">OpenAI 兼容端点的前缀缓存</h3>
+<p>DeepSeek、Moonshot、Alibaba 等 OpenAI 兼容端点支持自动前缀缓存，不需要客户端标记。服务端自动检测前缀，命中即缓存。客户端的责任是保证 system prompt 和早期消息字节级稳定。OpenAI 本身通过 <code>promptCacheKey</code> 把同一会话的请求路由到同一缓存分片，命中率更稳定。</p>
+<h3 id="google-的-cachedcontent-api">Google 的 cachedContent API</h3>
+<p>Google 通过 <code>cachedContent</code> API 显式创建缓存对象，后续请求引用该对象。API 形式与 Anthropic 和 OpenAI 都不同，是「先创建命名缓存对象，然后请求时引用」。X-Code CLI 当前只对 Anthropic 和 OpenAI 做主动客户端配置：Anthropic 打 <code>cache_control</code> 断点、OpenAI 加 <code>promptCacheKey</code>。其他 OpenAI 兼容端点与 Google 都依赖服务端自动前缀缓存，CLI 端不传任何参数，只要 <code>systemPromptCache</code> 保持字节稳定就自动命中。</p>
+<h2 id="33-3-applycachecontrol-的实现">33.3 applyCacheControl 的实现</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/providers/cache-control.ts</code></p>
+</blockquote>
+<p><code>applyCacheControl</code> 根据模型供应商分三条路径处理缓存标记：</p>
+<!-- check:ignore=code-source -->
+<!-- check:ignore=code-block-size -->
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">export function applyCacheControl(args: CacheControlArgs): CacheControlResult {
+  const provider = providerOf(args.modelId)
+
+  if (provider === 'anthropic') {
+    // system 折进 messages 数组首位（带 cache_control），
+    // tools 末尾挂一个 cache_control（整张 schema 进同一段前缀），
+    // 再给最后 MESSAGE_CACHE_BREAKPOINTS = 2 条消息各打一个 breakpoint
+    const nonSystemTail = args.messages.slice(-MESSAGE_CACHE_BREAKPOINTS)
+    const tailSet = new Set(nonSystemTail)
+    const tagged = args.messages.map((m) =&gt;
+      tailSet.has(m) ? tagMessage(m, 'anthropic', { cacheControl: { type: 'ephemeral' } }) : m,
+    )
+    return {
+      system: undefined,
+      messages: [anthropicSystemMessage(args.system), ...tagged],
+      tools: tagLastTool(args.tools),
+    }
+  }
+
+  if (provider === 'openai') {
+    // promptCacheKey 把同一会话的请求路由到同一缓存分片
+    // store:false 不开远端调用存档
+    return {
+      system: args.system,
+      messages: args.messages,
+      tools: args.tools,
+      providerOptions: { openai: { promptCacheKey: args.sessionId, store: false } },
+    }
+  }
+
+  // 其他 OpenAI 兼容端点与 Google：自动前缀缓存，不需要显式标记
+  return { system: args.system, messages: args.messages, tools: args.tools }
+}
+</code></pre>
+<p>Anthropic 路径有几个需要注意的设计决策。第一，返回的 <code>system</code> 是 <code>undefined</code>，因为 <code>cache_control</code> 只能挂在消息上，所以 system 被 <code>anthropicSystemMessage</code> 包装成一条 system 角色消息折进 messages 数组首位。调用方必须用返回的消息而不是原 system 字符串。第二，返回的 <code>tools</code> 是一份浅拷贝：<code>tagLastTool</code> 只给最后一个 tool 创建新的引用（带了 <code>cacheControl</code>），其他工具仍然指向原引用，避免污染 <code>buildTools()</code> 的输出（一次 <code>agentLoop</code> 调用内多轮 <code>runTurn</code> 共用同一份 record，就地修改字段可能被下一轮看到）。</p>
+<p><code>tagLastTool</code> 的实现如下：</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">function tagLastTool(tools) {
+  if (!tools) return tools
+  const names = Object.keys(tools)
+  if (names.length === 0) return tools
+  const lastName = names[names.length - 1]
+  const lastTool = tools[lastName]
+  const existing = lastTool?.providerOptions ?? {}
+  const tagged = {
+    ...lastTool,
+    providerOptions: {
+      ...existing,
+      anthropic: { ...(existing.anthropic ?? {}), cacheControl: { type: 'ephemeral' } },
+    },
+  }
+  return { ...tools, [lastName]: tagged }
+}
+</code></pre>
+<p><code>tagLastTool</code> 把 <code>cacheControl: { type: 'ephemeral' }</code> 挂在 <code>tools[K].providerOptions.anthropic</code> 上。Anthropic 拿到带这个标记的 tool 定义后，会把从 tools 数组开头一直到这个 tool（即整张 schema）作为一段缓存前缀。</p>
+<h2 id="33-4-systempromptcache-字节稳定的代码保证">33.4 systemPromptCache：字节稳定的代码保证</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop-state.ts</code></p>
+</blockquote>
+<p>LoopState 里有一个 <code>systemPromptCache: string | null</code> 字段：</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">if (!state.systemPromptCache) {
+  state.systemPromptCache = buildSystemPrompt({
+    knowledgeContext: fullKnowledgeContext,
+    modelId: options.modelId,
+    isGitRepo,
+  })
+}
+const systemPrompt = state.systemPromptCache
+</code></pre>
+<p>这段代码做的事是把前文反复讨论的「字节稳定」落到代码层面：第一轮构建一次后冻结字符串引用，后续每轮直接复用，不再让 <code>buildSystemPrompt()</code> 重跑。重跑就意味着重新拼字符串，无论拼出来「看起来」是否一样，只要 hash 字节不一致前缀就失效。</p>
+<h2 id="33-5-可观测性与缓存失效诊断">33.5 可观测性与缓存失效诊断</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop.ts::collectTurnResponse</code></p>
+</blockquote>
+<p>AI SDK v6 在 usage 里返回 <code>cacheReadTokens</code> 和 <code>cacheWriteTokens</code>：</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">const usage = await result.usage
+state.tokenUsage.cacheReadTokens += usage.inputTokenDetails?.cacheReadTokens ?? 0
+state.tokenUsage.cacheCreationTokens += usage.inputTokenDetails?.cacheWriteTokens ?? 0
+</code></pre>
+<p>这两个字段都是 <code>inputTokens</code> 的子集（不是另外计算），但分开保留供分析。<code>cacheReadTokens</code> 是本次请求中从缓存命中的 token 数，<code>cacheWriteTokens</code> 是本次请求中写入缓存的 token 数（仅 Anthropic 有）。<code>/usage</code> 命令显示缓存命中率（<code>cacheReadTokens / inputTokens</code>），<code>/usage-history</code> 可跨会话查看趋势，观察某个供应商命中率是否退化。</p>
+<p>实战中遇到的缓存失效原因及对应的解决方式如下：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>system prompt 里插入了变化的字段</td>
+<td>用 systemPromptCache 强制缓存</td>
+</tr>
+<tr>
+<td>知识库内容变了（用户改了 AGENTS.md）</td>
+<td>重置 systemPromptCache，下轮重建</td>
+</tr>
+<tr>
+<td>切换了模型（<code>/model</code> 后）</td>
+<td>缓存不能跨模型，自然未命中</td>
+</tr>
+<tr>
+<td>反应式压缩</td>
+<td>压缩后的消息是新前缀，需要重新建缓存</td>
+</tr>
+</tbody>
+</table>
+<p>最后一项有些反直觉：压缩本来是节省 token 的优化，但同时也让缓存失效。这是必要权衡，压缩是为了不超出上下文窗口，而缓存是优化已有上下文的计费；两者不冲突，但优先级是先保证不超出窗口，再考虑优化计费。</p>
+<p>缓存命中退化为未命中不会报错，只是 <code>cacheReadTokens</code> 从正常值变为 0。怀疑命中下降时，首先查看 <code>/usage</code> 的 cache hit ratio，<code>cacheReadTokens / inputTokens</code> 跌到 0 就是未命中。</p>
+<h2 id="33-6-小结">33.6 小结</h2>
+<p>本章讨论了 X-Code CLI 的提示词缓存策略。核心前提是前缀必须字节级一致才能命中缓存，单字符变化即导致整段失效。Anthropic 显式打 4 个 <code>cache_control</code> 断点（system、最后一个 tool、最后 2 条消息），OpenAI 用 <code>promptCacheKey</code> 路由同一缓存分片，其他端点依赖自动前缀缓存。代码层面通过 <code>systemPromptCache</code> 冻结字符串引用保证 <code>system</code> 字段字节稳定，Ch.31 的 LLM 摘要走 <code>user</code> 角色也是出于同一理由。<code>/usage</code> 命令显示缓存命中率，是诊断缓存失效的首要入口。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-32.html">← 循环护栏：doom-loop 检测</a>
+      <a class="next" href="ch-34.html">思考模式：跨供应商的统一开关 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#33-1-提示词缓存的原理">33.1 提示词缓存的原理</a></li>
+      <li class="lv2"><a href="#33-2-各家协议差异">33.2 各家协议差异</a></li>
+      <li class="lv3"><a href="#anthropic-的-cache_control-模式">Anthropic 的 cache_control 模式</a></li>
+      <li class="lv3"><a href="#openai-兼容端点的前缀缓存">OpenAI 兼容端点的前缀缓存</a></li>
+      <li class="lv3"><a href="#google-的-cachedcontent-api">Google 的 cachedContent API</a></li>
+      <li class="lv2"><a href="#33-3-applycachecontrol-的实现">33.3 applyCacheControl 的实现</a></li>
+      <li class="lv2"><a href="#33-4-systempromptcache-字节稳定的代码保证">33.4 systemPromptCache：字节稳定的代码保证</a></li>
+      <li class="lv2"><a href="#33-5-可观测性与缓存失效诊断">33.5 可观测性与缓存失效诊断</a></li>
+      <li class="lv2"><a href="#33-6-小结">33.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

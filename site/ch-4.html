@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目定位与工程基础 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li class="active"><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 4 章 项目定位与工程基础</h1>
+<p>前三章从「最小 demo」「三层工程」「失败模式」三个角度给全书建立了坐标系。从本章开始进入具体的工程实现。在讨论 Agent Loop、工具系统、终端 UI 等核心模块之前，需要先交代一组前置决策：X-Code CLI 在赛道中处于什么位置、对接模型用的是什么接口、代码仓库为什么拆成两个包、每个包的内部结构是怎样的。这些决策看似是一次性的基础设施工作，但它们直接决定了后续章节的代码组织方式——例如工具实现放在哪个目录、权限检查在哪一层拦截、UI 回调如何传入 Agent 引擎。</p>
+<p>本章不论证「为什么选 TypeScript 而不选 Go / Rust」这类语言选型问题。作者的技术背景是前端与 Node.js 全栈，TypeScript 是日常语言，终端 UI 框架 Ink 基于 React——这些选择是技术栈延续的自然结果，不是逐项权衡评估出来的。工业界的实践也表明语言不是决定 Agent 质量的关键因素。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>4.1 节交代 AI Agent CLI 在当前赛道中的位置，以及选择 CLI 形态的工程约束。</li>
+<li>4.2 节介绍 LLM 接入层 Vercel AI SDK，说明 X-Code CLI 用到了哪些接口、多供应商如何接入、供应商专有字段如何处理。</li>
+<li>4.3 节讲解 monorepo 分包策略：为什么拆成 core 和 cli 两个包、单向依赖如何强制执行。</li>
+<li>4.4 节给出 core 包的内部模块地图，帮助读者在后续章节中快速定位源码位置。</li>
+<li>4.5 节简要交代 monorepo 配置与构建工具。</li>
+<li>4.6 节给出本章小结。</li>
+</ul>
+<h2 id="4-1-ai-agent-cli-的赛道定位">4.1 AI Agent CLI 的赛道定位</h2>
+<p>当前主流的 AI 编程助手按产品形态可以分为两类。第一类是编辑器内嵌形态，代表产品包括 Cursor（基于 VS Code 的独立 IDE，内置 AI 能力）、GitHub Copilot Chat、Cline、Continue 等，它们以 IDE 插件或内置功能的方式运行，与编辑器的文件树、终端、调试器深度集成。第二类是独立 CLI 形态，代表产品包括 Claude Code、Codex、Gemini CLI 等，它们脱离 IDE 独立运行在终端中，通过命令行与用户交互。少数产品同时提供两种形态。</p>
+<p>X-Code CLI 属于独立 CLI 形态。选择这种形态有几个工程上的考量。（1）脱离 IDE 限制，可在任何终端环境运行，包括 SSH 远程连接到服务器的场景——在远端服务器上运行 <code>xc</code>，本地终端就是交互界面。（2）易于嵌入脚本和 CI 流水线，通过管道输入或 <code>--print</code> 非交互模式即可在自动化环境中使用。（3）跨编辑器复用——使用 Vim、Emacs、VS Code 或其他编辑器的开发者都可以使用同一个工具，不受编辑器绑定。</p>
+<h2 id="4-2-llm-接入层-vercel-ai-sdk">4.2 LLM 接入层：Vercel AI SDK</h2>
+<p>X-Code CLI 通过 <a href="https://ai-sdk.dev/">Vercel AI SDK</a>（npm 包名 <code>ai</code>）对接大语言模型。本节交代它在项目中承担什么角色、用到哪些接口；具体的 Agent Loop 实现和供应商适配细节分别在 Ch.08 和 Ch.09 展开。</p>
+<h3 id="4-2-1-用到的核心接口">4.2.1 用到的核心接口</h3>
+<p>X-Code CLI 用到的 AI SDK 核心接口如表 4-1 所示。</p>
+<table>
+<thead>
+<tr>
+<th>接口</th>
+<th>用途</th>
+<th>调用位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>streamText</code></td>
+<td>主 Agent Loop——把对话历史与工具集发给模型，流式返回文本与工具调用</td>
+<td><code>agent/loop.ts</code></td>
+</tr>
+<tr>
+<td><code>generateText</code></td>
+<td>一次性非流式调用——用于会话摘要、上下文压缩、视觉降级、记忆提炼等后台任务</td>
+<td><code>compression.ts</code> / <code>vision-fallback.ts</code> / <code>memory-extractor.ts</code> 等</td>
+</tr>
+<tr>
+<td><code>tool({...})</code></td>
+<td>定义工具——<code>description</code> + <code>inputSchema</code>（Zod）+ <code>execute</code></td>
+<td><code>tools/*.ts</code></td>
+</tr>
+<tr>
+<td><code>createProviderRegistry</code></td>
+<td>把多个供应商装进一个注册表，按 <code>'&lt;provider&gt;:&lt;model&gt;'</code> 字符串路由到对应供应商</td>
+<td><code>providers/registry.ts</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表 4-1 X-Code CLI 用到的 AI SDK 核心接口</p>
+</blockquote>
+<p>除表中四个接口外，记忆提炼模块还使用了 <code>Output</code> 来约束模型的结构化输出（Ch.36），MCP 工具桥接使用了 <code>jsonSchema</code> 来包装外部工具的参数模式（Ch.37）。类型层面只用到 <code>LanguageModel</code>、<code>ModelMessage</code>、<code>UserContent</code>、<code>FilePart</code> / <code>ImagePart</code> / <code>TextPart</code> 等少数几个。一个典型的调用如下所示：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">import { streamText } from 'ai'
+
+const result = streamText({
+  model,       // registry.languageModel('anthropic:claude-sonnet-4-6') 取出的实例
+  system,
+  messages,
+  tools,
+  abortSignal, // 一路传递到 fetch 与 shell 子进程，Esc 一键打断
+  providerOptions, // 各家专有字段从这里透传
+})
+</code></pre>
+<h3 id="4-2-2-多供应商接入">4.2.2 多供应商接入</h3>
+<p>多数供应商有对应的 <code>@ai-sdk/&lt;vendor&gt;</code> 适配包（如 <code>@ai-sdk/anthropic</code>、<code>@ai-sdk/openai</code>、<code>@ai-sdk/google</code>、<code>@ai-sdk/deepseek</code> 等）。所有适配包对外都统一暴露为 <code>LanguageModel</code> 接口，下游代码不需要区分当前使用的是哪家供应商。<code>createProviderRegistry</code> 将所有已配置 API Key 的供应商聚合成一个查询入口，通过 <code>registry.languageModel('anthropic:claude-sonnet-4-6')</code> 这种字符串即可取出对应的模型实例。X-Code CLI 目前支持 8 家主流供应商（Anthropic、OpenAI、Google、xAI、DeepSeek、阿里云、智谱、Moonshot），另外还支持一个 OpenAI 兼容的自定义端点，用于接入没有官方适配包的供应商。所有供应商的 API Key 均从环境变量读取，不需要在代码中显式传入。</p>
+<h3 id="4-2-3-供应商专有字段">4.2.3 供应商专有字段</h3>
+<p>不同供应商各有各的专有参数：Anthropic 有 <code>cache_control</code>（缓存控制）、OpenAI 有 <code>reasoning_effort</code>（推理力度）、Google 有 <code>thinkingConfig</code>（思考配置）。AI SDK 的处理方式是不强行抹平差异，而是提供一个 <code>providerOptions</code> 字段，按供应商名分组后直接透传：</p>
+<pre><code class="language-ts">streamText({
+  model,
+  messages,
+  providerOptions: {
+    anthropic: { cacheControl: { type: 'ephemeral' } },
+    openai: { reasoningEffort: 'high' },
+  },
+})
+</code></pre>
+<p>X-Code CLI 在 <code>providers/cache-control.ts</code> 和 <code>providers/thinking.ts</code> 中维护了「按当前供应商拼出对应 <code>providerOptions</code>」的映射逻辑。对外只暴露 <code>/thinking on|off</code> 这类统一开关，将各家差异封装在适配层内部。详见 Ch.09 多供应商支持。</p>
+<h3 id="4-2-4-依赖-sdk-的代价">4.2.4 依赖 SDK 的代价</h3>
+<p>跟随 SDK 主版本升级时，类型定义和字段名可能发生变化（如 Chunk 类型枚举、usage 对象结构），需要按发布说明逐个调整调用点。这是选择「用 SDK」这条路径本来就需要承担的固定成本。换成自研 HTTP 调用层同样需要随各家供应商的协议变化做调整，只是把变化点从 SDK 层移到了 HTTP 层。</p>
+<h2 id="4-3-拆-core-cli-两个包">4.3 拆 core / cli 两个包</h2>
+<p>X-Code CLI 的代码仓库拆成了 <code>@x-code-cli/core</code> 和 <code>@x-code-cli/cli</code> 两个包。这种拆分不只是形式上的工程化——它直接决定了未来能否把 Agent 逻辑复用到 VS Code 插件、Web 版、SDK 等其他端。两个包的职责划分与依赖关系如图 4-1 所示。</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/073a294a71b7402b9023fa31e14422bc~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=291&amp;h=370&amp;s=16413&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<blockquote>
+<p>图 4-1 双包结构与单向依赖关系</p>
+</blockquote>
+<p><code>@x-code-cli/core</code>（路径 <code>packages/core/</code>）是 Agent 逻辑层，包含 AI SDK 调用、工具实现、供应商注册、知识系统、权限模型等。它有一条关键约束：不引入任何 UI 依赖——<code>package.json</code> 中没有 React、Ink、yargs 或其他终端 UI 库。</p>
+<p><code>@x-code-cli/cli</code>（路径 <code>packages/cli/</code>）是终端界面层，包含 Ink/React 组件、yargs 参数解析、用户输入处理、流式渲染等。它依赖 core，但 core 不能反向依赖 cli。</p>
+<p>这种单向依赖通过三层机制强制执行。（1）TypeScript 的 Project References 在编译期拦截：cli 的 <code>tsconfig.json</code> 声明了对 core 的引用，如果反过来给 core 加 cli 引用会形成循环，TypeScript 编译器直接报错。（2）core 的 <code>package.json</code> 没有声明对 cli 的依赖，也没有 React、Ink、yargs 这些终端界面层的包，即使误写了反向 <code>import</code>，模块解析也会直接失败。（3）<code>AgentCallbacks</code> 接口统一承接 UI 交互：core 不知道 UI 是 Ink 还是 Webview，所有「询问用户」「汇报进度」的操作都通过这个回调接口由 cli 在运行时注入具体实现。</p>
+<p>这种分层为未来的扩展方向提供了基础。如果要开发 VS Code 插件，只需复用 core 的 Agent 逻辑，将 cli 那套 Ink 渲染替换为 Webview 中的 React，core 的代码无需改动。如果要提供 Web 版，将 core 包装到一个 HTTP server 后面即可。如果要以 SDK 形式发布，将 core 的 <code>index.ts</code> 补全导出即可——架构上已经就绪。</p>
+<h2 id="4-4-core-内部模块地图">4.4 core 内部模块地图</h2>
+<p><code>@x-code-cli/core</code> 内部按职责分目录。读者完全不必现在就读完每个文件——这张地图的作用是让后续章节出现「打开 <code>agent/loop.ts</code> 看一下」这类指引时，读者能立刻知道它在项目中属于哪一层。</p>
+<pre><code class="language-text">packages/core/src/
+├── agent/          Agent 引擎主体
+│   ├── loop.ts            Agent Loop 主循环               → Ch.08
+│   ├── loop-state.ts      LoopState 状态容器              → Ch.08
+│   ├── loop-guard.ts      死循环检测与阻断                → Ch.32
+│   ├── system-prompt.ts   系统提示词构建                  → Ch.08
+│   ├── stream-utils.ts    流式 Chunk 处理                 → Ch.10
+│   ├── api-errors.ts      错误分类与恢复                  → Ch.11
+│   ├── tool-execution.ts  工具执行分发                    → Ch.17 / Ch.18
+│   ├── tool-result-sanitize.ts  工具结果截断与配对修复    → Ch.17
+│   ├── compression.ts     上下文压缩                      → Ch.31
+│   ├── plan-tools.ts      todoWrite / Plan Mode 分发      → Ch.20 / Ch.21
+│   ├── vision-fallback.ts 视觉降级                        → Ch.35
+│   ├── memory-extractor.ts 后台记忆提炼                   → Ch.36
+│   ├── session-store.ts   会话 JSONL 存储                 → Ch.36
+│   └── sub-agents/        子 Agent 引擎                   → Ch.19
+├── tools/          工具实现（13 个内置 + task 动态注入）
+│   ├── read-file / edit / write-file                      → Ch.13
+│   ├── shell / shell-provider / shell-utils               → Ch.14
+│   ├── glob / grep / list-dir                             → Ch.15
+│   ├── web-search / web-fetch                             → Ch.16
+│   ├── ask-user / todo-write / enter-plan-mode / exit-plan-mode → Ch.18-21
+│   └── task                                               → Ch.19
+├── providers/      多供应商适配
+│   ├── registry.ts        8 家供应商 + 自定义端点          → Ch.09
+│   ├── cache-control.ts   缓存策略适配                    → Ch.33
+│   └── thinking.ts        思考模式适配                    → Ch.34
+├── permissions/    三级权限模型                            → Ch.29
+├── knowledge/      知识文件加载与自动记忆                  → Ch.36
+├── mcp/            MCP 协议接入                           → Ch.37
+├── plugins/        插件系统                               → Ch.39
+├── skills/         Skill 系统                             → Ch.38
+├── hooks/          生命周期钩子                            → Ch.39
+├── config/         模型解析、环境变量、配置文件
+├── types/          公共类型定义
+├── utils/          通用工具函数
+└── index.ts        barrel export（cli 的唯一 import 入口）
+</code></pre>
+<p>几条值得现在就记住的结构关系：<code>agent/</code> 是引擎，<code>tools/</code> 是工具集——引擎知道「什么时候该调工具」，工具自己只管「被调时做什么」，两者通过 <code>tool-execution.ts</code> 这个分发层连接。<code>providers/</code> 是适配层，将 8 家模型供应商的协议差异封装在一处，让 Agent Loop 能用一份代码对接所有供应商。<code>permissions/</code> 和 <code>knowledge/</code> 是横切关注点——每次工具调用前过权限层检查，每次启动从知识层读取项目配置。<code>mcp/</code>、<code>plugins/</code>、<code>skills/</code>、<code>hooks/</code> 是扩展生态相关的模块，将产品从工具变成平台。<code>index.ts</code> 是公开 API 边界——cli 只从这个文件 import，core 内部各文件之间的互相引用不受此约束。</p>
+<h2 id="4-5-工程配置">4.5 工程配置</h2>
+<p>monorepo 配置、构建工具、依赖方向这些细节对理解产品行为不是必需的，主要是给想阅读或贡献源码的读者一个交代。更深入的配置细节见附录一（构建工具链内部）。</p>
+<p>monorepo 使用 pnpm workspace 管理。根目录的 <code>pnpm-workspace.yaml</code> 声明 <code>packages/*</code> 为 workspace 成员，cli 引用 core 写 <code>&quot;@x-code-cli/core&quot;: &quot;workspace:*&quot;</code>。<code>pnpm -r run build</code> 递归触发各包的 build 脚本，按依赖顺序先 core 后 cli。</p>
+<p>TypeScript 使用 Project References 与增量构建。根 <code>tsconfig.json</code> 的 <code>references</code> 串联两个包，每个包声明 <code>composite: true</code>。<code>tsc -b</code> 按依赖顺序构建，只编译发生变化的部分。共享编译选项放在 <code>tsconfig.base.json</code> 中（<code>target: ES2022</code>、<code>module: NodeNext</code>、<code>strict: true</code> 等）。</p>
+<p>两个包都是 ESM-only（<code>&quot;type&quot;: &quot;module&quot;</code>），相对 import 必须带 <code>.js</code> 后缀（即使源文件是 <code>.ts</code>）。这条要求源自 Node.js 原生 ESM 解析规则本身，TypeScript 的 <code>NodeNext</code> 模块解析只是把检查提前到编译期，避免运行时才报 <code>ERR_MODULE_NOT_FOUND</code>。</p>
+<h2 id="4-6-小结">4.6 小结</h2>
+<p>本章交代了后续章节默认需要了解的工程基础。X-Code CLI 是一个独立 CLI 形态的 AI 编程助手，脱离 IDE 独立运行，能进 SSH、CI、任意终端环境。LLM 接入层使用 Vercel AI SDK，实际用到的接口只有 <code>streamText</code>、<code>generateText</code>、<code>tool</code>、<code>createProviderRegistry</code> 四个，供应商专有字段通过 <code>providerOptions</code> 透传。代码仓库拆成 core（Agent 逻辑层）和 cli（终端界面层）两个包，单向依赖通过 TypeScript Project References、包依赖隔离、<code>AgentCallbacks</code> 回调接口三层机制强制执行。core 内部按职责分为 <code>agent/</code>（引擎）、<code>tools/</code>（工具集）、<code>providers/</code>（供应商适配）、<code>permissions/</code>（权限）、<code>knowledge/</code>（知识）等目录，后续章节的每段代码都可以在这张地图中找到对应位置。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-3.html">← 生产级 Agent 要防的 7 类失败</a>
+      <a class="next" href="ch-5.html">CLI 启动流程 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#4-1-ai-agent-cli-的赛道定位">4.1 AI Agent CLI 的赛道定位</a></li>
+      <li class="lv2"><a href="#4-2-llm-接入层-vercel-ai-sdk">4.2 LLM 接入层：Vercel AI SDK</a></li>
+      <li class="lv3"><a href="#4-2-1-用到的核心接口">4.2.1 用到的核心接口</a></li>
+      <li class="lv3"><a href="#4-2-2-多供应商接入">4.2.2 多供应商接入</a></li>
+      <li class="lv3"><a href="#4-2-3-供应商专有字段">4.2.3 供应商专有字段</a></li>
+      <li class="lv3"><a href="#4-2-4-依赖-sdk-的代价">4.2.4 依赖 SDK 的代价</a></li>
+      <li class="lv2"><a href="#4-3-拆-core-cli-两个包">4.3 拆 core / cli 两个包</a></li>
+      <li class="lv2"><a href="#4-4-core-内部模块地图">4.4 core 内部模块地图</a></li>
+      <li class="lv2"><a href="#4-5-工程配置">4.5 工程配置</a></li>
+      <li class="lv2"><a href="#4-6-小结">4.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>附录一 构建工具链内部 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li class="active"><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>附录一 构建工具链内部</h1>
+<p>本附录是工程附录，与 AI Agent 主线没有直接关系。X-Code CLI 用 esbuild 做生产打包、tsx 做开发模式即时运行，这套组合同时满足了这两个要求。本附录从仓库结构出发，依次讲解 esbuild 配置、ESM/CJS 互操作插件、版本号注入、开发模式、TypeScript 项目引用、测试链、代码质量卡点和发布流程。任何想读懂 X-Code CLI 完整产物链路、或者想自己修改 esbuild 配置与发布流程的读者都应该通读一遍。本附录将分为如下几个部分进行介绍。</p>
+<ul>
+<li>A.1 节介绍仓库结构与 pnpm 工作区的双包拆分。</li>
+<li>A.2 节讲解 esbuild 单文件打包的配置细节，包括关键字段、外部化策略和 shebang 机制。</li>
+<li>A.3 节讨论 ESM 与 CJS 互操作中的三个 esbuild 自定义插件。</li>
+<li>A.4 节说明版本号的构建时注入与运行时降级两条路径。</li>
+<li>A.5 节解释 tsx 开发模式的工作原理及其非监听特性。</li>
+<li>A.6 节介绍 TypeScript 项目引用的配置结构。</li>
+<li>A.7 节概述 Vitest 测试链的工作区配置与覆盖范围。</li>
+<li>A.8 节讲解 Husky、lint-staged 与 commitlint 构成的代码质量卡点。</li>
+<li>A.9 节走完从本地脚本到 CI 的两段式发布流程。</li>
+<li>A.10 节说明 Node.js 最低版本要求及其运行时校验。</li>
+<li>A.11 节讨论后续可能的优化方向。</li>
+<li>A.12 节给出本附录小结。</li>
+</ul>
+<h2 id="a-1-仓库结构与-pnpm-工作区">A.1 仓库结构与 pnpm 工作区</h2>
+<p>X-Code CLI 采用 pnpm 工作区（pnpm Workspace）管理的单仓多包结构，根目录的 <code>pnpm-workspace.yaml</code> 只有一行配置：</p>
+<pre><code class="language-yaml">packages:
+  - 'packages/*'
+</code></pre>
+<p><code>packages/</code> 下有两个包。<code>@x-code-cli/core</code> 是核心库，包含 Agent Loop 引擎、工具注册表、权限模型、上下文压缩、MCP 接入等所有与终端 UI 无关的逻辑；<code>@x-code-cli/cli</code> 是面向最终用户的命令行入口，负责终端渲染（基于 Ink/React）、命令行参数解析（基于 yargs）、以及调用 core 提供的 API 驱动整个交互流程。cli 通过 <code>&quot;@x-code-cli/core&quot;: &quot;workspace:*&quot;</code> 声明对 core 的工作区依赖，pnpm 在本地开发时将这个依赖解析为指向 <code>packages/core</code> 目录的符号链接（Symbolic Link，一种文件系统快捷方式，指向另一个目录或文件），发布到 npm 时则替换为真实版本号。这种双包拆分的原因在于职责隔离：core 的变更（例如新增一个工具）不应该触发 cli 端 Ink 渲染管线的回归测试，反之亦然。拆开之后两个包各自拥有独立的构建配置、独立的测试集、独立的 <code>tsconfig.json</code>，日常开发中只需要关注当前修改所在的那个包。代价是跨包调试时需要先构建 core 再启动 cli，这一点在后面「tsx 开发模式」一节会详细讨论。</p>
+<p>根 <code>package.json</code> 的关键字段如下：</p>
+<pre><code class="language-jsonc">{
+  &quot;private&quot;: true,
+  &quot;type&quot;: &quot;module&quot;,
+  &quot;packageManager&quot;: &quot;pnpm@10.7.1&quot;,
+  &quot;engines&quot;: { &quot;node&quot;: &quot;&gt;=20.19.0&quot; }
+}
+</code></pre>
+<p><code>&quot;private&quot;: true</code> 防止根目录被意外发布到 npm；<code>&quot;type&quot;: &quot;module&quot;</code> 令所有 <code>.js</code> 文件默认按 ESM（ECMAScript Modules）解析；<code>&quot;packageManager&quot;</code> 锁定 pnpm 版本，配合 Corepack（Node.js 内置的包管理器版本管理工具）使用时能保证团队成员和 CI 环境使用同一版本的包管理器。</p>
+<h2 id="a-2-esbuild-单文件打包">A.2 esbuild 单文件打包</h2>
+<blockquote>
+<p>源码：<code>packages/cli/esbuild.config.js</code></p>
+</blockquote>
+<p>cli 包的构建工具是 <a href="https://esbuild.github.io/">esbuild</a>。选择 esbuild 而非传统的「先用 tsc 编译 TypeScript，再用 webpack 或 Rollup 打包」二段式方案，主要基于以下考量。esbuild 用 Go 编写，构建速度在亚秒级完成，比 tsc 加 webpack 的组合快一到两个数量级。esbuild 内置 TypeScript 和 JSX 支持，不需要额外配置 loader 或 plugin。esbuild 的树摇优化（Tree-shaking，即在打包时自动移除未被任何代码引用的模块，以减小产物体积）默认开启，配合 <code>platform: 'node'</code> 模式可以正确处理 Node.js 内置模块。整套配置的核心部分不超过 30 行，维护成本低。相比之下，二段式方案需要同时维护 <code>tsconfig.json</code>（控制 tsc 输出）和打包器配置（控制模块合并），两套配置之间的 source map 还需要正确串联，调试链路更长，出问题时排查难度也更高。esbuild 的代价是它只做语法转换、不做类型检查，类型安全由单独的 <code>tsc -b</code>（即 <code>pnpm typecheck</code>）保证，这在后面的「代码质量卡点」一节会进一步说明。</p>
+<h3 id="关键配置">关键配置</h3>
+<!-- check:ignore=code-source -->
+<pre><code class="language-js">// packages/cli/esbuild.config.js (core)
+import esbuild from 'esbuild'
+import { builtinModules } from 'node:module'
+
+await esbuild.build({
+  entryPoints: ['src/index.ts'],
+  bundle: true,
+  platform: 'node',
+  format: 'esm',
+  target: 'node20',
+  outfile: 'dist/cli.js',
+  jsx: 'automatic',
+  sourcemap: true,
+  plugins: [stubPlugin, entitiesFixPlugin, signalExitFixPlugin],
+  define: {
+    'process.env.NODE_ENV': '&quot;production&quot;',
+  },
+  banner: {
+    js: '#!/usr/bin/env node\n' + ESM_POLYFILLS,
+  },
+  external: [
+    ...builtinModules,
+    ...builtinModules.map((m) =&gt; `node:${m}`),
+    '@vscode/ripgrep',
+  ],
+})
+</code></pre>
+<p>这段配置的每个字段都有明确的工程理由。<code>entryPoints</code> 指向 cli 包的入口文件 <code>src/index.ts</code>，esbuild 从这里出发递归解析所有 import，将整棵依赖树打成一个文件。<code>bundle: true</code> 开启打包模式，与之对应的 <code>platform: 'node'</code> 告诉 esbuild 目标运行环境是 Node.js 而非浏览器，这样 <code>fs</code>、<code>path</code> 等内置模块会被自动外部化。<code>format: 'esm'</code> 令产物使用 ESM 语法（<code>import</code>/<code>export</code>），<code>target: 'node20'</code> 控制语法降级的下限——Node 20 已支持几乎全部 ES2022 特性，因此这里几乎不产生降级代码。<code>jsx: 'automatic'</code> 启用 React 17+ 的新 JSX 转换，不需要在每个 <code>.tsx</code> 文件顶部手动 <code>import React</code>。<code>sourcemap: true</code> 生成独立的 <code>.map</code> 文件，线上报错时可以从调用栈还原到 TypeScript 源码行号。</p>
+<p><code>banner.js</code> 在产物开头注入两段内容。第一段是 shebang 行 <code>#!/usr/bin/env node</code>。shebang 是 Unix/macOS 系统的一个约定：当脚本文件的前两个字节是 <code>#!</code> 时，操作系统不会把文件内容当作纯文本，而是用 <code>#!</code> 后面指定的程序来执行它。<code>#!/usr/bin/env node</code> 的含义是「在 <code>PATH</code> 环境变量中找到 <code>node</code>，用它来执行本文件」。有了这一行，<code>dist/cli.js</code> 在 Unix 系统上设置可执行权限（<code>chmod +x</code>）后就能直接运行，无需手动输入 <code>node dist/cli.js</code>。Windows 不依赖 shebang 机制，npm 安装时会生成 <code>.cmd</code> 包装脚本来实现相同效果。</p>
+<p>第二段是 ESM 兼容补丁（polyfill，即在不原生支持某特性的环境中用一小段代码模拟出该特性）<code>ESM_POLYFILLS</code>，它在文件顶部声明 <code>__filename</code>、<code>__dirname</code>、<code>require</code> 三个变量。原因在于产物是 ESM 格式，ESM 规范中不存在 <code>__dirname</code> 和 <code>require</code> 这两个 CommonJS（CJS，Node.js 早期的模块规范，使用 <code>require()</code> 导入、<code>module.exports</code> 导出）时代的全局变量，但打包进来的某些 CJS 依赖在源码中仍然使用了它们。这段补丁通过 <code>import.meta.url</code> 加 <code>fileURLToPath</code> 派生出 <code>__filename</code>，再用 <code>dirname</code> 得到 <code>__dirname</code>，最后用 <code>createRequire</code> 构造出一个可用的 <code>require</code> 函数，这样内联进来的 CJS 代码就能在 ESM 产物中正常运行。</p>
+<h3 id="外部化策略">外部化策略</h3>
+<p><code>external</code> 数组决定哪些模块不被打进产物。Node.js 内置模块（<code>builtinModules</code> 及其 <code>node:</code> 前缀变体）显然不应该打包，因为它们在运行时由 Node.js 本身提供。npm 依赖中唯一被外部化的是 <code>@vscode/ripgrep</code>，原因在于这个包的核心是一个预编译的 <code>rg</code>（ripgrep）二进制文件，esbuild 无法将二进制文件打进 JavaScript 包。用户执行 <code>npm install -g @x-code-cli/cli</code> 时，<code>@vscode/ripgrep</code> 的 <code>postinstall</code> 脚本（npm 在包安装完成后自动执行的生命周期钩子）会自动下载当前平台对应的 <code>rg</code> 二进制，放到 <code>node_modules/@vscode/ripgrep/bin/</code> 下，这个过程必须在安装阶段完成，不能被 esbuild 提前内联。</p>
+<p>除此之外的所有 npm 依赖（包括 core 包自身引入的 <code>mammoth</code>、<code>xlsx</code>、<code>officeparser</code>、<code>tesseract.js</code>、<code>pdf-parse</code> 等文档解析库）都被打进 <code>dist/cli.js</code>。打进去的产物约 20 MB（未压缩），体积不算小，但这些大依赖在运行时按需懒加载（通过动态 <code>import()</code>，只在文件读取工具实际触发对应文件类型时才付出加载成本），启动阶段不会有明显延迟。选择全部打进去而非外部化的考量是：用户执行 <code>npm install -g</code> 后能直接使用、不出安装意外，这比启动时冷加载慢几十毫秒更重要。外部化的包越多，用户安装后的目录结构越复杂，出现「某个可选依赖未能正确安装」的概率也越高。</p>
+<h3 id="shebang-与-bin-字段">shebang 与 bin 字段</h3>
+<p><code>packages/cli/package.json</code> 的 <code>bin</code> 字段声明了两个命令别名：</p>
+<pre><code class="language-jsonc">{
+  &quot;bin&quot;: {
+    &quot;x-code&quot;: &quot;dist/cli.js&quot;,
+    &quot;xc&quot;: &quot;dist/cli.js&quot;
+  }
+}
+</code></pre>
+<p>npm 全局安装时会在 <code>PATH</code> 目录下创建指向 <code>dist/cli.js</code> 的符号链接。配合产物开头的 shebang 行，用户在终端中输入 <code>xc</code> 即可启动 CLI。<code>x-code</code> 是完整名称，<code>xc</code> 是简写，两者指向同一个文件。</p>
+<h2 id="a-3-esm-cjs-互操作与-esbuild-插件">A.3 ESM/CJS 互操作与 esbuild 插件</h2>
+<p>Node.js 生态中同时存在 ESM 和 CJS 两种模块格式的依赖：有的库只发布 ESM，有的只发布 CJS，有的同时发布两种格式。esbuild 以 ESM 格式输出产物时，需要将 CJS 依赖的导出形态转换成 ESM 兼容的形式。大部分情况下 esbuild 的内置转换机制能够正确处理，但在本项目中有三处特殊情况需要自定义插件介入。</p>
+<h3 id="stubplugin-移除-react-devtools-core">stubPlugin：移除 react-devtools-core</h3>
+<p>Ink（终端 React 渲染框架）在源码中包含一条对 <code>react-devtools-core</code> 的 import 语句。这个依赖在开发模式下用于连接 React DevTools 调试器，生产环境中不会被实际调用，Ink 也将其声明为 <code>optionalDependencies</code>。问题在于 esbuild 的静态打包不会因为 <code>optionalDependencies</code> 就自动跳过——它会尝试解析每一个 import 路径，如果 <code>react-devtools-core</code> 没有安装（正常情况下确实不会安装），构建就会失败。<code>stubPlugin</code> 的做法是拦截对 <code>react-devtools-core</code> 的解析请求，返回一个 <code>export default undefined</code> 的空模块，让 esbuild 满足 import 解析的同时不引入任何实际代码。</p>
+<h3 id="entitiesfixplugin-修复-entities-子路径">entitiesFixPlugin：修复 entities 子路径</h3>
+<p><code>entities@4.x</code>（一个 HTML 实体编解码库，被 cheerio 间接依赖）对外暴露 <code>entities/decode</code> 和 <code>entities/escape</code> 两个子路径入口。在 pnpm 的嵌套 <code>node_modules</code> 布局下，esbuild 在解析这两个子路径时会遇到路径查找失败。<code>entitiesFixPlugin</code> 通过 <code>onResolve</code> 钩子拦截匹配 <code>entities/(decode|escape)</code> 的请求，将其硬编码指向 <code>node_modules/.pnpm/</code> 下的实际 ESM 文件路径。这是一个 pnpm 布局特有的问题，使用 npm 或 yarn 的扁平布局不会遇到。</p>
+<h3 id="signalexitfixplugin-归一化-signal-exit-的两个不兼容版本">signalExitFixPlugin：归一化 signal-exit 的两个不兼容版本</h3>
+<p><code>signal-exit</code> 是一个在进程退出时执行回调的工具库。这个库的 v3 和 v4 之间存在不兼容的导出变更：v3 使用 CJS 默认导出（<code>module.exports = onExit</code>，没有命名导出 <code>onExit</code>），v4 改为 ESM 命名导出（<code>export { onExit }</code>，没有 default）。在 X-Code CLI 的依赖树中，Ink 6.x 依赖 <code>signal-exit</code> v3，execa 9.x 依赖 <code>signal-exit</code> v4，两个版本在树中共存。pnpm 按消费方隔离不同版本，开发模式下 Node.js 的 ESM 解析器分别找到各自对应的版本，运行一切正常。但 esbuild 打包时情况不同：它对每个 <code>import 'signal-exit'</code> 位置只解析一次，只会选中一个版本注入，导致另一个消费方拿到的导出形态不匹配。</p>
+<p><code>signalExitFixPlugin</code> 用一个垫片（shim，即一小段中间代码，用来桥接两个原本不兼容的接口）解决这个问题。它拦截所有对 <code>signal-exit</code> 的解析请求，替换为一段归一化代码，这段代码用 <code>import * as _m from 'signal-exit'</code> 拿到完整的命名空间对象，然后通过一系列回退逻辑来确保兼容性：先尝试 <code>.default</code>（v3 路径），再尝试 <code>.onExit</code>（v4 路径），使得无论底层解析到的是 v3 还是 v4，<code>import onExit</code> 和 <code>import { onExit }</code> 都能拿到正确的函数。完整的垫片代码如下：</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-js">const signalExitFixPlugin = {
+  name: 'fix-signal-exit-default',
+  setup(build) {
+    build.onResolve({ filter: /^signal-exit$/ }, (args) =&gt; {
+      if (args.namespace === 'signal-exit-shim') return
+      return {
+        path: args.path,
+        namespace: 'signal-exit-shim',
+        pluginData: { resolveDir: args.resolveDir },
+      }
+    })
+    build.onLoad({ filter: /.*/, namespace: 'signal-exit-shim' }, (args) =&gt; ({
+      contents: `
+        import * as _m from 'signal-exit';
+        // Bracket access via a variable key so esbuild can't statically
+        // prove that 'default' is missing from the v4 namespace and emit
+        // an &quot;import-is-undefined&quot; warning.
+        const _ns = _m;
+        const _defaultKey = 'default';
+        const _raw = _ns[_defaultKey] ?? _ns;
+        const _fn = typeof _raw === 'function'
+          ? _raw
+          : (_raw.onExit ?? _ns.onExit);
+        export { _fn as onExit };
+        export default _fn;
+      `,
+      loader: 'js',
+      resolveDir: args.pluginData.resolveDir,
+    }))
+  },
+}
+</code></pre>
+<p>垫片中有一个需要说明的细节：访问 <code>.default</code> 属性时没有直接写 <code>_m.default</code>，而是通过中间变量 <code>_defaultKey = 'default'</code> 做方括号访问（<code>_ns[_defaultKey]</code>）。原因在于 esbuild 的静态分析器会检测到 v4 命名空间上不存在 <code>default</code> 导出，并发出「import-is-undefined」警告。用变量做方括号访问使 esbuild 无法在编译期证明这个属性一定缺失，避免了误报。运行时行为与直接写 <code>_m.default</code> 完全等价。</p>
+<p>这类「同一个包名在依赖树中共存两个不兼容主版本」的问题有一个容易误判的特点：开发模式下一切正常，打包后产物才出问题。pnpm 在开发时按消费方隔离版本，Node.js 的 ESM 解析器分别定位到正确的版本，执行 <code>pnpm dev</code> 不会暴露任何错误。问题只在 <code>esbuild bundle</code> 这一步才出现，因此「打包后的产物行为异常」不能用「开发时运行正常」来排除。遇到类似现象时，应该先检查依赖树中是否存在同名包的多版本共存（<code>pnpm list &lt;package&gt;</code>），再看 esbuild 打包时选中了哪个版本。</p>
+<h2 id="a-4-版本号的两条路径">A.4 版本号的两条路径</h2>
+<blockquote>
+<p>源码：<code>packages/cli/src/version.ts</code></p>
+</blockquote>
+<p><code>version.ts</code> 为 CLI 提供当前版本号。它的设计意图是支持两条获取路径：构建时注入（Build-time Define）优先，运行时从 <code>package.json</code> 读取作为降级。</p>
+<pre><code class="language-ts">declare const __CLI_VERSION__: string | undefined
+
+function resolveVersion(): string {
+  if (typeof __CLI_VERSION__ === 'string' &amp;&amp; __CLI_VERSION__) {
+    return __CLI_VERSION__
+  }
+  try {
+    let dir = dirname(fileURLToPath(import.meta.url))
+    for (let i = 0; i &lt; 6; i++) {
+      const pkgPath = join(dir, 'package.json')
+      if (existsSync(pkgPath)) {
+        const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8')) as { name?: string; version?: string }
+        if (pkg.name === '@x-code-cli/cli' &amp;&amp; pkg.version) {
+          return pkg.version
+        }
+      }
+      const parent = dirname(dir)
+      if (parent === dir) break
+      dir = parent
+    }
+  } catch {}
+  return '0.0.0-dev'
+}
+
+export const VERSION = resolveVersion()
+</code></pre>
+<p>函数 <code>resolveVersion()</code> 的逻辑分为两个分支。第一个分支检查全局常量 <code>__CLI_VERSION__</code> 是否在编译时被 esbuild 的 <code>define</code> 机制替换为一个字符串字面量，如果是，直接返回该字符串，运行时零开销。第二个分支是降级路径：从当前文件所在目录向上逐级查找 <code>package.json</code>，找到名为 <code>@x-code-cli/cli</code> 的包后读取其 <code>version</code> 字段。这个向上查找最多走 6 层，覆盖了从 <code>dist/cli.js</code> 到 <code>packages/cli/package.json</code> 的典型目录深度。如果两条路径都失败（极端情况，例如文件被单独拷贝到别处运行），则返回 <code>'0.0.0-dev'</code> 作为最终降级值。</p>
+<p>在 v0.3.3 版本中，<code>esbuild.config.js</code> 的 <code>define</code> 字段实际只定义了 <code>process.env.NODE_ENV</code>，并没有定义 <code>__CLI_VERSION__</code>。因此在打包产物中，<code>typeof __CLI_VERSION__</code> 的值始终是 <code>'undefined'</code>，第一个分支永远不会命中，运行时总是走第二条路径从 <code>package.json</code> 读取版本号。这一偏差提示读者：源码注释描述的可能是设计意图而非当前实现，核对行为时应以代码逻辑为准。release 脚本在发布前会先 bump <code>packages/cli/package.json</code> 的版本号再执行构建，因此发布到 npm 的产物通过降级路径读到的始终是正确版本。保留构建时注入这条路径是为将来做准备：如果需要将 <code>package.json</code> 从产物中移走（例如做纯单文件分发），只需在 <code>esbuild.config.js</code> 中加一行 <code>'__CLI_VERSION__': JSON.stringify(pkg.version)</code> 即可切换。</p>
+<h2 id="a-5-tsx-开发模式">A.5 tsx 开发模式</h2>
+<blockquote>
+<p>源码：根 <code>package.json</code> 的 <code>scripts.dev</code></p>
+</blockquote>
+<pre><code class="language-jsonc">{
+  &quot;scripts&quot;: {
+    &quot;dev&quot;: &quot;pnpm -r run build &amp;&amp; pnpm --filter @x-code-cli/cli run dev&quot;
+  }
+}
+</code></pre>
+<p><code>pnpm dev</code> 的实际行为分为两步。第一步 <code>pnpm -r run build</code> 递归构建所有工作区包：core 包执行 <code>tsc -b</code> 将 TypeScript 编译到 <code>dist/</code>，cli 包执行 <code>node esbuild.config.js</code> 生成 <code>dist/cli.js</code>。第二步 <code>pnpm --filter @x-code-cli/cli run dev</code> 进入 cli 包，执行 <code>tsx src/index.ts</code>。tsx 是一个基于 esbuild 的 TypeScript 即时运行器（JIT Runner），它在 Node.js 的模块加载钩子中插入 esbuild 的转换步骤，使 <code>.ts</code> 和 <code>.tsx</code> 文件不需要预编译即可直接运行。第一步的全量构建是必要的，因为 cli 通过 <code>import from '@x-code-cli/core'</code> 引用 core 包，而 <code>@x-code-cli/core</code> 的 <code>exports</code> 字段指向 <code>./dist/index.js</code>，tsx 只能即时转换当前包的 TypeScript 源码，跨包引用使用的是编译后的 <code>dist/</code> 产物。</p>
+<p>一个容易产生的误解是将 <code>pnpm dev</code> 等同于监听模式（Watch Mode）。实际上它不是，每次修改源码后需要重新运行 <code>pnpm dev</code>。这是有意为之的设计选择，原因在于跨包的监听模式在单仓多包架构下实现起来比较复杂：core 改了一个导出类型，cli 端是否需要重启？tsx 缓存是否需要失效？让开发者手动控制重启时机比依赖自动化更可靠。如果读者在本地开发时确实需要监听行为，可以在两个终端中分别运行：一个终端在 core 包内执行 <code>pnpm dev</code>（脚本为 <code>tsc -b --watch</code>，增量编译 TypeScript），另一个终端在 cli 包内执行 <code>tsx --watch src/index.ts</code>（监听文件变化自动重新运行）。两个终端配合即可获得接近实时的开发反馈。</p>
+<h2 id="a-6-typescript-项目引用">A.6 TypeScript 项目引用</h2>
+<p>X-Code CLI 的 TypeScript 配置采用项目引用（Project References）机制，通过根目录的 <code>tsconfig.json</code> 串联两个包：</p>
+<pre><code class="language-jsonc">// tsconfig.json（根目录）
+{
+  &quot;files&quot;: [],
+  &quot;references&quot;: [{ &quot;path&quot;: &quot;packages/core&quot; }, { &quot;path&quot;: &quot;packages/cli&quot; }]
+}
+</code></pre>
+<p><code>&quot;files&quot;: []</code> 表示根配置本身不包含任何源文件，它的唯一作用是声明引用关系。<code>tsc -b</code>（即 <code>pnpm typecheck</code>）从这个入口出发，按依赖顺序先检查 core、再检查 cli。两个包共享一份基础配置 <code>tsconfig.base.json</code>：</p>
+<pre><code class="language-jsonc">// tsconfig.base.json
+{
+  &quot;compilerOptions&quot;: {
+    &quot;target&quot;: &quot;ES2022&quot;,
+    &quot;module&quot;: &quot;NodeNext&quot;,
+    &quot;moduleResolution&quot;: &quot;NodeNext&quot;,
+    &quot;lib&quot;: [&quot;ES2022&quot;],
+    &quot;strict&quot;: true,
+    &quot;esModuleInterop&quot;: true,
+    &quot;skipLibCheck&quot;: true,
+    &quot;forceConsistentCasingInFileNames&quot;: true,
+    &quot;resolveJsonModule&quot;: true,
+    &quot;isolatedModules&quot;: true,
+    &quot;declaration&quot;: true,
+    &quot;declarationMap&quot;: true,
+    &quot;sourceMap&quot;: true
+  }
+}
+</code></pre>
+<p><code>module: &quot;NodeNext&quot;</code> 配合 <code>moduleResolution: &quot;NodeNext&quot;</code> 启用 Node.js 原生的 ESM 解析策略，要求 import 路径带文件扩展名（如 <code>import { foo } from './bar.js'</code>）。<code>strict: true</code> 开启全部严格类型检查。<code>declaration: true</code> 和 <code>declarationMap: true</code> 生成 <code>.d.ts</code> 类型声明文件和对应的 source map，确保 cli 包引用 core 时 IDE 能跳转到 TypeScript 源码而非编译产物。<code>isolatedModules: true</code> 是与 esbuild 配合的关键选项：esbuild 按文件独立转换、不做跨文件类型分析，<code>isolatedModules</code> 令 tsc 在类型检查阶段就禁止那些依赖跨文件信息的语法（如 <code>const enum</code>、不带类型标注的 <code>export { ... } from</code>），这样 tsc 通过检查的代码在 esbuild 中也能正确转换。</p>
+<p>两个包在此基础上各自扩展。core 包的 <code>tsconfig.json</code> 只需声明 <code>composite: true</code>（项目引用要求）、<code>rootDir: &quot;src&quot;</code>、<code>outDir: &quot;dist&quot;</code>。cli 包额外开启 <code>jsx: &quot;react-jsx&quot;</code>（新 JSX 转换，与 esbuild 的 <code>jsx: 'automatic'</code> 对应），并通过 <code>references: [{ &quot;path&quot;: &quot;../core&quot; }]</code> 告知 tsc：cli 依赖 core，检查 cli 之前需要先确保 core 的类型是最新的。</p>
+<h2 id="a-7-测试链与-vitest">A.7 测试链与 Vitest</h2>
+<h3 id="根级入口与包级配置">根级入口与包级配置</h3>
+<p>根 <code>package.json</code> 的 <code>test</code> 脚本是 <code>vitest run</code>。Vitest 会自动发现工作区中每个包的 <code>vitest.config.ts</code>，每个包单独配置 <code>include</code> 范围，一次执行拿到所有测试结果。两个包都使用相同的基础配置：<code>globals: true</code>（无需手动 import <code>describe</code>/<code>it</code>/<code>expect</code>）、<code>environment: 'node'</code>。cli 包显式声明了 <code>include: ['tests/**/*.test.{ts,tsx}']</code>，后缀列表中带有 <code>.tsx</code>，因为 cli 包存在基于 Ink 的 React 组件单测。core 包没有 <code>include</code> 字段，走 Vitest 的默认全局扫描规则。这种「每个包独立 <code>vitest.config.ts</code>」的结构虽然多了两个配置文件，但换来的是包级别的测试范围隔离：将来如果 cli 端需要接入类 jsdom 环境来测试 Ink 渲染逻辑，只需修改 cli 的配置，不会影响 core 的纯 Node.js 测试环境。</p>
+<h3 id="测试覆盖">测试覆盖</h3>
+<p>core 包的测试目录 <code>packages/core/tests/</code> 下有 53 个 <code>.test.ts</code> 文件，覆盖了项目的主要模块。以下按功能分组列出代表性的测试文件，读者可以据此了解测试覆盖的广度：</p>
+<pre><code class="language-text">packages/core/tests/
+  Agent Loop 与工具派发:
+    agent-loop.test.ts          process-tool-calls.test.ts
+    plan-tools.test.ts          tool-registry.test.ts
+  模型与供应商:
+    config.test.ts              api-errors.test.ts
+    cache-control.test.ts       context-window.test.ts
+  文件与文本处理:
+    file-ingest.test.ts         read-file.test.ts
+    diff.test.ts                glob-tool.test.ts
+    grep-tool.test.ts           list-dir.test.ts
+    vision-fallback.test.ts     web-fetch.test.ts
+  Shell 与权限:
+    shell-provider.test.ts      shell-utils.test.ts
+    shell-error.test.ts         permissions.test.ts
+  MCP 相关（12 个）:
+    mcp-integration.test.ts     mcp-permissions.test.ts
+    mcp-trust.test.ts           mcp-config-writer.test.ts  ...
+  插件系统（6 个）:
+    plugins-integration.test.ts plugins-manifest.test.ts
+    plugins-consent.test.ts     plugins-marketplace.test.ts ...
+  其他:
+    knowledge.test.ts           session-store.test.ts
+    loop-guard.test.ts          light-compact.test.ts
+    hooks.test.ts               skills.test.ts              ...
+</code></pre>
+<p>cli 包目前有 3 个测试文件加一个端到端（E2E）测试目录：</p>
+<pre><code class="language-text">packages/cli/tests/
+  file-completion.test.ts       Tab 补全的文件搜索逻辑
+  use-file-completion.test.ts   React hook 行为
+  plugin-cli-update.test.ts     /plugin update 非交互流程
+  e2e/                          端到端测试
+</code></pre>
+<p>cli 端测试数量较少是一个有意的取舍：终端 UI 的渲染正确性主要依赖人眼验证，自动化测试覆盖到粘贴处理、文件补全这类纯函数逻辑即可。</p>
+<h3 id="常用命令">常用命令</h3>
+<pre><code class="language-bash">pnpm test          # 单次执行所有测试（CI 用）
+pnpm test:watch    # 本地监听模式
+pnpm test:e2e      # 端到端测试
+pnpm typecheck     # tsc -b（只做类型检查，不输出文件）
+pnpm lint          # ESLint（附带自动修复）
+pnpm format        # Prettier 格式化
+pnpm ci            # 全流程：typecheck + lint + test + build
+</code></pre>
+<p><code>pnpm ci</code> 是提交 PR 之前的标准检查流程，本地先执行一遍，确保 CI 不会因为基本问题浪费时间。GitHub Actions 的 PR 检查流水线（<code>.github/workflows/pr-check.yml</code>）会在 ubuntu-latest 和 windows-latest 两个平台上分别执行测试，原因在于 <code>shell-provider.test.ts</code> 中有一条 PowerShell <code>-EncodedCommand</code> 路径只在 Windows（<code>win32</code>）上执行，缺少跨平台矩阵会导致该路径的回归测试被静默跳过。</p>
+<h2 id="a-8-代码质量卡点-husky-lint-staged-与-commitlint">A.8 代码质量卡点：Husky、lint-staged 与 commitlint</h2>
+<p>除了开发者主动执行的 <code>pnpm ci</code> 之外，项目还配置了一套在 <code>git commit</code> 时自动触发的检查机制。根 <code>package.json</code> 中 <code>&quot;prepare&quot;: &quot;husky&quot;</code> 脚本在 <code>pnpm install</code> 后自动注册两个 Git Hook（Git 钩子）：</p>
+<pre><code class="language-sh"># .husky/pre-commit
+npx lint-staged
+
+# .husky/commit-msg
+npx --no -- commitlint --edit &quot;$1&quot;
+</code></pre>
+<p>提交流程被这两个钩子切成两步。<code>pre-commit</code> 阶段执行 <code>lint-staged</code>，对暂存区（Staging Area）中的文件按类型分别处理：</p>
+<pre><code class="language-jsonc">// 根 package.json 中的 lint-staged 配置
+{
+  &quot;*.{ts,tsx,js,jsx,mjs}&quot;: [&quot;eslint --fix&quot;, &quot;prettier --write&quot;],
+  &quot;*.{json,md,yaml}&quot;:      [&quot;prettier --write&quot;]
+}
+</code></pre>
+<p>对 TypeScript 和 JavaScript 文件，先执行 ESLint 自动修复（主要是移除未使用的 import，由 <code>eslint-plugin-unused-imports</code> 提供），再执行 Prettier 格式化。对 JSON、Markdown、YAML 文件只执行 Prettier。修复后的改动自动加回暂存区，因此 commit 进 Git 的版本始终是 lint 和格式化之后的版本。任何一步报错则 commit 被取消。</p>
+<p><code>commit-msg</code> 阶段执行 <code>commitlint</code>，按约定式提交（Conventional Commits）规范校验 commit message。<code>commitlint.config.js</code> 中声明的合法 type 白名单为：</p>
+<pre><code class="language-text">build / chore / ci / docs / feat / fix / perf /
+refactor / revert / release / style / test / wip
+</code></pre>
+<p>这条规则不仅是风格统一。发布脚本 <code>scripts/release.mjs</code> 生成变更日志（CHANGELOG）时按 type 前缀过滤 commit，只保留 <code>feat</code>（新功能）、<code>fix</code>（修复）、<code>perf</code>（性能）三种用户可感知的变更类型。如果 commit message 格式不规范，发布脚本将无法正确归类，变更日志会遗漏条目。<code>commit-msg</code> 钩子从源头上防止了这种情况。</p>
+<p>关于 ESLint 和 Prettier 的具体配置：ESLint 采用扁平配置格式（Flat Config，ESLint 10 起推荐），基于 <code>typescript-eslint</code> 做 TypeScript 解析，搭配 <code>eslint-plugin-react-hooks</code>（确保 React Hook 调用规则）和 <code>eslint-plugin-unused-imports</code>（自动移除未使用的 import，这是保存时自动修复的核心功能）。Prettier 配置为单引号、无分号、120 字符行宽、尾逗号，并通过 <code>@trivago/prettier-plugin-sort-imports</code> 插件按约定顺序排列 import 语句（<code>node:</code> 内置模块在前，相对路径在后）。这两个工具的职责划分清晰：ESLint 负责逻辑层面的代码质量（未使用的变量、Hook 规则），Prettier 负责纯粹的格式统一（缩进、引号、换行）。两者在 lint-staged 中串联执行，先 ESLint 修复、再 Prettier 格式化，顺序不能颠倒，因为 ESLint 的修复可能产生不符合 Prettier 规范的代码，需要 Prettier 在最后一步统一格式。</p>
+<p>整体来看，代码质量形成三层卡点。第一层是开发期的手动检查：<code>pnpm ci</code> 按顺序执行类型检查、lint、测试、构建，任何一步失败则整体失败。第二层是 commit 时的自动化检查：<code>pre-commit</code> 确保代码格式、<code>commit-msg</code> 确保 message 规范。第三层是推送后的 CI 检查：<code>.github/workflows/pr-check.yml</code> 在 PR 上再执行一遍 lint、typecheck、跨平台测试和 commitlint。每一层防御的是不同类型的遗漏：手动 ci 防「忘了跑测试」、pre-commit 防「代码没格式化」、commit-msg 防「message 不规范」、PR CI 防「本地环境和 CI 环境不一致」。</p>
+<h2 id="a-9-发布流程">A.9 发布流程</h2>
+<blockquote>
+<p>源码：<code>scripts/release.mjs</code> + <code>.github/workflows/release.yml</code></p>
+</blockquote>
+<p>发布流程分为本地脚本和 CI 自动化两个阶段。执行 <code>pnpm release</code> 启动本地阶段，脚本会依次完成以下步骤：</p>
+<p>（1）交互式提示选择版本类型（patch / minor / major / custom），按语义化版本（Semantic Versioning, SemVer）规则计算目标版本号。</p>
+<p>（2）同步更新 <code>packages/core/package.json</code> 和 <code>packages/cli/package.json</code> 的 <code>version</code> 字段为目标版本号。</p>
+<p>（3）从上一个 Git tag 到 <code>HEAD</code> 的 commit 历史中提取 commit message，按约定式提交的 type 前缀分组，只保留 <code>feat</code>、<code>fix</code>、<code>perf</code> 三种用户可感知的变更，写入 <code>CHANGELOG.md</code> 头部。<code>refactor</code>、<code>docs</code>、<code>chore</code>、<code>ci</code> 等非用户可见的变更类型不会出现在变更日志中。</p>
+<p>（4）执行 <code>pnpm build</code> 完成完整构建。</p>
+<p>（5）创建 Git commit（message 为 <code>release: v&lt;version&gt;</code>）、打 <code>v&lt;version&gt;</code> tag、推送到 GitHub。</p>
+<p>tag 推送到 GitHub 后触发 CI 阶段。<code>.github/workflows/release.yml</code> 监听 <code>v*</code> 格式的 tag 事件，执行以下操作：在 ubuntu-latest 环境中安装依赖并构建；将仓库根目录的 <code>LICENSE</code> 复制到两个包目录（npm 发布时需要包含许可证文件），<code>README.md</code> 和 <code>README.en.md</code> 只复制到 <code>packages/cli/</code>（cli 是面向最终用户的包，需要在 npm 页面展示 readme；core 只是依赖包，不需要）；依次执行 <code>pnpm publish --provenance --access public --no-git-checks</code> 发布 core 和 cli 到 npm；从 <code>CHANGELOG.md</code> 中提取最新一段变更记录，调用 <code>softprops/action-gh-release@v2</code> 创建 GitHub Release。</p>
+<h3 id="npm-oidc-来源证明">npm OIDC 来源证明</h3>
+<p><code>pnpm publish --provenance</code> 利用 GitHub Actions 的 OIDC（OpenID Connect）令牌让 npm 验证发布来源。这也是 <code>release.yml</code> 在 <code>permissions</code> 块中声明 <code>id-token: write</code> 的原因（同一块中的 <code>contents: write</code> 则用于推送 tag 和创建 GitHub Release），没有 <code>id-token: write</code> 权限，GitHub Actions 无法签发 OIDC 令牌。来源证明（Provenance）的安全价值在于供应链攻击防御：即使攻击者窃取了维护者的 npm 令牌，在自己的机器上执行 <code>npm publish</code> 也无法附带有效的来源证明。下游用户可以在 npm 页面上区分「从仓库 CI 构建并发布的版本」和「从任意环境发布的版本」，前者带有绿色的「Provenance」徽章，后者没有。</p>
+<h2 id="a-10-node-js-版本要求">A.10 Node.js 版本要求</h2>
+<p>根 <code>package.json</code> 和 <code>packages/cli/package.json</code> 都声明了 <code>&quot;engines&quot;: { &quot;node&quot;: &quot;&gt;=20.19.0&quot; }</code>。选择 20.19 作为最低版本基于三方面考量：Ink 6、ESLint 10、yargs 18 等核心依赖都要求 Node 20+ 以上版本；Node 20 是当前的长期支持版本（LTS），覆盖了绝大多数开发者的运行环境；<code>process.loadEnvFile()</code>（用于加载 <code>.env</code> 文件，避免引入 dotenv 依赖）从 Node 20.12 起内置，20.19 的下限保证了这个 API 的可用性。</p>
+<p>启动时的版本校验由 <code>packages/cli/src/index.ts</code> 中的 <code>checkNodeVersion()</code> 函数执行：</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">const MIN_NODE_VERSION = [20, 19, 0]
+
+function checkNodeVersion(): void {
+  const [major, minor, patch] = process.versions.node
+    .split('.').map((v) =&gt; parseInt(v, 10))
+  const [reqMajor, reqMinor, reqPatch] = MIN_NODE_VERSION
+  if (
+    major &lt; reqMajor ||
+    (major === reqMajor &amp;&amp; minor &lt; reqMinor) ||
+    (major === reqMajor &amp;&amp; minor === reqMinor &amp;&amp; patch &lt; reqPatch)
+  ) {
+    console.error(
+      `Error: X-Code CLI requires Node.js &gt;= ${MIN_NODE_VERSION.join('.')}, ` +
+      `but you are running ${process.versions.node}.\n` +
+      'Please upgrade Node.js: https://nodejs.org/',
+    )
+    process.exit(1)
+  }
+}
+</code></pre>
+<p>这个校验在 CLI 启动的最早阶段执行，早于命令行参数解析和 Ink 渲染框架初始化。如果 Node.js 版本不满足要求，程序立即输出清晰的错误信息并退出，避免在后续流程中出现难以排查的兼容性错误。<code>package.json</code> 的 <code>engines</code> 字段和运行时的 <code>checkNodeVersion()</code> 形成双重校验：前者在 <code>npm install</code> 阶段给出警告（取决于包管理器的 <code>engine-strict</code> 配置），后者在实际运行时强制拦截。</p>
+<h2 id="a-11-后续优化方向">A.11 后续优化方向</h2>
+<p>打包后的 CLI 单文件约 20 MB（未压缩），运行时启动开销主要来自 Node.js 本身的冷启动。已经实施的优化是按需动态导入：<code>mammoth</code>、<code>xlsx</code>、<code>officeparser</code>、<code>tesseract.js</code> 等文档解析库都在 core 包的文件读取工具内部通过动态 <code>import()</code> 加载，只在触发对应文件类型时才付出加载成本，启动阶段不受影响。潜在的进一步优化方向是开启 esbuild 的代码压缩。当前构建没有压缩，是为了让线上调用栈能直接对照 TypeScript 源码。如果将来接入 source map 上报系统（例如 Sentry），就可以安全地开启压缩，显著缩小产物体积。</p>
+<p>关于运行时的选择：当前使用 Node.js 而非 Bun 作为运行时。Bun 的启动速度比 Node 快 2 到 3 倍，在 CLI 场景下体感提升明显。但 <code>npm install -g @x-code-cli/cli</code> 是默认安装路径，任何安装了 Node.js 的环境都可以直接使用；如果要求用户先安装 Bun 才能运行 CLI，渗透率会下降一个量级。选择 Node.js 是在启动速度和安装门槛之间取的平衡。</p>
+<h2 id="a-12-小结">A.12 小结</h2>
+<p>本附录覆盖了 X-Code CLI 从源码到可执行产物的完整构建工具链。仓库采用 pnpm 工作区管理的双包结构（<code>@x-code-cli/core</code> 和 <code>@x-code-cli/cli</code>），职责隔离使两个包各自拥有独立的构建配置、测试集和 <code>tsconfig.json</code>。esbuild 将 cli 包的入口文件 <code>src/index.ts</code> 及其全部依赖打包为单个 ESM 文件 <code>dist/cli.js</code>，banner 中注入 shebang 行和 ESM polyfill，只外部化 <code>@vscode/ripgrep</code>（原生二进制无法内联）。三个自定义 esbuild 插件分别处理 react-devtools-core 的空桩替换、entities 子路径在 pnpm 布局下的解析失败、以及 signal-exit v3/v4 两个不兼容版本在打包时的导出归一化。版本号通过 <code>version.ts</code> 的双路径机制获取，当前版本实际走运行时读取 <code>package.json</code> 的降级路径，构建时注入的通道已预留但尚未启用。</p>
+<p>开发模式方面，<code>pnpm dev</code> 不是监听模式，而是「全包构建一遍加 tsx 直接执行 TypeScript」的一次性流程。TypeScript 采用项目引用机制，<code>tsc -b</code> 按依赖顺序编译 core 再编译 cli，<code>isolatedModules</code> 保证 tsc 检查通过的代码在 esbuild 中也能正确转换。Vitest 测试链通过工作区级别的 <code>vitest.config.ts</code> 实现包级隔离，core 包的 53 个测试文件覆盖了从 Agent Loop 到插件系统的主要模块。</p>
+<p>质量与发布方面，代码质量由三层卡点保证：开发期的 <code>pnpm ci</code>、commit 时的 Husky 钩子（lint-staged 加 commitlint）、推送后的 PR CI 检查。发布是本地脚本加 CI 的两段式流程：本地 <code>pnpm release</code> 完成版本号计算、变更日志生成、构建、打 tag 并推送；GitHub Actions 收到 <code>v*</code> tag 后带 OIDC 来源证明发布到 npm。Node.js 最低版本要求为 20.19.0，由 <code>package.json</code> 的 <code>engines</code> 字段和运行时 <code>checkNodeVersion()</code> 形成双重校验。当前产物约 20 MB 未压缩，后续可通过开启 esbuild 压缩配合 source map 上报显著缩小体积。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-40.html">← 插件 marketplace 与分发</a>
+      <a class="next" href="ch-42.html">附录二 完整代码流程串讲 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#a-1-仓库结构与-pnpm-工作区">A.1 仓库结构与 pnpm 工作区</a></li>
+      <li class="lv2"><a href="#a-2-esbuild-单文件打包">A.2 esbuild 单文件打包</a></li>
+      <li class="lv3"><a href="#关键配置">关键配置</a></li>
+      <li class="lv3"><a href="#外部化策略">外部化策略</a></li>
+      <li class="lv3"><a href="#shebang-与-bin-字段">shebang 与 bin 字段</a></li>
+      <li class="lv2"><a href="#a-3-esm-cjs-互操作与-esbuild-插件">A.3 ESM/CJS 互操作与 esbuild 插件</a></li>
+      <li class="lv3"><a href="#stubplugin-移除-react-devtools-core">stubPlugin：移除 react-devtools-core</a></li>
+      <li class="lv3"><a href="#entitiesfixplugin-修复-entities-子路径">entitiesFixPlugin：修复 entities 子路径</a></li>
+      <li class="lv3"><a href="#signalexitfixplugin-归一化-signal-exit-的两个不兼容版本">signalExitFixPlugin：归一化 signal-exit 的两个不兼容版本</a></li>
+      <li class="lv2"><a href="#a-4-版本号的两条路径">A.4 版本号的两条路径</a></li>
+      <li class="lv2"><a href="#a-5-tsx-开发模式">A.5 tsx 开发模式</a></li>
+      <li class="lv2"><a href="#a-6-typescript-项目引用">A.6 TypeScript 项目引用</a></li>
+      <li class="lv2"><a href="#a-7-测试链与-vitest">A.7 测试链与 Vitest</a></li>
+      <li class="lv3"><a href="#根级入口与包级配置">根级入口与包级配置</a></li>
+      <li class="lv3"><a href="#测试覆盖">测试覆盖</a></li>
+      <li class="lv3"><a href="#常用命令">常用命令</a></li>
+      <li class="lv2"><a href="#a-8-代码质量卡点-husky-lint-staged-与-commitlint">A.8 代码质量卡点：Husky、lint-staged 与 commitlint</a></li>
+      <li class="lv2"><a href="#a-9-发布流程">A.9 发布流程</a></li>
+      <li class="lv3"><a href="#npm-oidc-来源证明">npm OIDC 来源证明</a></li>
+      <li class="lv2"><a href="#a-10-node-js-版本要求">A.10 Node.js 版本要求</a></li>
+      <li class="lv2"><a href="#a-11-后续优化方向">A.11 后续优化方向</a></li>
+      <li class="lv2"><a href="#a-12-小结">A.12 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

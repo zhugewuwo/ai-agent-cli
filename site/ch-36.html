@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识系统与会话状态 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li class="active"><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 36 章 知识系统与会话状态</h1>
+<p>模型每次启动时没有上下文记忆：上次会话学到的项目细节、用户偏好、纠正过的错误，都不会自动延续到下一次。让模型在后续对话中保有这些信息，是 Agent CLI 从工具升级到助手的关键一步。X-Code CLI 把这个问题拆成两条独立的链路：长期事实走知识系统，短期会话状态走 JSONL（JSON Lines，每行一条独立 JSON 记录的文本格式）transcript。知识系统把用户写的项目说明（AGENTS.md）和 AI 学到的经验（auto.md）分开管理，每轮加载进 system prompt。JSONL transcript 以单文件追加的方式记录每轮对话，支持 <code>/resume</code> 恢复历史会话，崩溃时最多丢失正在写的那一行。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>36.1 节介绍知识系统的角色分工（用户写 vs AI 写）和完整的文件布局。</li>
+<li>36.2 节讲解 AGENTS.md 的加载规则（单仓、monorepo、CLAUDE.md 回退）以及 <code>/init</code> 命令的工作方式。</li>
+<li>36.3 节讨论 auto-memory 的写入机制：后台抽取器、zod schema 约束和安全边界。</li>
+<li>36.4 节介绍 auto-memory 的存储格式、冲突检测、TTL 策略和用户可见性。</li>
+<li>36.5 节给出 5 层知识源注入 system prompt 的完整顺序。</li>
+<li>36.6 节讲解 JSONL transcript 的条目格式、写入路径和 <code>/resume</code> 会话恢复机制。</li>
+<li>36.7 节给出本章小结。</li>
+</ul>
+<h2 id="36-1-角色分工与文件布局">36.1 角色分工与文件布局</h2>
+<p>知识有两类来源：用户主动写入的项目说明和偏好，以及 AI 在对话中学到的事实。这两类信息被严格分到不同文件，避免混淆。</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>写入者</th>
+<th>目的</th>
+<th>文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>项目说明</td>
+<td>用户（团队）</td>
+<td>项目是什么、团队约定、业务背景</td>
+<td><code>AGENTS.md</code>（项目根）</td>
+</tr>
+<tr>
+<td>用户偏好</td>
+<td>用户（用户）</td>
+<td>跨项目的个人偏好</td>
+<td><code>~/.x-code/AGENTS.md</code></td>
+</tr>
+<tr>
+<td>本地覆盖</td>
+<td>用户（用户）</td>
+<td>不提交到 git 的个人项目偏好</td>
+<td><code>AGENTS.local.md</code>（项目根）</td>
+</tr>
+<tr>
+<td>项目记忆</td>
+<td>AI</td>
+<td>AI 在对话中学到的项目相关事实</td>
+<td><code>.x-code/memory/auto.md</code></td>
+</tr>
+<tr>
+<td>用户记忆</td>
+<td>AI</td>
+<td>AI 学到的用户相关事实（跨项目）</td>
+<td><code>~/.x-code/memory/auto.md</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>AGENTS.md</code> 放在项目根目录而不在隐藏目录，这是行业已经形成的供应商约定。好处在于：用户如果已经为其他 CLI 写过同名文件，安装 X-Code CLI 后立刻能用，零迁移成本。完整的目录结构如下：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">项目根/
+├── AGENTS.md                       ← 项目说明（用户写，git 追踪）
+├── AGENTS.local.md                 ← 个人项目偏好（用户写，gitignored）
+└── .x-code/                        ← CLI 内部状态（不建议手工编辑）
+    ├── memory/
+    │   └── auto.md                 ← AI 自动写入的项目记忆
+    ├── sessions/
+    │   └── &lt;slug&gt;-&lt;sessionId&gt;.jsonl   ← 每个会话一个 jsonl，append-only
+    └── local/
+        ├── .gitignore              ← 内容是 `*`，整个 local/ 不提交
+        └── permissions.json        ← 用户已批准的 shell-prefix 规则
+
+~/.x-code/
+├── AGENTS.md                       ← 用户偏好（用户写）
+├── config.json                     ← /model 与 /thinking 持久化
+├── memory/
+│   └── auto.md                     ← 用户自动记忆
+├── tessdata/                       ← tesseract OCR 权重（约 7.6 MB）
+└── logs/
+    └── debug.log                   ← DEBUG_STDOUT=1 启用，10 MB 滚动
+</code></pre>
+<p><code>~/.x-code/</code> 目录在 Windows 上对应为 <code>C:\Users\&lt;user&gt;\.x-code\</code>（Node 的 <code>os.homedir()</code> 返回 <code>USERPROFILE</code>）。本章所有 <code>~/.x-code/...</code> 路径在 Windows 资源管理器里都按这条规则换算。API Key 走环境变量（<code>ANTHROPIC_API_KEY</code> / <code>OPENAI_API_KEY</code> 等），<code>config.json</code> 只存 UX 偏好，不存放密钥。</p>
+<h2 id="36-2-agents-md-加载链与-init-命令">36.2 AGENTS.md 加载链与 /init 命令</h2>
+<p>单仓库项目直接读项目根目录的 <code>AGENTS.md</code>，不存在则跳过。monorepo 项目的加载规则更复杂：从当前工作目录向上遍历到 <code>.git</code> 目录（含）或文件系统根目录，沿路径每一层尝试读取知识文件，按从根节点到叶子节点的顺序拼接到 system prompt。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/knowledge/loader.ts::collectProjectKnowledgeChain</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">async function collectProjectKnowledgeChain(
+  startDir: string,
+): Promise&lt;Array&lt;{ dir: string; fileName: string; content: string }&gt;&gt; {
+  // 从 startDir 一路向上，每个目录调一次 readKnowledgeFile(dir):
+  // 找 AGENTS.md 优先，缺失才回退 CLAUDE.md。
+  // 遇到 .git 或文件系统根停止；返回按从根到叶排列的列表。
+}
+</code></pre>
+<p>在 monorepo 结构中，子包目录的 AGENTS.md 拼接在仓库根目录的 AGENTS.md 之后。由于模型对 system prompt 中靠后的内容赋予更高注意力，当子包与根目录的约定冲突时，子包的内容会覆盖根目录。例如在 <code>packages/frontend/</code> 下启动时，加载顺序是：</p>
+<pre><code class="language-text">### Project AGENTS.md (.)                  ← 仓库根目录（通用约定）
+### Project AGENTS.md (packages/frontend)  ← 子包目录（前端特有约定）
+</code></pre>
+<p>根目录的 AGENTS.md 可以写「本仓库用 pnpm + TypeScript」，子包目录的 AGENTS.md 可以覆写「本包用 Vitest，其他包用 Jest」，两条同时生效，子包内容更贴近当前任务。</p>
+<p>每个目录（用户级 <code>~/.x-code/</code> 和项目链上每一层）按以下顺序匹配第一个存在的文件：先找 <code>AGENTS.md</code>，找不到才回退 <code>CLAUDE.md</code>。实现集中在 <code>loader.ts</code> 的 <code>KNOWLEDGE_FILENAMES</code> 数组，顺序就是优先级。<code>readKnowledgeFile(dir)</code> 辅助函数遍历数组，第一个存在就返回，后面跳过。</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>同目录情况</th>
+<th>加载结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只有 <code>AGENTS.md</code></td>
+<td>加载 AGENTS.md</td>
+</tr>
+<tr>
+<td>只有 <code>CLAUDE.md</code></td>
+<td>加载 CLAUDE.md（回退）</td>
+</tr>
+<tr>
+<td>两个都有</td>
+<td>只加载 <code>AGENTS.md</code>，<code>CLAUDE.md</code> 会被忽略</td>
+</tr>
+<tr>
+<td>两个都没有</td>
+<td>跳过</td>
+</tr>
+</tbody>
+</table>
+<p>注入 system prompt 时段落标题用真实文件名（<code>### Project AGENTS.md (.)</code> 或 <code>### Project CLAUDE.md (.)</code>），模型能从标题判断这条来自哪个文件。这个回退机制的迁移路径是：已有 <code>CLAUDE.md</code> 的用户安装 X-Code CLI 后不需要做任何迁移，CLI 直接读取；之后用户运行 <code>/init</code> 会让模型分析代码库后写一份 AGENTS.md（已存在则增量合并），回退不再触发，<code>CLAUDE.md</code> 会被忽略。想清理就删除 <code>CLAUDE.md</code>，不想清理也无害，因为 AGENTS.md 总是优先。写入永远只往 AGENTS.md 文件写，<code>/init</code> 不会修改用户已有的 <code>CLAUDE.md</code>。 <!-- check:ignore-line --></p>
+<p><code>/init</code> 命令会把一段 prompt 静默发给主 agent，由模型自己用工具完成实际工作。如果 AGENTS.md 不存在，模型扫描代码库的项目配置文件（如 <code>package.json</code>、<code>tsconfig.json</code> 等）、README、以及其他 AI 工具的遗留规则文件（如 <code>.cursor/rules</code>、<code>.github/copilot-instructions.md</code> 等），分析整理后创建 AGENTS.md。如果 AGENTS.md 已存在，模型读取现有内容后增量合并改进，保留用户手写的部分，而不是整个文件覆盖。生成过程中有几条硬约束引导模型精简内容：对每一条规则判断「如果不写进去，模型会不会犯错」，不会就不写——AGENTS.md 每轮都加载进 system prompt，即使有提示词缓存（详见 Ch.33），每行都会占用上下文窗口的容量，内容越多留给对话本身的空间就越少；不把项目配置文件里已经写明的信息（如「本项目用 React 18」）重复写进 AGENTS.md，因为模型在需要时可以直接读取 <code>package.json</code> 等源文件获得这些信息；个人偏好不写进 AGENTS.md 而是留给 AGENTS.local.md，因为前者是团队共享文件，个人习惯不应强加给团队其他成员。</p>
+<blockquote>
+<p>源码：<code>packages/cli/src/ui/components/App.tsx</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">case 'init':
+  echoCommand(text)                                // 显示 &quot;/init&quot;
+  await submit(INIT_PROMPT, { silent: true })      // prompt 走模型，不进 UI
+  return
+</code></pre>
+<p><code>silent: true</code> 选项的效果是让用户视角和模型视角分开：UI 端不把这条 user 消息追加到终端历史区（用户屏幕上只看到自己输入的 <code>/init</code> 那一行，看不到 INIT_PROMPT 的完整内容），但 <code>agentLoop</code> 内部的 <code>loopState.messages</code> 照常推入（模型完整读到 INIT_PROMPT）。这套思路可以复用给其他作者侧 prompt 命令（<code>/security-review</code>、<code>/review</code> 等）。</p>
+<h2 id="36-3-auto-memory-写入机制">36.3 auto-memory 写入机制</h2>
+<blockquote>
+<p>AI 知识背景：LLM 长期记忆的三条主流路线</p>
+<p>「让 LLM 记住跨会话的事实」是 agent 系统的核心难题，行业有三条主流路线。（1）RAG（检索增强生成，<a href="https://arxiv.org/abs/2005.11401">Lewis et al. 2020</a>）：把事实存进向量数据库，每轮对话前先做向量检索拿回相关片段拼进 prompt。优点是信息容量无限、可解释，缺点是召回质量取决于 embedding 质量且检索开销不小。（2）超长上下文：直接把所有历史和文档放进 200k / 1M 窗口。优点是实现简单，缺点是计费高昂（按 input token 计费）且存在 lost-in-the-middle 问题（详见 Ch.31）。（3）显式 memory 文件：AI 把学到的事实写成结构化文件（markdown / json），每轮把这些文件的内容拼入 system prompt 的开头部分，作为模型每次对话都能看到的固定上下文。优点是可读、可手工编辑、缓存命中率高，缺点是写入策略需要设计。X-Code CLI 选择第三条路线，这一节讲写入策略的实现。</p>
+</blockquote>
+<p>记忆的写入路径只有一条：主对话正常结束后，由后台抽取器（extractor）自动执行一次抽取。主 agent 自始至终不持有任何记忆写入工具，这是有意的设计——让主对话只关心「做事」，把「这条对话要不要记下来」剥离成独立的后置步骤，避免主 agent 把宝贵的上下文消耗在元认知判断上。主循环在正常退出时，以异步不等待（fire-and-forget）的方式触发抽取——发出调用后不阻塞、不处理结果、出错也不传播回来，主流程立刻返回。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/memory-extractor.ts</code></p>
+</blockquote>
+<p>抽取器不是再执行一遍完整的 agent 循环，而是单次结构化输出调用。通过 zod schema 把模型输出强制约束成 JSON 数组，每条结果直接写入对应的记忆文件：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">const MemorySchema = z.object({
+  memories: z
+    .array(
+      z.object({
+        category: z.enum(['user', 'feedback', 'project', 'reference']),
+        scope: z.enum(['project', 'user']),
+        key: z.string().min(1),
+        fact: z.string().min(1),
+      }),
+    )
+    .max(MAX_MEMORIES_PER_PASS), // 3
+})
+</code></pre>
+<p>四类分类法按「知识类型」分而不是按「主题」分，四类互斥，边界清晰：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>含义</th>
+<th>典型触发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user</code></td>
+<td>关于用户本身（角色、专长、长期约束）</td>
+<td>「我是十年 Go 工程师，第一次碰 React」</td>
+</tr>
+<tr>
+<td><code>feedback</code></td>
+<td>用户的纠正或认可（都要含原因）</td>
+<td>「不要 mock 数据库，上季度 mock 过测试通过但迁移失败」</td>
+</tr>
+<tr>
+<td><code>project</code></td>
+<td>进行中的工作、决策、非代码可推导的状态</td>
+<td>「mobile release 冻结从 2026-03-05 开始」</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>指向外部资源的「去哪查」信息（看板、文档、仪表盘）</td>
+<td>「pipeline bug 都在 Linear 的 INGEST 项目」</td>
+</tr>
+</tbody>
+</table>
+<p>为避免记忆膨胀和误导，以下类型的事实不进 auto-memory：代码里能看到的事实（「这个项目用 React」，AI 读 <code>package.json</code> 就知道）；Git history 里有的（commit message、作者、时间）；AGENTS.md 已经说过的；一次性调试解决方案。</p>
+<p>抽取器有多层安全边界。首先，模块级锁保证同一时刻只有一个抽取任务在运行——例如用户在终端开了两个标签页分别进行对话，两个对话几乎同时结束时，第二个抽取任务会等第一个完成后再执行，避免并发写入导致记忆文件损坏。其次，对话消息不足 4 条时跳过抽取（单轮问候不值得记忆），单次抽取最多写入 3 条记忆，防止过度写入。用户按 Esc 中断主对话时，正在运行的抽取器也会被级联取消。错误退出、中断退出、内容过滤、长度截断等异常路径不触发抽取，因为失败轮次没有可抽取的内容。抽取 prompt 中加了反幻觉硬规则：不许推断或归纳用户未说过的事实（如「用户对英文理解有限」），不许编造项目规则（如「代码注释保持英文」）。prompt 还会注入当前已有记忆的快照，要求模型在写入前先判断是否已存在等价条目——已存在就返回空，需要更新就复用已有的 key 触发覆盖写入。代价是每次抽取多消耗几百个 prompt token。</p>
+<p>触发条件如下：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop.ts</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">if (completedNormally &amp;&amp; !options.abortSignal?.aborted) {
+  void runMemoryExtractor({
+    parentState: state,
+    parentModel: model,
+    abortSignal: options.abortSignal,
+    onWrite: callbacks.onMemoryWrite,
+  })
+}
+</code></pre>
+<p><code>completedNormally</code> 只在 <code>outcome.finishReason === 'stop'</code> 分支才置为 true，确保只有「模型完整说完话」这种健康路径才会触发 memory 抽取。</p>
+<h2 id="36-4-auto-memory-存储与可见性">36.4 auto-memory 存储与可见性</h2>
+<p>记忆文件是 markdown 格式，便于用户直接审阅和编辑：</p>
+<pre><code class="language-markdown">## Auto Memory
+
+### feedback
+
+- [2026-04-18] testing-db-policy: 集成测试必须打真库，不能 mock。原因：Q1 migration 事故
+- [2026-04-18] refactor-batching: 大规模重构倾向打成一个 PR——用户验证过减少 churn
+
+### user
+
+- [2026-04-18] user-stack: 十年 Go 工程师，React 新手，前端例子可类比后端概念
+
+### project
+
+- [2026-04-18] release-freeze: mobile release 冻结 2026-03-05 起，非 critical PR 要 flag
+</code></pre>
+<p>每条记录前缀的日期是写入时间，TTL 计算的依据。<code>AutoMemory.add()</code> 写入时先检查有没有同 <code>category</code> 且同 <code>key</code> 的旧条目，有就直接用新值覆盖，没有再追加。这就是「字面去重」：只要拼出来的 <code>(category, key)</code> 字符串一模一样就算同一条。同时 <code>sanitizeLine</code> 把多行和空白折叠成一行，保证一条 fact 永远只占一行。字面去重有一个局限：<code>role</code>、<code>user-stack</code>、<code>user-profile</code> 在 <code>add()</code> 看来是三个不同的 key，模型如果换着 key 写同一事实，三条会全部保留。要解决这个问题，靠的是 36.3 节提到的 prompt 注入当前 memory 快照加第 5 条硬规则，让模型自己判断是否已有等价条目。</p>
+<p>auto-memory 有两个容量控制。TTL 方面，90 天未更新的条目在启动时自动清除（<code>AutoMemory.evict(90)</code>）。大小方面，注入 system prompt 时只取前 200 行（<code>MAX_LOAD_LINES</code>），防止记忆膨胀拖累每轮 prompt 的 token 开销。</p>
+<p><code>/memory</code> 命令把当前项目加用户级 memory 按 category 分组列出。这个命令只展示，不带删改子命令。原因是文件本身就是普通 markdown，要修改直接编辑 <code>~/.x-code/memory/auto.md</code>（用户级）或 <code>&lt;repo&gt;/.x-code/memory/auto.md</code>（项目）即可。启动时 <code>parseMemoryFile</code> 会重新加载，只要保留 <code>### &lt;category&gt;</code> 子标题加 <code>- [日期] key: fact</code> 的行格式即可。不内置增删改查子命令是有意的：CLI 内做选择器删除会增加 UI 复杂度，而文件编辑器在这种小规模手工编辑场景下始终更方便。</p>
+<p>抽取器默认在后台静默写入记忆文件，终端界面保持干净，主 agent 全程不被打断。代价是用户对「AI 刚记住了什么」零感知，需要主动去查看记忆文件才知道。由于抽取是异步完成的（主对话已经结束、界面已经空闲），做不出「用户先看再批准」的同步确认对话框，但一条事后通知仍然是有价值的。抽取器每次成功写入一条记忆后，通过回调在终端历史区追加一行通知：</p>
+<pre><code class="language-text">⎿  Remembered (user · user) `language-cn`: User wants replies in Chinese.
+</code></pre>
+<p>由于抽取是异步完成的，这行可能在用户已经开始输入下一条时才出现。它插在终端历史区（输入框上方），不打断输入。这是一个简单但足够清晰的「AI 在做事」的信号：异步通知比同步对话框更克制，比完全静默更透明。</p>
+<h2 id="36-5-知识加载的完整顺序">36.5 知识加载的完整顺序</h2>
+<p><code>buildKnowledgeContext()</code> 按下面顺序拼接，后出现的在 prompt 末尾，对模型权重更高：</p>
+<pre><code class="language-text">1. User Preferences   (~/.x-code/AGENTS.md)         用户写，跨项目
+2. User Auto Memory                                  AI 写，跨项目
+3. Project AGENTS.md (.)                             用户写，项目根目录
+4. Project AGENTS.md (packages/x)                    用户写，monorepo 子包（如有）
+5. Project Auto Memory                               AI 写，本项目
+6. Local Preferences                                 用户写，gitignored
+</code></pre>
+<p>以上六层按顺序拼接后，整段作为 system prompt 末尾的知识段注入。由于模型对 prompt 末尾的内容赋予更高权重，排在后面的来源在语义上优先：项目级覆盖用户级，monorepo 子包覆盖仓库根目录，本地偏好覆盖项目级。</p>
+<h2 id="36-6-jsonl-transcript-与会话恢复">36.6 JSONL transcript 与会话恢复</h2>
+<p>知识系统记的是长期事实，会话状态记的是短期工作上下文（正在做什么、做到哪了）。X-Code CLI 用单文件 JSONL transcript 记录会话状态，写入方式是只追加不修改：新事件追加到文件尾部，已写入的内容不会被回头改动。每条轮次、工具调用和系统事件各占一行 JSON。这套设计在两个场景下都可靠——程序崩溃时最多丢失正在写的那一行，前面的内容完整可读；用户关闭终端后重新打开，通过 <code>/resume</code> 恢复时能拿到完整的对话时间线，不需要依赖压缩后的摘要。</p>
+<p>每个会话对应一个独立文件，文件名由首条用户消息的摘要加会话 ID 组成（纯中文首句无 ASCII 时回退为时间戳）。每行一条条目，共 6 种类型（其中 checkpoint 用于 <code>/rewind</code> 回退点，本章不展开）：</p>
+<!-- check:ignore=punctuation -->
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-jsonc">// kind: header ── 会话启动写一次（resume 同名文件已存在时跳过）
+{&quot;t&quot;:&quot;meta&quot;,&quot;kind&quot;:&quot;header&quot;,&quot;cwd&quot;:&quot;D:\\res\\proj&quot;,&quot;gitBranch&quot;:&quot;main&quot;,&quot;modelId&quot;:&quot;anthropic:claude-sonnet-4-5&quot;,&quot;startedAt&quot;:&quot;2026-04-30T10:12:33.001Z&quot;,&quot;firstPrompt&quot;:&quot;升级到 React 19...&quot;,&quot;taskSlug&quot;:&quot;upgrade-react-19&quot;,&quot;sessionId&quot;:&quot;20260430-101233-001&quot;}
+
+// t: msg ── 一条 ModelMessage（user / assistant / tool）+ 时间戳
+{&quot;t&quot;:&quot;msg&quot;,&quot;message&quot;:{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:&quot;...&quot;},&quot;ts&quot;:&quot;2026-04-30T10:12:34Z&quot;}
+{&quot;t&quot;:&quot;msg&quot;,&quot;message&quot;:{&quot;role&quot;:&quot;assistant&quot;,&quot;content&quot;:[{&quot;type&quot;:&quot;tool-call&quot;,&quot;toolCallId&quot;:&quot;toolu_01&quot;,&quot;toolName&quot;:&quot;shell&quot;,&quot;input&quot;:{&quot;command&quot;:&quot;ls&quot;}}]},&quot;ts&quot;:&quot;...&quot;}
+
+// kind: usage ── 每轮一条 token usage 快照
+{&quot;t&quot;:&quot;meta&quot;,&quot;kind&quot;:&quot;usage&quot;,&quot;usage&quot;:{&quot;inputTokens&quot;:1234,&quot;outputTokens&quot;:567,&quot;totalTokens&quot;:1801,&quot;cacheReadTokens&quot;:890,&quot;cacheCreationTokens&quot;:0,&quot;currentContextTokens&quot;:1801},&quot;modelId&quot;:&quot;anthropic:claude-sonnet-4-5&quot;,&quot;ts&quot;:&quot;...&quot;}
+
+// kind: compact-boundary ── 压缩点；深度压缩带 summary，轻量不带
+{&quot;t&quot;:&quot;meta&quot;,&quot;kind&quot;:&quot;compact-boundary&quot;,&quot;summary&quot;:&quot;前面讨论了 React 19 升级的兼容性...&quot;,&quot;ts&quot;:&quot;...&quot;}
+
+// kind: interrupted ── Ctrl+C 中断标记，选择器显示「上次中断」提示
+{&quot;t&quot;:&quot;meta&quot;,&quot;kind&quot;:&quot;interrupted&quot;,&quot;ts&quot;:&quot;...&quot;}
+</code></pre>
+<p>以上五种加上 <code>CheckpointJsonlEntry</code>（<code>kind:&quot;checkpoint&quot;</code>，用于 <code>/rewind</code> 回退点记录），共六种条目都定义在 <code>agent/session-store.ts</code>。</p>
+<p>transcript 的写入不是集中在一个地方完成的。5 个写入函数分别挂在 agent 生命周期的 5 个时间点，各管各的事件类型。所有写入都是异步不等待的：每个函数内部执行一次文件追加，调用方不阻塞、出错被忽略，不影响 agent 主循环。</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>写什么</th>
+<th>调用时机</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>appendHeader</code></td>
+<td>一条 <code>meta.header</code></td>
+<td>会话启动、首轮之前。resume 同名文件已存在时跳过</td>
+</tr>
+<tr>
+<td><code>flushPendingMessages</code></td>
+<td>一批 <code>t:msg</code></td>
+<td>每轮开头、每轮结束、<code>saveSession</code> 收尾；只写入尚未持久化的增量</td>
+</tr>
+<tr>
+<td><code>appendUsage</code></td>
+<td>一条 <code>meta.usage</code></td>
+<td>每轮 <code>collectTurnResponse</code> 末尾</td>
+</tr>
+<tr>
+<td><code>markBoundaryAndReflush</code></td>
+<td><code>meta.compact-boundary</code></td>
+<td>压缩成功后；恢复时 loader 取最后一个 boundary 之后的内容</td>
+</tr>
+<tr>
+<td><code>appendInterrupted</code></td>
+<td>一条 <code>meta.interrupted</code></td>
+<td>用户按 Ctrl+C / Esc 中断当前轮时</td>
+</tr>
+</tbody>
+</table>
+<p><code>/resume</code> 弹出 SelectOptions 模态（复用 Ch.28 的挂起等待模式），按 mtime 倒序展示这个项目下所有历史会话：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">Pick a session to resume (352 total in this project):
+
+ ❯ 1. 查询一下广东的天气和合适的活动建议  ·  5h ago     deepseek:deepseek-v4-flash  ·  39,323 tokens  ·  20260514-093041-257
+   2. hello  ·  5h ago                                  deepseek:deepseek-v4-flash  · 151,478 tokens  ·  20260514-092826-609
+   3. hello  ·  15h ago                                 deepseek:deepseek-v4-flash  ·  27,343 tokens  ·  20260513-234558-862
+   4. 快速的读取一下各个 readme 文件  ·  17h ago          deepseek:deepseek-v4-flash  ·  42,540 tokens  ·  20260513-220014-635
+   ...
+ ↓ 18 more below
+
+Enter to select  ·  ↑/↓ to navigate  ·  Esc to cancel
+</code></pre>
+<p>选择器列表的生成不依赖独立的索引文件。每次打开选择器时，程序扫描会话目录下所有 <code>.jsonl</code> 文件，对每个文件只读头部（取会话标题、使用的模型、首句 prompt 等元信息）和尾部（取最后一条 token 用量记录），按修改时间倒序排列。jsonl 文件本身的头尾就是它的元数据，不需要额外维护一份索引，因此选择器在数百个历史会话下依然秒开。这是 transcript 设计成「启动信息写一次在文件头、token 用量每轮追加一条在文件尾」的直接收益。</p>
+<p>用户选中一个历史会话后，恢复过程分五步。（1）从头到尾顺序扫描 jsonl，启动信息行提取元数据，每条消息行推入消息数组。（2）遇到压缩边界行时把消息数组清零——因为压缩发生时，系统已经把修剪后的消息重新追加到了边界行之后，所以只保留最后一个压缩边界之后的内容就等同于还原压缩后的状态。（3）token 用量取最后一条。（4）中断标记仅供选择器显示「上次中断」提示，不影响状态重建。（5）剪掉尾部孤立的工具调用（没有对应的工具返回结果），因为供应商严格要求工具调用与返回结果配对，恢复时若停在工具执行中途必须修剪到上一个完整边界。启动参数 <code>xc -c</code> / <code>xc --resume &lt;会话ID&gt;</code> 走同一条恢复路径，只是跳过了选择器步骤。</p>
+<p>每轮对话结束后会追加一行 token 用量记录，包含输入 token 数、输出 token 数、总量、缓存读取量、缓存创建量和当前上下文 token 数共六个字段。<code>/usage</code> 命令直接读取内存中的累计值渲染当前会话的 token 用量，<code>/usage-history</code> 命令则扫描本项目下所有 jsonl 文件、每个只读尾部取最后一条用量记录渲染成历史列表。两条命令共用同一份数据源，没有独立的 usage 文件。</p>
+<h2 id="36-7-小结">36.7 小结</h2>
+<p>本章讨论了 X-Code CLI 的知识系统与会话状态。用户写的知识（AGENTS.md、AGENTS.local.md）和 AI 写的记忆（auto.md）严格分开，主 agent 全程不持有记忆写入工具。AGENTS.md 加载链支持 monorepo（从根到叶，子包覆盖根），每个目录优先读 AGENTS.md、缺失才回退 CLAUDE.md（只读兼容，写入永远只往 AGENTS.md）。<code>/init</code> 命令把作者侧 prompt 静默发给模型，由模型自行创建或增量合并 AGENTS.md。auto-memory 由主对话正常结束后的后台抽取器独占写入，采用单次结构化输出加 zod schema 强制四类分类法（user / feedback / project / reference），单次最多 3 条、90 天自动清除、注入上限 200 行。写入完成后在终端历史区追加一行通知，提供可见性。6 层知识源按用户偏好、用户记忆、项目 AGENTS.md 链、项目记忆、本地偏好的顺序拼接到 system prompt 末尾，后出现的权重更高。JSONL transcript 是单文件只追加的 6 种条目，崩溃只丢正在写的那一行，<code>/resume</code> 取最后一个压缩边界之后的内容等同于内存压缩态，会话列表不依赖索引文件而是直接扫目录读头尾。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-35.html">← 文件附件与视觉降级</a>
+      <a class="next" href="ch-37.html">MCP 协议接入 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#36-1-角色分工与文件布局">36.1 角色分工与文件布局</a></li>
+      <li class="lv2"><a href="#36-2-agents-md-加载链与-init-命令">36.2 AGENTS.md 加载链与 /init 命令</a></li>
+      <li class="lv2"><a href="#36-3-auto-memory-写入机制">36.3 auto-memory 写入机制</a></li>
+      <li class="lv2"><a href="#36-4-auto-memory-存储与可见性">36.4 auto-memory 存储与可见性</a></li>
+      <li class="lv2"><a href="#36-5-知识加载的完整顺序">36.5 知识加载的完整顺序</a></li>
+      <li class="lv2"><a href="#36-6-jsonl-transcript-与会话恢复">36.6 JSONL transcript 与会话恢复</a></li>
+      <li class="lv2"><a href="#36-7-小结">36.7 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

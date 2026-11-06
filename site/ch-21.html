@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Mode：先计划再开工 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li class="active"><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 21 章 Plan Mode：先计划再开工</h1>
+<p>上一章的 <code>todoWrite</code> 在模型动手实施时提供实时进度面板；本章的计划模式（Plan Mode）解决的是实施之前的问题——如何确保模型在跨多文件的复杂改动中不跑偏方向。复杂任务最常见的失败模式是模型收到用户的需求后就开始动手，改了一批文件之后发现方向错了，回滚成本远高于事先写一份计划并让用户过目、确认方向。Plan Mode 把这个「先规划后实施」的流程做成了会话级状态：进入 plan 状态后模型被约束为只读，必须先完成一份计划文档并经用户审批，才能切到实施阶段动手修改代码。</p>
+<p>整个状态机只有三个状态。<code>default</code> 是会话启动后的初始状态，模型按正常权限做读写操作。用户通过 <code>/plan</code> 命令或模型通过 <code>enterPlanMode</code> 工具进入 <code>plan</code> 状态——此时系统提示词末尾追加一段约 80 行的覆盖段（Plan Mode Overlay），把模型每一轮的合法收尾方式锁定为 <code>askUser</code>（继续向用户提问）或 <code>exitPlanMode</code>（提交计划供审批）两个动作。用户在 <code>exitPlanMode</code> 的审批对话框里选择通过后，会话切到 <code>acceptEdits</code> 状态——文件写入工具（<code>writeFile</code> / <code>edit</code>）免审批自动通过，shell 命令仍走正常权限审批。用户拒绝进入时会话留在 <code>default</code> 状态；exitPlanMode 审批被拒时会话留在 <code>plan</code> 状态，等待模型修订后重新提交。下面围绕 Express → Fastify 迁移这个场景，展开状态机背后的设计选择，分为如下几个部分进行介绍。</p>
+<ul>
+<li>21.1 节用 Express → Fastify 迁移的完整例子展示 Plan Mode 的交互过程。</li>
+<li>21.2 节解释为什么约束依赖提示词覆盖而非权限层拦截。</li>
+<li>21.3 节拆解覆盖段的四个关键段落。</li>
+<li>21.4 节讨论 plan 文件为什么存在项目本地而非内存中。</li>
+<li>21.5 节介绍两条触发路径与 UI 状态指示。</li>
+<li>21.6 节解释退出后为什么切到 acceptEdits 而不是 default。</li>
+<li>21.7 节讨论子 Agent 为什么用 toolFilter 而非 overlay。</li>
+<li>21.8 节给出本章小结。</li>
+</ul>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/40e486b6032442e3849cfe9f46b5c4d8~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=421&amp;h=405&amp;s=20394&amp;e=png&amp;b=fefefe" alt="image.png" /></p>
+<p align="center"><em>图 21-1 Plan Mode 状态机：三个状态与四条转换路径</em></p>
+<h2 id="21-1-一个完整的例子-express-fastify-迁移">21.1 一个完整的例子：Express → Fastify 迁移</h2>
+<p>假设用户输入「把项目从 Express 迁到 Fastify」。模型判断这是一个跨多文件、需要架构决策的大任务，主动调用 <code>enterPlanMode</code> 工具。CLI 弹出审批对话框「X-Code wants to enter plan mode」，用户选 Yes。进入 plan 状态的那一刻，<code>handleEnterPlanMode</code> 做了三件事：</p>
+<p>（1）把 <code>LoopState.permissionMode</code> 设为 <code>'plan'</code></p>
+<p>（2）把 <code>LoopState.systemPromptCache</code> 清空——下一轮请求会重新拼装系统提示词，此时覆盖段会被追加到末尾</p>
+<p>（3）在项目的 <code>.x-code/plans/</code> 目录下生成一个新的 plan 文件路径（如 <code>.x-code/plans/express-to-fastify-20260508-143022.md</code>），存入 <code>LoopState.currentPlanPath</code></p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/core/src/agent/plan-tools.ts
+
+state.permissionMode = 'plan'
+state.systemPromptCache = null
+// ...
+if (!state.currentPlanPath) {
+  const topic = (input.topic as string | undefined)?.trim()
+  const fallbackText = lastUserMessageText(state.messages)
+  // 优先用模型传入的 topic，其次用缓存的 taskSlug
+  const explicitSlug = topic &amp;&amp; topic.length &gt; 0
+    ? topic
+    : state.taskSlug || undefined
+  state.currentPlanPath = makePlanFilePath(fallbackText, { slug: explicitSlug })
+}
+</code></pre>
+<p>下一轮请求发出时，系统提示词末尾已经追加了覆盖段。模型读完覆盖段后，按其中规定的「迭代式访谈」工作流推进：</p>
+<pre><code>第 1 轮：grep &quot;express&quot; 找所有引用 → 发现 18 个 endpoint + 4 个中间件
+        writeFile 创建 plan 文件骨架（Context / Approach / Verification 三段）
+        askUser：&quot;发现项目用了 express-rate-limit，迁移期间要保留这个能力，
+                 偏好是 (a) @fastify/rate-limit 还是 (b) 自实现？&quot;
+
+用户答 a。
+
+第 2 轮：webFetch fastify rate-limit 文档 → 在 plan 里补一节
+        edit plan 列出 7 项主线任务
+        askUser：&quot;测试是用 supertest 还是改成 fastify.inject？&quot;
+
+...
+</code></pre>
+<p>几轮迭代后 plan 写完了，模型再调用 <code>exitPlanMode</code>。CLI 再弹一次审批对话框，把 plan 文件内容展示给用户审核，用户选 Yes。这一刻 <code>handleExitPlanMode</code> 做了三件事：把 <code>permissionMode</code> 设为 <code>'acceptEdits'</code>（不是 <code>'default'</code>，21.6 节展开），再次清空 <code>systemPromptCache</code>，并在对话历史里追加一条 user message 告知模型已退出 plan mode、写工具已解锁：</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/core/src/agent/plan-tools.ts
+
+if (approved) {
+  state.permissionMode = 'acceptEdits' // 不是 'default'
+  state.systemPromptCache = null
+  // ...
+  // 追加一条 user message 让模型知道模式已切换
+  state.messages.push({
+    role: 'user',
+    content: [
+      '## Exited Plan Mode',
+      '',
+      'You have exited plan mode. You can now make edits, run tools, and take actions.',
+      'Write tools (writeFile, edit) are now auto-approved (acceptEdits mode); shell commands',
+      'still go through normal permission classification.',
+      persisted
+        ? `The plan file is located at ${persisted} if you need to reference it.`
+        : '',
+    ].filter(Boolean).join('\n'),
+  })
+}
+</code></pre>
+<p>如果用户拒绝审批，模型收到一条标记为错误的工具结果——「Plan rejected by user. You are still in plan mode.」——要求模型根据用户反馈修订 plan、然后重新调用 <code>exitPlanMode</code> 提交。从这一轮开始，覆盖段已不再追加到系统提示词里，模型按 plan 文件内容逐步实施——<code>writeFile</code> / <code>edit</code> 免审批通过（<code>acceptEdits</code> 模式语义），shell 命令仍走正常审批。整轮交互展示了 plan mode 的核心流程：进入 plan 状态 → 在覆盖段约束下迭代探索与访谈 → 写 plan 文件 → 退出 plan 状态切到 acceptEdits 实施。下面六节详细说说相关的设计选择。</p>
+<h2 id="21-2-为什么约束靠提示词覆盖而非权限层拦截">21.2 为什么约束靠提示词覆盖而非权限层拦截</h2>
+<p>读者可能预期 plan mode 的「模型只能读、不能写」一定在工具层或权限层强制拦截——<code>writeFile</code> / <code>edit</code> / <code>shell</code> 在 plan mode 下被工具白名单 deny，调用直接返回错误。实际并非如此。权限模块的注释明确写到：</p>
+<!-- check:ignore=code-source -->
+<pre><code>'plan': pure prompt-based enforcement — no permission-layer change.
+The system-prompt overlay tells the model not to write;
+if it ignores that, the regular `ask` prompt still fires.
+</code></pre>
+<p>工具白名单在 plan mode 下保持不变，<code>writeFile</code> / <code>edit</code> / <code>shell</code> 仍然在主 Agent 的工具集里。权限判定函数 <code>checkPermission</code> 也没有「plan mode 下自动 deny 写工具」的特殊分支。唯一的约束来自系统提示词末尾追加的覆盖段——它告诉模型「现在不能写」。</p>
+<p>这看起来约束很弱，但实测足够稳定，原因有三。其一，覆盖段的措辞极其强硬——开头第一句就是「you MUST NOT make any edits」，配合「This supercedes any other instructions you have received」，主流模型的遵守率非常高。其二，覆盖段把每轮的合法收尾方式锁定为两个——<code>askUser</code> 或 <code>exitPlanMode</code>——模型没有「做完就直接结束」的选项，行为路径被限制为固定的选项。其三，即使模型绕过覆盖段的约束调用了 <code>writeFile</code> 修改非 plan 文件，写入仍然会触发正常的 <code>ask</code> 权限对话框，用户看到对话框可以拒绝。最坏情况是被拒绝一次，不会出现在用户不知情下写入文件的后果。</p>
+<p>那为什么不直接在工具层做硬约束，把 <code>writeFile</code> 从工具集里 deny 掉？原因有两个。</p>
+<p>（1）维护成本不同。覆盖段是纯文本，调整约束规则只需编辑一段提示词字符串；而在权限层加硬约束，需要在 <code>checkPermission</code> 里新增 plan mode 分支、给工具白名单加条件逻辑、再补对应的单元测试。提示词的修改回路远短于代码的修改回路。</p>
+<p>（2）交互体验不同。权限层硬拦截时，模型调用 <code>writeFile</code> 会收到一条工具错误（tool error），通常只能回复「抱歉，我无法执行这个操作」。而覆盖段下模型从一开始就知道「现在不该写代码」，遇到需要记录的内容会主动说「I'll add this to the plan file instead」，把信息写进 plan 文件而不是试图修改源码。前者是被动撞墙，后者是主动绕行，用户感受到的流畅度差异明显。</p>
+<p>不过这条路径有一个前提：模型的系统提示词里确实包含覆盖段。子 Agent 的系统提示词是简化版、不包含覆盖段，因此子 Agent 必须在工具层补一道硬约束，详见 21.7 节。</p>
+<h2 id="21-3-覆盖段的四个关键段落">21.3 覆盖段的四个关键段落</h2>
+<p>覆盖段在 <code>system-prompt.ts</code> 里整段定义为常量 <code>PLAN_MODE_OVERLAY</code>，约 80 行提示词。它不是简单告诉模型「只读」，而是一份完整的工作流规约——每一段都对应一个在实际使用中观察到的具体失败模式。以下拆解四个最关键的段落。</p>
+<p>第一段是开场约束与 plan 文件路径。覆盖段的前几行同时完成两件事——明确禁止一切写操作，并告知模型唯一可写的 plan 文件路径：</p>
+<!-- check:ignore=code-source -->
+<pre><code>Plan mode is active. The user indicated that they do not want you to execute yet
+-- you MUST NOT make any edits (with the exception of the plan file mentioned below),
+run any non-readonly tools (including changing configs or making commits),
+or otherwise make any changes to the system. This supercedes any other instructions
+you have received.
+
+## Plan File Info
+The plan file for this session lives at: {planFilePath}
+This is the ONLY file you are allowed to edit.
+</code></pre>
+<p><code>{planFilePath}</code> 是占位符——<code>buildSystemPrompt</code> 在拼装覆盖段时替换成实际路径（如 <code>.x-code/plans/express-to-fastify-20260508-143022.md</code>），让模型一进 plan mode 就确切知道哪个文件可写。这里 <code>This supercedes any other instructions you have received</code> 这句话的作用值得展开。覆盖段在系统提示词的最末尾追加，而前面的基础提示词里大量出现「主动帮用户写代码」「改完代码跑测试」这类鼓励动手的语句。如果不加 supercedes 这一句，模型会面临指令冲突——一边被告知「主动改代码」，一边又被告知「不能改」——它倾向于折中处理（如「只改一两个最关键的文件」），从而绕过 plan mode 的意图。supercedes 明确告诉模型遇到冲突时以覆盖段为准，前面的「主动写代码」暂时失效。</p>
+<p>第二段是迭代式访谈循环。覆盖段把 plan mode 期间的工作模式定义为三步循环：</p>
+<!-- check:ignore=code-source -->
+<pre><code>### The Loop
+
+Repeat this cycle until the plan is complete:
+
+1. Explore — Use readFile, glob, grep, listDir, webSearch, webFetch to read code...
+2. Update the plan file — After each discovery, immediately capture what you learned...
+3. Ask the user — When you hit an ambiguity..., use askUser. Then go back to step 1.
+</code></pre>
+<p>这段规定避免了两种常见偏差：模型无目标地反复探索代码但不产出任何 plan 内容，以及模型问了一两个问题就直接退出 plan mode。循环里的「After each discovery, immediately capture what you learned」强调边探索边写 plan，而不是把所有发现积攒到最后一次性倾倒——如果模型探索了十几个文件再一次性写 plan，中间任何一次上下文压缩都可能丢失关键发现。</p>
+<p>第三段是 <code>askUser</code> 选项的两个隐藏 footer。plan mode 下 UI 会给每个 <code>askUser</code> 菜单自动追加两个额外选项：「Chat about this」（用户想聊一下，不想从菜单里选）和「Skip interview and plan immediately」（用户已经提供了足够信息，希望模型直接写 plan 并退出）。覆盖段告诉模型这两个选项的含义和应对方式——看到「Skip interview」就停止提问、把已有信息整理成 plan 并调用 <code>exitPlanMode</code>；看到「Chat about this」就用对话方式回应，不要立刻又弹一个 <code>askUser</code> 菜单。这两个选项由 UI 层自动注入，覆盖段明确要求模型不要自己在 <code>options</code> 数组里重复添加。</p>
+<p>第四段是整个覆盖段最关键的一条硬规则——<code>exitPlanMode</code> 是退出 plan mode 的唯一方式：</p>
+<!-- check:ignore=code-source -->
+<pre><code>### exitPlanMode is the ONLY way to leave plan mode (HARD RULE)
+
+Plan mode is a state — calling askUser does NOT and CANNOT leave it.
+Even if the user picks an option labelled &quot;yes&quot;, &quot;approve&quot;, ...
+you are still in plan mode and writing files will still hit per-file permission prompts.
+
+**Forbidden patterns** (do not do any of these):
+- askUser({ question: &quot;Approve this plan?&quot;, options: [...] })
+- askUser({ question: &quot;Should I proceed?&quot;, options: [...] })
+...
+</code></pre>
+<p>这段针对的是模型最常见的错误用法——把「plan 写完了，要不要开始执行」做成 <code>askUser</code> 的选项。用户选了 Yes，模型以为获得了授权开始动手，但实际上 <code>permissionMode</code> 没有变——仍在 plan 状态，写文件仍然会触发审批对话框，导致整个流程卡住。覆盖段用大段文字加反例明确告诉模型：plan 审批必须通过 <code>exitPlanMode</code> 工具提交，<code>askUser</code> 无论用户怎么回答都不会改变会话状态。这个错误的根源在于模型把「用户表示同意」和「会话状态发生切换」混淆了——前者只是一个对话层面的回答，后者需要通过特定工具调用触发状态机转换。</p>
+<p>整段覆盖段加起来约 700 tokens，每一段都对应一个在实际使用中被观察到的失败模式。这是 plan mode 设计的一条经验：模型在 plan mode 期间的行为完全由提示词控制，覆盖段写得越详细，模型的行为越稳定。</p>
+<h2 id="21-4-plan-文件为什么存在项目本地">21.4 plan 文件为什么存在项目本地</h2>
+<p>每次进 plan mode，X-Code CLI 都新建一个 plan 文件。文件路径格式如下：</p>
+<pre><code>&lt;repo&gt;/.x-code/plans/express-to-fastify-20260508-143022.md
+</code></pre>
+<p>路径由两部分拼接而成：slug 和本地时间戳（<code>YYYYMMDD-HHMMSS</code>）。时间戳保证文件名唯一，slug 则让用户一眼看出这份 plan 对应哪个任务。slug 的生成分两种情况。如果用户输入包含英文单词（如「migrate Express to Fastify」），本地的 <code>slugify</code> 函数就能直接处理——小写化、空格转连字符、去除非字母数字字符、截断到 40 字符——得到 <code>migrate-express-to-fastify</code>，整个过程纯字符串操作，不消耗 token。但如果用户输入是纯中文（如「把项目从 Express 迁到 Fastify」），<code>slugify</code> 会把所有非 ASCII 字符清掉，剩下的有效字符不足 6 个，这时就回退到 LLM 生成路径：调一次模型，让它根据任务文本给出 2 到 4 个英文单词作为 slug。无论走哪条路径，slug 只在会话首轮生成一次并缓存，后续 plan mode 进出和 session 文件命名都复用同一个值。</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/core/src/agent/plan-storage.ts
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]+/g, '') // 去除非 ASCII
+    .replace(/\s+/g, '-')          // 空格转连字符
+    .replace(/-+/g, '-')           // 合并连续连字符
+    .replace(/^-+|-+$/g, '')       // 去除首尾连字符
+    .slice(0, SLUG_MAX_LEN)        // SLUG_MAX_LEN = 40
+    .replace(/-+$/g, '')           // 截断后再清一次尾部
+}
+</code></pre>
+<p>文件存在项目本地（<code>&lt;repo&gt;/.x-code/plans/</code>）而非用户级目录（<code>~/.x-code/</code>），原因在于 plan 与仓库的代码状态绑定。通过查看 plan 文件，能立刻知道它对应的是哪个项目的哪段历史，不会出现「这份 plan 是给哪个项目写的」的混淆。每次进 plan mode 创建新文件而非覆盖固定文件，也避免了因模型写 plan 到一半被中断而导致文件损坏的风险。<code>exitPlanMode</code> 审批通过后 plan 文件留在原地不自动删除，读者想回顾历史可以直接查阅 <code>.x-code/plans/</code> 目录。</p>
+<h2 id="21-5-两条触发路径与-ui-状态指示">21.5 两条触发路径与 UI 状态指示</h2>
+<p>进入 plan mode 有两条路径：用户主动和模型主动。用户主动是通过 <code>/plan</code> 斜杠命令，它接受三种用法：</p>
+<p>（1）<code>/plan</code> 不带参数——在 plan 和 default 之间切换，交互式场景下最方便</p>
+<p>（2）<code>/plan on</code>——幂等地设为 plan 状态</p>
+<p>（3）<code>/plan off</code>——幂等地设为 default 状态</p>
+<p><code>on</code> / <code>off</code> 形式是为脚本化用例保留的——脚本不需要先查当前状态再决定切换还是设值，直接执行 <code>/plan on</code> 不会因为「已经是 plan mode」而出错或翻转。如果当前状态与目标状态相同，命令输出一行「Plan mode is already on / off — no change」，不做任何操作。如果参数无法解析（既不是 on/off 也不是 yes/no/true/false），命令返回用法提示。</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/cli/src/ui/components/App.tsx
+
+function handlePlanToggle(commandText: string, arg: string) {
+  const current = state.permissionMode === 'plan'
+  const trimmed = arg.trim().toLowerCase()
+  let next: boolean
+  if (!trimmed) {
+    next = !current // 无参数：切换
+  } else {
+    const parsed = parseBooleanArg(trimmed)
+    if (parsed === null) {
+      // 无法解析参数，提示用法
+      addCommandMessage(commandText,
+        `Unknown value: \`${arg}\`. Use \`/plan\`, \`/plan on\`, or \`/plan off\`.`)
+      return
+    }
+    next = parsed
+  }
+  if (next === current) {
+    // 已是目标状态，不做操作
+    addCommandMessage(commandText,
+      `Plan mode is already **${current ? 'on' : 'off'}** — no change.`)
+    return
+  }
+  setPermissionMode(next ? 'plan' : 'default')
+  addCommandMessage(commandText, next ? 'Enabled plan mode' : 'Disabled plan mode')
+}
+</code></pre>
+<p>模型主动进入 plan mode 使用的是 <code>enterPlanMode</code> 工具（Ch.18 已介绍其基本形态）。与 <code>/plan</code> 命令不同的是，模型调用 <code>enterPlanMode</code> 必须经过用户审批对话框——这是为了防止模型在简单任务上启动 plan mode 拖慢执行节奏。如果模型已经在 plan mode 里再次调用 <code>enterPlanMode</code>，处理函数会短路返回「Already in plan mode. Continue the conversation; call exitPlanMode when the user has asked for an implementation and you have a plan ready.」，不重复弹审批。</p>
+<p>进入 plan mode 后，终端输入框底部的状态栏左侧出现一行提示：</p>
+<pre><code>⏸ plan mode  ·  /plan to toggle
+</code></pre>
+<p><code>⏸</code>（Unicode U+23F8）在传统 ConHost（老版 cmd.exe）下自动降级为 <code>=</code>，避免显示成方块（详见 Ch.25）。文字采用暗灰色样式（<code>S_DIM</code>），不抢占视觉重心但能让用户一眼确认当前处于 plan mode。Plan mode 当前不跨会话持久化——CLI 重启后默认回到 <code>default</code> 状态。</p>
+<h2 id="21-6-退出后为什么切到-acceptedits-而不是-default">21.6 退出后为什么切到 acceptEdits 而不是 default</h2>
+<p><code>exitPlanMode</code> 审批通过后，<code>permissionMode</code> 切到的不是 <code>'default'</code> 而是 <code>'acceptEdits'</code>：</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/core/src/agent/plan-tools.ts
+
+if (approved) {
+  state.permissionMode = 'acceptEdits' // 不是 'default'
+  state.systemPromptCache = null
+  // ...
+}
+</code></pre>
+<p><code>acceptEdits</code> 是 X-Code CLI 三档权限模式之一（详见 Ch.29），它的核心语义是：文件写入操作自动通过，不再弹审批对话框；<code>shell</code> 命令仍走正常审批。具体的路径分类规则（哪些路径即便在 <code>acceptEdits</code> 下也需要审批）详见 Ch.29。</p>
+<p>为什么不回到 <code>default</code>？原因在于用户已经审批过整份 plan——plan 里写明了要改哪些文件、执行什么命令。后续模型按 plan 实施时每改一个文件再弹一次审批，价值不大——用户已经通过审批 plan 批量授权了这些写入操作。但 shell 命令仍走审批，因为 shell 的副作用不可逆（<code>rm</code> / <code>git push</code> 等），多一道确认更安全。这等于是一种一次性的批量授权：plan 审批那一刻把后续所有文件写入操作一并授权，shell 命令除外。</p>
+<h2 id="21-7-子-agent-为什么用-toolfilter-而非-overlay">21.7 子 Agent 为什么用 toolFilter 而非 overlay</h2>
+<p>Plan mode 在主 Agent 路径上靠覆盖段软约束（21.2 节），但子 Agent 路径的约束机制不同——在工具层用 <code>toolFilter</code> 硬性禁止写工具：</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/core/src/agent/sub-agents/runner.ts
+
+function buildToolFilter(agentDef, parentPermissionMode) {
+  const deny = [...(agentDef.disallowedTools ?? []), 'task']
+
+  // 主会话在 plan mode 时，general-purpose 子 Agent 额外禁止写工具
+  if (parentPermissionMode === 'plan' &amp;&amp; agentDef.name === 'general-purpose') {
+    deny.push('writeFile', 'edit')
+  }
+  // ...
+}
+</code></pre>
+<p>根本原因是子 Agent 的系统提示词是简化版（详见 Ch.19）——只包含角色定义、环境信息和输出契约，不包含 plan mode 覆盖段。子 Agent 完全不知道自己运行在 plan mode 的会话里，它看到的是一个普通的「通用 Agent」系统提示词。如果不加硬约束会出现这样的场景：主会话在 plan mode，模型调用 <code>task({ subagent_type: 'general-purpose', prompt: '把 src/utils.ts 加个 formatDate 函数' })</code>，子 Agent 收到 prompt 后看不出有只读约束——<code>general-purpose</code> Agent 的工具白名单本来就包含 <code>writeFile</code> / <code>edit</code>——子 Agent 会直接写入文件，主 Agent 的「plan mode 期间不能动代码」这一承诺被破坏。</p>
+<p>X-Code CLI 只对 <code>general-purpose</code> 子 Agent 加这条约束，其他三个内置子 Agent（<code>explore</code> / <code>plan</code> / <code>code-reviewer</code>）不需要——因为它们的工具白名单本来就只包含读类工具，没有写工具可禁。这种「主 Agent 用提示词约束、子 Agent 用工具层约束」的不对称，是两套机制各自匹配各自的运行环境：主 Agent 有完整系统提示词、模型读得懂覆盖段，提示词约束更灵活也更容易维护；子 Agent 系统提示词简化、看不到覆盖段，必须在工具层硬性补上。理解了这个不对称就理解了 plan mode 的实现哲学——约束不在工具层、在提示词层；提示词管不到的地方（子 Agent）用工具层硬约束补。</p>
+<h2 id="21-8-小结">21.8 小结</h2>
+<p>本章围绕 Express → Fastify 迁移的场景，完整走过了 Plan Mode 从进入到退出的全过程。Plan Mode 是一个三状态的会话状态机，核心约束不在权限层而在系统提示词末尾追加的覆盖段——覆盖段用 supercedes 句压住基础提示词的「动手」倾向，把模型每一轮的合法收尾锁定为 <code>askUser</code> 和 <code>exitPlanMode</code> 两条路径（21.2、21.3 节）。plan 文件存在项目本地、用 slug 加时间戳命名，slug 优先本地 slugify、太短则回退 LLM 生成一次后缓存（21.4 节）。两条触发路径——<code>/plan</code> 命令和 <code>enterPlanMode</code> 工具——分别面向用户主动和模型主动的场景（21.5 节）。退出后切到 <code>acceptEdits</code> 而非 <code>default</code>，等于 plan 审批是一次性批量授权，后续文件写入免审批、shell 仍走审批（21.6 节）。子 Agent 因为系统提示词不含覆盖段，在 plan mode 下用 <code>toolFilter</code> 硬性禁止写工具，与主 Agent 的提示词约束形成互补（21.7 节）。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-20.html">← todoWrite：模型自管理的任务清单</a>
+      <a class="next" href="ch-22.html">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#21-1-一个完整的例子-express-fastify-迁移">21.1 一个完整的例子：Express → Fastify 迁移</a></li>
+      <li class="lv2"><a href="#21-2-为什么约束靠提示词覆盖而非权限层拦截">21.2 为什么约束靠提示词覆盖而非权限层拦截</a></li>
+      <li class="lv2"><a href="#21-3-覆盖段的四个关键段落">21.3 覆盖段的四个关键段落</a></li>
+      <li class="lv2"><a href="#21-4-plan-文件为什么存在项目本地">21.4 plan 文件为什么存在项目本地</a></li>
+      <li class="lv2"><a href="#21-5-两条触发路径与-ui-状态指示">21.5 两条触发路径与 UI 状态指示</a></li>
+      <li class="lv2"><a href="#21-6-退出后为什么切到-acceptedits-而不是-default">21.6 退出后为什么切到 acceptEdits 而不是 default</a></li>
+      <li class="lv2"><a href="#21-7-子-agent-为什么用-toolfilter-而非-overlay">21.7 子 Agent 为什么用 toolFilter 而非 overlay</a></li>
+      <li class="lv2"><a href="#21-8-小结">21.8 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

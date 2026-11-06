@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三级权限模型与 shell 命令分级 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li class="active"><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 29 章 三级权限模型与 shell 命令分级</h1>
+<p>Agent CLI 的「危险」集中在三个工具：<code>writeFile</code> / <code>edit</code> / <code>shell</code>。权限模型是用户与 AI 之间的信任边界，既不能每次都问（频繁打断会让用户厌烦），也不能默认放行（破坏性命令有失控风险）。X-Code CLI 的做法是按「工具类别 + shell 命令内容」双重判定，把所有工具调用分到 always-allow / ask / deny 三档，shell 内部还有一层动态分级。三档的区别不在于能否执行，而在于用户看到的确认对话框不同：always-allow 无对话框，ask 弹普通确认框，deny 弹带红色 <code>[dangerous]</code> 警告的确认框。权限模型在思路上很像 Unix 的 <code>sudo</code> + 文件权限位组合。相同点是按「操作风险等级」分档放行，把高危操作单独抬出来要二次确认；不同点是 Unix 权限按「用户身份 + 文件属主」静态判定，权限位写在 inode 里，而 Agent CLI 的判定主体是模型而不是用户，规则按「工具种类 + shell 命令内容」动态算出来。同一个 <code>shell</code> 工具里 <code>ls</code> 走 always-allow、<code>git commit</code> 走 ask、<code>rm -rf</code> 走 deny。本章将分为如下几个部分进行介绍。<!-- analogy: permission-sudo-filemode --></p>
+<ul>
+<li>29.1 节介绍三档权限模型的设计思路与各工具的静态映射。</li>
+<li>29.2 节讲解 shell 命令的动态分级：如何拆子命令、按破坏性和只读性分档。</li>
+<li>29.3 节梳理 checkPermission 的四层判定流程。</li>
+<li>29.4 节讨论「don't ask again」规则的匹配策略与前缀提取逻辑。</li>
+<li>29.5 节说明 --trust 模式的适用场景与安全保障。</li>
+<li>29.6 节给出本章小结。</li>
+</ul>
+<h2 id="29-1-三档权限-always-allow-ask-deny">29.1 三档权限：always-allow / ask / deny</h2>
+<p>三档不是简单的「yes / no / 再问一次」，而是按「风险等级 + 操作可逆性」分档。<code>always-allow</code> 自动放行，零打断。只读工具（<code>readFile</code> / <code>glob</code> / <code>grep</code> / <code>listDir</code>）和外部只读 API（<code>webSearch</code> / <code>webFetch</code>）不修改任何文件或系统状态，所以不需要弹窗确认；<code>askUser</code> 也归入这一档，因为它不产生文件或系统层面的副作用，且功能本身就是向用户提问，提问前再加一层权限确认只会造成重复打断。<code>ask</code> 弹对话框等用户确认，写文件、执行普通 shell 命令默认走这一档。<code>deny</code> 同样弹对话框，但对话框带红色 <code>[dangerous]</code> 警告标签。<code>rm -rf /</code> / <code>dd if=…</code> 这类破坏性命令仍然需要用户明确批准才能执行，与 ask 的区别在于视觉上的危险提示更醒目，让用户不会误点通过。</p>
+<p>每个工具静态映射到一个权限档，唯独 <code>shell</code> 是动态判定（按命令内容分级，详见 29.2 节）。下表列出了权限表登记的 10 个工具与各自的权限档。</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>权限档</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>readFile</td>
+<td>always-allow</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>glob</td>
+<td>always-allow</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>grep</td>
+<td>always-allow</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>listDir</td>
+<td>always-allow</td>
+<td>只读</td>
+</tr>
+<tr>
+<td>webSearch</td>
+<td>always-allow</td>
+<td>外部只读</td>
+</tr>
+<tr>
+<td>webFetch</td>
+<td>always-allow</td>
+<td>外部只读</td>
+</tr>
+<tr>
+<td>askUser</td>
+<td>always-allow</td>
+<td>交互</td>
+</tr>
+<tr>
+<td>edit</td>
+<td>ask</td>
+<td>改文件</td>
+</tr>
+<tr>
+<td>writeFile</td>
+<td>ask</td>
+<td>写文件</td>
+</tr>
+<tr>
+<td>shell</td>
+<td>动态判定</td>
+<td>按命令拆分子命令分级</td>
+</tr>
+</tbody>
+</table>
+<p>10 个工具里 7 个固定 always-allow，真正会经过 <code>checkPermission</code> 判定的只有 <code>writeFile</code> / <code>edit</code> / <code>shell</code> 三个。<code>todoWrite</code> / <code>exitPlanMode</code> 不在权限表里，因为它们只改内存状态，不产生外部副作用，连权限检查都不走。<code>enterPlanMode</code> 虽然也不在权限表里，但它在自己的 handler 中直接调用 <code>onAskPermission</code> 弹出 Yes / No 对话框，走的是一条独立的确认路径。</p>
+<h2 id="29-2-shell-命令的动态分级">29.2 shell 命令的动态分级</h2>
+<p>29.1 节的表里，除 shell 外每个工具都固定在某一档。shell 不同：如果一律走 <code>ask</code>，<code>ls</code> / <code>cat</code> 这种只读命令每次都弹确认，过度打断用户；如果一律走 <code>always-allow</code>，<code>rm -rf /</code> 这种破坏性命令就会直接通过。因此 shell 按命令内容动态判定，分三步。首先，按 <code>&amp;&amp;</code> / <code>||</code> / <code>;</code> / <code>|</code> 把复合命令拆成子命令数组。然后检查破坏性：任一子命令命中破坏性正则，整条命令判 deny，防止模型用 <code>ls &amp;&amp; rm -rf .</code> 这种「无害 + 破坏」组合规避检测。如果没有破坏性子命令，再检查只读性：所有子命令都命中只读白名单才判 always-allow。两项都不满足的命令落到 ask，弹对话框让用户判断。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/permissions/index.ts::evaluateShellPermission</code></p>
+</blockquote>
+<pre><code class="language-ts">function evaluateShellPermission(command: string): PermissionLevel {
+  const subCommands = splitShellCommands(command)
+  if (subCommands.some(isDestructive)) return 'deny'
+  if (subCommands.every(isReadOnly)) return 'always-allow'
+  return 'ask'
+}
+</code></pre>
+<p>走一遍真实命令。模型生成 <code>ls -la &amp;&amp; rm -rf ./tmp</code>，判定过程如下：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-text">  cmd = 'ls -la &amp;&amp; rm -rf ./tmp'
+              │
+              ▼   拆子命令
+        ['ls -la', 'rm -rf ./tmp']
+              │
+              ▼   逐个检查破坏性
+        'ls -la'        -&gt; 否
+        'rm -rf ./tmp'  -&gt; 是 (命中破坏性正则)
+              │
+              ▼   任一破坏性 -&gt; 整条命令 deny
+</code></pre>
+<p>关键不是「对单条命令的判决」，而是「对整条命令链的判决」。只要链上有任意一节是破坏性的，整条命令标记为 deny，对话框会显示 <code>[dangerous]</code> 警告。破坏性判定使用正则数组匹配，涵盖文件销毁（<code>rm -rf</code>、<code>sudo …</code>、<code>mkfs</code>、<code>dd if=…</code>）、Git 破坏（<code>git push --force</code>、<code>reset --hard</code>、<code>clean -f</code>）、远程拉取直接执行（<code>curl … | sh</code>）、系统控制（<code>shutdown</code>、<code>reboot</code>）、数据库销毁（<code>DROP DATABASE</code>、<code>TRUNCATE TABLE</code>）、容器清理（<code>docker system prune</code>）、包发布（<code>npm publish</code>）等类别。只读判定使用精确白名单，子命令开头匹配 <code>ls</code> / <code>cat</code> / <code>pwd</code> / <code>find</code> / <code>git status</code> / <code>git log</code> 等才算只读，且所有子命令都得是只读，整条才放行。</p>
+<p>为什么破坏性用正则、只读用精确白名单？两者方向不同。破坏性是否定逻辑，模型可能写出 <code>rm -rf</code> 的各种变体（带 <code>sudo</code>、带相对路径、放进 <code>bash -c</code> 里），要用正则覆盖，任一命中即拒。只读是肯定逻辑，要绝对确定无副作用才放行，白名单越严越安全。没在白名单里的命令走 ask 让用户判断。两种判定的方向都是偏保守：宁可多弹一次确认框，也不能让一条未审查的破坏性命令静默通过。</p>
+<h2 id="29-3-四层判定-checkpermission">29.3 四层判定：checkPermission</h2>
+<p>所有工具调用在执行前都经过 <code>checkPermission</code> 统一入口，按优先级从高到低短路判定。</p>
+<p>（1）always-allow 或 trust 模式 → 直接放行。只读工具天然无副作用，trust 是用户主动选的全局放行（详见 29.5 节）。这一层同时覆盖了 deny 级别的命令。在 trust 模式下，即使是 <code>rm -rf</code> 也会直接通过，因为用户已经通过命令行参数明确表示信任模型的判断。</p>
+<p>（2）acceptEdits 模式 + 写工具 + 路径安全 → 直接放行。仅适用于 <code>writeFile</code> / <code>edit</code>，目标路径必须在项目目录内且不是敏感文件（<code>.bashrc</code>、<code>.git/</code>、<code>.env</code>、<code>.ssh/</code> 等）。路径不满足条件则落到下一层（<code>permissionMode</code> 的三档语义详见 Ch.18）。</p>
+<p>（3）会话规则匹配 → 命中已保存的 AllowRule 时自动放行，不弹对话框（29.4 节细讲）。</p>
+<p>（4）ask 路径 → 弹对话框等用户响应。deny 级别的命令也走这一层，区别在于对话框会显示红色 <code>[dangerous]</code> 标签，提醒用户该命令属于破坏性操作。用户选择 always 时生成 AllowRule 存入会话，选择 yes 本次放行，选择 no 拒绝。</p>
+<p>为什么不把 deny 做成硬拦截？早期版本确实如此，deny 级命令直接返回 false，trust 模式也无法覆盖。但实际使用中发现，用户有时明确需要执行破坏性命令（如清理构建缓存的 <code>rm -rf dist/</code>），硬拦截迫使用户退出 Agent 手动执行，工作流被打断。改为弹对话框后，决策权回到用户手中：看到 <code>[dangerous]</code> 标签后可以选择批准或拒绝，而系统提示词也相应调整为「破坏性命令按用户要求执行，权限系统会显示 [dangerous] 警告并要求确认」。这种设计的 trade-off 是：安全性从「系统级硬保障」降为「用户级软保障」，如果用户不看对话框直接点批准，破坏性命令就会执行。红色警告标签和醒目的 <code>[dangerous]</code> 文字是对抗这种风险的视觉手段。</p>
+<h2 id="29-4-don-t-ask-again-规则记忆">29.4 「don't ask again」规则记忆</h2>
+<p>用户在权限对话框选择「Yes, don't ask again for: <code>&lt;label&gt;</code>」后，审批决策被转化为一条 AllowRule 保存到内存。后续同类操作命中规则时自动放行，不再弹对话框。AllowRule 有三种匹配策略。</p>
+<p>（1）prefix（前缀匹配）：适用于能提取命令前缀的 shell 命令。例如 <code>git commit -m &quot;fix&quot;</code> 提取出前缀 <code>git commit</code>，后续所有以 <code>git commit</code> 开头的命令自动放行。</p>
+<p>（2）exact（精确匹配）：前缀提取失败时的回退。命令原文作为匹配依据，只有完全相同的命令才能命中。例如 <code>node index.js</code>，其中 <code>index.js</code> 是文件名而非子命令，提取函数无法从中归纳出可复用的前缀，因此回退到 exact。</p>
+<p>（3）tool（工具全放行）：<code>writeFile</code> / <code>edit</code> 的规则类型，本会话内所有同工具操作免确认。</p>
+<p>前缀提取是规则系统最精细的环节。提取函数需要处理三类情况：跳过命令的全局参数（如 <code>git -C /tmp commit</code> 跳过 <code>-C /tmp</code> 得到 <code>git commit</code>）、剥离白名单内的环境变量前缀（如 <code>NODE_ENV=prod npm run dev</code> 剥离 <code>NODE_ENV=prod</code> 得到 <code>npm run</code>）、识别 wrapper 命令（如 <code>sudo</code> / <code>bash -c</code> / <code>env</code> / <code>time</code> 等 21 个）并直接放弃提取。白名单内的环境变量只收行为无关的语言环境和日志开关（<code>NODE_ENV</code> / <code>CI</code> / <code>DEBUG</code> / <code>LANG</code> 等），<code>PATH</code> / <code>NODE_OPTIONS</code> / <code>http_proxy</code> 等能改变进程行为的变量一律不剥离，前缀提取因此失败，回退到 exact。这些处理的方向都是「宁可不提取也不能错误放行」，用户最多额外确认一次，远好过让一条已批准的规则吸收掉一个未审查的副作用。</p>
+<p>shell 规则跨会话持久化到 <code>.x-code/local/permissions.json</code>，格式为 <code>&quot;shell:git commit:*&quot;</code> 这样的字符串数组，启动时读入内存。writeFile / edit 的规则仅当前会话有效，因为写文件的影响因项目而异，跨会话自动放行风险高于 shell 前缀规则。</p>
+<h2 id="29-5-trust-模式">29.5 --trust 模式</h2>
+<p><code>--trust</code> / <code>-t</code> 命令行参数让 CLI 跳过所有权限确认，包括 deny 级别的破坏性命令。适用场景包括：用户对项目熟悉、不想每个 edit 都点确认；批量任务（一次让 Agent 做几十个文件改动）；CI 自动化（无人值守）。在 29.3 节的四层判定中，trust 模式在第一层就短路返回 true，所有工具调用（无论 always-allow、ask 还是 deny）都直接放行。这意味着 trust 模式下模型可以执行任何操作，包括 <code>rm -rf</code> 这类破坏性命令，安全保障完全依赖系统提示词对模型行为的约束。系统提示词要求模型「破坏性命令按用户要求执行」，即模型不会主动发起破坏性操作，只在用户明确要求时才生成这类命令。trust 模式的设计假设是：开启该模式的用户理解其含义，并愿意承担对应的风险。</p>
+<h2 id="29-6-小结">29.6 小结</h2>
+<p>本章讨论了 X-Code CLI 的三级权限模型。always-allow 消除只读操作的打断，ask 让用户审查写操作的范围，deny 对破坏性命令弹出带 <code>[dangerous]</code> 警告的确认框。三档按「风险 + 可逆性」分，deny 不是硬拦截而是醒目警告，最终决策权在用户手中。shell 命令在此基础上做动态分级：按分隔符拆子命令后，任一破坏性 → 整条 deny，全只读 → 自动放行，其余 → ask。checkPermission 四层短路判定把这些机制串联起来，「don't ask again」规则通过前缀、精确和工具三种匹配策略记忆用户的审批决策。--trust 模式在此之上提供全局放行，所有级别（包括 deny）均直接通过。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-28.html">← 权限对话框与 askUser 模态</a>
+      <a class="next" href="ch-30.html">Token 经济学：四层防御一览 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#29-1-三档权限-always-allow-ask-deny">29.1 三档权限：always-allow / ask / deny</a></li>
+      <li class="lv2"><a href="#29-2-shell-命令的动态分级">29.2 shell 命令的动态分级</a></li>
+      <li class="lv2"><a href="#29-3-四层判定-checkpermission">29.3 四层判定：checkPermission</a></li>
+      <li class="lv2"><a href="#29-4-don-t-ask-again-规则记忆">29.4 「don&#x27;t ask again」规则记忆</a></li>
+      <li class="lv2"><a href="#29-5-trust-模式">29.5 --trust 模式</a></li>
+      <li class="lv2"><a href="#29-6-小结">29.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

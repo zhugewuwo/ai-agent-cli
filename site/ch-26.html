@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>流式输出 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li class="active"><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 26 章 流式输出</h1>
+<p>流式输出（Streaming Output）指模型边生成、边把文本切成小片段连续推给客户端，用户不用等整段生成完就能看到文字逐字出现。每个片段（text-delta）通常只携带 1-5 个字符，客户端不能每收到一个就触发 UI 更新——每秒几十次的重渲染会引发 CJK 宽度计算错误和终端写入过载。X-Code CLI 的策略是在 SDK 与 UI 之间加入缓冲节流层 <code>useStreamBuffer</code>，把连续到达的 delta 累积到安全的 markdown 边界才统一刷出。本章围绕这一策略展开，分为如下几个部分进行介绍。</p>
+<ul>
+<li>26.1 节从整体设计出发，介绍 <code>useStreamBuffer</code> 的两段缓存结构、三种流式情况和代码骨架。</li>
+<li>26.2 节讲解 <code>findSafeBoundary</code> 的安全边界切割算法：为什么按单个换行符切而不按段落切。</li>
+<li>26.3 节讨论 <code>streamingChunk</code> 标记如何让多个片段在终端上无缝拼接。</li>
+<li>26.4 节介绍只读工具组折叠：连续只读工具如何折叠成一行摘要。</li>
+<li>26.5 节给出本章小结。</li>
+</ul>
+<p>先从用户视角看一次完整的流式输出过程。用户在终端输入「帮我把 <code>src/utils.ts</code> 里的 <code>formatDate</code> 函数改成支持时区参数」，按下回车后终端上发生了这些事：</p>
+<pre><code class="language-text">&gt; 帮我把 src/utils.ts 里的 formatDate 函数改成支持时区参数
+
+  好的，我先看一下这个文件的当前实现。     ← 文字逐行出现，不是整段弹出
+  目前 formatDate 只接受一个 Date 参数，
+  返回本地时区的格式化字符串。
+
+ ● Read src/utils.ts                       ← 文字流被工具调用打断，但视觉上先文字后工具
+
+  我建议做以下修改：                        ← 工具执行完，文字继续流出，和上面自然衔接
+  1. 给 formatDate 加一个可选的 timezone
+     参数...
+</code></pre>
+<p>这段交互涉及三个技术问题：文字是逐行出现的而不是整段弹出，中间穿插了工具调用但文字和工具的显示顺序没有错乱，工具执行完后文字继续输出、和前面的段落在视觉上无缝衔接。三者都由 <code>useStreamBuffer</code> 机制实现。</p>
+<p>流式输出指模型边生成、边把文本切成小片段连续推给客户端，用户不用等整段生成完就能看到文字逐字出现。AI Provider SDK（Anthropic、OpenAI、Vercel AI SDK 等）把每一个这种小片段事件叫做一个 <code>text-delta</code>——一次事件常常只携带 1-5 个字符（典型是一两个 token）。问题在于，客户端不能每收到一个 text-delta 就立即更新 UI，具体原因如下：</p>
+<p>（1）每个 delta 进 React state。</p>
+<pre><code>delta 到达 → setState({ streamingText: prev + delta }) → React 重渲染
+           → Ink 重绘动态区 → Yoga 算 CJK 宽度
+</code></pre>
+<p>每秒几十次 setState 会触发多次 Yoga 计算宽度——CJK 字符宽度算错时，光标退回过头，旧内容被覆盖、新旧内容拼接成乱码（详见 Ch.23）。</p>
+<p>（2）每个 delta 直接写到 stdout。</p>
+<pre><code>delta 到达 → process.stdout.write(delta)
+</code></pre>
+<p>终端写入量过大——每秒几十次的 stdout 写入，且和 Ink 动态区互相干扰（Ink 重绘时也在 stdout 写入）。</p>
+<p>两种方式都无法满足要求，必须在 SDK 与 UI 之间加入节流层。X-Code CLI 的策略是缓冲节流——把连续到达的 delta 累积到合理的 markdown 边界才统一刷出。</p>
+<h2 id="26-1-usestreambuffer-的设计">26.1 useStreamBuffer 的设计</h2>
+<blockquote>
+<p>源码：<code>packages/cli/src/ui/hooks/use-stream-buffer.ts</code></p>
+</blockquote>
+<p>先看 <code>useStreamBuffer</code> 在整体流水线里的位置。从模型 SDK 到终端屏幕，文本要经过三个互不重叠的处理层，<code>useStreamBuffer</code> 只负责其中第一层——把 text-delta 累积、切割、合并成一条消息。下面的示意图展示了一个 text-delta 从进入缓冲区到最终写入终端历史区的完整路径：</p>
+<pre><code class="language-text">   模型流式 SDK             useStreamBuffer (本章)             ChatInput (Ch.24)         终端 (Ch.25)
+   ───────────             ────────────────────             ──────────────────         ──────────
+
+   text-delta ──→ 累加到 bufferRef
+                       │
+                       │ 扫描到安全 markdown 边界
+                       ▼
+                  移入 pendingChunksRef
+                       │
+                       │ 150ms 定时器到点
+                       ▼
+                  appendMessage(...) ────→ messages 数组
+                                                │
+                                                │ useEffect 触发
+                                                ▼
+                                          writeMessageToStdout
+                                          + renderMarkdown ──→ ANSI 字节流 ──→ BSU/ESU 原子帧
+                                                                                    │
+                                                                                    ▼
+                                                                          写到终端历史区
+</code></pre>
+<p>图中三层各有明确的职责边界。第一层是本章讨论的 <code>useStreamBuffer</code>，负责决定何时把哪段文本变成一条消息——按安全 markdown 边界切片，再用 150ms 合并窗口将密集到达的切片聚合成一次提交。第二层是 Ch.24 讨论的 ChatInput 渲染逻辑，负责消息进入数组后如何渲染到终端——通过 cell-level diff 比对差异，由 <code>writeMessageToStdout</code> 经换行符触发 auto-scroll 把内容推入终端历史区。第三层是 Ch.25 讨论的跨终端写入层，负责包装写入的字节流使其在不同终端上都稳定——BSU/ESU 原子帧、消除副作用写入等。三层之间的分工意味着本章只需要关心「在哪个位置切割文本」和「在什么时机把切片提交给 UI」，不需要关心写入终端的底层细节。</p>
+<h3 id="两段缓存的设计">两段缓存的设计</h3>
+<p>每个 text-delta 到达后不直接推送到屏幕，而是依次经过两段缓存。第一段是 <code>bufferRef</code>，累加所有尚未切割的原始文本；第二段是 <code>pendingChunksRef</code>，存放已经通过安全边界检测、等待合并窗口到期后统一提交的切片。下面的示意图展示了一个 text-delta 从到达缓冲区到最终推送给 UI 的完整路径：</p>
+<pre><code class="language-text">   模型 text-delta（每次 1-5 字符）
+          │
+          ▼
+   ┌──────────────────────────────────────────────┐
+   │ bufferRef: string                             │  ← 累加未切割的原始文本
+   │ 例：&quot;你好，建议用 R&quot;（末尾没有换行，还不能切） │
+   └──────────────────────────────────────────────┘
+          │ 找到一个可以切割的换行符
+          │ （该换行符不在代码块或表格内部，切割不会破坏 markdown 结构）
+          ▼
+   ┌──────────────────────────────────────────────┐
+   │ pendingChunksRef: string[]                    │  ← 等待 150ms 合并窗口的切片
+   │ 例：[&quot;你好。\n&quot;, &quot;建议用 React。\n&quot;]           │
+   └──────────────────────────────────────────────┘
+          │ 150ms 定时器到点
+          ▼
+   appendMessage({ streamingChunk: true })   ← 把 pending 里的几段合并成一条消息推给 UI
+</code></pre>
+<p>读者可能会问，为什么需要分两段而不是只用一个缓冲区。原因在于两段缓冲各自解决了一个不同的问题。<code>bufferRef</code> 解决的是「还没到达安全边界就不能切」——比如 markdown 表格的表头刚写了一行 <code>| col |</code>，下一行还没到达，此时不能切割，否则 markdown 解析器会因为表格结构不完整而无法正确解析。<code>pendingChunksRef</code> 解决的是「密集到达的多个切片应合并成一次写入」——当模型连续生成段落、分隔符、标题时，150ms 内产生的多个切片会合并到同一次 <code>appendMessage</code> 调用，让终端少做一次重绘。如果只用一个缓冲区，要么在安全边界到达时立即提交（失去合并窗口的收益），要么在合并窗口到期前无法判断哪些内容已经通过安全检测（逻辑耦合）。两段分离让每一段只承担单一职责。</p>
+<h3 id="流式过程中的三种情况">流式过程中的三种情况</h3>
+<p>回到开头的示例：用户提交请求后，模型的 text-delta 源源不断到达缓冲区。在一次完整的流式输出过程中，缓冲区会遇到三种不同的情况，<code>useStreamBuffer</code> 为每种情况提供了对应的处理方式。</p>
+<p>第一种是常规流入。每个 text-delta 到达时调用 <code>appendTextDelta</code>，delta 累加到 <code>bufferRef</code>，扫描安全边界，能切就切到 <code>pendingChunksRef</code>，首个切片启动 150ms 定时器。定时器到点时内部的 <code>drainPending</code> 把所有等待中的切片拼起来，作为一条带 <code>streamingChunk: true</code> 标记的消息推给 UI。这是绝大多数时间里缓冲区的工作状态——text-delta 持续到达、累积到安全边界即切片、定时器到期即提交。</p>
+<p>第二种是被工具调用打断。回想示例中模型写到「好的，我先看一下这个文件的当前实现」后突然决定调 <code>readFile</code>——这时 <code>bufferRef</code> 里可能还有没到安全边界的残留文本。如果不处理，用户会先看到工具调用、后看到文字，顺序错乱。下面的时序图对比了不做 flush 和做 flush 两种走法：</p>
+<pre><code class="language-text">时间轴 ──→
+
+不 flush（错乱）：
+   t1: stream &quot;好的，我先 readFile X&quot; ──→ 落到 bufferRef，等 \n
+   t2: 模型决定 tool-call 触发 onToolCall
+   t3: UI 显示：● readFile X.ts          ← 工具调用先出现
+   t4: 150ms 定时器到点 drainPending
+   t5: UI 显示：&quot;好的，我先 readFile X&quot;   ← 文字后出现（顺序错乱）
+
+flush（顺序正确）：
+   t1: stream &quot;好的，我先 readFile X&quot; ──→ 落到 bufferRef
+   t2: onToolCall 回调第一行 → flushBuffer()
+   t3: UI 显示：&quot;好的，我先 readFile X&quot;  ← 文字先出现
+   t4: UI 显示：● readFile X.ts          ← 工具调用后出现
+</code></pre>
+<p>因此 <code>onToolCall</code> 回调的第一行就调 <code>flushBuffer</code>：把 <code>bufferRef</code> 里的残留移入 <code>pendingChunksRef</code>，清掉定时器，立即执行一次 <code>drainPending</code>——t2 到 t3 之间没有 150ms 等待，残留文本在同一帧内推到 UI，视觉顺序正确。一轮正常结束时 <code>submit</code> 也会调一次 <code>flushBuffer</code> 刷出末尾残留。此外还有一种边界情况：某些推理模型不通过 <code>onTextDelta</code> 回调推送文本，而是把全部文本放在 <code>response.messages</code> 的最终 part 里，整轮没有触发过一次 <code>onTextDelta</code>。针对这种情况，<code>submit</code> 收尾时会调 <code>extractLastAssistantText</code> 从 <code>loopState.messages</code> 中提取 assistant 文本作为消息追加。工具执行完，模型继续输出时，新的 text-delta 从空缓冲重新累加、重新合并、再推给 UI；前后两段消息都带 <code>streamingChunk: true</code> 标记，不加末尾空行，在 UI 上自然连续成一段（详见下文「streamingChunk 标记与片段拼接」），用户看到的是一段完整文字被工具调用打断后继续，不会有断裂感。</p>
+<p>第三种是用户中断。用户按 Esc 或 Ctrl+C、输入 <code>/clear</code> 时，缓冲区里的残留文本已经没有意义。<code>resetBuffer</code> 把三个 ref 全部清空、取消定时器，不调 <code>drainPending</code>——残留直接丢弃，避免下一轮开头出现上一轮未完成的残留文本。<code>flushBuffer</code> 和 <code>resetBuffer</code> 的核心区别在于残留文本的去向：前者把残留推到 UI 让用户看见，后者把残留直接丢弃。下面的表格汇总了三种情况。</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>调用的函数</th>
+<th>残留文本的去向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>常规流入</td>
+<td><code>appendTextDelta</code> → 150ms 定时器 → <code>drainPending</code></td>
+<td>切片合并后推给 UI</td>
+</tr>
+<tr>
+<td>工具调用打断 / 一轮收尾</td>
+<td><code>flushBuffer</code></td>
+<td>立即推给 UI</td>
+</tr>
+<tr>
+<td>用户中断</td>
+<td><code>resetBuffer</code></td>
+<td>直接丢弃</td>
+</tr>
+</tbody>
+</table>
+<h3 id="代码骨架">代码骨架</h3>
+<p>输入侧只有一个 <code>appendTextDelta</code> 函数——累加 delta、找安全边界切片、首切片启动 150ms 定时器：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">function useStreamBuffer(appendMessage: (msg) =&gt; void) {
+  const bufferRef = useRef('') // 累加未切的原始文本
+  const pendingChunksRef = useRef&lt;string[]&gt;([]) // 等待合并的安全切片
+  const emitTimerRef = useRef&lt;Timer | null&gt;(null)
+
+  const appendTextDelta = (delta: string) =&gt; {
+    bufferRef.current += delta
+    const boundary = findSafeBoundary(bufferRef.current)
+    if (boundary &gt; 0) {
+      pendingChunksRef.current.push(bufferRef.current.slice(0, boundary))
+      bufferRef.current = bufferRef.current.slice(boundary)
+    } else if (bufferRef.current.length &gt; CODE_FENCE_COMMIT_THRESHOLD &amp;&amp; hasOpenMarkdownBlock(bufferRef.current)) {
+      // 长 code fence 容错：最后一个 \n 处强制切
+    }
+    // 首切片启动定时器；后续切片合并到同一次提交
+    if (!emitTimerRef.current) {
+      emitTimerRef.current = setTimeout(drainPending, COMMIT_BATCH_MS)
+    }
+  }
+  // ... drainPending / flushBuffer / resetBuffer 见下
+}
+</code></pre>
+<p>输出侧有三个回调——<code>drainPending</code> 定时器的常规提交、<code>flushBuffer</code> 工具调用前的强制刷出、<code>resetBuffer</code> 被中断后的丢弃残留：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">const drainPending = () =&gt; {
+  const combined = pendingChunksRef.current.join('')
+  if (combined) {
+    appendMessage({ role: 'assistant', content: combined, streamingChunk: true })
+  }
+  pendingChunksRef.current = []
+  emitTimerRef.current = null
+}
+
+const flushBuffer = () =&gt; {
+  // 残留挪进 pending、清定时器、立即 drain
+  if (bufferRef.current) pendingChunksRef.current.push(bufferRef.current)
+  bufferRef.current = ''
+  if (emitTimerRef.current) {
+    clearTimeout(emitTimerRef.current)
+    emitTimerRef.current = null
+  }
+  drainPending()
+}
+
+const resetBuffer = () =&gt; {
+  // 三个 ref 全清，不 drain（残留直接丢）
+  bufferRef.current = ''
+  pendingChunksRef.current = []
+  if (emitTimerRef.current) {
+    clearTimeout(emitTimerRef.current)
+    emitTimerRef.current = null
+  }
+}
+</code></pre>
+<h2 id="26-2-findsafeboundary-按安全边界切-不按段落切">26.2 findSafeBoundary——按安全边界切，不按段落切</h2>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">// 从尾部向前扫描，找最晚的&quot;安全单 \n&quot;切点
+function findSafeBoundary(text: string): number {
+  let scan = text.length
+  while (scan &gt; 0) {
+    const found = text.lastIndexOf('\n', scan - 1)
+    if (found &lt; 0) return -1
+    const prefix = text.slice(0, found + 1)
+    if (!hasOpenMarkdownBlock(prefix)) return found + 1
+    scan = found
+  }
+  return -1
+}
+</code></pre>
+<p><code>hasOpenMarkdownBlock(prefix)</code> 检测两种未闭合结构：一是奇数个 <code>```</code>，表明当前还在 code fence 内部，在此处切割会把 code fence 切断；二是末行以 <code>|</code> 开头的 markdown 表格行——表格至少需要表头、分隔行、数据行三行才能被 <code>marked.lexer</code> 识别为 table token，在行数不足时切割会导致切出去的片段无法被解析为表格。下面通过两个例子说明这个算法的具体工作过程。例 1 是 buffer 当前正好停在 code fence 中间的情况：</p>
+<pre><code class="language-text">bufferRef 当前内容（每行末尾的 \n 是潜在切点）：
+   ┌─────────────────────────────────────────────┐
+   │ 你好。\n                ← ✓ 安全切点         │
+   │ 这是代码示例：\n        ← ✓ 安全切点         │
+   │ ```ts\n                 ← ✗ 切了会把 fence 切断│
+   │ const x = 1;\n          ← ✗ 在 fence 内部     │
+   │ console.log(x);         ← (还没换行)         │
+   └─────────────────────────────────────────────┘
+            │
+            │ findSafeBoundary 从尾部向前扫，跳过 fence 内的 \n
+            ▼
+   返回最晚安全切点：第 2 行末尾
+   切 &quot;你好。\n这是代码示例：\n&quot; 进 pendingChunks
+   剩下 &quot;```ts\nconst x = 1;\nconsole.log(x);&quot; 留在 bufferRef，
+   等下游 delta 把 fence 闭合（再来一个 ``` ）再切
+</code></pre>
+<p>例 2 是 buffer 停在表格中间的情况：</p>
+<pre><code class="language-text">   ┌─────────────────────────────────────────────┐
+   │ 这是一个表格：\n        ← ✓ 安全切点         │
+   │ | 列名 | 类型 |\n       ← ✗ 末行是表格行     │
+   │ | ---- | ---- |         ← (还没换行)         │
+   └─────────────────────────────────────────────┘
+            │
+            ▼
+   切 &quot;这是一个表格：\n&quot;，剩余部分留在 bufferRef 等表格行完整闭合
+</code></pre>
+<p>读者可能会问，为什么按单个 <code>\n</code> 切而不是按段落分隔符（<code>\n\n</code>）切。原因在于按段切会产生成块出现的效果，长回答会一段一段弹出来；按行切则让每行依次落定，更贴近打字机式逐行流出的阅读节奏。</p>
+<h2 id="26-3-streamingchunk-标记与片段拼接">26.3 streamingChunk 标记与片段拼接</h2>
+<p>回到开头的示例：模型的回答被 <code>readFile</code> 工具调用分成了前后两段，但用户看到的是一段连贯的文字，中间没有多余的空行或分隔线。这个视觉效果靠的是 <code>streamingChunk</code> 标记。缓冲区每次刷出时，累积的文本作为一条 <code>DisplayMessage</code> 推给 messages 数组，这条消息带有 <code>streamingChunk: true</code> 标记。普通 assistant 消息末尾会自动加一个空行（在视觉上分隔多条消息），而带 <code>streamingChunk</code> 标记的消息不加——这样多个片段在终端上连续成一段，用户看到的不是一条一条独立的消息，而是同一段文字逐段出现。直观对比：</p>
+<pre><code class="language-text">streamingChunk: false（普通 assistant 消息）：
+   ┌─────────────────────────────────┐
+   │ 好的，我帮你看一下这个文件。      │
+   │                                  │  ← 末尾自动加空行
+   ├─────────────────────────────────┤
+   │ 这个文件的作用是 ...              │
+   │                                  │  ← 末尾自动加空行
+   └─────────────────────────────────┘
+   视觉上：两条独立消息（有分隔感）
+
+streamingChunk: true（流式中途刷出的片段）：
+   ┌─────────────────────────────────┐
+   │ 好的，我帮你看一下这个文件。      │  ← 末尾不加空行
+   │ 这个文件的作用是 ...              │  ← 末尾不加空行
+   │ 它实现了 ...                      │
+   └─────────────────────────────────┘
+   视觉上：同一段文字逐段出现（连续感）
+</code></pre>
+<h2 id="26-4-只读工具组折叠-连续只读工具折叠成一行摘要">26.4 只读工具组折叠：连续只读工具折叠成一行摘要</h2>
+<p>流式输出还有一个相关的 UI 优化——模型频繁连发只读工具调用时（<code>readFile</code> / <code>glob</code> / <code>grep</code> / <code>listDir</code>），UI 不逐工具铺行展示，而是把整段缓存起来，等到链条结束（出现非只读工具 / text-delta 片段 / 一轮结束 / 用户中断）才一次性输出一行摘要：</p>
+<pre><code class="language-text"> ● Read 4 files(README.md, package.json, package.json, +1 more)
+</code></pre>
+<p>为什么要折叠？coding agent 在回答「看一下这个项目」「修一下 X 模块」这类问题时，模型常常连续发出多个只读工具调用——多数是 <code>readFile</code> 读源码，也会穿插 <code>glob</code> 找文件、<code>grep</code> 找符号、<code>listDir</code> 看目录。如果每一次工具调用都在终端历史区铺一行，看起来会是这样：</p>
+<pre><code class="language-text"> ● ReadFile src/index.ts            ← 模型连续发出的 8 次只读工具
+ ● ReadFile src/app.tsx                各自占一行 → 屏幕被刷满
+ ● ReadFile src/components/A.tsx       用户实际想看的回答被推到屏幕外
+ ● ReadFile src/components/B.tsx       （往上滚才能找到）
+ ● ReadFile src/components/C.tsx
+ ● ReadFile src/utils.ts
+ ● ReadFile src/hooks/useAuth.ts
+ ● ReadFile src/api/client.ts
+</code></pre>
+<p>8 次只读工具调用意味着至少 8 行屏幕空间被占用，而这些信息对用户的价值很低——读了什么文件只是模型推理过程的中间步骤，不是最终结论。折叠成一行摘要后有两种典型形态：</p>
+<pre><code class="language-text"> ● Read 8 files(index.ts, app.tsx, A.tsx, +5 more)        ← 纯 readFile 链条
+ ● Read 1 file, listed 2 directories(index.ts)            ← 混合多类只读工具
+</code></pre>
+<p>8 行变 1 行，节省出来的屏幕空间留给模型真正的回答。摘要括号里只放 <code>readFile</code> 的文件名，<code>grep</code> / <code>glob</code> / <code>listDir</code> 不进入摘要详情，因为这些工具的参数（搜索模式、glob pattern、目录路径）对一行摘要的价值不大。只读工具的副作用为零，折叠不丢失任何用户需要的状态信息；如果中间出现写操作（<code>writeFile</code> / <code>edit</code> / <code>shell</code>），折叠链条立刻结束，写工具单独成行展示——原因在于写操作影响真实文件系统，每一次都应当让用户看到。折叠期间进度指示器文案从 <code>Thinking…</code> 切换到 <code>Reading…</code>，让用户知道模型正在读取文件而非陷入沉默。链条结束时 CLI 把累积的各类只读工具调用次数汇成首字大写、逗号连接的标签，再附上前 3 个文件名作为摘要。</p>
+<h2 id="26-5-小结">26.5 小结</h2>
+<p>本章围绕一个核心问题展开：模型每秒产生几十个只携带几个字符的 text-delta，如何在不触发 Yoga CJK 宽度计算错误的前提下让用户看到逐行流出的文字。<code>useStreamBuffer</code> 的设计思路是两段缓冲加合并窗口——先在 <code>bufferRef</code> 中累加原始文本，扫描到安全 markdown 边界（不在未闭合的 code fence 或表格中间）时切片放入 <code>pendingChunksRef</code>，再由 150ms 定时器把多个切片合并成一次 <code>appendMessage</code> 提交。三个强制刷出时机（工具调用前、一轮收尾、一轮中断）保证缓冲区不会在关键节点残留未显示的文本。提交时每个片段已经走完 markdown 渲染，没有纯文本到 markdown 的二次刷新跳动。</p>
+<p>下一章（Ch.27）将讨论 <code>appendMessage</code> 之后的环节——markdown 文本如何经 <code>renderMarkdown</code> ANSI 化后写到终端历史区。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-25.html">← 跨终端渲染：三条工程原则</a>
+      <a class="next" href="ch-27.html">Markdown → ANSI 自研渲染器 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#26-1-usestreambuffer-的设计">26.1 useStreamBuffer 的设计</a></li>
+      <li class="lv3"><a href="#两段缓存的设计">两段缓存的设计</a></li>
+      <li class="lv3"><a href="#流式过程中的三种情况">流式过程中的三种情况</a></li>
+      <li class="lv3"><a href="#代码骨架">代码骨架</a></li>
+      <li class="lv2"><a href="#26-2-findsafeboundary-按安全边界切-不按段落切">26.2 findSafeBoundary——按安全边界切，不按段落切</a></li>
+      <li class="lv2"><a href="#26-3-streamingchunk-标记与片段拼接">26.3 streamingChunk 标记与片段拼接</a></li>
+      <li class="lv2"><a href="#26-4-只读工具组折叠-连续只读工具折叠成一行摘要">26.4 只读工具组折叠：连续只读工具折叠成一行摘要</a></li>
+      <li class="lv2"><a href="#26-5-小结">26.5 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

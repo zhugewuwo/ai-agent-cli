@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>权限对话框与 askUser 模态 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li class="active"><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 28 章 权限对话框与 askUser 模态</h1>
+<p>模型在执行写文件、编辑、Shell 命令等操作前需要用户确认是否放行；调用 askUser 工具时需要用户在选项中做选择。这两类场景有一个共同的技术难题：agentLoop 是一个 async 函数，如何让它「暂停」在某一行，等用户在 UI 上做出响应后再继续执行？本章围绕这个问题展开，分为如下几个部分进行介绍。</p>
+<ul>
+<li>28.1 节讲解挂起等待的统一模式：如何用 Promise + resolve 让 agentLoop 暂停等待 UI 响应。</li>
+<li>28.2 节介绍权限确认对话框的渲染结构：标题、参数预览、选项行，以及参数行的自动截断机制。</li>
+<li>28.3 节讨论 askUser 工具的 SelectOptions 实现：选项渲染、Other 后备选项、键盘路由共享。</li>
+<li>28.4 节说明队列设计与挂起期间的 UI 状态管理。</li>
+<li>28.5 节用一次完整的 edit 确认串讲整条数据流。</li>
+<li>28.6 节给出本章小结。</li>
+</ul>
+<h2 id="28-1-挂起等待的统一模式">28.1 挂起等待的统一模式</h2>
+<p>agentLoop 在两个地方需要暂停：权限确认（<code>writeFile</code> / <code>edit</code> / <code>shell</code> 在执行前问用户 Yes / Yes don't ask again / No）和 askUser 工具（模型显式向用户提问，等用户在选项中做选择）。两者的实现思路一致，都利用了 JavaScript 中 Promise 的阻塞语义。<code>await somePromise</code> 会让当前 async 函数停在这一行，直到 Promise 被 <code>resolve</code> 才继续。X-Code CLI 让 agentLoop <code>await</code> 一个 Promise，把这个 Promise 的 <code>resolve</code> 函数交给 UI 保管。用户在 UI 上选择 Yes / No 后，UI 调用这个 <code>resolve</code> 函数把决定（<code>'yes'</code> / <code>'no'</code> / <code>'always'</code>）传回去，<code>await</code> 才拿到结果继续执行。</p>
+<p>整套流程分四个阶段：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">阶段 1 — agentLoop 调回调请求确认，自己 await 等待
+   ┌─────────────────────────────────────────────────────────────┐
+   │ agentLoop (core 层):                                          │
+   │                                                               │
+   │   const decision = await callbacks.onAskPermission(toolCall) │
+   │                          ↑                                    │
+   │                          这一行让 agentLoop 阻塞，等待结果   │
+   └─────────────────────────────────────────────────────────────┘
+                              │ 调用 UI 注入的回调
+                              ▼
+阶段 2 — UI 回调里创建 Promise、resolve 函数存入 ref、请求进 state 队列
+   ┌─────────────────────────────────────────────────────────────┐
+   │ onAskPermission 回调（use-agent.ts）：                        │
+   │                                                               │
+   │   return new Promise((resolve) =&gt; {                           │
+   │     permissionResolversRef.current.push(resolve)  ← 存入 ref  │
+   │     setState((prev) =&gt; ({ ...prev,                            │
+   │       permissionQueue: [...prev.permissionQueue, toolCall]    │
+   │     }))                                            ← 进 state │
+   │   })                                                          │
+   └─────────────────────────────────────────────────────────────┘
+                              │
+                              │ React 检测到 state 变化、触发重渲
+                              ▼
+阶段 3 — ChatInput 看见队列有内容，显示对话框
+   ┌─────────────────────────────────────────────────────────────┐
+   │ ChatInput.tsx：                                               │
+   │                                                               │
+   │   if (permissionQueue.length &gt; 0) {                           │
+   │     // 渲染队首的对话框：标题 / 参数 / Yes / No                │
+   │     // 监听键盘：y / n / ↑↓ / Enter                           │
+   │   }                                                           │
+   └─────────────────────────────────────────────────────────────┘
+                              │ 用户按 y
+                              ▼
+阶段 4 — 取出对应 resolve 函数调用，解除阻塞
+   ┌─────────────────────────────────────────────────────────────┐
+   │ resolvePermission('yes'):                                     │
+   │                                                               │
+   │   permissionResolversRef.current.shift()              ← 取出 │
+   │   resolve('yes')                                      ← 调用 │
+   │   setState({ permissionQueue: queue.slice(1) })     ← 队列前移│
+   └─────────────────────────────────────────────────────────────┘
+                              │
+                              │ 阶段 1 那个 await 终于拿到 'yes'
+                              ▼
+   ┌─────────────────────────────────────────────────────────────┐
+   │ agentLoop 继续：                                              │
+   │   if (decision === 'yes') 真正执行 edit(...)                  │
+   └─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>这套设计有两个关键的分工决策。</p>
+<p>（1）<code>resolve</code> 函数本身就是「按钮」。保存它的引用，之后任何时候调用，就能让远端的 <code>await</code> 解除阻塞。</p>
+<p>（2）ref 存 resolve、state 存请求。state 用来驱动重渲（让 UI 看见有新请求要显示），ref 用来在用户响应或取消时同步访问 resolve 函数。</p>
+<p>为什么 resolve 函数放 ref 而不是 state？原因在于取消场景需要同步访问。用户按 Esc 取消整轮时，<code>abort()</code> 要一次性遍历所有挂起的 resolve 函数、全部调用 <code>resolve('no')</code> 解除阻塞。<code>setState</code> 是异步的，读到的可能是旧值，遗漏新请求；ref 的 <code>.current</code> 永远指向最新数组，不受渲染批次影响。代价是 ref 数组和 state 队列之间存在隐式的一一对应关系，push 和 shift 两侧必须保持同步。</p>
+<h2 id="28-2-权限确认对话框">28.2 权限确认对话框</h2>
+<blockquote>
+<p>源码：<code>packages/cli/src/ui/components/ChatInput.tsx</code> + <code>chat-input/permission.ts</code></p>
+</blockquote>
+<p>触发时机：<code>writeFile</code> / <code>edit</code> / <code>shell</code> / <code>enterPlanMode</code> 走 ask 路径时（详见 Ch.29）。对话框结构由标题、参数预览、选项行三段组成。先看 edit 工具的对话框：</p>
+<pre><code class="language-text">   ┌────────────────────────────────────────────────────────┐
+   │ X-Code wants to edit a file                            │  ← 标题
+   │                                                         │
+   │ src/auth/login.ts                                       │  ← 参数预览
+   │                                                         │
+   │ ❯ Yes                                                   │  ← 选项行（3 项）
+   │   Yes, don't ask again for: all edits this session      │
+   │   No                                                    │
+   └────────────────────────────────────────────────────────┘
+   y / n 单字母快捷键  ·  ↑↓ 切换  ·  Enter 确认
+</code></pre>
+<p>shell 工具会多一个风险标签（read-only / write / dangerous），按级别染色：</p>
+<pre><code class="language-text">   ┌────────────────────────────────────────────────────────┐
+   │ X-Code wants to run a shell command                    │
+   │                                                         │
+   │ $ rm -rf node_modules  [dangerous]                      │  ← [dangerous] 染红
+   │                                                         │
+   │ ❯ Yes                                                   │
+   │   Yes, don't ask again for: this exact command          │
+   │   No                                                    │
+   └────────────────────────────────────────────────────────┘
+</code></pre>
+<p>shell 的第二项标签根据命令内容自动生成：能提取前缀的命令（如 <code>git commit -m &quot;...&quot;</code>）显示 <code>git commit:*</code>，放行同类命令；无法提取的（如 <code>rm -rf node_modules</code>）显示 <code>this exact command</code>，只放行完全相同的调用。<code>enterPlanMode</code> 不显示第二项。</p>
+<p>各工具的标题与参数预览映射如下：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>标题</th>
+<th>参数预览</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shell</td>
+<td><code>X-Code wants to run a shell command</code></td>
+<td><code>$ &lt;command&gt;</code> + 风险标签 <code>[read-only]</code> / <code>[write]</code> / <code>[dangerous]</code></td>
+</tr>
+<tr>
+<td>writeFile</td>
+<td><code>X-Code wants to write a file</code></td>
+<td><code>&lt;path&gt; (new file)</code>（dim 后缀）</td>
+</tr>
+<tr>
+<td>edit</td>
+<td><code>X-Code wants to edit a file</code></td>
+<td><code>&lt;path&gt;</code>（仅路径，不显示 diff）</td>
+</tr>
+<tr>
+<td>enterPlanMode</td>
+<td><code>X-Code wants to enter plan mode</code></td>
+<td><code>Read-only exploration; no edits until you approve a plan.</code></td>
+</tr>
+<tr>
+<td>其他</td>
+<td><code>X-Code wants to use &lt;tool&gt;</code></td>
+<td>无参数预览行</td>
+</tr>
+</tbody>
+</table>
+<p>shell 的风险标签颜色随级别变化：<code>[read-only]</code> 绿色、<code>[write]</code> 黄色、<code>[dangerous]</code> 红色加粗，让用户一眼看出危险等级。</p>
+<p>选项行通常有 3 项。Yes（<code>y</code> 快捷键）本次放行；Yes, don't ask again for <code>&lt;label&gt;</code> 放行并生成 <code>AllowRule</code>，后续同类操作自动放行；No（<code>n</code> 快捷键）拒绝。第 2 项仅在 <code>suggestRuleLabel</code> 返回非 <code>null</code> 时显示。上文提到，除 <code>enterPlanMode</code> 外的所有工具都会返回标签，因此绝大多数对话框都是 3 项，只有进入 Plan Mode 时显示 Yes / No 两项。</p>
+<p>为什么 diff 不放进对话框？对话框是固定高度的单帧结构，diff 长度不可控，强行塞入会导致选项行错位。此外，写动作可能失败，先展示 diff 后执行失败会让用户困惑。因此 diff 在工具执行成功后才输出到终端历史区，屏幕上看到 diff 就意味着写入已经发生。同样的布局约束也体现在参数行上：参数行必须保持单行高度，超出终端列宽会触发自动换行，同样导致下方选项行错位。因此渲染前会根据终端宽度提前截断，超出部分用 <code>…</code> 标记。</p>
+<h2 id="28-3-askuser-与-selectoptions">28.3 askUser 与 SelectOptions</h2>
+<blockquote>
+<p>源码：<code>packages/cli/src/ui/components/ChatInput.tsx</code></p>
+</blockquote>
+<p>触发时机：模型调用 <code>askUser(question, options)</code> 工具时，挂起 Agent、把问题和选项交给 UI，等用户做选择再恢复。挂起和恢复用的是跟权限对话框同一种 Promise + resolve 模式。对话框的结构如下：</p>
+<pre><code class="language-text">   ┌────────────────────────────────────────────────────────┐
+   │ ? 数据库用哪个方案？                                    │  ← 标题（模型传入的问题）
+   │                                                         │
+   │ ❯ PostgreSQL — 关系型，适合复杂查询                     │  ← 选项 1
+   │   SQLite — 轻量级，无需服务器                           │  ← 选项 2
+   │   MongoDB — 文档型，Schema 灵活                         │  ← 选项 3
+   │   Other — Type a custom answer.                         │  ← 自带后备选项
+   │                                                         │
+   │ ↑↓ 移动  ·  Enter 确认                                  │
+   └────────────────────────────────────────────────────────┘
+</code></pre>
+<p>上下箭头移动光标，Enter 确认选择。选中普通选项时直接把结果传回给模型；选中 Other 后切换到自由文本输入模式，用户输入自定义答案再传回。为什么末尾自带 Other？模型给的选项不一定覆盖用户实际想表达的情况。没有后备选项时，用户只能强行选一个不准确的、或者取消整轮对话。</p>
+<h2 id="28-4-队列设计与挂起期间的-ui-状态">28.4 队列设计与挂起期间的 UI 状态</h2>
+<p>挂起请求在数据层的建模方式是：权限请求用队列，askUser 用单值。</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">permissionQueue: PendingPermission[]
+pendingQuestion: PendingQuestion | null  // askUser 同时只能有一个
+</code></pre>
+<p>为什么两者不同？权限请求用队列是因为模型一次可能返回多个工具调用，每个都需要独立确认，用户依次处理，每次确认后下一个自动弹出。askUser 用单值是因为模型一次只能调一个 askUser，不存在并发排队的场景。对话框显示期间，UI 进入模态状态：输入框禁用，键盘被对话框拦截。但进度指示器保持可见，因为用户需要看到「Running edit on foo.ts」这类提示才知道系统仍在工作，否则会以为无响应。权限对话框和 SelectOptions 都统一进 ChatInput 的 cell buffer 渲染，不使用 Ink 的动态区。原因在于 Ink 的 auto-scroll 会把对话框推进终端历史区后留下永久残行（详见 Ch.24）。cell buffer 自管整体高度，避免了这个问题。</p>
+<h2 id="28-5-完整数据流-以一次-edit-确认为例">28.5 完整数据流：以一次 edit 确认为例</h2>
+<p>前面各节分别讲解了挂起模式、对话框渲染和队列设计。本节以一次 <code>edit('src/auth/login.ts', oldText, newText)</code> 确认为例，把各节的机制串联起来。整体流程遵循 28.1 节的四阶段图：agentLoop <code>await onAskPermission</code> 阻塞 → UI 回调创建 Promise、存 resolve 到 ref、请求进 state 队列 → React 重渲触发 ChatInput 渲染对话框 → 用户按键后 <code>resolvePermission</code> 解除阻塞。这里补充四阶段图中未展开的两个环节，即用户侧看到的具体画面，以及三种决定的后续分支：</p>
+<pre><code class="language-text">用户在屏幕上看到对话框：
+  X-Code wants to edit a file
+  src/auth/login.ts
+  ❯  Yes  
+  ·  Yes, don't ask again for: all edits this session  
+  ·  No
+
+选中 Yes、按 Enter 后 agentLoop 拿到 'yes'：
+  - 'yes'    → 本次放行，真正执行 edit
+  - 'always' → 放行，同时生成一条允许规则写入会话，后续同类操作自动跳过确认
+  - 'no'     → 抛 PermissionDeniedError，作为 tool_result 返回模型
+</code></pre>
+<p>这套模式不是权限或 askUser 独有的，任何「Agent 暂停等用户输入」的场景都可以应用。Plan Mode 就是直接复用这套机制（详见 Ch.21）：<code>enterPlanMode</code> 工具借助同样的回调 + Promise + state queue 让用户审核计划，再决定 keep / accept / cancel。</p>
+<h2 id="28-6-小结">28.6 小结</h2>
+<p>本章讨论了 X-Code CLI 中权限对话框和 askUser 模态的实现。核心机制是 Promise + resolve 的挂起等待模式：agentLoop <code>await</code> 一个 Promise 阻塞自身，UI 持有 <code>resolve</code> 函数，用户做出选择后调用 <code>resolve</code> 解除阻塞。权限确认和 askUser 共用这套模式，区别仅在于数据建模：前者用队列处理并发请求，后者用单值。两种对话框都作为 ChatInput 内部的逻辑分支渲染进 cell buffer，避免了独立组件争夺 stdin 和 Ink 动态区残行的问题。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-27.html">← Markdown → ANSI 自研渲染器</a>
+      <a class="next" href="ch-29.html">三级权限模型与 shell 命令分级 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#28-1-挂起等待的统一模式">28.1 挂起等待的统一模式</a></li>
+      <li class="lv2"><a href="#28-2-权限确认对话框">28.2 权限确认对话框</a></li>
+      <li class="lv2"><a href="#28-3-askuser-与-selectoptions">28.3 askUser 与 SelectOptions</a></li>
+      <li class="lv2"><a href="#28-4-队列设计与挂起期间的-ui-状态">28.4 队列设计与挂起期间的 UI 状态</a></li>
+      <li class="lv2"><a href="#28-5-完整数据流-以一次-edit-确认为例">28.5 完整数据流：以一次 edit 确认为例</a></li>
+      <li class="lv2"><a href="#28-6-小结">28.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

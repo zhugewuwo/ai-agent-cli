@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>插件 marketplace 与分发 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li class="active"><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 40 章 插件 marketplace 与分发</h1>
+<p>上一章讲完了插件从安装到运行的完整生命周期。但那一章从头到尾都假设用户已经拿到了插件的名字和来源，直接执行 <code>xc plugin install</code> 即可。现在的问题是：用户从哪里发现有哪些插件可以安装？给定一个插件名字之后，CLI 又如何找到它的 git 源？Marketplace 这一层把「哪些插件值得安装」的发现职责跟「安装」的执行职责分开。Marketplace 本身是一份按 git 仓库分发的插件目录（<code>marketplace.json</code>）：X-Code CLI 不自己运营 marketplace，用户订阅别人维护的 marketplace 仓库，CLI 在本地缓存索引并组合查询。默认预置的 <code>anthropic-marketplace</code> 指向 <code>github:anthropics/claude-plugins-official</code>，里面收录了 200 多个真实插件。本章从一次端到端的订阅 → 安装流程入手，再逐个展开 marketplace 的四个设计决定。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>40.1 节以官方 <code>anthropic-marketplace</code> 为例，走完从订阅到安装的端到端流程。</li>
+<li>40.2 节讨论 marketplace 身份的两层命名（本地别名与上游 name）以及保留名冒充防御。</li>
+<li>40.3 节讲解 <code>marketplace.json</code> 里 插件条目（plugin entry）的 4 种主流来源（source）形态（加上 4 种少见形态共 8 种），以及归一化层如何把它们统一成一种内部表示。</li>
+<li>40.4 节说明 sha 锁定（pinning）的安全动机、校验逻辑和 7-40 字符 hex 格式验证。</li>
+<li>40.5 节讨论拉取 marketplace 索引的两条路径：HTTPS 直链与 git 浅克隆（shallow clone）。</li>
+<li>40.6 节给出本章小结。</li>
+</ul>
+<blockquote>
+<p>AI 知识背景：插件市场（marketplace）/ 扩展注册表（extension registry）</p>
+<p>让用户发现并安装第三方扩展的「插件目录」在工具生态里有很多先例：npm registry（中心化、Node.js 包）、PyPI（中心化、Python 包）、VS Code Marketplace（中心化、VS Code 扩展）、Homebrew tap（分布式、每个 tap 是一个 git 仓库）。这些机制大致分两类。</p>
+<p>中心化注册表（npm、PyPI、VS Code Marketplace）有官方运营方维护服务、托管所有包元数据。优点是一致性高、易搜索；缺点是要发包流程、依赖第三方服务可用性。</p>
+<p>分布式目录（Homebrew tap、Chrome 企业策略 等）让用户订阅不同来源的目录文件。优点是没有中心运营方、用户能选自己信任的源；缺点是多个目录的内容会有重复或冲突。</p>
+<p>X-Code CLI 选第二种。Marketplace 是别人 GitHub 仓库里的一份 <code>marketplace.json</code>，用户订阅一个或多个 marketplace 仓库，CLI 在本地缓存它们的索引并组合查询。这跟 Claude Code 的 plugin marketplace 设计一致，方便接收对方生态里现成的 marketplace（最大的一份是 <code>anthropics/claude-plugins-official</code>，含 200 多个官方与社区插件）。</p>
+</blockquote>
+<h2 id="40-1-一个完整的例子-从订阅到安装">40.1 一个完整的例子：从订阅到安装</h2>
+<p>新装的 CLI 启动后，默认订阅列表里已经有一份 <code>anthropic-marketplace</code>，这是 CLI 启动时自动预置的。先看用户视角能做什么：</p>
+<pre><code class="language-text">&gt; /plugin marketplace list
+⎿ Subscribed marketplaces (1):
+    anthropic-marketplace  github:anthropics/claude-plugins-official [official]
+</code></pre>
+<p><code>[official]</code> 标签表示这个 marketplace 用的是保留名、source 已经被校验过指向了 Anthropic 官方组织（详见 40.2 节）。<code>source</code> 字段是 <code>github:anthropics/claude-plugins-official</code>，这是 git 短形态，相当于 <code>https://github.com/anthropics/claude-plugins-official.git</code>。</p>
+<p>订阅了不代表已经拉取过索引。刚启动时本地缓存可能还是空的（或上次启动留下的旧版本）。<code>refresh</code> 命令拉取最新索引：</p>
+<pre><code class="language-text">&gt; /plugin marketplace refresh anthropic-marketplace
+⎿ Refreshing 1 marketplace …
+    ✓ anthropic-marketplace — 203 plugins
+</code></pre>
+<p>CLI 这步做的事：把 <code>github:anthropics/claude-plugins-official</code> 解析成实际的 git URL，执行 <code>git clone --depth 1</code> 拉到一个临时目录，从 <code>.claude-plugin/marketplace.json</code> 读取内容，解析校验后缓存到 <code>~/.x-code/plugins/marketplaces/anthropic-marketplace/marketplace.json</code>（<code>~</code> 在 Windows 上对应 <code>C:\Users\&lt;用户名&gt;\</code>），最后清理临时目录。</p>
+<p>索引拉取完成后可以查看目录内容：</p>
+<pre><code class="language-text">&gt; /plugin marketplace info anthropic-marketplace
+⎿ anthropic-marketplace (anthropic-marketplace)
+  Upstream name: claude-plugins-official
+  Directory of popular Claude Code extensions ...
+  Owner: Anthropic
+
+  203 plugins:
+    42crunch-api-security-testing (security)
+      API security testing for OpenAPI specifications
+    amplitude (productivity)
+      Amplitude product analytics integration
+    asana (productivity)
+      Asana task management
+    ...
+    linear (productivity)
+      Linear issue tracking integration. Create issues, manage projects, …
+    ...
+</code></pre>
+<p>第一行是 marketplace 的显示名，优先用 <code>marketplace.json</code> 顶层声明的 <code>displayName</code>，没声明就回退到用户的本地别名。<code>anthropic-marketplace</code> 这份 marketplace 没写 <code>displayName</code>，所以显示名跟括号里都是同一个本地别名。第二行 <code>Upstream name: claude-plugins-official</code> 才是 <code>marketplace.json</code> 顶层 <code>name</code> 字段值，也就是 marketplace 自己上报的 name。本地订阅别名跟上游 <code>marketplace.json</code> 自己声明的 name 是两个东西，可以不同。本地别名是插件 ID 的一部分（<code>linear@anthropic-marketplace</code>），上游 name 只在 info 命令里展示。这个解耦设计解决了一个具体问题（详见 40.2 节）。</p>
+<p>假设用户在列表里看到了 <code>linear</code>，想用它来管理 Linear 项目事务，然后执行安装命令：</p>
+<pre><code class="language-text">&gt; xc plugin install linear@anthropic-marketplace
+Installing from git: https://github.com/anthropics/claude-plugins-official.git ...
+
+About to install: linear@anthropic-marketplace v0.0.0
+  Linear issue tracking integration. Create issues, manage projects, ...
+  Source:      git: https://github.com/anthropics/claude-plugins-official.git
+  Marketplace: anthropic-marketplace [reserved/official]
+  Author:      Linear
+
+Proceed with install? [y/N] y
+Installed linear@anthropic-marketplace v0.0.0
+Cache: ~/.x-code/plugins/cache/anthropic-marketplace/linear/0.0.0
+</code></pre>
+<p>安装器收到 <code>linear@anthropic-marketplace</code> 这个 ID 后，先按 <code>@</code> 拆成两部分：前半段 <code>linear</code> 是插件名，后半段 <code>anthropic-marketplace</code> 是本地 marketplace 别名。接下来，安装器用别名找到本地缓存的索引文件 <code>~/.x-code/plugins/marketplaces/anthropic-marketplace/marketplace.json</code>，在 <code>plugins[]</code> 数组里搜索 <code>name: &quot;linear&quot;</code> 的条目。找到条目后，安装器从它的 <code>source</code> 字段读取插件代码的来源——Linear 这个条目用的是相对路径字符串 <code>&quot;./external_plugins/linear&quot;</code>，意思是 marketplace 仓库自身的 <code>external_plugins/linear/</code> 子目录。安装器把这个相对路径拼上 marketplace 仓库的克隆地址，转成 <code>git clone</code> 能用的 URL，最终把插件代码克隆到 <code>~/.x-code/plugins/cache/anthropic-marketplace/linear/0.0.0/</code>。克隆完成后的 consent 确认、userConfig 读取和 <code>/plugin refresh</code> 重建注册表等后续流程，Ch.39 已经讲过，这里不再重复。</p>
+<p>以上流程涉及几个 marketplace 层面的设计决定：marketplace 如何标识自己？条目的 source 字段为什么有多种格式？sha 字段起什么作用？索引从哪里拉取？默认订阅如何预置？让我们在下面的内容里逐节展开。</p>
+<h2 id="40-2-决定一-marketplace-身份与冒充防御">40.2 决定一：marketplace 身份与冒充防御</h2>
+<p>订阅一份 marketplace 的命令是这样的：</p>
+<pre><code class="language-text">/plugin marketplace add anthropic-marketplace github:anthropics/claude-plugins-official
+</code></pre>
+<p>注意命令里出现了两个名字。一个是用户自己起的本地名 <code>anthropic-marketplace</code>；另一个是 marketplace 在自己 <code>marketplace.json</code> 里声明的 <code>name</code>，值是 <code>claude-plugins-official</code>（跟上游 GitHub 仓库同名）。两个名字可以完全不同。A 用户可以把这份 marketplace 订阅成 <code>anthropic-marketplace</code>，B 用户可以叫它 <code>claude-official</code>，两人的插件 ID 分别是 <code>linear@anthropic-marketplace</code> 和 <code>linear@claude-official</code>。允许用户自定义别名带来了灵活性，但也引出两个需要解决的问题。</p>
+<p>（1）CLI 内部用哪个名字作为 marketplace 的唯一标识？X-Code CLI 选的是用户给的本地名，而非 <code>marketplace.json</code> 里上游自己声明的 <code>name</code>。缓存路径、插件 ID（如 <code>linear@anthropic-marketplace</code>）、命令输出都跟着本地名走。这样做的好处是，即使上游 marketplace 作者将来修改了 <code>marketplace.json</code> 里的 <code>name</code> 字段，用户本地的缓存路径和已安装插件的 ID 也不会受到影响。上游 <code>name</code> 只在 <code>/plugin marketplace info</code> 的输出里作为参考展示一行 <code>Upstream name: claude-plugins-official</code>。</p>
+<p>（2）本地名由用户自己起，这就带来一个安全隐患。假设某篇技术博客或论坛帖子里贴了一条命令：<code>/plugin marketplace add anthropic-marketplace github:evil-user/fake-plugins</code>。用户一看名字是 <code>anthropic-marketplace</code>，以为是官方源，直接复制执行。但这条命令实际指向的是攻击者的仓库 <code>evil-user/fake-plugins</code>，里面的 <code>linear</code> 插件可能被注入了恶意代码。此后用户执行 <code>xc plugin install linear@anthropic-marketplace</code>，拿到的就是攻击者的版本，而非 Anthropic 官方收录的插件。这是典型的身份冒充攻击（Impersonation）——名字看着像官方，实际指向完全不同的来源。</p>
+<p>X-Code CLI 的防御方式是把特定名字钉死到对应的 GitHub 组织：<code>anthropic-marketplace</code> 和 <code>claude-plugins</code> 必须指向 <code>anthropics</code> 组织。如果 source 与保留名不匹配，<code>xc plugin marketplace add</code> 在写入订阅之前就会拒绝，错误信息告诉用户「这个名字保留给 Anthropic 官方」。通过校验的保留名在 <code>/plugin marketplace list</code> 输出里带 <code>[official]</code> 标签，让用户一眼区分官方与第三方。</p>
+<p>这套机制只针对几个用户可能默认信任的保留名。非保留名字不受限制——用户订阅任意第三方 marketplace 是正当操作，CLI 不做拦截。</p>
+<h2 id="40-3-决定二-marketplace-json-里的-4-种来源形态">40.3 决定二：marketplace.json 里的 4 种来源形态</h2>
+<p>上一节解决了「marketplace 怎么标识自己」。下一个问题是 marketplace.json 里每个插件条目怎么标识「插件代码从哪来」，也就是条目的 <code>source</code> 字段。<code>source</code> 字段的职责是告诉安装器去哪里拿插件代码，一个 git URL 或一个相对路径似乎就够了。但 <code>anthropics/claude-plugins-official</code> 里有四种不同的写法：</p>
+<pre><code class="language-jsonc">// 形态 1：相对路径字符串（marketplace 自己 repo 的 subdir，最常见）
+{ &quot;name&quot;: &quot;agent-sdk-dev&quot;, &quot;source&quot;: &quot;./plugins/agent-sdk-dev&quot; }
+
+// 形态 2：{source:'url', url, sha} — 外部仓库整库 clone
+{ &quot;name&quot;: &quot;amplitude&quot;, &quot;source&quot;: { &quot;source&quot;: &quot;url&quot;, &quot;url&quot;: &quot;https://github.com/amplitude/mcp-marketplace.git&quot;, &quot;sha&quot;: &quot;5ddccc36...&quot; } }
+
+// 形态 3：{source:'git-subdir', url, path, ref?, sha?} — 外部仓库 + subdir
+{ &quot;name&quot;: &quot;42crunch-api-security-testing&quot;, &quot;source&quot;: {
+    &quot;source&quot;: &quot;git-subdir&quot;,
+    &quot;url&quot;:    &quot;https://github.com/42Crunch-AI/claude-plugins.git&quot;,
+    &quot;path&quot;:   &quot;plugins/api-security-testing&quot;,
+    &quot;ref&quot;:    &quot;v1.5.5&quot;,
+    &quot;sha&quot;:    &quot;a175b24f...&quot;
+} }
+
+// 形态 4：{source:'github', repo:&quot;owner/repo&quot;, commit, sha} — GitHub 专用形态
+{ &quot;name&quot;: &quot;fullstory&quot;, &quot;source&quot;: { &quot;source&quot;: &quot;github&quot;, &quot;repo&quot;: &quot;fullstorydev/fullstory-skills&quot;, &quot;commit&quot;: &quot;1ec5865...&quot;, &quot;sha&quot;: &quot;384555c3...&quot; } }
+</code></pre>
+<p>四种形态对应三类来源：marketplace 自己仓库的子目录（形态 1）、外部 git 仓库（形态 2 / 3）、外部 GitHub 仓库的简写（形态 4）。字段命名也不一致：形态 2 的辨别字段叫 <code>source: 'url'</code>，形态 4 叫 <code>source: 'github'</code>；同样表示 commit 锁定的字段，形态 3 用 <code>ref</code>，形态 4 又改成了 <code>commit</code>。</p>
+<p>这些格式不是 X-Code CLI 自己设计的，而是从 Claude Code 的历史规范继承过来的。除了上面 4 种主流形态，生态中还流通着几种少见的写法：直接给 git URL 字符串（不带 <code>github:</code> 前缀）、<code>{ source: 'git' }</code> 形态（与形态 3 几乎相同，仅辨别字段不同）、以及 <code>{ source: 'local', path }</code> 指向本机绝对路径。加起来共 8 种线上格式（Wire Format，指数据在文件里实际存储的物理形态）。<code>anthropic-marketplace</code> 实际只用前 4 种，其余是 Claude Code 生态的历史写法和本地开发路径。</p>
+<p>X-Code CLI 要接收对方生态的存量 marketplace，就必须兼容所有已在生产环境流通的写法。但让安装器直接分辨 8 种格式并不合理——安装器本身已经承担了克隆、同意确认、用户配置、sha 校验等职责。因此，marketplace 子系统在安装器之前加了一层归一化处理（Normalization）：把 8 种线上格式统一转成三种内部表示——git 来源（URL + 可选子目录 / ref / sha）、GitHub 来源（owner + repo）、本地路径。安装器只需要处理归一化后的三种类型，不需要知道作者用了哪种原始格式。</p>
+<p>归一化过程中有一个需要注意的边界。形态 1 的相对路径（如 <code>./plugins/foo</code>）是相对于 marketplace 仓库自身的，归一化时调用方会把 marketplace 的克隆地址传进来，用于拼接完整路径。但如果 marketplace.json 是通过 HTTPS 直接拉取的（详见 40.5 节），就没有克隆地址可用，此时相对路径类型的插件条目无法安装。归一化层检测到克隆地址缺失时直接抛错，错误信息告诉用户「相对路径只对 git 克隆下来的 marketplace 有效」。</p>
+<h2 id="40-4-决定三-sha-锁定与完整性校验">40.4 决定三：sha 锁定与完整性校验</h2>
+<p><code>anthropics/claude-plugins-official</code> 里的 153 个远程 source（git-subdir、url、github 三种形态）全部都声明了 <code>sha</code> 字段，主要是因为安全考虑。</p>
+<p>考虑一个攻击场景：marketplace 作者宣布插件 X 的 source 是 <code>https://github.com/x-org/plugin-x.git</code>、<code>ref: &quot;v1.0&quot;</code>。今天用户安装时 git clone 拉到的是 v1.0 标签对应的提交。明天攻击者拿到了 x-org 的推送权限，把 v1.0 标签强制推送（force-push）到一个含恶意代码的提交。后天另一个用户安装这个插件，git clone 拉到的就是恶意提交：同样的 <code>ref: &quot;v1.0&quot;</code>、同样的指令、不同的内容。</p>
+<p>防御办法是把信任锚点从「ref 名字」推到「提交哈希（commit hash）」上。marketplace 作者在 marketplace.json 里多写一个 <code>sha</code> 字段：</p>
+<pre><code class="language-jsonc">{
+  &quot;source&quot;: &quot;git-subdir&quot;,
+  &quot;url&quot;:    &quot;https://github.com/42Crunch-AI/claude-plugins.git&quot;,
+  &quot;path&quot;:   &quot;plugins/api-security-testing&quot;,
+  &quot;ref&quot;:    &quot;v1.5.5&quot;,
+  &quot;sha&quot;:    &quot;a175b24f7b34852b70c78c21545cce8037eb3112&quot;
+}
+</code></pre>
+<p>安装器克隆完之后执行 <code>git rev-parse HEAD</code> 拿到实际的提交哈希，跟 marketplace.json 声明的 <code>sha</code> 对比，不匹配则失败：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/plugins/installer.ts</code>（<code>fetchToTemp</code> sha check 段）</p>
+</blockquote>
+<pre><code class="language-ts">if (source.expectedSha) {
+  try {
+    const result = await execa('git', ['rev-parse', 'HEAD'], { cwd: tempDir, stdio: 'pipe', signal })
+    const actualSha = result.stdout.trim().toLowerCase()
+    const expected = source.expectedSha.toLowerCase()
+    if (!actualSha.startsWith(expected)) {
+      await fs.rm(tempDir, { recursive: true, force: true }).catch(() =&gt; {})
+      throw new InstallError(
+        `sha integrity check failed for ${cloneUrl}${source.ref ? `@${source.ref}` : ''}: ` +
+          `marketplace.json declared sha=${expected}, actual HEAD=${actualSha}. ` +
+          `The upstream ref may have been force-pushed or the repo compromised. ` +
+          `Contact the marketplace author or pin to a different version.`,
+      )
+    }
+  } catch (err) {
+    if (err instanceof InstallError) throw err
+    await fs.rm(tempDir, { recursive: true, force: true }).catch(() =&gt; {})
+    throw new InstallError(
+      `failed to verify sha for ${cloneUrl}: ${err instanceof Error ? err.message : String(err)}`,
+    )
+  }
+}
+</code></pre>
+<p>上面代码中用 <code>startsWith</code> 而非全等比较是有意的。marketplace.json 里 <code>sha</code> 字段允许是短 sha（最短 7 字符，匹配 <code>git checkout &lt;short&gt;</code> 的语义）也允许是完整 40 字符。归一化层在解析 source 时已经做过一道格式验证：</p>
+<pre><code class="language-ts">const rawSha = typeof o.sha === 'string' ? o.sha.trim().toLowerCase() : undefined
+const expectedSha = rawSha &amp;&amp; /^[0-9a-f]{7,40}$/.test(rawSha) ? rawSha : undefined
+</code></pre>
+<p>只接受 7-40 字符的纯 hex，其他形态（包含非 hex、长度不对）一律静默丢弃。如果 marketplace 作者把 sha 字段写错（误输入了空格或漏了几位），不会因为「sha 不匹配」拒绝安装，而是当作 sha 没声明、跳过校验。因此，sha 校验的行为分两种情况：字段存在且格式合法时严格校验、不匹配直接拒绝安装；字段缺失或格式不合法时跳过校验、向后兼容。</p>
+<p>校验失败时安装器直接拒绝安装，而不是给一个警告后继续。sha 不匹配按定义只能是两种情况：marketplace.json 写错了（作者的 bug），或者上游 ref 被强制推送、仓库被攻陷。两种都不应该让用户把未经审查的代码留在磁盘上。与其安装之后让用户去排查「这个插件最近行为不太对」，不如直接拒绝，把错误信息指向 marketplace 作者。</p>
+<h2 id="40-5-决定四-拉取索引的两条路径">40.5 决定四：拉取索引的两条路径</h2>
+<p>40.1 节的例子里，<code>/plugin marketplace add</code> 命令的第二个参数是 marketplace 订阅的 source——它决定了 CLI 从哪里拉取 <code>marketplace.json</code> 索引文件（注意区分 40.3 节讨论的插件条目 source，两者是不同的字段）。X-Code CLI 根据这个订阅 source 的格式自动选择两条拉取路径中的一条。</p>
+<p>第一条是 HTTPS 直链：如果 source 是一个以 <code>.json</code> 结尾的 HTTPS URL（如 <code>https://example.com/marketplace.json</code>），CLI 直接发起 HTTP GET 请求下载这份文件。这条路径不需要 git 命令、网络成本低，但有一个限制——marketplace.json 里使用相对路径的插件条目（如 <code>source: &quot;./plugins/foo&quot;</code>）在没有仓库上下文的情况下无法解析。</p>
+<p>第二条是 git 浅克隆：其他所有格式（<code>github:owner/repo</code>、<code>git@</code> SSH 地址、不以 <code>.json</code> 结尾的 HTTPS URL）都走这条路径。CLI 执行 <code>git clone --depth 1</code> 把 marketplace 仓库拉到临时目录，从约定路径读取索引文件。这条路径支持相对路径条目，代价是要求本地安装了 git，速度也比单文件下载慢一些。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/plugins/marketplace.ts</code>（<code>fetchMarketplace</code>）</p>
+</blockquote>
+<pre><code class="language-ts">const isHttp = /^https?:\/\//i.test(entry.source) &amp;&amp; /\.json($|\?)/i.test(entry.source)
+const rawJson = isHttp
+  ? await fetchHttpJson(entry.source, opts.signal)
+  : await fetchViaShallowClone(entry.source, opts.signal)
+</code></pre>
+<p>代码里的 <code>isHttp</code> 判断对应上面描述的第一条路径：source 同时满足以 <code>http://</code> / <code>https://</code> 开头且以 <code>.json</code> 结尾两个条件时走 HTTPS 直链，否则走 git 浅克隆。</p>
+<p>浅克隆路径有两个值得注意的细节。第一个是索引文件的探测位置，先试 <code>.claude-plugin/marketplace.json</code>（Claude Code 约定路径，也是 <code>anthropics/claude-plugins-official</code> 实际放的位置），找不到再退一步试根目录 <code>marketplace.json</code>：</p>
+<pre><code class="language-ts">const candidates = [
+  path.join(tempDir, '.claude-plugin', 'marketplace.json'),
+  path.join(tempDir, 'marketplace.json'),
+]
+for (const candidate of candidates) {
+  try {
+    return await fs.readFile(candidate, 'utf-8')
+  } catch {
+    // try the next candidate
+  }
+}
+</code></pre>
+<p><code>.claude-plugin/marketplace.json</code> 排前面是因为这是 Claude Code 官方约定；根目录那条是给非标准目录布局的 marketplace 作为备选。两个都找不到才抛错。</p>
+<p>第二个是克隆之后总是删掉临时目录（不管成功失败）：</p>
+<pre><code class="language-ts">try {
+  await execa('git', ['clone', '--depth', '1', cloneUrl, tempDir], ...)
+  // ... 读 marketplace.json
+} finally {
+  await fs.rm(tempDir, { recursive: true, force: true }).catch(() =&gt; {})
+}
+</code></pre>
+<p>这样做的原因是：CLI 只需要 marketplace.json 的文本内容，marketplace 仓库本身的代码不需要保留在磁盘上。每次刷新都会重新克隆，如果不清理临时目录，多次刷新后磁盘上会积累大量无用目录。</p>
+<p>此外，<code>fetchMarketplace</code> 还接受一个 <code>maxAgeMs</code> 参数，用于控制本地缓存的有效期——如果缓存尚未过期，就跳过网络请求直接读取本地文件。CLI 启动时会自动调用一次 <code>fetchMarketplace</code> 并传入 <code>maxAgeMs</code>，避免每次启动都触发网络请求；而用户显式执行 <code>/plugin marketplace refresh</code> 时不传这个参数，强制走网络拉取最新索引。</p>
+<h2 id="40-6-小结">40.6 小结</h2>
+<p>Marketplace 是分布式插件目录：一份 git 仓库里的 <code>marketplace.json</code> 列出可安装的插件清单，用户订阅一个或多个 marketplace 仓库，CLI 在本地缓存索引并组合查询。本地订阅别名与上游 name 是两个独立标识，几个保留名绑定到对应的 GitHub 组织以防止冒充。插件条目的 source 字段在真实生态中有 8 种线上格式，归一化层把它们统一成三种内部表示，安装器只看归一后的类型。</p>
+<p>远程 source 可声明 sha 字段，安装器克隆完拿实际提交哈希做前缀匹配，不匹配则拒绝安装；sha 缺失时跳过校验，向后兼容存量。拉取索引根据 source 格式自动选择 HTTPS 直链或 git 浅克隆两条路径，读完即删临时目录。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-39.html">← 插件系统</a>
+      <a class="next" href="ch-41.html">附录一 构建工具链内部 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#40-1-一个完整的例子-从订阅到安装">40.1 一个完整的例子：从订阅到安装</a></li>
+      <li class="lv2"><a href="#40-2-决定一-marketplace-身份与冒充防御">40.2 决定一：marketplace 身份与冒充防御</a></li>
+      <li class="lv2"><a href="#40-3-决定二-marketplace-json-里的-4-种来源形态">40.3 决定二：marketplace.json 里的 4 种来源形态</a></li>
+      <li class="lv2"><a href="#40-4-决定三-sha-锁定与完整性校验">40.4 决定三：sha 锁定与完整性校验</a></li>
+      <li class="lv2"><a href="#40-5-决定四-拉取索引的两条路径">40.5 决定四：拉取索引的两条路径</a></li>
+      <li class="lv2"><a href="#40-6-小结">40.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

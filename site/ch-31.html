@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上下文压缩：轻量、主动与反应式三层 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li class="active"><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 31 章 上下文压缩：轻量、主动与反应式三层</h1>
+<p>长对话在多轮工具调用后容易逼近模型的上下文窗口上限。Ch.30 将压缩列为四层 token 防御的第三层；本章展开这一层，讨论压缩机制内部按触发条件和成本再分的三条路径。三条路径从轻到重依次是：轻量压缩（纯本地 O(n) 扫描，不调用 LLM）、主动式预防（每轮开头按阈值触发，先轻量后 LLM 摘要）、反应式容错（流式响应抛出「context too long」错误时立即压缩并重试）。Ch.30 的「层」是四个独立防御机制，本章的「层」是同一个压缩机制内部的三条触发路径，读者留意两处「层」含义不同。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>31.1 节梳理压缩总策略：两个核心常量、触发流程，以及压缩前后消息历史的变化。</li>
+<li>31.2 节讲解本地预清理，包括轻量压缩删除 loop guard 残骸和旧工具结果截短回收大型 tool-result 正文，两步都不调用 LLM。</li>
+<li>31.3 节讲解主动式预防，讨论每轮开头按阈值触发的双重判定条件及其设计取舍。</li>
+<li>31.4 节讲解反应式容错，讨论流式响应抛出「context too long」类错误时的压缩与重试。</li>
+<li>31.5 节讲解 LLM 摘要的实现，讨论摘要策略与角色选择。</li>
+<li>31.6 节讨论压缩边界与 JSONL 会话存档的协作。</li>
+<li>31.7 节给出本章小结。</li>
+</ul>
+<blockquote>
+<p><strong>AI 知识背景：上下文窗口为什么不能「开足够大就完了」</strong></p>
+<p>2022 年 GPT-3 的上下文窗口是 4k tokens，2024 年 Claude 和 GPT 普遍达到 128k–200k，2025–2026 年 Sonnet 4.6、Opus 4.7、DeepSeek V4 等已经把 1M 窗口做成默认配置。窗口看似已经足够大，超限问题似乎不再存在。但 2023 年 Stanford 的 <strong>Lost in the Middle</strong> 论文揭示一个反常规事实：长上下文里，模型对中间位置的内容召回率显著低于开头和结尾——即使是声称支持长上下文的模型，性能曲线呈 U 形。这意味着把 50k 旧消息加 5k 新消息放入 200k 窗口，不等于模型能用上全部 55k，中间部分会被实质性忽略。更实用的策略是主动压缩：把不重要的旧消息总结成 5k 摘要再加 5k 新消息，10k 有效上下文比 55k 含大量「看不见」中间内容更可靠。这是 X-Code CLI 即使在 1M 窗口模型上也要做压缩的原因。Anthropic 自己的 Long context tips 文档也建议把关键信息放在开头或结尾，避免埋在中间。</p>
+<p>整个压缩动作和写会议纪要比较像——相同点是把一段冗长的过程内容凝练成一份短摘要供后续参考，丢掉无关细节、留住关键决策与结论。不同点是会议纪要由人手写、目的是给人看；上下文压缩由 LLM 自己用 <code>generateText</code> 生成摘要再作为后续请求的输入，目的是给模型看，因此摘要 prompt 特别强调「保留关键决策、文件改动、继续工作所需的上下文」——三类信息丢了模型就接不上之前的工作，等于纪要漏了关键决策导致下次会议无法继续。<!-- analogy: context-compression-meeting-minutes --></p>
+</blockquote>
+<h2 id="31-1-压缩总策略">31.1 压缩总策略</h2>
+<p>Ch.30 已经说明工具结果是 token 消耗的主体（占比 60–80%），几轮工具调用就足以让 token 用量逼近上下文窗口上限。X-Code CLI 的压缩策略是在每轮 agent loop 开头检查上下文长度，如果超过阈值就触发压缩——把消息历史浓缩，保留关键信息、丢弃细节，让模型能在更少的 token 中继续之前的工作。这一策略由两个核心常量控制。</p>
+<p>（1）<code>KEEP_RECENT = 6</code>：最近 6 条消息永远保留，保持当前工作上下文不被压缩。</p>
+<p>（2）<code>COMPRESSION_TRIGGER_RATIO = 0.8</code>：如果 token 用量达到模型上下文窗口的 80%，就触发压缩。阈值留出 20% 的缓冲区，原因在于压缩自身也需要发起 API 请求，如果等到 95% 才触发，压缩请求本身就可能因为上下文不足而失败。</p>
+<p>三条路径在一轮 turn 生命周期中分别介入不同环节：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">   每轮 agent loop 开头：
+   ┌─────────────────────────────────────────────────────────────┐
+   │ 检查 token：                                                  │
+   │   lastInputTokens &gt; 80% 阈值                                  │
+   │     或 estimateTokenCount(messages) &gt; 80% 阈值                │
+   └────────────────┬────────────────────────────────────────────┘
+                    │ 是
+                    ▼
+              [主动式] 依次尝试三步
+                    │
+                    ▼
+              [第一步] 轻量压缩
+              O(n) 扫描，删 [loop-guard] tool-call/result 对
+                    │
+                    │ 仍超阈值？
+                    ▼
+              [第二步] 旧工具结果截短
+              把保护窗口外的大型 tool-result 替换为简短占位信息
+                    │
+                    │ 仍超阈值？
+                    ▼
+              [第三步] LLM 摘要
+              generateText 将旧消息摘要为 [Previous summary]
+                    │
+                    ▼
+              这一轮继续
+
+   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
+
+   stream 中途抛 &quot;context too long&quot; 错误？
+                    │ 是
+                    ▼
+              [反应式]
+              直接 LLM 摘要 + turnCount 回退、重试当前轮
+
+   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
+
+   用户主动：/compact
+                    │
+                    ▼
+              直接调用 compressMessages，无须等待阈值触发
+</code></pre>
+<p>压缩动作落到消息历史上的效果如下：</p>
+<pre><code class="language-text">压缩前（50 条消息接近窗口上限）：
+┌──────────────────────────────────────────────────────────┐
+│ msg1  msg2  msg3  msg4  msg5  ...  msg40  msg41  msg42   │
+│ msg43 msg44 msg45 msg46 msg47 msg48 msg49 msg50          │
+└──────────────────────────────────────────────────────────┘
+              ▲                              ▲
+              └──── 旧消息（将被压缩为摘要） ────┘  保留最近 6 条
+
+压缩后（前 44 条被摘成一段话，后 6 条保持原文）：
+┌────────────────────────┬─────────────────────────────────┐
+│ [Previous summary]     │ msg45 msg46 msg47 msg48 msg49   │
+│ 一段 LLM 写的摘要       │ msg50                           │
+└────────────────────────┴─────────────────────────────────┘
+   头部摘要（几百 token）    尾部原文（KEEP_RECENT = 6）
+</code></pre>
+<p><code>KEEP_RECENT = 6</code> 是切割线：最近 6 条消息永远不进摘要，保证当前正在做的工作能完整保留。例如最近改了哪个文件、模型刚说要尝试什么方案，这些细节如果进入 LLM 摘要，下一轮模型就可能接不上之前的工作。切割位置还有一个边界处理：如果第 6 条消息恰好是 <code>tool</code> 角色（即一条没有对应 <code>tool_calls</code> 的孤立工具结果），保留窗口会自动多保留一条消息以跳过这条孤立结果（即保留 7 条而非 6 条），避免供应商因收到「无 tool_calls 的 tool result」而拒绝请求。</p>
+<h2 id="31-2-本地预清理-轻量压缩与旧工具结果截短">31.2 本地预清理：轻量压缩与旧工具结果截短</h2>
+<p>轻量压缩的思路是扫一遍消息历史，删除被循环护栏阻断后留下的 tool-call / tool-result 对。凡是 tool-result 内容以 <code>[loop-guard]</code> 开头的合成结果，连同对应的 assistant tool-call 部分一起删除。这里只需要理解一点：被阻断的调用在后续轮次中不会再提供有用的信息，是纯粹的冗余内容。</p>
+<p>以一个具体例子说明。假设模型对同一个 <code>pnpm test</code> 反复重试并触发了循环护栏，消息历史会呈现以下形态：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">压缩前 messages 历史：
+   ┌──────────────────────────────────────────────────────────────┐
+   │ [user]  &quot;看看 pnpm test 能跑吗&quot;                                │
+   │ [asst]  → tool_call(id_1) shell { command: 'pnpm test' }      │
+   │ [tool]  id_1 → [loop-guard] 软阻断：同一命令第 3 次            │  ← 冗余
+   │ [asst]  → tool_call(id_2) shell { command: 'pnpm test' }      │  ← 冗余
+   │ [tool]  id_2 → [loop-guard] 第 4 次                            │  ← 冗余
+   │ [asst]  → tool_call(id_3) shell { command: 'pnpm test' }      │  ← 冗余
+   │ [tool]  id_3 → [loop-guard] 第 5 次硬退出                      │  ← 冗余
+   │ [user]  &quot;改用 pnpm test --reporter=verbose&quot;                    │
+   │ [asst]  ...                                                    │
+   └──────────────────────────────────────────────────────────────┘
+
+   lightCompactMessages 扫两遍：
+   ① 第一遍收集 [loop-guard] 标记的 toolCallId: { id_1, id_2, id_3 }
+   ② 第二遍重写：丢掉对应 tool-result 消息，
+                 从 assistant 消息里剥掉同 id 的 tool-call 部分
+                 （整条 assistant 全剥完则连消息一起丢）
+
+压缩后 messages：
+   ┌──────────────────────────────────────────────────────────────┐
+   │ [user]  &quot;看看 pnpm test 能跑吗&quot;                                │
+   │ [user]  &quot;改用 pnpm test --reporter=verbose&quot;                    │
+   │ [asst]  ...                                                    │
+   └──────────────────────────────────────────────────────────────┘
+   三对 [loop-guard] 残骸全删，冗余内容清空，不调用 LLM
+</code></pre>
+<p>轻量压缩不调用 LLM、不发网络请求，纯本地 O(n) 扫描即可完成。处理掉的冗余内容往往就足够把 token 拉回阈值之下，省掉后续更昂贵的步骤。轻量压缩成功后单独写一条 <code>compact-boundary</code>（不带摘要文本）到 JSONL，保证 <code>/resume</code> 不会把已经删掉的 loop guard 对从磁盘恢复回来（详见 31.6 节）。</p>
+<p>轻量压缩只处理 loop guard 残骸，但 token 超标不一定是 loop guard 导致的。更常见的场景是模型连续读了几个大文件（readFile、grep 结果、shell 输出），每条工具结果动辄几千行，即使没有重复调用，积累下来也会逼近阈值。为此，主动式压缩流程在轻量压缩之后、LLM 摘要之前加了第二步：截短旧工具结果。这一步遍历保护窗口（最近 10 条消息）之外的所有 tool-result，如果某条结果超过 500 字符，就将其替换为简短的占位信息（保留工具名、原始输出的字符数和前 3 行预览），丢弃中间正文。<code>edit</code>、<code>writeFile</code>、<code>todoWrite</code> 等改动类工具的结果永远不截短，因为这些结果代表关键决策，丢失后模型可能重复修改同一文件。</p>
+<p>为什么不直接走 LLM 摘要？原因在于 prompt cache。LLM 摘要会把所有旧消息替换成一条 <code>[Previous summary]</code>，整个消息序列发生结构性变化，下一轮请求的 prompt cache 必然失效（详见 Ch.33）。截短旧工具结果只替换单条 tool-result 的正文内容，消息结构和顺序不变，prompt cache 的前缀匹配更可能命中。能用截短解决的场景，就不必付出 cache 失效的代价。</p>
+<h2 id="31-3-主动式预防">31.3 主动式预防</h2>
+<p>每轮 agent loop 开头执行以下判断：</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">const needsCompression =
+  state.lastInputTokens &gt; threshold ||
+  estimateTokenCount(state.messages) &gt; threshold
+
+if (!needsCompression || state.messages.length &lt;= KEEP_RECENT) return
+</code></pre>
+<p>两个条件取或，原因在于它们各自处理不同的情况。<code>lastInputTokens</code> 是上一轮 API 返回的真实 input token 数，是最可信的数据源。<code>estimateTokenCount</code> 按字符数除以 3.0 估算 token 数，作为安全网。为什么需要安全网？考虑这种场景：当前轮模型一次性 readFile 读了一个 5000 行的文件，<code>lastInputTokens</code> 是上一轮的值尚未更新，但当前消息历史已经接近上限。如果只看 <code>lastInputTokens</code>，会等到发完一轮请求把上下文顶到极限后才反应过来。字符估算按保守的 3.0 字符每 token 计算（英文实际约 4 字符每 token，CJK 和代码更低），故意偏高，因为估算的目的是安全网而非精确计费，宁可提前压缩一次也不能漏掉一次真正逼近上限的场景。</p>
+<p>阈值的具体值等于模型的上下文窗口大小（从 <code>MODEL_CONTEXT_WINDOWS</code> 查表获取）乘以 <code>COMPRESSION_TRIGGER_RATIO</code>。下表节选部分模型的窗口大小和对应的 80% 阈值：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>上下文窗口</th>
+<th>80% 阈值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>anthropic:claude-opus-4-7</code></td>
+<td>1M</td>
+<td>800k</td>
+</tr>
+<tr>
+<td><code>anthropic:claude-sonnet-4-6</code></td>
+<td>1M</td>
+<td>800k</td>
+</tr>
+<tr>
+<td><code>anthropic:claude-haiku-4-5</code></td>
+<td>200k</td>
+<td>160k</td>
+</tr>
+<tr>
+<td><code>openai:gpt-4.1</code> 系列</td>
+<td>~1M (1,047,576)</td>
+<td>~838k</td>
+</tr>
+<tr>
+<td><code>openai:o3</code> / <code>o4-mini</code></td>
+<td>200k</td>
+<td>160k</td>
+</tr>
+<tr>
+<td><code>deepseek:deepseek-v4-flash</code> / <code>pro</code></td>
+<td>1M</td>
+<td>800k</td>
+</tr>
+<tr>
+<td><code>alibaba:qwen3-coder-plus</code></td>
+<td>1M</td>
+<td>800k</td>
+</tr>
+</tbody>
+</table>
+<p>查表未命中时回退到 <code>PROVIDER_CONTEXT_WINDOWS</code>（按供应商给出该系列模型通用的默认值），仍未命中则回退到 <code>DEFAULT_CONTEXT_WINDOW = 128000</code>。这样新发布但尚未登记的模型也有保守上限，不会因为查不到表而误判窗口无限大。触发后依次尝试三步：轻量压缩删除 loop guard 残骸 → 旧工具结果截短回收大型 tool-result 正文 → LLM 摘要（三步细节详见 31.2 和 31.5 节），每步完成后都会重新检查是否仍超阈值，已经降回阈值之下就提前返回。压缩完成后 <code>lastInputTokens</code> 重置为 0，下一轮重新估算。</p>
+<h2 id="31-4-反应式容错">31.4 反应式容错</h2>
+<p>前两层是「防止逼近上限」，但无法覆盖所有情况。字符估算虽然偏保守，极端情况下仍可能偏低；供应商在某些请求上可能动态降低上下文限制；工具结果在截断之前已经被追加到消息历史。反应式层处理这些遗漏：流式响应抛出错误且匹配上下文超限模式时，直接调用 LLM 摘要并重试当前轮。之所以跳过轻量压缩和工具结果截短，是因为主动式检查在本轮开头已经执行过一次。如果那时判定低于阈值，说明两步本地清理并不能解决当前的超限问题，反应式作为紧急路径直接走最彻底的压缩。</p>
+<p>这一路径面临的工程难点在于错误识别：不同供应商对「上下文超限」的报错格式各不相同。OpenAI 返回 <code>maximum context length</code> 或 <code>context_length_exceeded</code>，Anthropic 返回 <code>prompt is too long</code> 或 <code>prompt_too_long</code>，还有些供应商直接通过 HTTP 413 状态码报告超限。X-Code CLI 用一个字符串模式数组加 HTTP 状态码检查来统一识别，当前覆盖了 7 条模式和 HTTP 413，新增供应商时遇到新的报错表述只需往数组里追加一条。反应式压缩成功后，agent loop 会重试本轮，同时回退轮次计数，确保这次因超限导致的重试不计入循环上限（语义详见 Ch.08 TurnOutcome 节）。</p>
+<p>用户也可以通过 <code>/compact</code> 命令主动触发压缩，不必等待阈值。这个命令适用于用户知道当前任务已结束、想清出空间给下个任务但又不想用 <code>/clear</code> 丢掉全部历史的场景。</p>
+<h2 id="31-5-llm-摘要的实现">31.5 LLM 摘要的实现</h2>
+<p><code>compressMessages</code> 是三条路径最终汇聚的执行函数。主动式压缩流程在本地预清理仍超阈值时调用它，反应式容错在捕获上下文超限错误后直接调用它，<code>/compact</code> 命令也直接调用它。与前两步本地扫描不同，这是真正昂贵的操作：需要发起一次额外的 <code>generateText</code> 调用，按完整 token 计费。</p>
+<!-- check:ignore=code-source -->
+<pre><code class="language-ts">async function compressMessages(messages, model) {
+  const recent = messages.slice(-KEEP_RECENT)        // 保留最后 6 条
+  const old = messages.slice(0, -KEEP_RECENT)         // 旧消息
+
+  const { text: summary } = await generateText({
+    model,
+    system: 'Summarize the following conversation concisely, preserving key decisions, file changes, and context needed to continue.',
+    messages: old,
+  })
+
+  return [
+    { role: 'user', content: `[Previous conversation summary]\n${summary}` },
+    ...recent,
+  ]
+}
+</code></pre>
+<p>这段代码有两个值得展开的设计决策。</p>
+<p>摘要以 <code>user</code> 角色消息注入，而不是放入 <code>system</code>。原因在于 <code>system</code> 字段是提示词缓存的前缀起点，如果把摘要放进 <code>system</code>，每次压缩后 <code>system</code> 内容都会变化，导致整个会话的缓存失效。因此摘要走 <code>user</code> 角色，让 <code>system</code> 保持字节稳定。</p>
+<p>摘要 prompt 强调保留「关键决策、文件改动、继续工作所需的上下文」。这三类信息对模型继续工作的能力各有不同作用：关键决策丢失会导致模型重新讨论已经做过的选择，文件改动丢失会导致模型重读已经修改过的文件，工作上下文丢失会导致模型从头开始而不是继续当前方案。</p>
+<h2 id="31-6-压缩边界与-jsonl-会话存档">31.6 压缩边界与 JSONL 会话存档</h2>
+<p>X-Code CLI 把每个会话写成一份 append-only 的 <code>.jsonl</code> 文件，每条用户输入、每个工具调用、每条 assistant 消息按顺序追加到 <code>.x-code/sessions/&lt;slug&gt;-&lt;sessionId&gt;.jsonl</code>。<code>/resume</code> 启动时读这份文件 replay 即可把对话恢复到内存里。</p>
+<p>但压缩打破了一个前提假设：直接重放 JSONL 文件就能恢复完整对话。压缩之后，内存里只有 <code>[Previous summary]</code> 加最近 6 条消息，但磁盘 JSONL 上还保存着原始 50 条旧消息。如果 <code>/resume</code> 从头重放整个文件，刚压缩省下的 token 全部又被读回来，等于压缩无效。解决办法是在 JSONL 里写入一条压缩边界（compact-boundary）：</p>
+<pre><code class="language-text">JSONL 内容（按时间从上往下追加）：
+
+   msg1
+   msg2
+   ...
+   msg44
+   ────── compact-boundary { summary: &quot;...&quot; } ──────   ← 边界行
+   [Previous conversation summary]                      ← 重刷：摘要（user 角色）
+   msg45                                                ← 重刷：最近 6 条原文
+   msg46
+   ...
+   msg50
+
+加载器遇到 boundary → 清空累积器 → 只读 boundary 之后的重刷内容
+</code></pre>
+<p><code>/resume</code> 启动时不从头读，而是扫描到最后一条 <code>compact-boundary</code> 时清空消息累积器，然后只读取边界之后的条目。边界之后紧跟的是压缩完成时写入的一组消息：第一条是 <code>[Previous conversation summary]</code> 摘要（<code>user</code> 角色），后面是压缩时保留的最近 6 条原文。这组消息与压缩完成时的内存状态完全一致，因此 <code>/resume</code> 只读这一段就能恢复到压缩后的状态。写入边界的具体流程是：先在 JSONL 里追加一行 <code>compact-boundary</code> 元数据（附带一份摘要文本供会话列表展示），然后把内存里压缩后的完整消息数组逐条追加到同一文件。</p>
+<p>轻量压缩也写边界，但摘要字段为空。轻量压缩只删除 loop guard 残骸、没有调用 LLM，因此没有摘要文本可填。即便如此仍然需要写一行边界，原因在于如果缺少这行标记，<code>/resume</code> 就会从 JSONL 的起始位置开始 replay，loop guard 残骸会从磁盘恢复回内存，轻量压缩等于白做。摘要生成也可能失败（网络中断、供应商暂时不可用），此时同样用空摘要写入边界。内存中的压缩照常发生，token 照常收回，只是 <code>/resume</code> 恢复时缺少了那段历史的摘要。这一设计体现了压缩机制的优先级：保证当前对话能继续进行（通过压缩收回 token）是第一目标，摘要质量是第二目标。摘要缺失只影响 <code>/resume</code> 恢复后模型对之前工作的了解程度，不影响当前正在进行的会话。</p>
+<h2 id="31-7-小结">31.7 小结</h2>
+<p>本章讨论了 X-Code CLI 上下文压缩的三条路径：主动式在每轮开头按阈值触发，依次尝试轻量压缩、旧工具结果截短、LLM 摘要三步（前两步纯本地 O(n)、不调用 LLM）；反应式在流式响应抛出上下文超限错误时直接走 LLM 摘要并重试当前轮。LLM 摘要保留最近 6 条原文，摘要以 <code>user</code> 角色注入以保持 <code>system</code> 字节稳定。压缩完成后在 JSONL 里写入 <code>compact-boundary</code>，<code>/resume</code> 据此定位恢复点。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-30.html">← Token 经济学：四层防御一览</a>
+      <a class="next" href="ch-32.html">循环护栏：doom-loop 检测 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#31-1-压缩总策略">31.1 压缩总策略</a></li>
+      <li class="lv2"><a href="#31-2-本地预清理-轻量压缩与旧工具结果截短">31.2 本地预清理：轻量压缩与旧工具结果截短</a></li>
+      <li class="lv2"><a href="#31-3-主动式预防">31.3 主动式预防</a></li>
+      <li class="lv2"><a href="#31-4-反应式容错">31.4 反应式容错</a></li>
+      <li class="lv2"><a href="#31-5-llm-摘要的实现">31.5 LLM 摘要的实现</a></li>
+      <li class="lv2"><a href="#31-6-压缩边界与-jsonl-会话存档">31.6 压缩边界与 JSONL 会话存档</a></li>
+      <li class="lv2"><a href="#31-7-小结">31.7 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

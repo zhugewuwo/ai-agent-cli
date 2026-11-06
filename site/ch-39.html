@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>插件系统 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li class="active"><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 39 章 插件系统</h1>
+<p>X-Code CLI 有五种扩展形式：MCP（Ch.37）、skill（Ch.38）、sub-agent（Ch.19），加上 slash 命令和 hook。每种形式单独配置都不复杂，但要把它们组合成一个完整功能就需要改多份文件。以 Linear 集成为例，需要改四份文件：在 <code>~/.x-code/skills/linear/SKILL.md</code>（<code>~</code> 在 Windows 上对应 <code>C:\Users\&lt;用户名&gt;\</code>）里写触发指令，在 <code>~/.x-code/agents/linear-triage.md</code> 里定义 sub-agent，在 <code>~/.x-code/config.json</code> 里添加 <code>mcpServers.linear</code>，在 <code>~/.x-code/hooks/hooks.json</code> 里注册 issue 推送回调。四五处配置分属不同目录，如果想让其他人也用上这套 Linear 集成，只能把这几份文件打包发过去，对方再手动逐个复制到自己机器的对应路径。插件系统解决的就是这个问题——把五处配置合并成一个安装单元：用一份清单文件（manifest）声明内容，用一个目录存放文件，用户执行 <code>xc plugin install &lt;source&gt;</code> 即可完成安装。</p>
+<p>Slash 命令和 hook 是本章会反复提到的两个概念，在进入安装流程之前先说清楚。Slash 命令（slash command）的机制类似 git alias：在插件的 <code>commands/</code> 目录里放一份 <code>commit.md</code> 文件，前置元数据（frontmatter）写描述，下面的 Markdown 正文（body）是一段 prompt 模板，例如「按 Conventional Commits 规范根据下面的 diff 写一条 commit message：<code>$ARGUMENTS</code>」。用户在 CLI 里输入 <code>/commit &lt;粘贴 diff&gt;</code>，CLI 先把 <code>$ARGUMENTS</code> 替换成用户输入的文本，再把整段替换后的 body 作为一条 user 消息发给模型——后续流程跟用户手动输入 prompt 完全一样。这样就可以把反复用到的提问模板包装成一条短命令，用户只需要输入 <code>/commit</code> 加参数，不需要每次重写整段 prompt。Hook（生命周期钩子）挂在 agent 的工具调用、消息发送等关键动作的前后。以一个具体场景为例：一段 lint 脚本挂在 <code>PreToolUse</code> 事件上，matcher 限定为 <code>writeFile</code>；agent 每次准备写文件时，CLI 先把「要写哪个文件、写入内容是什么」以 JSON 形式通过 stdin 发给 lint 脚本；脚本校验后通过 stdout 返回 <code>{&quot;decision&quot;:&quot;deny&quot;,&quot;reason&quot;:&quot;lint failed: ...&quot;}</code> 拦截这次写入，原因回传给模型让它修正；或者返回 <code>{&quot;decision&quot;:&quot;allow&quot;}</code> 放行。并非所有 hook 都能做决策——只有 <code>PreToolUse</code> 等少数事件支持 allow/deny 返回，大部分事件（如 <code>PostToolUse</code>、<code>SessionStart</code>）只是通知，hook 收到信息但不能阻止流程继续。本章从一次完整安装入手，把 slash 命令和 hook 两套子系统讲清楚，再回过头看插件系统本身的设计。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>39.1 节以官方 Linear 插件为例，走完一次安装到使用的端到端流程。</li>
+<li>39.2 节讲解 slash 命令的形态、替换变量、与 skill 的边界，以及 <code>CommandRegistry</code> 的加载机制。</li>
+<li>39.3 节展开 hook 子系统：事件枚举、匹配器（matcher）过滤、stdin/stdout JSON 协议、变量展开与决策聚合。</li>
+<li>39.4 节讨论 manifest 的文件路径探测策略和五个扩展字段的两段式解析（显式声明 + 约定目录探测）。</li>
+<li>39.5 节说明安装流程的两道门：同意确认（consent）预览和用户配置提示（userConfig prompt）。</li>
+<li>39.6 节讨论 <code>enabledPlugins</code> 的布尔映射（boolean map）语义与 project &gt; user 两层作用域。</li>
+<li>39.7 节讲解 <code>/plugin refresh</code> 如何一次重建五个子注册表（含 MCP 重连）。</li>
+<li>39.8 节讨论文件系统层面的两种健壮性：单个插件加载失败不阻塞启动、cache 与 data 目录的删除策略。</li>
+<li>39.9 节给出本章小结。</li>
+</ul>
+<blockquote>
+<p>AI 知识背景：插件 / extension</p>
+<p>「插件」这套机制在编辑器和 CLI 工具里已经存在了二十多年。VS Code Extensions、Sublime Packages、IntelliJ Plugins、Vim plugins 都共享同一种结构：一份 manifest 描述插件名、版本、提供的扩展点（命令、主题、语法、语言服务等），加上一个目录存放具体内容。X-Code CLI 的插件沿用同样的结构，只是扩展点对应到 AI agent 的能力面：skill（指令注入）、sub-agent（任务隔离）、slash 命令（用户触发的 prompt 模板）、MCP server（外部工具集）、hook（生命周期回调）。</p>
+<p>跟 npm package 对照：两者在 manifest、版本号管理、集中目录分发、按名字解析依赖这几方面都类似。区别在运行模型上。npm 包安装后由 Node.js 主进程 <code>require</code> 加载，跟宿主运行在同一进程内；但是插件不进主进程：它提供的 skill / agent / 命令本质都是 Markdown 文本，MCP server 运行在独立子进程里通过 stdio（标准输入输出流）通信，hook 作为 shell 子进程执行。插件目录里的 JS / TS 代码永远不会被 X-Code CLI 主进程 <code>require</code> 进来，插件即便有 bug 最多影响它自己的子进程，碰不到 CLI 主进程的内存。</p>
+<!-- analogy: plugin-npm-package -->
+</blockquote>
+<h2 id="39-1-一次完整的例子-安装-linear-插件">39.1 一次完整的例子：安装 Linear 插件</h2>
+<p>X-Code CLI 启动时默认订阅 Anthropic 官方的 <code>anthropic-marketplace</code>，里面收录了一批官方插件，Linear 集成是其中之一。安装 Linear 插件只需要一行命令：</p>
+<pre><code class="language-text">$ xc plugin install linear@anthropic-marketplace
+Installing from git: https://github.com/anthropics/claude-plugins-official.git ...
+
+About to install: linear@anthropic-marketplace v0.0.0
+  Linear issue tracking integration. Create issues, manage projects, update
+  statuses, search across workspaces, and streamline your software development
+  workflow with Linear's modern issue tracker.
+
+  Source:      git: https://github.com/anthropics/claude-plugins-official.git
+  Marketplace: anthropic-marketplace [reserved/official]
+  Author:      Linear
+
+  Will contribute:
+    (no contributions declared)
+
+Proceed with install? [y/N] y
+Installed linear@anthropic-marketplace v0.0.0
+Cache: ~/.x-code/plugins/cache/anthropic-marketplace/linear/0.0.0
+</code></pre>
+<p>这行命令做了几件事：从 <code>anthropic-marketplace</code> 缓存的索引里查到 <code>linear</code> 这条条目，按它声明的来源地址浅克隆 <code>claude-plugins-official</code> 仓库的对应子目录，显示“同意确认预览”等用户确认，然后把整个插件写入 <code>~/.x-code/plugins/cache/anthropic-marketplace/linear/0.0.0/</code>。</p>
+<p>输出里有几处需要解释。Marketplace 标了 <code>[reserved/official]</code>，<code>anthropic-marketplace</code> 是默认订阅的保留名，只接受来源在 <code>github:anthropics/...</code> 下的仓库，别人用这个名字注册会被安装器直接拒绝。version 显示 <code>v0.0.0</code>，因为 Linear 插件的 manifest 没写 <code>version</code> 字段，校验时缺失默认填 <code>0.0.0</code>，向后兼容 Claude Code 生态里大量没写 version 的存量插件。<code>Will contribute: (no contributions declared)</code> 这一行需要解释：Linear 集成实际上包含一个 MCP server，但“同意确认预览”里的 <code>Will contribute</code> 一栏显示 <code>(no contributions declared)</code>。原因是 Linear 插件的 manifest 只写了名称、描述、作者三个元字段，没有在 manifest 里显式声明 MCP server；MCP server 配置放在插件根目录的 <code>.mcp.json</code> 文件里，要等安装完成后加载器通过约定目录探测才能发现。“同意确认预览”只展示 manifest 里显式声明的扩展，约定探测发现的扩展不会出现在安装预览中。这个设计在 39.4 节里有详细说明。</p>
+<p>安装完成后，在会话里执行 <code>/plugin refresh</code>（或者重启 xc），就能看到 Linear 插件提供的扩展生效了。Linear 这个 MCP server 是 HTTP 端点（<code>https://mcp.linear.app/mcp</code>），第一次用需要走一次 OAuth 鉴权：</p>
+<pre><code class="language-text">&gt; /mcp auth linear
+⎿ Authenticating &quot;linear&quot; — opening browser...
+⎿ Opened https://linear.app/oauth/authorize?response_type=code&amp;...
+  Waiting for the authorization redirect...
+⎿ ✓ Authenticated &quot;linear&quot; — 12 tools, 0 resources
+
+&gt; /mcp list
+⎿ MCP servers:
+    linear   connected — 12 tools, 0 resources
+</code></pre>
+<p>鉴权完成后，CLI 把拿到的 OAuth access token 写到 <code>~/.x-code/mcp-auth.json</code>（文件权限 <code>0o600</code>，不依赖操作系统 keychain）。下次启动时，如果本地 token 还没过期就直接复用，不再弹出浏览器走 OAuth 流程。此时执行 <code>/skill list</code> 不会看到新条目，<code>task</code> 工具的 sub-agent 名单也没有变化，因为 Linear 把所有功能都做成了远端 MCP tools，没有用到 skill 和 sub-agent 这两条扩展路径。</p>
+<p>接下来用户在对话里跟它交互：</p>
+<pre><code class="language-text">&gt; 帮我在 Linear 上开一个 issue：标题 &quot;Plugin install flow breaks on Windows&quot;，
+  描述 &quot;Reported in #1432。重现步骤：xc plugin install ...，写入磁盘后 manifest
+  路径里的反斜杠没被规整。&quot;, 标签 bug 和 windows, 指给我
+
+I'll create that issue for you using the Linear MCP server.
+[tool: linear__create_issue]
+  title:       Plugin install flow breaks on Windows
+  description: Reported in #1432。重现步骤：xc plugin install ...
+  labels:      [bug, windows]
+  assignee:    me
+
+✓ Issue created: ENG-2847 — Plugin install flow breaks on Windows
+  URL: https://linear.app/your-team/issue/ENG-2847/plugin-install-flow-breaks-on-windows
+  Status: Todo
+  Assignee: Guangzhi Tan
+</code></pre>
+<p>这段交互背后经过了几步。<code>/plugin refresh</code> 时，加载器在 Linear 插件目录里探测到 <code>.mcp.json</code>，据此启动 MCP client 连接 <code>https://mcp.linear.app/mcp</code>，通过 <code>tools/list</code> 拿到 12 个工具描述，每个工具名加上 <code>linear__</code> 前缀注册到工具集（命名格式 <code>&lt;server名&gt;__&lt;tool名&gt;</code>，详见 Ch.37）。用户发出消息后，模型从工具清单里选了 <code>linear__create_issue</code>。CLI 在注册表里查到这个工具属于 MCP，把前缀还原回 server 端的原始名字 <code>create_issue</code>，带上之前 OAuth 拿到的 access token，通过 JSON-RPC <code>tools/call</code> 发给 Linear 的 MCP 端点。server 调 Linear 后端 API 创建 issue，返回的结果封装成 <code>tool_result</code> 回到 agent loop 的消息历史，模型据此回复用户。这条链路的协议细节（JSON-RPC 握手、工具发现、前缀还原、<code>tool_result</code> 封装）在 Ch.37 有完整的描述。</p>
+<p>Linear 插件只用了 MCP 一条扩展路径，这次端到端流程里没有 slash 命令或 hook 参与，后面两节用合成的例子分别演示。在进入各扩展的细节之前，先说清楚一个情况：五类扩展（MCP、skill、sub-agent、slash 命令、hook）各自是独立的子系统，有各自的注册表和运行机制，插件系统不取代它们。插件层做的事情是把入口统一起来：manifest 声明这个插件包含哪些扩展，安装时“同意确认预览”让用户确认要不要安装，<code>/plugin refresh</code> 把插件目录里的扩展分发到对应的子注册表让改动生效。</p>
+<h2 id="39-2-slash-命令-把-prompt-模板挂到-name">39.2 Slash 命令：把 prompt 模板挂到 <code>/&lt;name&gt;</code></h2>
+<p>slash 命令是插件五类扩展里最简单的一种：<code>commands/</code> 目录里每个 <code>.md</code> 文件注册成一条 <code>/&lt;文件名&gt;</code> 命令。用户在 CLI 输入框输入 <code>/foo bar baz</code>，CLI 把这个文件的 body 做几处字面替换，拼好的文本作为一条 user 消息发给模型；后续的工具调用和回复跟用户手动输入 prompt 完全一样。跟 skill / sub-agent / MCP / hook 相比，slash 命令最简单：没有动态决策，不需要启动子进程，本质就是一段预先写好的 prompt 模板，用户输入命令就发出去。门槛因此极低，几行 Markdown 就能把一段常用提问包装成短指令；分发也方便，作者写一份 <code>commands/foo.md</code> 放进插件就行。</p>
+<p>一个典型的 slash 命令文件结构如下：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/commands/loader.ts</code>（前置元数据解析与 skill / sub-agent 加载器同源）</p>
+</blockquote>
+<pre><code class="language-markdown">---
+description: 把 stash 里的改动整理成 conventional commit message
+---
+
+请按 conventional commits 规范，根据下面这段 diff 写一条 commit message。
+diff 来自 `${CLAUDE_PLUGIN_ROOT}/scripts/show-stash.sh` 的输出：
+
+$ARGUMENTS
+</code></pre>
+<p>文件名 <code>commit-from-stash.md</code> 对应命令名 <code>/commit-from-stash</code>。用户在 CLI 里：</p>
+<pre><code class="language-text">&gt; /commit-from-stash &lt;粘贴 git stash show -p 的输出&gt;
+</code></pre>
+<p>CLI 把 body 里的 <code>$ARGUMENTS</code> 替换成粘贴的内容、<code>${CLAUDE_PLUGIN_ROOT}</code> 替换成插件根目录的绝对路径，拼好的整段文本作为一条 user 消息发给模型。</p>
+<p>支持的替换变量（与 Claude Code 命令规范对齐）：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>展开为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$ARGUMENTS</code> / <code>${ARGUMENTS}</code></td>
+<td>用户在命令名之后输入的全部文本。例如 <code>/commit-from-stash hello world</code> 中 <code>$ARGUMENTS</code> 展开为 <code>hello world</code>；如果用户只输入了 <code>/commit-from-stash</code> 不带任何参数，则展开为空串</td>
+</tr>
+<tr>
+<td><code>${CLAUDE_PLUGIN_ROOT}</code></td>
+<td>命令所属插件的根目录绝对路径（版本化 cache 目录）</td>
+</tr>
+<tr>
+<td><code>${CLAUDE_PLUGIN_DATA}</code></td>
+<td>命令所属插件的持久数据目录，第一次替换时 CLI 自动 <code>mkdir -p</code></td>
+</tr>
+</tbody>
+</table>
+<p>替换在发送前一次性完成，未声明的占位符（拼写错误或不识别的语法）按字面保留，不会被静默替换成空串。这套变量展开逻辑和 hook 的变量展开同源。</p>
+<h3 id="跟-skill-的几处边界">跟 skill 的几处边界</h3>
+<p>slash 命令和 skill 的载体都是 Markdown 文件，触发后都会把内容发给模型，但两者有三处关键差异。</p>
+<p>（1）skill 既能由模型自行激活（通过 <code>activateSkill</code> 工具），也能由用户显式 <code>/&lt;skillname&gt;</code> 调起。slash 命令只有用户显式 <code>/&lt;name&gt;</code> 这一条路径，模型不会主动激活。</p>
+<p>（2）skill 激活后，SKILL.md 的 body 包在 <code>&lt;activated_skill&gt;</code> 包装标签里持续留在消息历史中，模型后续每一步推理都能读到。slash 命令的 body 只作为一条普通的 user 消息出现一次，发送之后跟用户手动输入的 prompt 没有区别，模型看不到任何「这条消息来自 slash 命令」的标记。</p>
+<p>（3）skill 放在 <code>~/.x-code/skills/</code> 或插件目录，只有用户级和插件级两层来源。slash 命令多一层项目级（<code>&lt;cwd&gt;/.x-code/commands/</code>），加上用户级（<code>~/.x-code/commands/</code>）和插件级（插件 <code>commands/</code> 目录）共三种来源，加载顺序是用户级 → 插件级 → 项目级，同名时后写入者优先（last-write-wins）。</p>
+<h3 id="启动加载-命名冲突与热加载">启动加载、命名冲突与热加载</h3>
+<p>CLI 启动时扫描每个已启用插件的 <code>commands/</code> 目录，把每个 <code>.md</code> 注册成一条命令。命名冲突按后写入者优先处理，和 skill 注册表的合并策略一致。加载顺序由安装记录决定，同名命令的最终归属可预测：想用哪个版本，把对应插件放在加载顺序靠后即可。会话期间命令集冻结，修改插件后执行 <code>/plugin refresh</code> 触发重新加载，跟 skill / sub-agent / hook 走同一套原地重载（reload-in-place）模式（详见 39.7 节）。</p>
+<h2 id="39-3-hook-子系统-挂在-agent-生命周期上的-shell-命令">39.3 Hook 子系统：挂在 agent 生命周期上的 shell 命令</h2>
+<p>hook 是插件挂在 agent 生命周期几个固定时机上的 shell 命令。插件作者可以在用户提交 prompt 时插入一段预处理脚本，在工具调用前加一道审查，在上下文压缩前保存一份检查点——这些逻辑都不需要修改 CLI 本身的代码，只要在 hook 配置里声明「哪个事件、执行什么命令」即可。</p>
+<p>hook 在协议层面采用 shell + JSON 的组合。具体流程是：插件作者在 <code>hooks.json</code> 里声明一行 shell 命令和它要监听的事件名；当事件触发时，CLI 启动一个子进程执行这行命令，把事件上下文（事件名、工具名、工具参数等）序列化成 JSON 写入子进程的 stdin；子进程读取 stdin 完成处理后，通过 stdout 输出一行 JSON 返回决策结果（<code>allow</code> / <code>deny</code> / <code>modify</code>）；CLI 读取这行 JSON 决定是否放行当前操作。整条链路通过 stdin/stdout 完成，hook 运行在独立子进程里，跟 CLI 主进程的内存完全隔离。写 hook 的门槛因此很低，一段 bash 脚本或者一个 <code>node hook.js</code> 就是完整的 hook，不需要引入任何 SDK 依赖。代价有两项：每次触发都要启动一次子进程（开销在毫秒级），以及 hook 出错时只能通过 stderr 和 debug 日志排查。</p>
+<h3 id="写一个最小-lint-hook">写一个最小 lint hook</h3>
+<p>假设读者想让 agent 每次往 <code>*.ts</code> 写代码前都先过一道 ESLint，失败就拦下。X-Code CLI 没有内置 lint，但插件 + hook 机制能把它挂上去。一个最小可运行的插件目录结构如下：</p>
+<pre><code>my-lint-plugin/
+├── .x-code-plugin/
+│   └── plugin.json
+└── hooks/
+    ├── hooks.json
+    └── lint.js
+</code></pre>
+<p><code>hooks/hooks.json</code> 声明这个 hook 挂在什么事件、执行什么命令：</p>
+<pre><code class="language-json">{
+  &quot;PreToolUse&quot;: [
+    {
+      &quot;matcher&quot;: &quot;writeFile|editFile&quot;,
+      &quot;command&quot;: &quot;node ${pluginDir}/hooks/lint.js&quot;
+    }
+  ]
+}
+</code></pre>
+<p><code>hooks/lint.js</code> 是实际执行的逻辑：</p>
+<pre><code class="language-js">const event = JSON.parse(require('fs').readFileSync(0, 'utf-8'))
+if (!event.tool.args.path.endsWith('.ts')) {
+  process.stdout.write('{&quot;decision&quot;:&quot;allow&quot;}')
+  process.exit(0)
+}
+const { spawnSync } = require('child_process')
+const r = spawnSync('npx', ['eslint', '--stdin', '--stdin-filename', event.tool.args.path], {
+  input: event.tool.args.content,
+})
+if (r.status === 0) {
+  process.stdout.write('{&quot;decision&quot;:&quot;allow&quot;}')
+} else {
+  process.stdout.write(JSON.stringify({
+    decision: 'deny',
+    reason: `eslint failed:\n${r.stdout}`,
+  }))
+}
+</code></pre>
+<p>安装完毕后，agent 每次要派发 <code>writeFile</code> 或 <code>editFile</code> 工具调用时，CLI 先发一个 <code>PreToolUse</code> 事件。matcher 命中后，CLI 启动一个 node 子进程执行 <code>lint.js</code>，通过 stdin 将工具名和参数序列化为 JSON 写入子进程。子进程校验完毕后，通过 stdout 输出一行 JSON 表示决策结果。如果 decision 字段为 <code>allow</code>，这次工具调用正常继续；如果为 <code>deny</code>，这次写入被拦截，<code>reason</code> 字段的内容作为 <code>tool_result</code> 回到 agent loop，模型读到拒绝原因后通常会修正代码并重试。</p>
+<p>这条调用涉及几个部分：事件名（<code>PreToolUse</code>）、matcher（哪些工具命中）、command 字符串里的 <code>${pluginDir}</code> 等变量、事件载荷在 stdin 上的序列化形态、decision JSON 的合法值。下面按一次实际调用的顺序逐一展开。</p>
+<h3 id="一次-hook-调用从触发到决策">一次 hook 调用从触发到决策</h3>
+<p>回到 lint hook 例子。agent loop 准备派发 <code>writeFile</code>，事件总线发出 <code>PreToolUse</code> 事件。hook 子系统定义了 10 个固定事件名，按 stdout 是否被 agent 读取分成两类：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>事件名</th>
+<th>触发时机</th>
+<th>能否影响 agent 决策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>CLI 启动时，UI 挂载前</td>
+<td>否（通知）</td>
+</tr>
+<tr>
+<td><code>UserPromptSubmit</code></td>
+<td>用户消息送给模型之前</td>
+<td>能（决策）</td>
+</tr>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>任意工具派发之前</td>
+<td>能（决策）</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>工具产出结果之后</td>
+<td>能（决策）</td>
+</tr>
+<tr>
+<td><code>PreCompact</code> / <code>PostCompact</code></td>
+<td>上下文压缩前后</td>
+<td>否（通知）</td>
+</tr>
+<tr>
+<td><code>SubagentStart</code> / <code>SubagentStop</code></td>
+<td>sub-agent 启动 / 结束</td>
+<td>否（通知）</td>
+</tr>
+<tr>
+<td><code>TurnComplete</code></td>
+<td>每轮 LLM 流式输出结束</td>
+<td>否（通知）</td>
+</tr>
+<tr>
+<td><code>SessionEnd</code></td>
+<td>会话退出</td>
+<td>否（通知）</td>
+</tr>
+</tbody>
+</table>
+<p>表格里的「能否影响 agent 决策」一列把 10 个事件分成了两类。<code>UserPromptSubmit</code>、<code>PreToolUse</code>、<code>PostToolUse</code> 三个是决策事件，hook 返回的 JSON 直接决定 agent 的下一步动作——放行、拦截或修改内容。其余 7 个是通知事件，hook 可以写日志、推通知、留检查点，但 agent 不读 stdout，无法影响决策流程。</p>
+<p>以这次 lint hook 被 <code>PreToolUse</code> 触发为例，完整的调用链路如下：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-text">  agent loop              hook bus               lint.js
+      │                      │                      │
+  ①   │── 派发 writeFile ───&gt;│                      │
+      │                      │                      │
+  ②   │                 matcher 过滤                │
+      │                 /writeFile|editFile/ ✓      │
+      │                      │                      │
+  ③   │                 展开变量                     │
+      │                 启动子进程 ────────────────&gt;│
+      │                      │                      │
+  ④   │                      │── stdin JSON ──────&gt;│
+      │                      │  {event,tool,...}    │
+      │                      │                 校验代码
+  ⑤   │                      │&lt;── stdout JSON ─────│
+      │                      │  {decision:&quot;deny&quot;}  │
+      │                      │                      │
+  ⑥   │&lt;── deny ────────────│                      │
+      │   reason → tool_result                      │
+      │                                             │
+      ▼ 模型读到拒绝原因，修正后重试
+</code></pre>
+<p>对照上图逐步说明。步骤 ② 中，事件总线扫描注册在 <code>PreToolUse</code> 上的全部 hook，用 <code>matcher</code> 字段（正则表达式）匹配当前工具名。lint hook 的 matcher 是 <code>writeFile|editFile</code>，当前工具名 <code>writeFile</code> 匹配成功。matcher 只在 <code>PreToolUse</code> 和 <code>PostToolUse</code> 上起作用，其余事件没有工具名，直接跳过。正则写错（如未闭合的 <code>(</code>）不会导致 hook 静默失效，而是降级到匹配所有工具，同时记录 matcher-invalid 调试日志。</p>
+<p>步骤 ③ 中，CLI 对 <code>command</code> 字符串做变量展开：<code>${pluginDir}</code> 替换为插件安装目录绝对路径，<code>${cwd}</code> 替换为当前项目目录，<code>${env:NAME}</code> 替换为环境变量，其余还有 <code>${pluginDataDir}</code>（持久数据目录，首次使用时自动创建）、<code>${homedir}</code>、<code>${sep}</code> 等。拼写错误的占位符（如 <code>${plugindir}</code>，小写 d）按字面保留不替换，shell 执行时直接报错，方便排查。展开后以 shell 模式启动子进程，环境变量里注入该插件的 <code>userConfig</code> 配置值（如 API key），hook 脚本通过 <code>process.env</code> 直接读取（详见 39.5 节）。</p>
+<p>步骤 ④ 中，CLI 通过 stdin 写入 JSON 载荷，包含三组信息：会话元数据（<code>session</code>，含工作目录、模型 ID、会话 ID）、插件信息（<code>plugin</code>，含插件 ID 和安装目录）、以及事件特有字段（<code>PreToolUse</code> 是工具名和参数，<code>UserPromptSubmit</code> 是用户输入文本）。前面 lint.js 代码里 <code>readFileSync(0)</code> 读到的就是这段 JSON。</p>
+<p>步骤 ⑤ 中，子进程通过 stdout 返回决策 JSON。<code>decision</code> 字段有三种合法值：<code>allow</code> 放行；<code>deny</code> 拦截，<code>reason</code> 作为 <code>tool_result</code> 回传给模型让它修正重试；<code>modify</code> 放行但会替换内容（<code>PreToolUse</code> 替换工具输入参数，<code>PostToolUse</code> 替换工具执行结果）。三种决策都支持可选的 <code>context</code> 字段，CLI 会把该字段的内容附加到模型下一轮收到的消息里，让模型在后续推理时能看到 hook 提供的额外信息（如 lint 警告列表），但不影响当前这次工具调用本身。如果 stdout 为空或不是合法 JSON，CLI 按 <code>allow</code> 处理——写错的 hook 不应该阻塞 agent loop。</p>
+<h2 id="39-4-决定一-manifest-的路径探测与两段式解析">39.4 决定一：manifest 的路径探测与两段式解析</h2>
+<p>manifest 是插件作者给加载器的入口声明：插件叫什么、版本是多少、哪些扩展跟着这份插件一起安装。本节讨论加载器从哪个文件读 manifest、字段按什么规则解析。</p>
+<p>讲 manifest 之前要先说清加载器从哪里找插件。启动 / refresh 时做两遍扫描，对应两种来源。</p>
+<p>（1）用户级（user-scope，通过 marketplace 安装的）。<code>xc plugin install</code> 把插件仓库克隆到用户主目录下的缓存路径（按 marketplace / 插件名 / 版本号三层目录嵌套），同时把该插件的名称、版本、来源等信息写入 <code>installed_plugins.json</code>。CLI 启动时读取这份文件，根据每条记录里的路径信息找到对应的缓存目录，再从中解析 manifest 完成加载。用户级插件可以跨项目共享，由 <code>enabledPlugins</code> 控制开关（详见 39.6 节）。</p>
+<p>（2）项目级（project-scope，跟随项目的）。项目根目录下 <code>.x-code/plugins/</code> 的每个子目录被当成一个独立插件。加载器第二遍扫描这条路径，项目级插件不进安装记录，提交到 git 仓库后跟项目一起走，团队成员 clone 即可使用。</p>
+<p>两种来源最终都进同一个注册表，下游不区分用户级还是项目级，只有插件 ID 末尾的 marketplace 后缀不同（项目级统一为 <code>@local</code>）。本节剩下的内容讨论加载器拿到一个插件目录之后如何读取 manifest。</p>
+<p>manifest 文件路径：如果只规定一条固定路径 <code>.x-code-plugin/plugin.json</code>，逻辑最简单也没有歧义。但 Claude Code 社区已经积累了一批用 <code>.claude-plugin/plugin.json</code> 发布的插件，我们也需要考虑兼容这种格式。加载器按优先级探测三条候选路径：<code>.x-code-plugin/plugin.json</code>（原生格式，最高优先级）、<code>.claude-plugin/plugin.json</code>（兼容 Claude Code 存量）、裸 <code>plugin.json</code>（给极简插件用）。</p>
+<p>manifest 字段的两段式解析：manifest 里五个扩展字段（skill、sub-agent、slash 命令、MCP server、hook）都是可选的。加载器对每个扩展字段走两段式处理：作者在 manifest 里显式声明了路径就用声明值；没声明的话，加载器按约定探测插件目录下是否存在对应的子目录或配置文件（例如 <code>skills/</code> 目录对应 skill、<code>.mcp.json</code> 对应 MCP server），存在就自动加载。</p>
+<p>两段式并存是因为真实存量需要。<code>anthropics/claude-plugins-official</code> 仓库里多数插件的 manifest 只写名称、描述、作者几个元字段，扩展内容按约定放在对应的子目录里，X-Code CLI 要接收这批存量必须支持约定探测。</p>
+<h3 id="mcp-server-与-hook-配置-路径引用与内联两种形式">MCP server 与 hook 配置：路径引用与内联两种形式</h3>
+<p>skill、sub-agent、slash 命令三类扩展的本体是目录（每个扩展对应一份 Markdown 文件），加载器扫描目录就能发现全部内容。MCP server 和 hook 不一样：它们的本体是一段 JSON 配置，不是文件清单。这段 JSON 在 manifest 里有两种写法：直接嵌进 manifest（内联形式），或者用一个路径字符串指向外部配置文件（路径引用形式）。schema 同时接受两种形式：值是字符串视为路径引用，值是对象视为内联。</p>
+<p>内联形式下，server / hook 配置直接嵌进 <code>plugin.json</code>，整个插件就一个文件：</p>
+<pre><code class="language-jsonc">// .x-code-plugin/plugin.json
+{
+  &quot;name&quot;: &quot;weather&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;mcpServers&quot;: {
+    &quot;weather&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;${pluginDir}/server.js&quot;]
+    }
+  }
+}
+</code></pre>
+<p>总共 8 行，整个插件没有任何外部文件。</p>
+<p>路径形式下，<code>mcpServers</code> 字段写一个路径，manifest 跟实际的 server 配置分开：</p>
+<pre><code class="language-jsonc">// .x-code-plugin/plugin.json
+{
+  &quot;name&quot;: &quot;weather&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;mcpServers&quot;: &quot;./.mcp.json&quot;
+}
+</code></pre>
+<pre><code class="language-jsonc">// .mcp.json
+{
+  &quot;mcpServers&quot;: {
+    &quot;weather&quot;:       { &quot;command&quot;: &quot;node&quot;, &quot;args&quot;: [&quot;${pluginDir}/server.js&quot;] },
+    &quot;weather-debug&quot;: { &quot;command&quot;: &quot;node&quot;, &quot;args&quot;: [&quot;${pluginDir}/server.js&quot;, &quot;--debug&quot;] }
+  }
+}
+</code></pre>
+<p>什么时候用哪种？配置简单时（一两个 server 或 hook）用内联，打开 <code>plugin.json</code> 一眼就能看完。配置较多或需要跨工具复用时用路径引用——<code>.mcp.json</code> 是 Claude Code 和多数 MCP 客户端共同识别的配置文件名，插件作者把 MCP server 定义写在 <code>.mcp.json</code> 里，其它 MCP 客户端无需额外适配就能直接读取同一份配置；<code>hooks/hooks.json</code> 类似，<code>hooks/</code> 目录下通常已经有 hook 脚本文件，把 hook 配置放在同一目录下，配置和脚本在文件结构上保持一致，维护起来更方便。</p>
+<p>加载器内部会标记每份配置的来源是路径引用还是内联，按来源决定要读取文件还是直接用 manifest 里的对象，最终归一成统一形态交给 MCP / hook 子系统使用。子系统层面看到的是一份合并后的配置，跟它从哪个文件来无关。</p>
+<h2 id="39-5-决定二-安装时的同意确认与用户配置两道门">39.5 决定二：安装时的同意确认与用户配置两道门</h2>
+<p>在自己机器上运行别人的代码是一个信任决定。插件比单纯的 skill / sub-agent / 命令更需要谨慎：后三者本质都是文本（Markdown 文档或 prompt），插件可以包含 MCP server（要起子进程）和 hook（执行任意 shell 命令）。安装流程围绕这一点设置了两道独立的门：同意确认（consent）和用户配置提示（userConfig prompt）。</p>
+<p>第一道门是“同意确认预览”。在文件真正写入磁盘前，安装器把「这个插件包含什么」展示给用户，等显式同意后才继续。用户拒绝则中止安装。</p>
+<p>预览展示的信息按安全风险分为两类。skill / agent / 命令子目录只给「有 / 无」的布尔标记——这三类扩展的本体是 Markdown 文件，安全风险低，不需要逐一列出每个文件。hook 事件名和 MCP server 名则列出具体名字，因为这两项有更高的安全风险（要执行 shell / 要起子进程）。路径形式的 MCP server 和 hook 在同意确认阶段还没读取对应文件——读取文件意味着先信任作者声明的路径，等于把信任决定提前了——所以同样只暴露一个「有 / 无」标记；内联形式因为内容已经在 manifest 里且已解析，能列出具体名字。</p>
+<p>第二道门是用户配置提示。很多插件需要用户特定的值才能工作：Linear 插件要 API 密钥、GitHub 插件要个人访问令牌（personal access token）、Postgres 插件要数据库连接串。这些值因人而异，作者无法把它们写死在 manifest 里。<code>userConfig</code> 字段就是给作者一个声明位，「我这个插件需要用户在安装的时候填哪几项」。</p>
+<p>例如某个虚构的 Linear 插件 manifest 这样声明：</p>
+<pre><code class="language-jsonc">{
+  &quot;name&quot;: &quot;linear&quot;,
+  &quot;userConfig&quot;: [
+    { &quot;key&quot;: &quot;LINEAR_API_KEY&quot;, &quot;prompt&quot;: &quot;Enter your Linear API key&quot;, &quot;sensitive&quot;: true },
+    { &quot;key&quot;: &quot;LINEAR_TEAM_ID&quot;, &quot;prompt&quot;: &quot;Default team ID (e.g. ENG)&quot; }
+  ]
+}
+</code></pre>
+<p>同意确认通过之后，安装器按字段顺序逐项提示用户：</p>
+<pre><code class="language-text">? Enter your Linear API key: ***********
+? Default team ID (e.g. ENG): ENG
+</code></pre>
+<p><code>sensitive: true</code> 的字段输入时不回显（像 git 输密码一样用 <code>*</code> 代替每个字符显示）。收集完整后写入 <code>~/.x-code/plugins/user-config.json</code>，权限 <code>0600</code>（仅本用户可读）。</p>
+<p>运行时 CLI 自动把这些值注入到子进程的环境变量：MCP server 启动时注入到 server 子进程，hook 执行时注入到 hook 子进程。作者写 hook 脚本时直接用 <code>process.env.LINEAR_API_KEY</code> 就能拿到值，不需要自己写一段读配置文件的代码——manifest 里声明的 key 名就直接是子进程环境变量的变量名。</p>
+<blockquote>
+<p><code>sensitive: true</code> 的实际存储</p>
+<p><code>sensitive: true</code> 只控制输入时是否回显，存储仍然是同一份 <code>0600</code> JSON 文件，不是 macOS Keychain / Windows Credential Manager / Linux libsecret。普通字段和敏感字段共用一份文件，靠 <code>0600</code> 文件权限隔离。Windows 上 <code>0600</code> 实际是 no-op（<code>fs.chmod</code> 不映射到 NTFS ACL），这条已经在 <code>user-config.ts</code> 注释里标了。</p>
+</blockquote>
+<h2 id="39-6-决定三-enabledplugins-映射-project-user-两层作用域">39.6 决定三：enabledPlugins 映射，project &gt; user 两层作用域</h2>
+<p>插件安装之后默认是启用的。<code>enabledPlugins</code> 是一个布尔映射，既可以显式启用也可以显式禁用，默认启用。两层作用域跟 skill 的设计对齐：用户级（<code>~/.x-code/settings.json</code>）和项目级（<code>&lt;cwd&gt;/.x-code/settings.local.json</code>）。<code>.local.json</code> 的 <code>.local</code> 后缀是约定的「仅当前用户使用、不纳入版本管理」，项目级禁用不会被提交到 git 影响协作者：</p>
+<pre><code class="language-jsonc">// ~/.x-code/settings.json
+{
+  &quot;enabledPlugins&quot;: {
+    &quot;linear@anthropic-marketplace&quot;: true,
+    &quot;k8s-debug@local&quot;: false,
+    &quot;github-pr@anthropic-marketplace&quot;: true
+  }
+}
+</code></pre>
+<p>解析优先级时，系统按 project → user 的顺序逐层查找，第一个有显式条目的层级胜出。如果两层都没有显式条目，则默认启用。解析结果除了布尔值之外还带一个「由哪个层级决定」的标记，<code>/plugin doctor</code> 据此告诉用户「这个插件在你这台机器上是被 project 层级禁用的」，而不是含糊的「已禁用」。</p>
+<h2 id="39-7-决定四-plugin-refresh-一次重建五个子注册表">39.7 决定四：/plugin refresh 一次重建五个子注册表</h2>
+<p>会话期间修改一个插件之后，已经运行的 CLI 怎么看见新状态？跟 skill 和 MCP 一样，插件也采用「启动加载，会话冻结，显式刷新」的模式。用户执行 <code>/plugin refresh</code> 触发一次完整重建。</p>
+<h3 id="五个子注册表一起原地重载">五个子注册表一起原地重载</h3>
+<p><code>/plugin refresh</code> 触发时，刷新函数按固定顺序做五件事：</p>
+<p>（1）重扫已安装插件。重读安装记录 + 项目级目录 + 启用 / 禁用状态，得到新的插件列表和加载错误列表。</p>
+<p>（2）更新主注册表。把新的插件列表替换进去，保留对象引用（同 <code>/skill refresh</code> 的设计），所有持有注册表引用的下游代码继续有效。</p>
+<p>（3）重新生成扩展集合。把新插件的 skill 目录 / agent 目录 / 命令目录 / MCP server 配置 / hook 配置汇总出来。</p>
+<p>（4）逐一刷新 skill / sub-agent / command / hook 四个子注册表。都用原地重载，同样保留各自的对象引用。</p>
+<p>（5）重启 MCP 服务器。把插件提供的 MCP 和用户级 + 项目级 MCP 配置合并后统一重启，跟 <code>/mcp refresh</code> 走同一条 restart 路径。</p>
+<p>刷新完成后 CLI 还要做两件事：清除 system prompt 缓存（同 <code>/skill refresh</code>），以及输出一段提示告诉用户下一条消息会触发 prompt cache 重建。</p>
+<pre><code class="language-text">&gt; /plugin refresh
+Reloaded plugins — added: linear@anthropic-marketplace.
+Downstream: 0 skill change(s), 0 agent change(s), 0 hook(s) registered.
+MCP — added: linear.
+Note: next message rebuilds the system prompt, so prompt-cache will miss once.
+</code></pre>
+<p>（Linear 插件只提供一个 MCP server，没有 skill / agent / hook，所以下游注册表数字都是 0；换成一个带 skill 和 hook 的插件再 refresh 时，对应数字才会动。）</p>
+<h2 id="39-8-决定五-文件系统层面的两种健壮性">39.8 决定五：文件系统层面的两种健壮性</h2>
+<p>插件系统涉及磁盘读写：加载时解析 manifest、安装时写入缓存目录、卸载时清理文件但要保留持久数据。下面两条决定分别处理「manifest 解析异常时的容错」和「卸载时已写入目录的清理策略」。</p>
+<h3 id="单个插件加载失败不阻塞启动">单个插件加载失败不阻塞启动</h3>
+<p>skill 和 sub-agent 的加载器已经采用了「单个文件损坏不阻塞启动」的容错策略（详见 Ch.19 和 Ch.38），插件层将同一策略扩展到 manifest 解析。具体做法是：CLI 启动时扫描安装记录，逐个解析每份插件的 manifest。某份 manifest 可能有问题——JSON 格式错误、<code>name</code> 字段不合规范、文件被人工编辑损坏——但不应该因此阻塞整个 CLI。为此，加载器为每个插件包一层 try/catch，解析失败的插件跳过，错误信息收集到一份列表，与加载成功的插件一起存入 <code>PluginRegistry</code>。这样一来，用户看到的效果就是 CLI 正常启动，没有异常情况。另外用户可以通过 <code>/plugin doctor</code> 命令展示哪些插件有问题以及具体原因。</p>
+<p>错误还做了类型区分，以便 <code>/plugin doctor</code> 给出针对性提示（例如「linear 插件的 manifest 缺少 name 字段」，而不是笼统的「插件加载失败」）。另外，manifest 解析错误信息会携带文件路径和字段级描述；安装错误对应拉取失败、同意确认拒绝、用户配置中断、sha 校验不匹配等场景；hook 配置解析错误则在加载阶段捕获后一并归入同一份列表。</p>
+<h3 id="cache-卸载时整目录清除-data-卸载时保留">cache/ 卸载时整目录清除，data/ 卸载时保留</h3>
+<p>插件在文件系统上的布局分两类目录。cache 目录（<code>~/.x-code/plugins/cache/&lt;marketplace&gt;/&lt;plugin&gt;/&lt;version&gt;/</code>）存放插件本体——manifest、skill 文件、hook 脚本等。版本号在路径里，同一插件的多个版本能共存，为后续 <code>/plugin update</code> 的「先装新版本、再原子切换」留位置。data 目录（<code>~/.x-code/plugins/data/&lt;id&gt;/</code>）是插件的持久化数据，hook 脚本通过 <code>${pluginDataDir}</code> 变量拿到这条路径，存自己的缓存 / 锁文件 / 中间产物。</p>
+<p>两类目录的删除策略不同。卸载时 cache 目录整个清除，data 目录保留。原因是用户使用某个插件几个月了，hook 在 data 目录里积累了很多数据；如果某天升级到新版本时卸载了旧的，数据要是一并删掉就永久丢失。代价就是用户想清掉数据需要手动删除。</p>
+<h2 id="39-9-小结">39.9 小结</h2>
+<p>插件把 skill、sub-agent、slash 命令、MCP server、hook 五条扩展路径打包成一个安装单元：一份 manifest 声明包含哪些扩展，一道安装命令完成全部部署，一道刷新命令触发会话内热加载。五条路径各自的能力不受影响，插件层只负责把它们打成一个包。</p>
+<p>slash 命令是最简单的扩展形态：每个 Markdown 文件注册成一条命令，body 经变量替换后作为 user 消息送给模型，发送后跟用户手动输入的 prompt 一视同仁。hook 采用 shell + JSON 协议，把第三方代码隔离在子进程中；10 个固定事件名覆盖 agent 生命周期的主要节点，其中 3 个是决策事件（允许 / 拒绝 / 修改），决策事件串行执行且遇到 deny 即短路。</p>
+<p>manifest 文件路径按三条候选探测，兼容 Claude Code 存量；五个扩展字段走两段式解析，显式声明优先，缺字段时探测约定目录。安装流程分两道门：同意确认预览展示安全风险较高的项（hook 事件名和 MCP server 名），用户配置环节逐项提示填写敏感配置。安装后的启用 / 禁用采用布尔映射，项目层级优先于用户层级。会话期间通过 <code>/plugin refresh</code> 一次重建五个子注册表并重启 MCP。在健壮性方面，单个插件加载失败不阻塞启动，错误由 <code>/plugin doctor</code> 集中展示；cache 目录卸载时清除、data 目录卸载时保留，避免丢失累积的持久数据。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-38.html">← Skill 系统：按需注入的「指令包」</a>
+      <a class="next" href="ch-40.html">插件 marketplace 与分发 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#39-1-一次完整的例子-安装-linear-插件">39.1 一次完整的例子：安装 Linear 插件</a></li>
+      <li class="lv2"><a href="#39-2-slash-命令-把-prompt-模板挂到-name">39.2 Slash 命令：把 prompt 模板挂到 `/&lt;name&gt;`</a></li>
+      <li class="lv3"><a href="#跟-skill-的几处边界">跟 skill 的几处边界</a></li>
+      <li class="lv3"><a href="#启动加载-命名冲突与热加载">启动加载、命名冲突与热加载</a></li>
+      <li class="lv2"><a href="#39-3-hook-子系统-挂在-agent-生命周期上的-shell-命令">39.3 Hook 子系统：挂在 agent 生命周期上的 shell 命令</a></li>
+      <li class="lv3"><a href="#写一个最小-lint-hook">写一个最小 lint hook</a></li>
+      <li class="lv3"><a href="#一次-hook-调用从触发到决策">一次 hook 调用从触发到决策</a></li>
+      <li class="lv2"><a href="#39-4-决定一-manifest-的路径探测与两段式解析">39.4 决定一：manifest 的路径探测与两段式解析</a></li>
+      <li class="lv3"><a href="#mcp-server-与-hook-配置-路径引用与内联两种形式">MCP server 与 hook 配置：路径引用与内联两种形式</a></li>
+      <li class="lv2"><a href="#39-5-决定二-安装时的同意确认与用户配置两道门">39.5 决定二：安装时的同意确认与用户配置两道门</a></li>
+      <li class="lv2"><a href="#39-6-决定三-enabledplugins-映射-project-user-两层作用域">39.6 决定三：enabledPlugins 映射，project &gt; user 两层作用域</a></li>
+      <li class="lv2"><a href="#39-7-决定四-plugin-refresh-一次重建五个子注册表">39.7 决定四：/plugin refresh 一次重建五个子注册表</a></li>
+      <li class="lv3"><a href="#五个子注册表一起原地重载">五个子注册表一起原地重载</a></li>
+      <li class="lv2"><a href="#39-8-决定五-文件系统层面的两种健壮性">39.8 决定五：文件系统层面的两种健壮性</a></li>
+      <li class="lv3"><a href="#单个插件加载失败不阻塞启动">单个插件加载失败不阻塞启动</a></li>
+      <li class="lv3"><a href="#cache-卸载时整目录清除-data-卸载时保留">cache/ 卸载时整目录清除，data/ 卸载时保留</a></li>
+      <li class="lv2"><a href="#39-9-小结">39.9 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

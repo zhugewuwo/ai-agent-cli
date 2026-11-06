@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文件工具：readFile、writeFile 与 edit - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li class="active"><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 13 章 文件工具：readFile、writeFile 与 edit</h1>
+<p>文件读写是 Agent 最高频的动作——所有代码任务都离不开它们。X-Code CLI 把这部分拆成三个工具：<code>readFile</code> 读文件、<code>writeFile</code> 写新文件、<code>edit</code> 替换老文件中的一段字符串。三个工具看起来非常基础，但每个都包含若干不显眼的设计决策，理解这些决策才能看清工具层为什么是这套架构。全章沿一个具体场景把三个工具走一遍，再逐一讨论关键设计决策，分为如下几个部分进行介绍。</p>
+<ul>
+<li>13.1 节用一个完整的例子展示三个文件工具的协作过程。</li>
+<li>13.2 节讨论 <code>readFile</code> 返回的行号格式与双层截断策略。</li>
+<li>13.3 节讲解 <code>edit</code> 工具的精确字符串匹配与唯一性校验机制。</li>
+<li>13.4 节划清 <code>writeFile</code> 与 <code>edit</code> 的分工边界。</li>
+<li>13.5 节解释「先读后写」为什么是软约束而非强校验。</li>
+<li>13.6 节介绍图片与 PDF 如何通过 content parts 走多模态视觉通道。</li>
+<li>13.7 节给出本章小结。</li>
+</ul>
+<h2 id="13-1-一个完整的例子-给-utils-ts-加一个函数">13.1 一个完整的例子：给 utils.ts 加一个函数</h2>
+<p>假设用户输入：</p>
+<blockquote>
+<p>给 <code>src/utils.ts</code> 加一个 <code>formatDate(date: Date, fmt: string): string</code> 函数，跟里面已有的工具函数风格保持一致</p>
+</blockquote>
+<p>模型不会直接动手——它先调 <code>readFile</code> 查看现状：</p>
+<pre><code class="language-jsonc">{ &quot;filePath&quot;: &quot;/abs/path/src/utils.ts&quot; }
+</code></pre>
+<p>工具结果是带行号的文本（每行 <code>行号 + Tab + 内容</code>）：</p>
+<pre><code>1	import { Buffer } from 'node:buffer'
+2
+3	export function trimTrailingNewlines(s: string): string {
+4	  return s.replace(/\n+$/, '')
+5	}
+6
+7	export function isBufferLike(v: unknown): v is Buffer {
+8	  return Buffer.isBuffer(v)
+9	}
+10
+11	export const NOOP = () =&gt; undefined
+</code></pre>
+<p>行号让模型在后续推理时能稳定地引用位置——「第 5 行后面插入」既精确又便于诊断。模型读完看清了风格（命名驼峰、单层 <code>export function</code>、无类型别名）后，面临一个选择：把整个 <code>utils.ts</code> 的文件内容重写一遍、把新函数嵌入其中？还是只发「差异」那一段？</p>
+<p>答案是后者——这种「老文件改一小段」的场景应该用 <code>edit</code>：</p>
+<pre><code class="language-jsonc">{
+  &quot;filePath&quot;: &quot;/abs/path/src/utils.ts&quot;,
+  &quot;oldString&quot;: &quot;export const NOOP = () =&gt; undefined&quot;,
+  &quot;newString&quot;: &quot;export const NOOP = () =&gt; undefined\n\nexport function formatDate(date: Date, fmt: string): string {\n  // ... 实现\n}&quot;,
+}
+</code></pre>
+<p><code>edit</code> 工具内部做的事简单又严格：把整个文件读进来，确认 <code>oldString</code> 在文件里只出现 1 次，找到位置后把那段字符串替换成 <code>newString</code>，写回磁盘。返回结果只有一句：</p>
+<pre><code>File edited: /abs/path/src/utils.ts
+</code></pre>
+<p>为什么不用 <code>writeFile</code> 整文件覆写？原因有两个。第一，模型需要把原文件 11 行原样复述一遍才能写——多产生的输出 token 全是无意义的复述，而且容易在复述过程中出现差异（多一个空格、改了缩进）。第二，git diff 看到的是「删 11 行 + 加 14 行」而不是「加 4 行」，代码评审完全分不清哪些是有意改动。<code>edit</code> 只发改动的那段，工具结果干净、git diff 也干净。</p>
+<p>接下来用户继续：</p>
+<blockquote>
+<p>再创建一个独立的 <code>src/format/date.ts</code> 模块，把这个函数搬过去</p>
+</blockquote>
+<p>这次情况反过来——<code>src/format/date.ts</code> 还不存在，<code>edit</code> 找不到任何 <code>oldString</code> 可替换。这种「文件尚未存在」的场景只能用 <code>writeFile</code> 整段写出去：</p>
+<pre><code class="language-jsonc">{
+  &quot;filePath&quot;: &quot;/abs/path/src/format/date.ts&quot;,
+  &quot;content&quot;: &quot;export function formatDate(date: Date, fmt: string): string {\n  // ...\n}\n&quot;,
+}
+</code></pre>
+<p><code>src/format/</code> 目录不存在也不会报错——<code>writeFile</code> 内部先 <code>mkdir -p</code> 把中间目录建好再写。返回：</p>
+<pre><code>File created: /abs/path/src/format/date.ts (3 lines)
+</code></pre>
+<p>三个工具的返回消息各自不同：<code>writeFile</code> 新建文件时返回 <code>File created: ...</code>；<code>writeFile</code> 覆盖已有文件时返回 <code>File written: ...</code>；<code>edit</code> 做定向替换时返回 <code>File edited: ...</code>。这些区别让模型和用户都能一眼分清当前执行的是哪种操作。整个流程演示了三个工具的典型分工：读用 <code>readFile</code>、改老文件用 <code>edit</code>、建新文件用 <code>writeFile</code>。下面分别讨论几个不显眼但关键的设计决策。</p>
+<h2 id="13-2-行号格式与双层截断">13.2 行号格式与双层截断</h2>
+<p><code>readFile</code> 输出的核心格式只有一句话：每行前面加 <code>行号 + Tab</code> 前缀。这个看似简单的格式带来两个具体的好处。第一，模型能稳定引用位置——后续推理里可以说「第 42 行的那个 <code>verify()</code> 调用没做 audience 校验」。没有行号的话模型只能说「那个 verify 调用」，当文件中存在多个 verify 时，父 agent 和用户都分不清指的是哪一个。第二，<code>edit</code> 的 <code>oldString</code> 可以直接照抄——模型在 <code>edit</code> 时不应包含行号前缀（描述里明确写了 &quot;Never include line number prefixes in oldString or newString&quot;），但行号本身让它知道要复制哪几行的内容。</p>
+<p>与此同时，<code>readFile</code> 给输出加了两层上限来避免一次读取占满 context window。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/read-file.ts</code></p>
+</blockquote>
+<pre><code class="language-ts">const LARGE_FILE_LINE_THRESHOLD = 2000 // 默认头部截断的行数阈值
+const MAX_READ_BYTES = 256 * 1024      // 256 KB 字节上限
+</code></pre>
+<p>第一层是行数上限：默认只读前 2000 行。模型不带 <code>offset</code> / <code>limit</code> 调 <code>readFile</code> 读一个 5000 行的文件时，工具只返回前 2000 行，末尾追加一段提示：</p>
+<pre><code>[readFile: showing first 2000/5000 lines. Call readFile again with
+ offset/limit to view other ranges, or use grep to find specific
+ symbols. For whole-file analysis of very large files, consider
+ delegating to a sub-agent via the task tool — each sub-agent reads
+ in isolated context and returns only a summary.]
+</code></pre>
+<p>这段提示不只是给用户看——它的措辞像给模型的下一步指引。模型读到这条提示后通常会自己决定是用 grep 找具体目标、用 offset 继续读、还是直接通过 task 子 agent（详见 Ch.19）做整文件分析。把恢复路径写在截断信息里、让模型自行选择下一步，比让 CLI 替模型决定更稳定。</p>
+<p>第二层是字节上限：每次返回不超过 256 KB。这一层针对的是模型显式传了 <code>limit</code> 的情况——比如 <code>limit: 90000</code>——光靠行数限制无法防住。256 KB 是按 token 反算的：英文大约对应 25K tokens，是行业里 Read 类工具的常见上限；CJK 内容更紧凑（约 75 KB），但仍然给主对话留了至少 90% 的 context。超出这个字节预算时，工具按整行截断（不切半行），末尾同样追加提示告知模型如何获取下一段。</p>
+<p>为什么要分两层？第一层（行数）是正常使用的体验上限：模型浏览一个文件不应该被一万行的日志淹没。第二层（字节）是模型显式要求读取大量内容时的安全阀——防止一个 <code>limit: 100000</code> 把多 MB 的 yaml/json 整段写入上下文。两层各自覆盖不同的场景，模型触及任何一层都能收到清晰的下一步建议。</p>
+<h2 id="13-3-edit-的精确字符串匹配与唯一性校验">13.3 edit 的精确字符串匹配与唯一性校验</h2>
+<p><code>edit</code> 的工作方式可以用一句话概括——在文件中找到 <code>oldString</code>，替换成 <code>newString</code>。但这里有一个关键的设计选择：<code>oldString</code> 必须在文件里恰好出现 1 次，否则报错。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/tool-execution.ts::executeWriteTool</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">if (!replaceAll) {
+  const count = countOccurrences(content, oldString)
+  // 找不到
+  if (count === 0) return toolErrorString(`old_string not found in ${filePath}`)
+  // 找到多个
+  if (count &gt; 1)
+    return toolErrorString(
+      `old_string is not unique in ${filePath} (found ${count} occurrences). ` +
+        `Provide more context or set replaceAll: true.`,
+    )
+}
+</code></pre>
+<p>两条错误路径都显式告诉模型如何自纠：找不到 → <code>oldString</code> 写错了；找到多个 → 要么补更多上下文让它唯一、要么设置 <code>replaceAll: true</code> 全部替换。模型读完错误信息几乎不需要额外思考下一步该做什么。</p>
+<p>为什么这么严格？反过来看——如果允许模糊匹配（Fuzzy Match，即忽略空白差异、缩进差异等），会发生什么：模型生成的 <code>oldString</code> 缩进少一格，工具「好心」地匹配到另一段看上去差不多的内容，但那段其实不是模型本来想改的位置。表面替换成功，实际改错了文件；git diff 里看起来是个合理的改动，只是改的地方错了，缺陷极难发现。</p>
+<p>精确匹配则相反——逐字节比较，连一个空格、一个 Tab、一个换行差异都不放过。任何不一致都立即失败、报错。「看似成功实则改错」这条最隐蔽的缺陷路径被直接消灭。这是一个典型的取舍：精确匹配会导致模型偶尔因为空白字符差异而失败（需要多一次 <code>readFile</code> 调用来获取准确内容），但这个代价远小于模糊匹配带来的「改错位置却不报错」的风险。工具描述里也有专门一句话提示模型避开最常见的失败——&quot;Never include line number prefixes in oldString or newString&quot;。把已知容易出错的地方写在工具描述里、写在错误信息里，模型即使失败一次也能很快恢复。</p>
+<p><code>replaceAll: true</code> 是给「重命名」这种确实需要全局替换的场景保留的：把变量 <code>oldName</code> 改成 <code>newName</code>，全文件 5 处都改——一次调用完成。这是一个显式选择——必须传 <code>replaceAll: true</code> 才进入全局替换模式，默认行为永远是「必须唯一」。这个分流避免了「以为只改一处、结果改了全部」的意外。</p>
+<h2 id="13-4-writefile-与-edit-的分工边界">13.4 writeFile 与 edit 的分工边界</h2>
+<p>两个工具表面都是「改文件」，但用途严格分开：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>工具</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>创建新文件</td>
+<td><code>writeFile</code></td>
+<td>文件不存在，没有可替换的 <code>oldString</code>，必须整段写</td>
+</tr>
+<tr>
+<td>改老文件的一小段</td>
+<td><code>edit</code></td>
+<td>只发改动的那段（diff），节省 token、保留 git diff 可读性</td>
+</tr>
+<tr>
+<td>完全重写老文件</td>
+<td><code>writeFile</code></td>
+<td>改动太大，逐段 edit 反而碎；整段覆盖一次完成</td>
+</tr>
+<tr>
+<td>老文件追加几行末尾</td>
+<td><code>edit</code></td>
+<td>可以 <code>edit</code> 文件最后一段非空内容、把 <code>newString</code> 续在末尾</td>
+</tr>
+</tbody>
+</table>
+<p>这条边界不是工具运行时强制的——<code>writeFile</code> 可以覆盖任何已存在的文件、<code>edit</code> 也可以替换任意大的字符串。分工规则由系统提示词引导：</p>
+<blockquote>
+<p>Prefer edit (string replacement) over writeFile when modifying existing files — it's safer and costs fewer tokens</p>
+</blockquote>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/system-prompt.ts</code></p>
+</blockquote>
+<p>为什么这条引导规则重要？假设一种最糟的情况：模型想修一个函数的小缺陷，但调了 <code>writeFile</code> 把整个 1000 行的文件重写一遍。这会导致三个问题。第一，token 浪费——模型需要把 1000 行原样在 <code>content</code> 里复述，输出 token 大几十倍。第二，复述出错的风险——模型抄文件原内容时可能漏一行、缩进错一格、改了个空格——而这些「无意识改动」和本意要修的缺陷混在一起，代码评审时很难区分。第三，git diff 失去可读性——原本应该是「只改了 5 行」的小 PR，现在 diff 显示「删了 1000 行 + 加了 1000 行」，评审者完全看不出哪些是有意改动。<code>edit</code> 不存在这些问题——它只发改动的那一段，git diff 干净利落。因此系统提示词引导模型「改老文件用 edit、建新文件才用 writeFile」。</p>
+<p><code>writeFile</code> 还有一个细节值得提及——自动创建中间目录：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">await fs.mkdir(path.dirname(filePath), { recursive: true })
+await fs.writeFile(filePath, content, { encoding: 'utf-8', signal })
+</code></pre>
+<p>模型说要写 <code>src/format/date.ts</code>、但 <code>src/format/</code> 还不存在时，<code>writeFile</code> 不会报错，先把中间目录建好再写。这样模型不需要先调 shell 执行 <code>mkdir</code>、再调 writeFile，省一轮工具调用。</p>
+<h2 id="13-5-先读后写-为什么是软约束">13.5 「先读后写」为什么是软约束</h2>
+<p><code>writeFile</code> 和 <code>edit</code> 的工具描述里都包含类似的措辞：</p>
+<blockquote>
+<p>writeFile: &quot;If this is an existing file, you MUST use the readFile tool first ... This tool will fail if you did not read the file first.&quot;</p>
+<p>edit: &quot;You must use readFile at least once in the conversation before editing. This tool will error if you attempt an edit without reading the file.&quot;</p>
+</blockquote>
+<p>读起来像运行时强制，但实际打开执行逻辑一看——没有任何强校验。工具层根本不维护「哪些文件被 readFile 过」这种状态。&quot;will fail&quot; 这句承诺是写给模型看的——只存在于工具描述和系统提示词中（&quot;ALWAYS read a file before modifying it&quot;），靠模型自觉遵守。</p>
+<p>这个选择背后有两条权衡。第一，实测软约束已经足够有效。这里有一个微妙但关键的原因——软约束之所以管用，并不只是因为模型「听话」，而是因为先读后写有一条自我强制的路径。模型如果不读文件就直接调 <code>edit</code>，它写不出有效的 <code>oldString</code>。要让 <code>oldString</code> 在文件里恰好出现 1 次，模型必须知道文件长什么样；凭空猜测的 <code>oldString</code> 几乎必然触发 <code>old_string not found</code> 错误，模型下一步还是得调 <code>readFile</code>。同理，<code>writeFile</code> 改老文件时如果模型不读就直接整段覆写，等于在拿「自己脑补的内容」覆盖真实文件——即使真的发生，git diff 一眼能看出来，最坏情况是被发现而不是悄无声息地出错。因此系统提示词的 &quot;ALWAYS read first&quot; 加上工具描述的 &quot;will fail&quot; 加上 <code>edit</code> 的精确匹配——三层叠在一起，模型不读直接动手的代价大、读了再动手的成本小。模型自己会算这笔账。实测下来主流模型遵守率在 90% 以上，剩余不到 10% 的情况也基本会被 <code>edit</code> 工具的 <code>not found</code> 错误纠正回来。失败一次的代价（多一次 <code>readFile</code> 调用）远小于维护一套强校验机制的代价。</p>
+<p>第二，强校验的实现复杂度不低。要维护「这次会话里哪些路径被 readFile 过」这份状态，还需要处理一系列边界情况：文件被 readFile 后又被外部修改（IDE 编辑了或 git pull 拉了新版本），这时模型按旧内容生成的 <code>oldString</code> 就失效了，需要做 mtime 追踪；同一文件读了又改、改了又读，状态机要正确；<code>/clear</code> 后这份状态要不要清空？<code>/resume</code> 加载历史会话时要不要恢复？这些都是真实的工程问题。X-Code CLI 当前的选择是不引入这套状态——保持工具的无状态特性（每次调用只看参数就够），靠系统提示词加 <code>edit</code> 的精确匹配自然约束。</p>
+<p>不过，<code>edit</code> 工具内部自己会执行一次 <code>fs.readFile</code>（拿到当前文件内容才能做替换）——这一步发生在工具运行期间，是工具的实现细节。它与「模型在调 <code>edit</code> 之前是否调过 <code>readFile</code> 工具」是两回事：后者影响的是模型有没有看过文件内容、能不能写出准确的 <code>oldString</code>；前者只是工具自己获取文件原文用于执行替换操作。</p>
+<h2 id="13-6-图片与-pdf-content-parts-走多模态视觉通道">13.6 图片与 PDF：content parts 走多模态视觉通道</h2>
+<p><code>readFile</code> 工具描述里有一句容易忽略的话：</p>
+<blockquote>
+<p>This tool can read images (PNG, JPG, etc.) and PDFs — their content is presented inline.</p>
+</blockquote>
+<p>图 13-1 展示了 <code>readFile</code> 处理不同文件类型时的完整分支路径：</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/031e25b132804348869f5c5b38829dbd~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1091&amp;h=741&amp;s=68048&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<blockquote>
+<p>图 13-1 readFile 对不同文件类型的处理路径——文本走行号截断，图片和 PDF 走 content parts 并由供应商兼容层按需降级</p>
+</blockquote>
+<p>模型对一个 <code>.png</code> 文件调 <code>readFile</code> 时，工具内部会把文件读成 buffer 后做 <code>buffer.toString('base64')</code>——图片数据本身必须编码为 base64 字符串，因为二进制数据无法直接走 JSON 通道。但关键不在 base64 本身，而在这段 base64 被装到哪种「part」里。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/read-file.ts</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">if (kind === 'image') {
+  const buffer = await fs.readFile(filePath)
+  return {
+    type: 'content',
+    value: [
+      { type: 'text', text: `Loaded image: ${filePath}` },
+      {
+        type: 'image-data', // 关键：part 类型是 image-data 而不是 text
+        data: buffer.toString('base64'),
+        mediaType: mediaTypeFor(filePath), // 'image/png' / 'image/jpeg' / ...
+      },
+    ],
+  }
+}
+</code></pre>
+<p>差异要在 AI SDK 的 part 协议层面才能看清楚——同一段 base64 字符串，装到不同 part 里，下游供应商的解读完全不同：</p>
+<table>
+<thead>
+<tr>
+<th>装在哪种 part</th>
+<th>供应商看到的内容</th>
+<th>token 计费</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code> part</td>
+<td>一长串 base64 字母数字（约 270 KB），当作普通文本处理</td>
+<td>按文本 token 计——一张 200 KB 的图约 70K tokens</td>
+</tr>
+<tr>
+<td><code>image-data</code> part</td>
+<td>真正的图片——供应商调视觉子模型解读像素</td>
+<td>按图像 token 计——一张图通常几百到几千 token</td>
+</tr>
+</tbody>
+</table>
+<p>base64 内容是一样的，但前者供应商把它当文本读——模型只看到一长串字母数字，根本不知道是图片；后者供应商识别 part 类型后调用多模态视觉通道——模型真正「看到」图里的内容，token 还便宜十几倍。X-Code CLI 选择的是后者。</p>
+<p>但这就引出下一个问题：不是所有供应商都接受 <code>image-data</code> part——DeepSeek、自定义 OpenAI 兼容端点这些纯文本供应商收到 <code>image-data</code> 会直接 400 报错。X-Code CLI 的解决方式是在工具层和供应商之间加一层适配——工具层不管当前用什么模型，<code>readFile</code> 看到图片永远输出 <code>image-data</code> part，从不判断当前供应商能否消化。降级由下游的供应商兼容层（Provider-Compat）接管：每次发 API 请求前，兼容层检查当前供应商的能力表，不支持图片的就用本地 OCR 把图片替换为提取出的文字，不支持 PDF 的则替换为占位文本。OCR 是降级方案——质量不如多模态原生看图，但避免了「图片直接发出去 → API 400 → 整轮对话中断」的最坏情况。兼容层的完整降级策略详见 Ch.09，两条图像入口（工具路径 vs 用户附件路径）的降级差异详见 Ch.35。</p>
+<p>为什么这么分层？因为工具层不应该知道当前用什么模型——<code>readFile</code> 是个无状态工具，输入文件路径、输出 AI SDK 协议结构。当前会话用的是 Claude 还是 DeepSeek 是供应商兼容层的事。这种「工具只管输出标准结构，适配交给兼容层」的边界非常干净——新增供应商时只需要修改 capabilities 表和兼容层，不动任何工具代码。</p>
+<p><code>classifyFile</code> 决定一个文件归 text / image / pdf 哪一类——先看扩展名（<code>.png</code> / <code>.jpg</code> / <code>.pdf</code>），扩展名陌生时拿前几个字节比对 magic bytes（PDF 头是 <code>%PDF-</code>、PNG 头是 <code>\x89PNG</code>）。这种双层识别让模型对扩展名错误的文件（比如下载后扩展名被去掉的图片）也能正确分流。</p>
+<p>X-Code CLI 还有另一条入口：用户直接在输入框里写一个文件路径（<code>@path</code> 或裸绝对路径），由 <code>extractFileReferences</code> 在提交消息时识别，不走 <code>readFile</code> 工具。这条路径的图像降级不走 OCR，而是借一家配了 key 的多模态模型生成 caption——完整的优先级顺序、caption 缓存和两条路径不对称的设计取舍详见 Ch.35。</p>
+<h2 id="13-7-小结">13.7 小结</h2>
+<p>本章围绕一个「给 utils.ts 加函数」的场景走完了三个文件工具的典型分工，并讨论了五个关键设计决策。<code>readFile</code> 输出带行号前缀的文本，让模型能稳定引用位置，同时通过行数 2000 和字节 256 KB 两层上限防止一次读取占满 context window，截断信息里直接内嵌下一步建议让模型自行选择恢复路径。<code>edit</code> 采用精确字符串匹配加唯一性校验，任何空白差异都立即失败、<code>oldString</code> 必须恰好出现 1 次，从根本上消除了模糊匹配「改错位置却不报错」这条最隐蔽的缺陷路径。<code>writeFile</code> 与 <code>edit</code> 的分工不是工具运行时强制的，而是通过系统提示词引导模型遵守——「改老文件用 edit、建新文件才用 writeFile」——目的是节省 token 并保持 git diff 的可读性。「先读后写」同样是软约束：工具层不维护「哪些路径读过」的状态，靠系统提示词加工具描述加 edit 精确匹配三层叠加自然约束，强校验的实现复杂度远超收益。图片和 PDF 通过 <code>image-data</code> / <code>file-data</code> content parts 走多模态视觉通道，不支持多模态的供应商由兼容层自动降级为本地 OCR 文字，工具层与供应商能力完全解耦。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-12.html">← 工具系统总览：从注册表到可用工具集</a>
+      <a class="next" href="ch-14.html">Shell 工具：跨平台命令执行与失败信号传递 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#13-1-一个完整的例子-给-utils-ts-加一个函数">13.1 一个完整的例子：给 utils.ts 加一个函数</a></li>
+      <li class="lv2"><a href="#13-2-行号格式与双层截断">13.2 行号格式与双层截断</a></li>
+      <li class="lv2"><a href="#13-3-edit-的精确字符串匹配与唯一性校验">13.3 edit 的精确字符串匹配与唯一性校验</a></li>
+      <li class="lv2"><a href="#13-4-writefile-与-edit-的分工边界">13.4 writeFile 与 edit 的分工边界</a></li>
+      <li class="lv2"><a href="#13-5-先读后写-为什么是软约束">13.5 「先读后写」为什么是软约束</a></li>
+      <li class="lv2"><a href="#13-6-图片与-pdf-content-parts-走多模态视觉通道">13.6 图片与 PDF：content parts 走多模态视觉通道</a></li>
+      <li class="lv2"><a href="#13-7-小结">13.7 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

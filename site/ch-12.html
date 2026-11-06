@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工具系统总览：从注册表到可用工具集 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li class="active"><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 12 章 工具系统总览：从注册表到可用工具集</h1>
+<p>读完第二部分，读者已经了解 Agent Loop 的核心循环：模型生成回复，CLI 执行其中的工具调用，再把结果合并回消息历史继续推理。但循环中「执行工具调用」这一步背后的全景尚未展开——模型实际能调用哪些工具？工具的定义是什么结构？为什么有的工具 AI SDK 自己执行、有的需要 CLI 接管？本章把工具系统的地图铺开，为后面十章的逐一拆解提供入口。全章按工具从定义到执行的路径展开，分为如下几个部分进行介绍。</p>
+<ul>
+<li>12.1 节从一个 <code>readFile</code> 的具体定义出发，拆解工具的三段结构：description、inputSchema 和 execute。</li>
+<li>12.2 节铺开工具全景图，列出 13 个静态工具与动态注入工具的分类。</li>
+<li>12.3 节讨论 <code>buildTools</code> 如何把注册表装配为本轮可用工具集。</li>
+<li>12.4 节解释为什么有的工具由 AI SDK 自动执行，有的需要 CLI 接管。</li>
+<li>12.5 节从反面讨论哪些机制不做成工具以及背后的原因。</li>
+<li>12.6 节介绍跨工具共享的统一机制。</li>
+<li>12.7 节给出本章小结。</li>
+</ul>
+<h2 id="12-1-一个工具的三段定义">12.1 一个工具的三段定义</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/read-file.ts</code></p>
+</blockquote>
+<p>工具系统最直接的理解方式是看一个具体的定义。以 <code>readFile</code> 为例，以下是简化后的核心结构。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">export const readFile = tool({
+  description: 'Read a file from the filesystem...',  // 模型通过这段文字决定是否调用
+  inputSchema: z.object({                              // 参数校验规则
+    filePath: z.string().describe('Absolute path to the file'),
+    offset: z.number().optional(),
+    limit: z.number().optional(),
+  }),
+  execute: async ({ filePath, offset, limit }) =&gt; {    // 实际执行逻辑
+    const content = await fs.readFile(filePath, 'utf-8')
+    return content.slice(offset ?? 0, ...)
+  },
+})
+</code></pre>
+<p>一个工具由三段组成：<code>description</code> 告诉模型这个工具能做什么，模型在系统提示词中读到这段文字后决定是否调用；<code>inputSchema</code> 用 Zod 定义参数的类型和校验规则，模型调用时按这个 schema 输出 JSON 参数；<code>execute</code> 是实际的执行函数，接收模型给出的参数，返回工具结果。三段分别对应 tool use 协议（Ch.07）中工具定义、工具调用和工具结果三个阶段。不过并非所有工具都有 <code>execute</code> 字段——部分工具需要访问完整的会话上下文（消息历史、权限模式、UI 回调等），而 <code>execute</code> 函数只能拿到模型给出的参数，拿不到这些上下文信息。这类工具的执行由 CLI 自己接管，12.4 节会详细讨论两种执行形态的区别。</p>
+<h2 id="12-2-工具全景图-13-个静态工具与动态注入">12.2 工具全景图：13 个静态工具与动态注入</h2>
+<p>X-Code CLI 的工具分为两层：13 个每次启动都注册的静态工具，以及若干根据运行环境条件注入的动态工具。先看静态层——按用途分为六个类别。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>工具</th>
+<th>后续章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件</td>
+<td><code>readFile</code> <code>writeFile</code> <code>edit</code></td>
+<td>Ch.13</td>
+</tr>
+<tr>
+<td>Shell</td>
+<td><code>shell</code></td>
+<td>Ch.14</td>
+</tr>
+<tr>
+<td>代码库探索</td>
+<td><code>glob</code> <code>grep</code> <code>listDir</code></td>
+<td>Ch.15</td>
+</tr>
+<tr>
+<td>网络</td>
+<td><code>webSearch</code> <code>webFetch</code></td>
+<td>Ch.16</td>
+</tr>
+<tr>
+<td>控制类</td>
+<td><code>askUser</code> <code>enterPlanMode</code> <code>exitPlanMode</code></td>
+<td>Ch.18</td>
+</tr>
+<tr>
+<td>任务清单</td>
+<td><code>todoWrite</code></td>
+<td>Ch.20</td>
+</tr>
+</tbody>
+</table>
+<p>注册表在源码中是一个普通的对象，每个属性对应一个工具定义。</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/index.ts</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">export const toolRegistry = {
+  readFile,
+  writeFile,
+  edit,
+  shell,
+  glob,
+  grep,
+  listDir,
+  webSearch,
+  webFetch,
+  askUser,
+  enterPlanMode,
+  exitPlanMode,
+  todoWrite,
+}
+</code></pre>
+<p>13 个键对应 13 个静态工具。动态工具不在注册表中，而是由 <code>buildTools</code> 在运行时按条件注入。当前有三类动态工具：</p>
+<p>（1）<code>task</code>——当子 agent 注册表存在时注入，用于委派子任务（详见 Ch.19）。</p>
+<p>（2）<code>activateSkill</code>——当技能注册表（Skill Registry）中至少有一个技能时注入，用于激活技能指令（详见 Ch.38）。</p>
+<p>（3）MCP 资源与桥接工具——当 MCP 注册表存在时注入 <code>listMcpResources</code> 和 <code>readMcpResource</code> 两个内置资源浏览工具，并为每个已连接的 MCP 服务器的工具创建桥接入口（详见 Ch.39）。</p>
+<p>下一节展开这个装配过程。</p>
+<h2 id="12-3-从注册表到可用工具集-buildtools-的装配过程">12.3 从注册表到可用工具集：buildTools 的装配过程</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop.ts::buildTools</code></p>
+</blockquote>
+<p>模型并非天生知道这些工具的存在——每次发送 API 请求时，CLI 会把「当前可用工具列表」嵌入请求体中发给供应商。这个装配过程由 <code>buildTools</code> 函数完成。图 12-1 展示了装配的整体流程。</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7c47b625c42040a5a640430e624c93d0~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=715&amp;h=629&amp;s=43920&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<blockquote>
+<p>图 12-1 工具集装配流程——实线表示必有输入，虚线表示条件注入</p>
+</blockquote>
+<p>以下是 <code>buildTools</code> 的简化结构。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">function buildTools(options: AgentOptions) {
+  const tools = { ...toolRegistry } // 静态注册表全部引入
+
+  // 条件注入：子 agent 委派
+  if (options.subAgentRegistry) {
+    tools.task = createTaskTool(options.subAgentRegistry)
+  }
+
+  // 条件注入：技能激活
+  if (options.skillRegistry &amp;&amp; options.skillRegistry.names().length &gt; 0) {
+    tools.activateSkill = createActivateSkillTool(options.skillRegistry)
+  }
+
+  // 条件注入：MCP 资源浏览 + 桥接工具
+  if (options.mcpRegistry) {
+    tools.listMcpResources = listMcpResources
+    tools.readMcpResource = readMcpResource
+    for (const entry of options.mcpRegistry.list()) {
+      tools[entry.callableName] = bridgeMcpTool(entry)
+    }
+  }
+
+  // 子 agent 场景下按白名单或黑名单过滤
+  if (options.toolFilter) {
+    // ...filter.allow / filter.deny
+  }
+
+  return tools
+}
+</code></pre>
+<p>装配过程分五步。</p>
+<p>（1）静态工具全部引入——13 个工具默认都在可用集合中。</p>
+<p>（2）条件注入 <code>task</code> 工具——<code>task</code> 用于把任务委派给子 Agent（Sub-Agent），即一种专门化的小型 Agent，例如只读探索用的 <code>explore</code>、做代码审查的 <code>code-reviewer</code>。只有当子 Agent 注册表非空时 <code>buildTools</code> 才注入 <code>task</code>，同时将可用的子 Agent 名单嵌入工具描述中，让模型知道自己可以指派哪些子 Agent。子 Agent 的注册、发现机制与自定义方式详见 Ch.19。</p>
+<p>（3）条件注入 <code>activateSkill</code>——技能（Skill）是一段预写好的 markdown 指令，模型判断当前任务匹配某个技能后调用 <code>activateSkill</code>，工具返回技能的完整文本，模型把它当作工具结果来遵循执行（详见 Ch.38）。</p>
+<p>（4）条件注入 MCP 工具——MCP（Model Context Protocol，详见 Ch.39）允许外部服务向 CLI 注册自己的工具和资源。当 MCP 注册表存在时，<code>buildTools</code> 注入两个内置的资源浏览工具 <code>listMcpResources</code> 和 <code>readMcpResource</code>，并为每个 MCP 服务器暴露的工具创建一个桥接入口，桥接工具不带 <code>execute</code> 字段，由 CLI 接管执行并转发给对应的 MCP 服务器。</p>
+<p>（5）按 <code>toolFilter</code> 过滤——子 agent 运行时拥有自己独立的 <code>agentLoop</code>（嵌套在主循环中），通过 <code>toolFilter</code> 限制可用工具。例如 <code>explore</code> 子 agent 只需要读类工具，不应修改文件，这种限制通过 <code>{allow: [...]}</code> 或 <code>{deny: [...]}</code> 实现。主 agent 不传 <code>toolFilter</code>，获得全部工具。</p>
+<p><code>buildTools</code> 在每次 <code>agentLoop</code> 调用之初执行一次（即用户每次提交消息时执行一次），同一次循环的后续轮次复用同一份结果。由于各注册表在启动阶段冻结，主 agent 不传 <code>toolFilter</code>，每次装配出的工具集在字节层面是稳定的。这一点直接影响 prompt cache（详见 Ch.33）能否命中：API 请求中的 <code>tools</code> 字段也是缓存前缀的一部分，跨轮次如果发生任何变化都会导致缓存失效。</p>
+<h2 id="12-4-为什么有的工具-sdk-自己执行-有的要-cli-接管">12.4 为什么有的工具 SDK 自己执行，有的要 CLI 接管</h2>
+<p>工具定义的结构看起来大同小异（<code>description</code> + <code>inputSchema</code> + 可选的 <code>execute</code>），但实际执行时走两条不同的路径——区别在于工具是否提供了 <code>execute</code> 字段。图 12-2 展示了从模型发出 <code>tool-call</code> 到工具结果写回消息历史的完整分支。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b5a1ef3be1cc4654ba89547658da76a8~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=632&amp;h=915&amp;s=50902&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<blockquote>
+<p>图 12-2 工具执行的两条路径与循环护栏分流</p>
+</blockquote>
+<p>第一种形态是 AI SDK 自动执行。工具定义中包含 <code>execute</code> 函数，AI SDK 在流式响应中看到模型调用了这个工具后，直接调用 <code>execute</code> 获取结果，把 <code>tool-result</code> chunk 塞回流中，CLI 几乎不参与。这种形态适用于纯输入输出、不依赖会话状态的工具，包括 <code>readFile</code>、<code>glob</code>、<code>grep</code>、<code>listDir</code>、<code>webSearch</code>、<code>webFetch</code> 以及动态注入的 <code>activateSkill</code>——这 7 个工具的共同特征是执行过程只需要模型给出的参数，不需要权限审批，也不修改会话状态。</p>
+<p>第二种形态是 CLI 接管执行。工具定义中没有 <code>execute</code> 字段，AI SDK 不知道如何执行这个工具，只把 <code>tool-call</code> chunk 送出来。CLI 在流结束后的 <code>processToolCalls</code> 阶段识别它，调用对应的处理函数（Dispatch Handler）完成执行。这种形态适用于需要权限审批、修改会话状态或触发 UI 副作用的工具：<code>writeFile</code>、<code>edit</code>、<code>shell</code> 在写入磁盘前需要弹出权限审批对话框；<code>task</code> 需要新开一个嵌套的 <code>agentLoop</code> 执行子任务；<code>askUser</code>、<code>enterPlanMode</code>、<code>exitPlanMode</code>、<code>todoWrite</code> 需要与 UI 通信或修改会话状态；MCP 桥接工具需要将调用转发给外部 MCP 服务器。</p>
+<p>两种形态的本质区别在于 <code>execute</code> 函数的局限性：它只能拿到模型给出的参数，拿不到完整的会话上下文（消息历史、权限模式、回调函数等）。需要会话上下文才能完成工作的工具，只能走 CLI 接管的路径（详见 Ch.08「工具的两条执行路径」）。</p>
+<p>CLI 接管的工具内部还有一层分流——是否经过循环护栏（Loop Guard，详见 Ch.32）。循环护栏的作用是检测模型对同一工具的重复调用，在达到阈值后拦截并提示模型更换思路，防止死循环（Doom Loop）式的无效重复。写入类工具（<code>writeFile</code>、<code>edit</code>、<code>shell</code>）和 MCP 桥接工具经过这道检测——用相同参数反复修改同一个文件确实可能是 doom-loop，应当拦截。但有 7 个工具的反复调用是完全合理的使用模式，被循环护栏拦截反而会导致功能异常。</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>为什么反复调用是合理的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>askUser</code></td>
+<td>用户可能被连续询问几个不同的问题，每次问的内容不同</td>
+</tr>
+<tr>
+<td><code>enterPlanMode</code> / <code>exitPlanMode</code></td>
+<td>用户拒绝后模型可以修订方案再请求一次</td>
+</tr>
+<tr>
+<td><code>todoWrite</code></td>
+<td>模型每完成一项待办就调用一次，反复调用是设计意图</td>
+</tr>
+<tr>
+<td><code>task</code></td>
+<td>委派子任务，每次的 prompt 都不同，也是正常使用模式</td>
+</tr>
+<tr>
+<td><code>listMcpResources</code> / <code>readMcpResource</code></td>
+<td>MCP 资源浏览天然是多次查询（详见 Ch.39）</td>
+</tr>
+</tbody>
+</table>
+<p>这 7 个工具走绕过循环护栏的专用路径，源码中的入口为 <code>BYPASS_LOOP_GUARD_HANDLERS</code>。以下是两种执行形态和循环护栏分流的完整对照。</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>有 <code>execute</code></th>
+<th>经过循环护栏</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>readFile</code> <code>glob</code> <code>grep</code> <code>listDir</code> <code>webSearch</code> <code>webFetch</code> <code>activateSkill</code></td>
+<td>有</td>
+<td>不适用（AI SDK 自动执行，不走分发流程）</td>
+</tr>
+<tr>
+<td><code>writeFile</code> <code>edit</code> <code>shell</code> 及 MCP 桥接工具</td>
+<td>没有</td>
+<td>经过</td>
+</tr>
+<tr>
+<td><code>askUser</code> <code>enterPlanMode</code> <code>exitPlanMode</code> <code>todoWrite</code> <code>task</code> <code>listMcpResources</code> <code>readMcpResource</code></td>
+<td>没有</td>
+<td>绕过</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-5-工具的边界-哪些机制不做成工具">12.5 工具的边界：哪些机制不做成工具</h2>
+<p>读者可能会问：X-Code CLI 的自动记忆系统（Auto-Memory，详见 Ch.36）为什么不做成一个工具？用户和模型对话过程中，「用户偏好 PostgreSQL」「这个项目用 pnpm 不用 npm」这类信息会自动持久化为长期记忆，下次会话开始时自动加载到系统提示词中。但模型本身没有记忆写入工具——记忆的提取和写入完全由一个叫提炼器（Extractor）的后台组件独占。每轮主对话结束后，CLI 在后台自动运行提炼器，从刚才的对话片段中抽取值得长期保留的信息并持久化。整个过程发生在用户视野之外，对主对话中的模型透明。提炼器的调用时机、模型选择和输出格式详见 Ch.36。</p>
+<p>不把记忆写入做成工具，背后有两个取舍。第一，如果记忆写入是一个工具，每次模型决定记录一条时都会在终端面板上出现一行工具调用记录——主对话结束、用户准备输入下一条消息时反而被这些调用打扰，界面不够干净。第二，把「提炼记忆」统一交给后台提炼器处理，写入路径只有一条，不需要额外的去重逻辑来处理模型和提炼器双写的冲突。</p>
+<p>类似的边界还有系统提示词加载、AGENTS.md 加载、JSONL 会话日志写入——它们都由 CLI 在 <code>agentLoop</code> 周边自动处理，模型既不知道也调用不到。工具的定义边界可以归纳为三个条件且必须同时满足：（1）由模型主动决定是否调用；（2）参数由模型生成；（3）执行结果需要反馈给模型继续推理。自动记忆不满足第一条（不是模型决定写哪条记忆）和第三条（写入结果不需要反馈给模型），因此不适合做成工具。</p>
+<h2 id="12-6-跨工具的统一机制">12.6 跨工具的统一机制</h2>
+<p>以下几个机制在所有工具或多数工具上都会涉及，但在各自的工具章节中逐一重复描述会造成冗余。Part 3 中有专门的章节统一讨论这些横切关注点，此处列出索引供读者查阅。</p>
+<table>
+<thead>
+<tr>
+<th>横切机制</th>
+<th>详见章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工具结果过大时的截断（单条上限与聚合上限的双层控制）</td>
+<td>Ch.17 工具结果处理</td>
+</tr>
+<tr>
+<td>错误信息的消毒（脱敏路径、稳定格式）</td>
+<td>Ch.17 工具结果处理</td>
+</tr>
+<tr>
+<td>写入类工具的权限审批</td>
+<td>Ch.29 三级权限模型</td>
+</tr>
+<tr>
+<td>模型反复调用同一工具的拦截</td>
+<td>Ch.32 循环护栏</td>
+</tr>
+</tbody>
+</table>
+<p>阅读后面的具体工具章节时，遇到「截断详见 Ch.17」或「权限详见 Ch.29」这类引用，即指向上表中的对应机制。具体工具章节只讨论该工具自身特有的设计决策。</p>
+<h2 id="12-7-小结">12.7 小结</h2>
+<p>本章铺开了工具系统的全景地图。一个工具由三段定义组成：<code>description</code> 供模型决策、<code>inputSchema</code> 校验参数、<code>execute</code> 执行逻辑（或省略，由 CLI 接管）。X-Code CLI 的工具分为静态和动态两层：13 个静态工具始终在注册表中，<code>task</code>、<code>activateSkill</code> 和 MCP 相关工具则由 <code>buildTools</code> 在运行时按条件注入。<code>buildTools</code> 在每次循环启动时执行一次，输出的工具集在字节层面稳定，这是 prompt cache 能跨轮次命中的前提之一。工具的执行分为两种形态：带 <code>execute</code> 的工具由 AI SDK 在流内自动执行，不带 <code>execute</code> 的工具由 CLI 在流结束后通过 <code>processToolCalls</code> 手动分发——后者进一步按是否经过循环护栏分为两路，写入类工具经过检测，控制类和委派类工具绕过检测。不是所有与 Agent 相关的功能都适合做成工具，自动记忆、系统提示词加载、会话日志等机制由 CLI 在循环周边自动处理，不暴露给模型。</p>
+<p>下一章（Ch.13）将进入第一组具体工具——文件操作三件套 <code>readFile</code>、<code>writeFile</code> 和 <code>edit</code>，讨论它们各自的 <code>description</code> 设计、参数校验和执行逻辑中的特殊考量。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-11.html">← 错误恢复：从 SDK 异常到人类可读提示</a>
+      <a class="next" href="ch-13.html">文件工具：readFile、writeFile 与 edit →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#12-1-一个工具的三段定义">12.1 一个工具的三段定义</a></li>
+      <li class="lv2"><a href="#12-2-工具全景图-13-个静态工具与动态注入">12.2 工具全景图：13 个静态工具与动态注入</a></li>
+      <li class="lv2"><a href="#12-3-从注册表到可用工具集-buildtools-的装配过程">12.3 从注册表到可用工具集：buildTools 的装配过程</a></li>
+      <li class="lv2"><a href="#12-4-为什么有的工具-sdk-自己执行-有的要-cli-接管">12.4 为什么有的工具 SDK 自己执行，有的要 CLI 接管</a></li>
+      <li class="lv2"><a href="#12-5-工具的边界-哪些机制不做成工具">12.5 工具的边界：哪些机制不做成工具</a></li>
+      <li class="lv2"><a href="#12-6-跨工具的统一机制">12.6 跨工具的统一机制</a></li>
+      <li class="lv2"><a href="#12-7-小结">12.7 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

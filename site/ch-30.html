@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token 经济学：四层防御一览 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li class="active"><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 30 章 Token 经济学：四层防御一览</h1>
+<p>每个大语言模型都有上下文窗口（Context Window）上限，如果一轮对话的消息总量超过这个上限，API 就会直接返回错误，当前对话无法继续。对于普通的聊天机器人，用户消息通常不长，很少触及上限。但 Agent 的情况不同——它在每轮对话中会调用工具，而工具返回的结果往往体量很大：一次 grep 可能匹配 2000 行源码，一次 readFile 可能读入 1000 行文件内容。这些工具结果作为消息历史的一部分，会随着后续每一轮请求一起发送给模型，因此 token 消耗增长极快。为了应对这个问题，X-Code CLI 设计了四层防御机制协同控制 token 总量：工具结果截断、循环护栏（Loop Guard）拦截重复调用、轻量压缩、提示词缓存（Prompt Cache）。本章先建立全景视图，把每层防御的目标、代价与适用场景理清楚；Ch.31–34 将逐层展开各自的实现细节。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>30.1 节梳理一轮对话中 token 的消耗分布，找出优化的主战场。</li>
+<li>30.2 节按从轻到重的顺序展开四层防御的目标、机制与代价。</li>
+<li>30.3 节讨论可观测渠道以及不在 CLI 控制范围内的部分。</li>
+<li>30.4 节澄清「中文是否能省 token」这一常见误区。</li>
+<li>30.5 节给出本章小结。</li>
+</ul>
+<blockquote>
+<p><strong>AI 知识背景：token 是怎么算出来的</strong></p>
+<p>「token」不是字符也不是单词，是 <strong>tokenizer</strong> 把文本切出来的语义片段。主流 LLM 用 <strong>BPE</strong>（Byte-Pair Encoding）：从单字节开始，把训练语料里最常一起出现的相邻字节对合并成新 token，反复迭代——常见词被合并成单 token，罕见词拆成几个 token。因为 BPE 基于训练语料频率，不同语言的 token 密度差异很大：英语训练数据占比最高，<code>function</code> / <code>implementation</code> 几乎都是 1 token；中文训练数据少，单个汉字常占 1–2 token。直观例子：<code>Hello world</code>（11 字符）= 2 tokens，<code>你好世界</code>（4 字符）≈ 4 tokens。所以「中文密度大、应该省 token」是直觉错觉——实际持平甚至更费。这是 token 成为 LLM「计费货币」的根源：供应商按 input token + output token 收费，所有优化都是为了在能完成任务的前提下少花 token。</p>
+</blockquote>
+<h2 id="30-1-token-的消耗分布">30.1 token 的消耗分布</h2>
+<p>在讨论优化手段之前，我们需要先看清楚 token 到底消耗在哪里。下表列出了一轮典型对话中各部分的 token 占比：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>占比</th>
+<th>是否能优化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>system prompt + 知识库</td>
+<td>5–15%</td>
+<td>可（命中 cache 后按 10% 计费）</td>
+</tr>
+<tr>
+<td>用户消息</td>
+<td>1–5%</td>
+<td>用户决定，不可控</td>
+</tr>
+<tr>
+<td>工具结果</td>
+<td>60–80%</td>
+<td>占比最高——截断 + 防止失控</td>
+</tr>
+<tr>
+<td>模型输出</td>
+<td>5–15%</td>
+<td>已跟随用户语言</td>
+</tr>
+<tr>
+<td>思考 / reasoning</td>
+<td>0–20%</td>
+<td>thinking 模型独有</td>
+</tr>
+</tbody>
+</table>
+<p>从表中可以看出，工具结果是 token 消耗的绝对主体，占比达到 60–80%。原因在于 Agent 的工作方式：模型每调用一次工具，工具返回的完整结果就会作为一条消息追加到对话历史中。如果一次 grep 匹配了 2000 行源码，这 2000 行就会原封不动地进入消息历史，并在后续每一轮请求中重复发送给模型。因此，token 防御策略的首要目标就是控制工具结果的体量。后续四层防御正是按这个优先级展开的。</p>
+<h2 id="30-2-四层防御一览">30.2 四层防御一览</h2>
+<p>四层防御并非线性递进的关系，每一层介入的位置各不相同。如果我们把一轮 turn 的生命周期展开来看，四层防御分别落在不同的环节上：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">   ┌──────────────────────────── 一轮 turn 的生命周期 ────────────────────────────┐
+   │                                                                              │
+   │  ① turn 开头：检查 token 用量是否超 80% 阈值                                  │
+   │       │                                                                      │
+   │       │ 超阈值                                                               │
+   │       ▼                                                                      │
+   │  ─ ─ ─ [第 3 层-a] 轻量压缩：删重复对 ─ ─ ─                                   │
+   │       O(n) 本地扫描，删 loop-guard 残骸                                       │
+   │       │                                                                      │
+   │       │ 仍超阈值？                                                           │
+   │       ▼                                                                      │
+   │  ─ ─ ─ [第 3 层-b] 轻量压缩：截旧结果 ─ ─ ─                                  │
+   │       把非近期的大体量 tool-result 正文替换为简短占位信息                               │
+   │       │                                                                      │
+   │       │ 仍超阈值？                                                           │
+   │       ▼                                                                      │
+   │  ─ ─ ─ [LLM 摘要] ─ ─ ─                                                      │
+   │       generateText 将旧消息摘要为 [Previous summary]                              │
+   │       │                                                                      │
+   │       ▼                                                                      │
+   │  ② 发起 API 请求                                                              │
+   │       │                                                                      │
+   │       │  ─ ─ ─ [第 4 层] Prompt cache ─ ─ ─                                  │
+   │       │  固定前缀命中按 ~10% 计费                                             │
+   │       ▼                                                                      │
+   │  ③ 模型流式响应 → 触发工具调用                                                │
+   │       │                                                                      │
+   │       │  ─ ─ ─ [第 2 层] Loop guard ─ ─ ─                                    │
+   │       │  SHA-256 检测重复；3 次软阻断 / 5 次硬退出                             │
+   │       ▼                                                                      │
+   │  ④ 工具执行 → 拿到结果                                                        │
+   │       │                                                                      │
+   │       │  ─ ─ ─ [第 1 层] 工具结果截断 ─ ─ ─                                   │
+   │       │  单条超长结果按 head-tail / head-only 策略截断                                  │
+   │       ▼                                                                      │
+   │  ⑤ 结果回到模型 → 继续 turn 或结束                                            │
+   │                                                                              │
+   └──────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>每层防御针对一种不同的 token 膨胀场景：第 1 层防止单次工具调用的返回结果过大，第 2 层阻止模型对同一命令反复重试造成的 token 消耗黑洞，第 3 层先删除重复调用残骸、再截短旧工具结果，第 4 层让跨轮不变的固定前缀按折扣价计费。只有当前面四层都未能将 token 降回阈值之下时，才会启用 LLM 摘要作为最后手段。下面按从轻到重的顺序逐层展开。</p>
+<h3 id="第一层-工具结果截断">第一层：工具结果截断</h3>
+<p>当单条工具结果超过长度限制时，CLI 会按工具预设的截断策略对其进行截断。多数工具采用 head-tail 策略（保留头部 20% 和尾部 80%），shell 等工具采用 head-only 策略，被截掉的中间部分用 <code>[truncated N chars]</code> 标记替代。除了逐条截断之外，工具自身也有内置的输出限制：grep 默认只返回前 250 条匹配，readFile 默认读取 2000 行，shell 输出上限为 20 MB。这两层限制共同将单轮的 token 总规模控制在可接受的范围内。这种做法的代价是模型可能错过被截掉的中间部分，但相比 token 超限导致整轮对话中断，局部信息缺失是更可接受的结果。详见 Ch.17。</p>
+<h3 id="第二层-循环护栏-loop-guard-拦截重复调用">第二层：循环护栏（Loop Guard）拦截重复调用</h3>
+<p>循环护栏通过滚动窗口对每次工具调用计算 SHA-256 哈希值（基于工具名和参数），检测短窗口内是否出现重复调用。如果同一调用连续出现 3 次，就注入一条合成的 tool-result 提示模型「换个思路」（软阻断）；如果达到 5 次，则强制退出当前 turn（硬退出）。典型的触发场景是模型对某个 shell 命令的引号格式不熟悉，反复用同样的写法重试。每次失败都会把 stderr 追加到消息历史中，如果没有循环护栏拦截，token 消耗就会随重试次数快速增长。循环护栏在第 3 次重复时就介入，避免了后续的无效消耗。这种做法的代价是模型被硬退出时需要用户手动介入。详见 Ch.32。</p>
+<h3 id="第三层-轻量压缩">第三层：轻量压缩</h3>
+<p>在发起 LLM 摘要之前，CLI 会先做两遍 O(n) 的本地扫描。第一遍删除消息历史中重复的 tool-call / tool-result 对，典型的清理对象是循环护栏拦截后留下的残骸——模型因引号格式错误反复重试 shell 命令，每次重试都留下一对几乎相同的调用和返回。如果删除这些重复对之后 token 总量已经回到阈值以下，就不需要继续后续步骤。如果仍然超标，第二遍会把非近期的大体量工具结果替换为简短的占位信息（保留工具名和调用参数摘要，丢弃完整输出），因为早期对话中读过的文件内容或 grep 结果在后续轮次已经没有原文保留的必要。只有两遍本地扫描都未能降回阈值时，才需要发起 LLM 摘要。这一层的代价几乎为零：两遍 O(n) 扫描，不涉及任何 API 调用。详见 Ch.31。</p>
+<h3 id="第四层-prompt-cache">第四层：Prompt cache</h3>
+<p>对于 Anthropic 模型，CLI 在 system prompt 和知识库内容上打 <code>cache_control</code> 断点。由于这部分内容在每轮请求中保持不变，下一轮请求就能命中缓存，input token 的实际计费降至约 10%。对于 OpenAI 兼容端点（如 DeepSeek、Moonshot 等），则依赖供应商自身的前缀缓存机制自动命中。这一层的代价有两方面：缓存未命中时需要额外支付 10–30% 的创建成本（仅 Anthropic），并且前缀内容必须保持字节级稳定——任何微小的变化都会破坏缓存命中。详见 Ch.33。</p>
+<h3 id="llm-摘要">LLM 摘要</h3>
+<p>当前面四层都未能将 token 降回阈值之下时，CLI 会启用最后手段：把旧消息发送给模型，让模型生成一段摘要来替换原文。这一步的代价较高——需要发起一次额外的 <code>generateText</code> 调用，并按完整 token 数计费。前面四层防御的设计目的，正是为了尽量延缓这一步的触发，使大多数场景不需要走到 LLM 摘要这一步。详见 Ch.31 后半段。</p>
+<p>读者可能会问：为什么不在 shell 工具里内置输出过滤器（如 RTK 这类对 git / vitest 等命令做有损过滤的工具）？原因有两条。其一，AI 调试时恰恰需要原始输出——编译失败的展开路径、依赖树的层级关系、测试通过的初始化步骤，这些是过滤器会去掉的细节；模型预训练时见的是原始格式，提供过滤后的版本会破坏推理依据。其二，X-Code CLI 把 shell 命令的 stdout 同样展示给用户和模型，中间加一层过滤后，用户看到的输出与模型看到的不一致，出问题时用户无法理解模型为什么这样判断。如果读者希望模型使用过滤后的版本，可以在 prompt 里显式指示模型加 <code>rtk</code> 前缀，选择权留给用户。</p>
+<h2 id="30-3-可观测性与不可控部分">30.3 可观测性与不可控部分</h2>
+<p>上述四层防御的实际效果都可以通过 CLI 内置的命令进行观测。<code>/usage</code> 命令用于显示当前会话的 token 消耗和缓存命中率：</p>
+<!-- check:ignore=code-block-size -->
+<pre><code class="language-text">Usage (current session)
+
+- Session:         2t8nz1a
+- Model:           anthropic:claude-sonnet-4-6
+- Input tokens:    128,432
+- Output tokens:   12,847
+- Cache read:      95,213  (74.1% of input)
+- Cache creation:  33,219
+- Total:           141,279
+</code></pre>
+<p><code>/usage-history</code> 命令则用于跨会话查看趋势，列出本项目所有会话的 sessionId、模型、总 token 数与缓存命中率。具体的命中率会因供应商和对话类型而有所不同，读者应该用自己的实际数据来验证优化效果。</p>
+<p>不过，有些部分不在 CLI 端的控制范围内。用户消息的长度由用户自己决定，工具结果中的代码和文件原文必须完整传给模型才能让它正常工作，模型输出的长度则由模型自身决定（CLI 只能通过 system prompt 引导模型给出简洁的回复）。四层防御覆盖的是 CLI 能够控制的部分，对于这些不可控部分，只能依赖可观测渠道来监控其消耗。</p>
+<h2 id="30-4-误区-中文是否能省-token">30.4 误区：中文是否能省 token</h2>
+<p>中文母语开发者在讨论 token 优化时，最常提出的一个问题是：如果强制让模型用中文输出或思考，是否能够节省 token？本章开头的 AI 知识背景已经用 <code>Hello world</code> 与 <code>你好世界</code> 的对比说明了直觉与实际的偏差。下面我们来看看具体的原因。</p>
+<p>（1）中文相比英文最多省 5–15%，且只发生在自然语言段落上。各家 tokenizer 的实测结果是：每个汉字 1–2 token，少数针对中文优化的 tokenizer（如 DeepSeek）能做到 1 字 1 token，但都没有数量级优势。代码、文件路径、工具名、JSON 参数全是 ASCII，语言切换对它们没有影响。</p>
+<p>（2）token 的主要消耗在不可控的工具结果（30.1 节已说明），不在语言切换。强制中文最多影响 system prompt + 思考 + 输出这 10–30% 的部分；省 10% 折算到整体只有 1–3%。</p>
+<p>（3）强制中文的代价高于节省。指令遵守率方面，主流 LLM 的指令微调数据英文比例远高于中文，同一段系统指令的英文版遵守率明显更高。思考链质量方面，数学、逻辑、代码任务的 RL 训练以英文为主，中文思考准确率会下降；模型有时会先用英文推理一遍再翻译，反而多花 token。此外，思考链里夹杂英文标识符和中文连接词时，BPE 在语言边界处会拆出更多 token，中英混合反而更耗 token。</p>
+<p>X-Code CLI 的策略是：system prompt 用英文（指令稳定性优先），明确指示模型用用户语言回复（<code>Reply in the same language the user uses.</code>），不限制思考语言（让模型按其 RL 训练默认值选择）。真正的 token 优化杠杆在本章前面四层防御，不在语言切换。</p>
+<h2 id="30-5-小结">30.5 小结</h2>
+<p>本章建立了 X-Code CLI token 防御的全景视图。工具结果占 token 消耗的 60–80%，是优化的首要目标。四层防御从轻到重协同工作：工具结果截断（Ch.17）、循环护栏（Ch.32）、轻量压缩与 LLM 摘要（Ch.31）、提示词缓存（Ch.33），只有前面各层都未能降回阈值时才启用 LLM 摘要作为最后手段。强制中文输出并非有效手段，真正的杠杆在四层防御。<code>/usage</code> 和 <code>/usage-history</code> 是验证优化效果的可观测入口。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-29.html">← 三级权限模型与 shell 命令分级</a>
+      <a class="next" href="ch-31.html">上下文压缩：轻量、主动与反应式三层 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#30-1-token-的消耗分布">30.1 token 的消耗分布</a></li>
+      <li class="lv2"><a href="#30-2-四层防御一览">30.2 四层防御一览</a></li>
+      <li class="lv3"><a href="#第一层-工具结果截断">第一层：工具结果截断</a></li>
+      <li class="lv3"><a href="#第二层-循环护栏-loop-guard-拦截重复调用">第二层：循环护栏（Loop Guard）拦截重复调用</a></li>
+      <li class="lv3"><a href="#第三层-轻量压缩">第三层：轻量压缩</a></li>
+      <li class="lv3"><a href="#第四层-prompt-cache">第四层：Prompt cache</a></li>
+      <li class="lv3"><a href="#llm-摘要">LLM 摘要</a></li>
+      <li class="lv2"><a href="#30-3-可观测性与不可控部分">30.3 可观测性与不可控部分</a></li>
+      <li class="lv2"><a href="#30-4-误区-中文是否能省-token">30.4 误区：中文是否能省 token</a></li>
+      <li class="lv2"><a href="#30-5-小结">30.5 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

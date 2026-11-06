@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思考模式：跨供应商的统一开关 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li class="active"><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 34 章 思考模式：跨供应商的统一开关</h1>
+<p>思考模式（Thinking Mode）让模型在回答前先生成一段内部推理（reasoning tokens），复杂任务的质量因此显著提升，代价是额外的 token 消耗和延迟。问题在于 8 家供应商对这一能力的命名、参数格式和默认行为各不相同：Anthropic 用 <code>thinking: { type: 'enabled', budgetTokens }</code>，Google 用 <code>thinkingConfig: { thinkingBudget }</code>，OpenAI 用 <code>reasoningEffort</code>，Alibaba 用 <code>enableThinking</code>。Gemini 2.5 Pro 默认开启思考，Claude Sonnet 4.6 默认关闭，DeepSeek V4 也默认关闭。如果让用户直接管理这些原生参数，每次 <code>/model</code> 切换供应商都需要重新查阅对应文档才能确认当前状态。X-Code CLI 的做法是把所有差异压平到一个 <code>/thinking on|off</code> 开关里，本章讲这层抽象的设计决策与实现。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>34.1 节通过一个跨供应商切换的场景说明统一开关的动机，并补充思考模式的技术背景。</li>
+<li>34.2 节讲解单一布尔接口的设计：如何把 6 种参数命名和 3 种默认行为压平到 on/off 两档。</li>
+<li>34.3 节讨论透传容错策略：为什么不按模型维护支持表，以及整个供应商不支持时如何处理。</li>
+<li>34.4 节分析 <code>/thinking off</code> 的局限性：哪些模型在物理上无法关闭思考，以及 <code>/thinking</code> 命令的运行时机制。</li>
+<li>34.5 节给出本章小结。</li>
+</ul>
+<h2 id="34-1-为什么需要统一开关">34.1 为什么需要统一开关</h2>
+<p>8 家供应商对思考模式的默认行为各不相同：Gemini 2.5 Pro 默认开启，DeepSeek V4 和 Claude Sonnet 4.6 默认关闭。当用户用 <code>/model</code> 在供应商之间切换时，思考状态会随目标供应商的默认值静默改变，而 CLI 没有任何信号提示这一变化。例如用户刚才在 Gemini 上开着思考模式完成了一轮复杂规划，接着切到 DeepSeek 继续工作，思考模式就在用户不知情的情况下从开变成了关。这就是 <code>/thinking on|off</code> 存在的动机：把各家不同的默认行为压平成一个跨供应商一致的开关。用户开启 thinking 后切换供应商，思考模式的语义保持不变，不需要重新设置。</p>
+<blockquote>
+<p>AI 知识背景：思考模式的来历</p>
+<p>2022 年 Wei 等人发表 <a href="https://arxiv.org/abs/2201.11903">Chain-of-Thought Prompting</a>（思维链）论文，发现在 prompt 里加一句 <code>Let's think step by step</code>，模型在数学和逻辑题上的准确率显著提升，多步推理任务上能从个位数提升到几十个百分点。原因是大模型本身具备推理能力，但默认不会主动写出中间步骤，引导一下即可。2024 年 9 月 OpenAI 发布 <a href="https://openai.com/index/learning-to-reason-with-llms/">o1 模型</a>，第一个把思维链训练进模型本体的生产级 LLM：通过强化学习教模型在回答前先生成一段长思考（reasoning tokens），思考越长，复杂问题的答案越准。这段思考默认对用户隐藏，只暴露最终答案。后续 o3、DeepSeek-R1、Claude extended thinking、Gemini 2.5 Pro thinking budget、Kimi K2.5、Qwen3 都跟进了「推理模型」范式。核心权衡在于：思考会消耗大量 reasoning token（动辄几千到几万），但换来复杂任务的质量提升，因此 thinking 不是免费午餐，简单查询关闭可以节省 token，复杂规划开启可以提升质量。</p>
+<p>一个直觉化的类比：reasoning token 像模型自己的草稿纸，答题前先在草稿上演算中间步骤，最后只把答案抄到答题卡上交。相同点是中间过程不影响最终答案的形式，但能显著提升复杂题的准确率；不同点是这张草稿对用户默认隐藏，且按 token 单独计费，简单任务开启反而增加不必要的开销。<!-- analogy: scratchpad --></p>
+</blockquote>
+<h2 id="34-2-单一布尔接口-不暴露各家原生参数">34.2 单一布尔接口：不暴露各家原生参数</h2>
+<p>8 家供应商加起来有 6 种命名风格和 3 种默认行为，下表列出了各家的参数差异：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>供应商</th>
+<th>开</th>
+<th>关</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>anthropic</td>
+<td><code>thinking: { type: 'enabled', budgetTokens }</code></td>
+<td><code>thinking: { type: 'disabled' }</code></td>
+</tr>
+<tr>
+<td>google</td>
+<td><code>thinkingConfig: { thinkingBudget: -1 }</code>（动态）</td>
+<td><code>thinkingConfig: { thinkingBudget: 0 }</code></td>
+</tr>
+<tr>
+<td>openai</td>
+<td><code>reasoningEffort: 'high'</code>（仅 o-series 与 <code>gpt-5</code> reasoning）</td>
+<td><code>reasoningEffort: 'minimal'</code></td>
+</tr>
+<tr>
+<td>xai</td>
+<td><code>reasoningEffort: 'high'</code>（仅 <code>grok-3-mini</code> / <code>grok-4-mini</code>）</td>
+<td><code>reasoningEffort: 'low'</code></td>
+</tr>
+<tr>
+<td>deepseek</td>
+<td><code>thinking: { type: 'enabled' }</code>（仅 v4）</td>
+<td><code>thinking: { type: 'disabled' }</code></td>
+</tr>
+<tr>
+<td>moonshotai</td>
+<td><code>thinking: { type: 'enabled' }</code></td>
+<td><code>thinking: { type: 'disabled' }</code></td>
+</tr>
+<tr>
+<td>alibaba</td>
+<td><code>enableThinking: true</code></td>
+<td><code>enableThinking: false</code></td>
+</tr>
+<tr>
+<td>zhipu/custom</td>
+<td>（无对应参数，原样发送）</td>
+<td>（无对应参数，原样发送）</td>
+</tr>
+</tbody>
+</table>
+<p>默认值的差异同样显著。Gemini 2.5 Pro 和 Kimi K2.5 默认开启思考，Claude Sonnet 4.6、DeepSeek V4、Qwen Max 默认关闭，用户必须显式传入思考参数才能启用；GPT-4.1、Grok 3、GLM-4-Plus 则完全不支持思考模式。如果让用户直接管理原生参数，每次 <code>/model</code> 切换都需要重新查阅对应供应商的文档，而用户不可能记住 8 家的默认值。因此 X-Code CLI 在这一层做了统一：接口只有 <code>/thinking on</code> 和 <code>/thinking off</code> 两档，把 6 种命名和 3 种默认值压平到一个语义统一的开关。on 状态取每家供应商的最高档：Anthropic 的思考预算设为 8000 token（源码注释标注为经验值，对大多数复杂推理任务足够，同时不会占用过多上下文窗口），Google 使用动态预算（由服务端自行决定思考长度），OpenAI 和 xAI 使用最高推理档位。中间档不暴露给用户。</p>
+<p>这样做的代价是失去精细控制，例如 Anthropic 用户想精确指定 <code>budgetTokens = 16000</code> 无法通过 CLI 完成，必须修改源码。但在典型使用场景中，「开或关」已经覆盖绝大多数需求，中间档带来的收益不足以抵消接口复杂度的增加。</p>
+<h2 id="34-3-透传容错-不维护-per-model-支持表">34.3 透传容错：不维护 per-model 支持表</h2>
+<p>实现这个映射函数时会遇到一个现实问题：同一供应商内部不同模型的支持度不一样。<code>openai:gpt-4.1</code> 不支持 reasoning，<code>openai:o3</code> 和 <code>openai:gpt-5</code> 支持；<code>xai:grok-3</code> 不支持，<code>xai:grok-3-mini</code> 和 <code>xai:grok-4-mini</code> 支持；<code>deepseek:deepseek-chat</code> 不支持，<code>deepseek:deepseek-v4</code> 支持。也可以给函数加一份「每个供应商下哪些模型支持哪些字段」的白名单，在 case 内按 modelId 二次判断，支持的模型才传字段，不支持的跳过。但白名单有三方面代价。第一，白名单需要随供应商发布新模型而持续更新，三个月不维护就会过期。第二，白名单里没有的新模型该如何处理本身就是一个两难选择：默认开启可能把不支持的字段发送出去，默认关闭又可能漏掉真正支持思考的新模型。第三，每次合并代码都需要先查阅供应商文档来更新表格，维护成本与模型数量成正比。</p>
+<p>X-Code CLI 的选择是不维护这张表。同一个供应商家族下，无论传入什么 modelId 都返回同一个字段：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/providers/thinking.ts</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">case 'xai':
+  // 只有 grok-3-mini / grok-4-mini honour reasoningEffort；grok-3 / grok-4
+  // 收到这个字段会被 API 静默丢弃 ── 透传是安全的
+  return enabled ? { xai: { reasoningEffort: 'high' } } : { xai: { reasoningEffort: 'low' } }
+
+case 'openai':
+  // 只有 o-series 和 gpt-5 用 reasoningEffort；gpt-4.1 同样静默忽略
+  return enabled ? { openai: { reasoningEffort: 'high' } } : { openai: { reasoningEffort: 'minimal' } }
+</code></pre>
+<p>代码注释把这个设计契约写得很直白：Sending the option is harmless on the ignoring models — the SDK passes it through and the API silently discards it. 也就是说，「哪些模型支持哪些字段」的判断整体外包给了供应商的 API。CLI 层只按供应商维度做统一处理：同一供应商下的所有模型都收到相同的思考参数，不支持的模型由 API 端识别并静默丢弃。这样换回了三个收益。第一，不需要维护白名单，供应商端「未知字段忽略」是 LLM API 普遍的向后兼容契约，CLI 直接借用这个契约。第二，新模型无需改动代码，新发布的支持模型不改代码就能立即启用思考，新发布的不支持模型也不用改代码避错。第三，设计契约明确，源码注释写明透传是有意为之，维护者不会误以为是遗漏白名单的 bug。</p>
+<p>还有另一种情况：某些供应商目前完全不支持思考模式，例如 zhipu 当前的模型和 custom 兼容入口。X-Code CLI 的处理方式与上面的透传容错是同一个理念：CLI 层直接返回空对象，SDK 收到后等同于没传这个参数，不会报错。新增供应商的代价仅仅是 switch 多一个 case，调用方无需改动。用户在不支持的供应商上开着 thinking，<code>/model</code> 切到支持的供应商后自动生效，不需要先关再开。</p>
+<p>两层容错合起来形成一套连贯策略：</p>
+<!-- check:ignore=punctuation -->
+<table>
+<thead>
+<tr>
+<th>不支持的情况</th>
+<th>处理层</th>
+<th>机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>供应商内部分模型不支持</td>
+<td>API</td>
+<td>字段照传，API 静默丢弃</td>
+</tr>
+<tr>
+<td>整个供应商不支持</td>
+<td>CLI</td>
+<td>返回 <code>{}</code>，SDK 不传字段</td>
+</tr>
+</tbody>
+</table>
+<p>下面的示例把两层容错放在一起对比。<code>openai:o3</code> 和 <code>openai:gpt-4.1</code> 调用 <code>getThinkingProviderOptions</code> 返回值完全一样，差别全在 API 端：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">getThinkingProviderOptions('openai:o3', true)
+// → { openai: { reasoningEffort: 'high' } }      ← 支持模型，API 正常生效
+
+getThinkingProviderOptions('openai:gpt-4.1', true)
+// → { openai: { reasoningEffort: 'high' } }      ← 不支持模型，字段照传；API 丢弃，无副作用
+</code></pre>
+<p>返回的对象最终会合并到发送请求时的供应商选项中。这里使用「合并」而不是「覆盖」，原因在于同一个供应商下可能还挂着缓存控制等其他字段，思考选项必须与之并列，不能把整个供应商配置替换掉。</p>
+<h2 id="34-4-关不掉的思考模式">34.4 关不掉的思考模式</h2>
+<p>34.2 节说 <code>on</code> 是「尽可能让模型思考」，对称地看，读者可能以为 <code>off</code> 是「保证不思考」。实际并非如此，供应商端有几个模型在物理上就无法关闭思考，X-Code CLI 这边发出的 <code>off</code> 对它们近似无效。</p>
+<p>Gemini 2.5 Pro 有一个最低思考预算限制。源码 <code>providers/thinking.ts</code> 注释里的说明是：Gemini 2.5 Pro can't be fully turned off (min budget 128) — we still send <code>thinkingBudget: 0</code> for OFF and let the SDK clamp; 2.5 Flash and Lite respect 0 as &quot;no thinking&quot;. CLI 层照常发 <code>thinkingBudget: 0</code>，但 SDK 会把它 clamp 到 128。Pro 的最小思考预算就是 128 token，永远比「完全不思考」多一点点开销。Flash 和 Lite 没有这个下限，传 0 即真正关闭。</p>
+<p>Alibaba 的专用推理模型（dedicated reasoning Qwen）也存在类似的情况。源码注释的说明是：Hybrid Qwen ids honour <code>enableThinking</code> per-request; the dedicated reasoning ids (qwq-plus, qwen3-*-thinking-*) ignore an <code>enableThinking: false</code> request and keep thinking on. Alibaba 的模型分为两类：专用推理模型（如 <code>qwq-plus</code>、<code>qwen3-*-thinking-*</code>）和普通混合模型（如 <code>qwen-plus</code>、<code>qwen-max</code>）。专用推理模型的思考能力是通过强化学习训练到模型本体中的核心能力，关闭思考会让模型行为偏离训练分布，因此供应商端有意忽略关闭请求，模型照常进行推理。普通混合模型则支持按请求级别切换，关闭思考后模型确实不再生成 reasoning token。这意味着用户在 <code>qwq-plus</code> 上执行 <code>/thinking off</code> 后，模型仍然会消耗 reasoning token，CLI 层无法改变这一行为。需要严格避免思考开销时，应当通过 <code>/model</code> 切换到 <code>qwen-plus</code> 等普通混合模型。</p>
+<p><code>/thinking</code> 命令本身支持几种别名形式：</p>
+<p>（1）无参数：弹出 <code>SelectOptions</code> 选择器，显示当前状态，方向键切换。</p>
+<p>（2）开启：<code>/thinking on</code>、<code>/thinking true</code>、<code>/thinking enable</code>。</p>
+<p>（3）关闭：<code>/thinking off</code>、<code>/thinking false</code>、<code>/thinking disable</code>。</p>
+<p>设置持久化到用户级配置文件。运行时切换不需要销毁和重新创建供应商连接，组件通过 React 的 <code>useRef</code> 持有当前开关值，每次发请求时实时读取最新状态。这与 Ch.28 权限对话框中的做法一致：用 state 驱动界面重渲染，用 ref 在异步回调中同步访问最新值。</p>
+<h2 id="34-5-小结">34.5 小结</h2>
+<p>本章讨论了 X-Code CLI 的思考模式统一开关。8 家供应商的 6 种参数命名和 3 种默认行为被压平到一个 <code>/thinking on|off</code> 布尔开关，on 取每家最高档，不暴露中间档。容错策略分两层：供应商内部分模型不支持时，参数照传由 API 静默丢弃，不维护按模型区分的白名单；整个供应商不支持时，CLI 层返回空对象，等同于不传参数。<code>/thinking off</code> 是尽力而为的信号而非关闭保证——Gemini 2.5 Pro 有 128 token 的最低思考预算，Alibaba 的专用推理模型直接忽略关闭请求。需要严格避免思考开销时，应当通过 <code>/model</code> 切换到不强制思考的模型。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-33.html">← 提示词缓存：跨供应商的缓存策略</a>
+      <a class="next" href="ch-35.html">文件附件与视觉降级 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#34-1-为什么需要统一开关">34.1 为什么需要统一开关</a></li>
+      <li class="lv2"><a href="#34-2-单一布尔接口-不暴露各家原生参数">34.2 单一布尔接口：不暴露各家原生参数</a></li>
+      <li class="lv2"><a href="#34-3-透传容错-不维护-per-model-支持表">34.3 透传容错：不维护 per-model 支持表</a></li>
+      <li class="lv2"><a href="#34-4-关不掉的思考模式">34.4 关不掉的思考模式</a></li>
+      <li class="lv2"><a href="#34-5-小结">34.5 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

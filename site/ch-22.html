@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li class="active"><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 22 章 Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</h1>
+<p>读完 Ch.19 至 Ch.21，读者手里已经有了三个看起来都和「任务规划」有关的机制：Plan Mode（计划模式）是一种会话状态，把模型的行为锁定在只读探索与写计划文件上；todoWrite 是一个工具，在内存中维护一份带状态的实时清单；task 同样是一个工具，将一段子任务连同独立的消息历史委派给全新的 agent 循环。三者名字里都带「规划」的意味，新手很容易产生几个典型误解——「Plan Mode 是不是就是带审批的 todoWrite？」「task 是不是 todoWrite 的进阶版？」「大型重构任务到底选哪个工具？」本章不再重复三者各自的内部机制（前面三章已经详细讲过），只回答一件事：在同一个真实任务里，它们各自负责哪个维度，以及如何接力协作。本章分为如下几个部分进行介绍。</p>
+<ul>
+<li>22.1 节用一张对比表说明三者是三个维度而非三个替代品。</li>
+<li>22.2 节用一个迁移任务展示三阶段接力的完整过程。</li>
+<li>22.3 节讨论跳过 Plan Mode 直接建清单的代价。</li>
+<li>22.4 节解释 task 不是 todoWrite 的进阶版。</li>
+<li>22.5 节说明 Plan Mode 和 todoWrite 是前后接力而非上下替代。</li>
+<li>22.6 节总结按场景而非按「高级程度」选工具的原则。</li>
+<li>22.7 节给出本章小结。</li>
+</ul>
+<h2 id="22-1-三个维度而非三个替代品">22.1 三个维度而非三个替代品</h2>
+<p>将三者放在一张表里对比，差异立刻可见：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Plan Mode</th>
+<th>todoWrite</th>
+<th>task</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>形态</td>
+<td>会话状态（约束模型可用行为）</td>
+<td>工具：维护内存清单</td>
+<td>工具：委派子任务</td>
+</tr>
+<tr>
+<td>触发</td>
+<td>用户 <code>/plan</code> 或模型调 <code>enterPlanMode</code></td>
+<td>模型调 <code>todoWrite</code></td>
+<td>模型调 <code>task</code></td>
+</tr>
+<tr>
+<td>运行容器</td>
+<td>当前 agent 循环，靠系统提示词覆盖段软约束</td>
+<td>当前 agent 循环</td>
+<td>新开独立的 agent 循环</td>
+</tr>
+<tr>
+<td>持久化</td>
+<td>plan 文件写入磁盘（<code>.x-code/plans/</code>）</td>
+<td>内存 <code>LoopState.todos</code>（不写入磁盘）</td>
+<td>子任务执行完毕后丢弃，只返回最终消息</td>
+</tr>
+<tr>
+<td>用户审批</td>
+<td>必须（<code>exitPlanMode</code> 时停下等用户确认）</td>
+<td>不需要</td>
+<td>不需要</td>
+</tr>
+<tr>
+<td>解决的问题</td>
+<td>大事之前先停下让用户看计划</td>
+<td>拆步 + 实时反馈进度</td>
+<td>把一段独立工作外包，不污染主对话</td>
+</tr>
+</tbody>
+</table>
+<p>从表中可以看出，三者管理的维度完全不同。Plan Mode 控制模型当下能做什么，它是一种状态；todoWrite 反映模型当下做到哪了，它是一个进度仪表盘；task 把一段工作整段外包出去，它是一个调度器。三者不存在互相替代的关系——它们在同一个大型任务中可以依次登场，各自负责自己擅长的维度。接下来用一个具体场景把它们放在同一条时间线上观察。</p>
+<h2 id="22-2-一个迁移任务里的三阶段接力">22.2 一个迁移任务里的三阶段接力</h2>
+<p>假设用户输入：「把项目从 Express 迁到 Fastify，所有路由、中间件、测试都要适配。」这是一个典型的大型重构任务——影响多个文件、需要分步协作、中间还有一段独立的调研工作。在处理这个任务的过程中，Plan Mode、todoWrite、task 会以接力的方式依次登场，每个机制在自己擅长的阶段发挥作用。</p>
+<h3 id="第一阶段-在-plan-mode-下探索并写计划">第一阶段：在 Plan Mode 下探索并写计划</h3>
+<p>用户用 <code>/plan</code> 进入计划模式。模型在覆盖段的约束下只读探索代码、边探索边写 plan 文件、通过 <code>askUser</code> 与用户确认关键决策（如 rate-limit 用 <code>@fastify/rate-limit</code> 还是自实现、测试框架是否迁移）。几轮迭代后 plan 文件完成，模型调 <code>exitPlanMode</code> 提交审批，用户通过。</p>
+<h3 id="第二阶段-计划翻译成-todowrite-清单">第二阶段：计划翻译成 todoWrite 清单</h3>
+<p><code>exitPlanMode</code> 审批通过的瞬间，会话状态从 <code>'plan'</code> 切到 <code>'acceptEdits'</code>，系统提示词的计划模式覆盖段不再追加。模型在状态切换后的第一轮里，把 plan 文件中列出的步骤翻译成一份 todoWrite 清单：</p>
+<pre><code class="language-jsonc">{
+  &quot;todos&quot;: [
+    { &quot;content&quot;: &quot;替换 server 启动代码到 fastify&quot;, &quot;status&quot;: &quot;in_progress&quot; },
+    { &quot;content&quot;: &quot;迁移路由（共 18 个 endpoint）&quot;, &quot;status&quot;: &quot;pending&quot; },
+    { &quot;content&quot;: &quot;调研 @fastify/rate-limit 配置等价物&quot;, &quot;status&quot;: &quot;pending&quot; },
+    { &quot;content&quot;: &quot;迁移中间件（auth / log / cors）&quot;, &quot;status&quot;: &quot;pending&quot; },
+    { &quot;content&quot;: &quot;把 supertest 测试改成 fastify.inject&quot;, &quot;status&quot;: &quot;pending&quot; },
+    { &quot;content&quot;: &quot;运行全量测试 + 类型检查&quot;, &quot;status&quot;: &quot;pending&quot; }
+  ]
+}
+</code></pre>
+<p>每完成一项，模型调一次 <code>todoWrite</code> 更新整份清单。用户在终端面板上看到 <code>◼</code> 标记不断前移、<code>✓</code> 逐项累积，对于当前的状态做到哪一步一目了然。清单驻留在内存（<code>LoopState.todos</code>）中，每次调用都是全量覆写，不做增量修改。</p>
+<h3 id="第三阶段-遇到独立调研-派-task-出去">第三阶段：遇到独立调研，派 task 出去</h3>
+<p>走到第三条「调研 @fastify/rate-limit 配置等价物」时，模型面临一个选择。这件事有三个特征：不需要修改主仓库代码（纯调研）；需要的上下文（fastify 文档、rate-limit 库 API）和主对话无关——通过 webFetch 取回的大段 HTML 留在主对话历史里只会浪费 token；输出形态是一份「建议这样配置 + 关键差异」的小报告。这正是 task 委派的理想场景。模型调用 task 工具：</p>
+<pre><code class="language-jsonc">{
+  &quot;description&quot;: &quot;调研 rate-limit 等价物&quot;,
+  &quot;subagent_type&quot;: &quot;general-purpose&quot;,
+  &quot;prompt&quot;: &quot;我们正在把项目从 Express 迁到 Fastify。原项目用 express-rate-limit，配置如下：windowMs=60000、max=100、message='Too many requests'。请调研 @fastify/rate-limit 的等价配置写法，重点确认：1) windowMs/max 在 fastify 插件里的字段名；2) 自定义返回 message 的 hook 写法；3) 和 fastify 的 reply.code() 怎么配合。给出一段可直接复用的配置代码 + 三处与 express 版本的差异。&quot;
+}
+</code></pre>
+<p>子 agent 在一个全新的独立 agent 循环中运行：调 webSearch / webFetch 查阅文档，读项目中已安装的类型定义文件，最终写出一份约 250 字的结论和配置代码。子 agent 执行完毕后只把这份结论返回给主 agent——中间过程中 webFetch 取回的大段 HTML、读到的源码片段，全部留在子 agent 自己的消息历史中，不进入主对话。主对话因此保持精简。主 agent 拿到结论后继续推进：把清单第三项标为 completed，第四项切到 in_progress，开始迁移中间件。</p>
+<p>Plan Mode 在大动作之前固化一份计划并交给用户审批，它是锚点；todoWrite 在执行阶段让用户随时看到 agent 处于哪一步，它是进度仪表盘；task 把一段上下文密集但与主对话无关的调研工作外包出去，它是资源调度器。一个真正大型的任务可能三者都用上，但小到一两步就能完成的任务三者都不需要，直接执行最快。三者的接力顺序也不是固定的——上面的示例是 Plan Mode → todoWrite → task，但如果任务一开始就有明确的步骤且不需要用户审批，完全可以跳过 Plan Mode 直接从 todoWrite 开始。关键是理解每个机制擅长什么，按场景选用。</p>
+<h2 id="22-3-跳过-plan-mode-直接建清单的代价">22.3 跳过 Plan Mode 直接建清单的代价</h2>
+<p>新手常有这样的想法：让模型直接调 todoWrite 列出所有步骤再按步骤执行即可，何必先走一遍 Plan Mode。问题在于 todoWrite 没有用户审批的关卡。模型可能在拆分阶段就犯错——例如把「迁移路由」拆成「改 routes.ts」一项，但实际上路由分散在五个文件，需要修改的远不止一处。模型按这份有误的拆分继续推进，等用户发现时已经修改了大量文件，回退成本很高。Plan Mode 强制「先停下来等审批」，让用户在大动作之前确认模型对任务的理解是否正确、拆分是否合理。因此，对于影响范围小的任务（改一个函数、加一段配置），直接用 todoWrite 是合理的选择；而对于跨多文件、影响范围大的重构任务，先走 Plan Mode 写计划、通过审批后再翻译成 todoWrite 清单更稳妥。</p>
+<h2 id="22-4-task-不是-todowrite-的进阶版">22.4 task 不是 todoWrite 的进阶版</h2>
+<p>新手看到 task 能「把任务拆出去」，觉得它比 todoWrite 更强大，倾向于把所有任务都用 task 处理。然而 Ch.19 已经详细讨论过，子 agent 的隔离性既是优势也是限制——独立的消息历史意味着看不到主对话的上下文，只返回最终消息意味着中途无法向用户同步进度，禁止递归委派意味着无法继续拆分子任务。当一段工作需要频繁参照主对话里的上下文，或者需要中途向用户汇报进度时，这些限制就变成了障碍。</p>
+<p>因此 task 适合边界清晰、与主对话无强耦合的工作——调研、审查、探索、独立的局部实现——而不适合需要边做边和主对话同步的执行类任务。执行类任务应该用 todoWrite 在主循环里跟踪，每完成一步就更新清单，用户可以随时看到进度。选择的判断标准可以归结为一个问题：中间过程是否需要进入主对话历史？如果需要（每一步的修改都应被记录在主对话中以便用户审阅），使用 todoWrite；如果不需要（过程中产生的大量中间数据对主对话来说只是噪音），使用 task 将其外包给子 agent。</p>
+<h2 id="22-5-plan-mode-和-todowrite-是前后接力而非上下替代">22.5 Plan Mode 和 todoWrite 是前后接力而非上下替代</h2>
+<p>另一个常见误解是把 Plan Mode 想象成「带审批的 todoWrite」——两者都涉及步骤拆分，看起来只是有没有审批的区别。但 22.1 的对比表已经显示，两者管理的维度完全不同：一个约束行为，一个跟踪进度。更直接的证据是——在 Plan Mode 下，模型实际上不会调 todoWrite。原因不是技术上禁止（todoWrite 并未被从工具集中移除），而是覆盖段把每轮的合法收尾方式锁定为 <code>askUser</code> 和 <code>exitPlanMode</code> 两种，todoWrite 在这种约束下没有用武之地。规划阶段的步骤拆分写在 plan 文件中——持久化到磁盘、可供用户审批——而不是存放在内存清单里。<code>exitPlanMode</code> 审批通过、覆盖段不再生效后，模型才开始用 todoWrite 跟踪执行进度。两者在工作流中是前后接力的关系，时间上不重叠。</p>
+<h2 id="22-6-按场景而非按-高级程度-选工具">22.6 按场景而非按「高级程度」选工具</h2>
+<p>实际面对一个任务时，决策不是「哪个更高级就用哪个」，而是按任务的具体特征选择合适的机制。前面三节分别讨论了跳过 Plan Mode、滥用 task、混淆 Plan Mode 与 todoWrite 的代价，本节将分析汇总为一张决策表。关键的考量维度有三个：任务规模是否需要用户审批（决定是否走 Plan Mode）、执行过程是否需要给用户可见的进度反馈（决定是否用 todoWrite）、是否存在与主对话无关的独立调研段落（决定是否派 task 子 agent）。</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>合适的机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>任务规模大、跨多文件、用户希望先审阅计划</td>
+<td>Plan Mode</td>
+</tr>
+<tr>
+<td>任务有明显的多步骤、需要给用户实时进度</td>
+<td>todoWrite</td>
+</tr>
+<tr>
+<td>任务里有一段独立的调研或审查可以外包</td>
+<td>task</td>
+</tr>
+<tr>
+<td>大型任务（影响多文件、有调研段落、需要审批）</td>
+<td>三者结合：Plan Mode → todoWrite → 中间穿插 task</td>
+</tr>
+<tr>
+<td>一两步就能完成的小任务</td>
+<td>三个都不需要，直接执行</td>
+</tr>
+</tbody>
+</table>
+<p>最常见的失误是对所有任务都用同一个机制——要么全部 todoWrite 不走 Plan Mode（失去了审批关卡），要么全部 task 不用 todoWrite（失去了主对话里的进度可见性）。三者各有擅长的维度，按场景的特征来选择比按「哪个更高级」来选择稳妥得多。前面反复提到的判断标准——「中间过程是否需要进入主对话历史」——是最实用的选择依据：需要的用 todoWrite，不需要的用 task，而复杂的任务让用户先审批再执行的场景用 Plan Mode。</p>
+<h2 id="22-7-小结">22.7 小结</h2>
+<p>三者管理的维度不同——Plan Mode 约束行为、todoWrite 跟踪进度、task 隔离上下文——因此不存在互相替代的关系。选择时的核心判断标准是「中间过程是否需要进入主对话历史」：需要的用 todoWrite，不需要的用 task，而执行任务之前需要先停下来让用户审批的场景用 Plan Mode。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-21.html">← Plan Mode：先计划再开工</a>
+      <a class="next" href="ch-23.html">Ink + Yoga：CJK 抖动溯源 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#22-1-三个维度而非三个替代品">22.1 三个维度而非三个替代品</a></li>
+      <li class="lv2"><a href="#22-2-一个迁移任务里的三阶段接力">22.2 一个迁移任务里的三阶段接力</a></li>
+      <li class="lv3"><a href="#第一阶段-在-plan-mode-下探索并写计划">第一阶段：在 Plan Mode 下探索并写计划</a></li>
+      <li class="lv3"><a href="#第二阶段-计划翻译成-todowrite-清单">第二阶段：计划翻译成 todoWrite 清单</a></li>
+      <li class="lv3"><a href="#第三阶段-遇到独立调研-派-task-出去">第三阶段：遇到独立调研，派 task 出去</a></li>
+      <li class="lv2"><a href="#22-3-跳过-plan-mode-直接建清单的代价">22.3 跳过 Plan Mode 直接建清单的代价</a></li>
+      <li class="lv2"><a href="#22-4-task-不是-todowrite-的进阶版">22.4 task 不是 todoWrite 的进阶版</a></li>
+      <li class="lv2"><a href="#22-5-plan-mode-和-todowrite-是前后接力而非上下替代">22.5 Plan Mode 和 todoWrite 是前后接力而非上下替代</a></li>
+      <li class="lv2"><a href="#22-6-按场景而非按-高级程度-选工具">22.6 按场景而非按「高级程度」选工具</a></li>
+      <li class="lv2"><a href="#22-7-小结">22.7 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

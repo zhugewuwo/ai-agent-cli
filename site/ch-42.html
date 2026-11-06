@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>附录二 完整代码流程串讲 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li class="active"><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>附录二 完整代码流程串讲</h1>
+<p>前面各章按主题分别拆解了 Agent CLI 的各个组件，从 Tool Use 协议、流式 chunk 处理、cell 级别 diff 渲染，到上下文压缩、prompt cache、子 agent、Plan Mode、todoWrite。本附录把这些组件拼成一条完整的请求路径，从 <code>xc</code> 命令启动到用户输入，从 AI 流式回复到工具调用（含权限拦截与 Plan Mode 约束），从终端 UI 渲染到下一轮提示符，逐步追踪代码执行流程。读完之后，读者既可以把前面分主题学到的零件在脑中串成一条端到端的执行链，也可以把本附录当作日后排查具体环节时的速查手册，遇到某条线不确定时查一眼「它走的是哪个组件、什么时机触发」。</p>
+<p>阅读时建议重点关注几个贯穿全文的核心数据结构与入口：静态工具集与动态注入的组合方式、<code>AgentState</code> 和 <code>LoopState</code> 两套状态结构的分工、<code>SLASH_COMMANDS</code> 对用户指令的分发、JSONL 单文件 transcript 的持久化策略，以及子 agent 的嵌套循环机制。这些结构会在各阶段反复出现，理解它们之间的关系是串通全局的关键。本附录将分为如下几个部分进行介绍。</p>
+<ul>
+<li>B.1 节提供术语速查入口，方便阅读中途查阅不熟悉的名词。</li>
+<li>B.2 节给出整体架构概览，说明 <code>cli</code> → <code>core</code> 的单向依赖与 ChatInput cell buffer 的渲染职责。</li>
+<li>B.3 节用一张完整时序图展示从用户输入到 AI 回复再到下一轮提示符的全流程。</li>
+<li>B.4 节以一个具体示例串讲完整执行流程与工具调用序列。</li>
+<li>B.5 节讲解阶段一 CLI 启动，包含 Node 版本检查、参数解析、模型注册与插件子系统初始化。</li>
+<li>B.6 节讲解阶段二 UI 渲染初始化，包含 Ink 挂载、<code>AgentState</code> 结构与初始渲染。</li>
+<li>B.7 节讲解阶段三用户输入处理，包含输入管线、粘贴检测与提交路由。</li>
+<li>B.8 节讲解阶段四 Agent 循环执行，包含 <code>useAgent.submit()</code> 的准备阶段与 <code>agentLoop</code> 核心循环。</li>
+<li>B.9 节讲解阶段五 AI 流式响应与工具调用，包含 System Prompt 结构、工具注册表、权限系统与子 agent 嵌套。</li>
+<li>B.10 节讲解阶段六终端 UI 渲染，包含渲染架构、消息写入管线、Markdown 渲染与流式文本累积策略。</li>
+<li>B.11 节讲解阶段七退出与清理，包含正常退出流程与 Ctrl+C 双层处理。</li>
+<li>B.12 节用一张完整数据流图总结跨阶段的数据流转关系。</li>
+<li>B.13 节提供按阶段组织的文件索引表，方便定位具体源码。</li>
+<li>B.14 节给出本附录小结。</li>
+</ul>
+<hr />
+<h2 id="b-1-术语速查">B.1 术语速查</h2>
+<p>本附录反复出现的术语集中在 <a href="./03-glossary.md">附录三 术语表</a>，按 6 个主题分组（Agent Loop、工具系统、供应商与流、UI 渲染、上下文管理、通用 LLM 概念）。阅读中途遇到不熟悉的名词，如 <code>Ink</code>、<code>scrollback</code>、<code>agentLoop</code>、<code>streamText</code>、<code>chunk</code>、<code>turn</code>、<code>auto-memory</code>、<code>Knowledge</code>、<code>bracketed paste</code>、<code>DECSC</code>、<code>frame</code>、<code>cell buffer</code> 等，可回到术语表查一句话定义再跳到详讲章节，不必从头读。</p>
+<hr />
+<h2 id="b-2-架构概览">B.2 架构概览</h2>
+<p>两个核心包 <code>cli</code> → <code>core</code> 构成单向依赖，详见 Ch.04。</p>
+<p>渲染层面，Ink 动态区始终为空，<code>App</code> 组件只返回单个 <code>&lt;ChatInput /&gt;</code>，没有 Ink 子树。所有 UI 元素（输入框、进度指示器、对话框、终端历史区提交）都由 <code>&lt;ChatInput&gt;</code> 自己通过 cell 级别 diff + <code>process.stdout.write</code> 渲染。Yoga 抖动溯源与 cell buffer 实现详见 Ch.23 和 Ch.24。</p>
+<p>下面这张终端区域示意图作为速查（按区域划分 ChatInput 内部 cell buffer 的渲染元素）：</p>
+<pre><code>+----------------------------------------------------------+
+|                      CLI 层 (cli/)                         |
+|  index.ts → app.tsx → App.tsx (App return 单个 &lt;ChatInput&gt;)|
+|                                                            |
+|  ┌─ Ink 动态区 ─────────────────────────────────────┐      |
+|  │  永远是空 —— App 组件不渲染任何 Ink 子节点          │      |
+|  │  Ink 仅用于 render(&lt;App&gt;) 的生命周期管理 + Ctrl+C   │      |
+|  │  unmount, 不用其布局/重绘任何 UI 元素                │      |
+|  └────────────────────────────────────────────────┘       |
+|                                                            |
+|  ┌─ &lt;ChatInput&gt; cell buffer（独占 stdout 底部）────┐      |
+|  │  构建 2D cell 网格，每帧 diff prev → 只 write    │      |
+|  │  差异的 cell。一次 stdout.write() 一帧，外层包   │      |
+|  │  BSU/ESU (DEC 2026) 原子渲染。                   │      |
+|  │                                                  │      |
+|  │  [error 行] (可选)                              │      |
+|  │  [tool call live 状态] (运行中,完成后 commit;    │      |
+|  │    支持并行多个 — activeToolCalls[] 数组)        │      |
+|  │  [permission 对话框] (权限请求时,                │      |
+|  │    键盘也由 ChatInput 内部路由, y/n/Up/Down/↩)   │      |
+|  │  [SelectOptions 对话框] (askUser / /model /     │      |
+|  │    /thinking 等需要交互选择时, 含自由文本 Other) │      |
+|  │  [空行]                                          │      |
+|  │  [⠋ Thinking... (Xs · ↑ Yk tokens)] (loading)   │      |
+|  │  ───── (输入框顶分隔线)                          │      |
+|  │  &gt; 用户输入                                       │      |
+|  │  ───── (输入框底分隔线)                          │      |
+|  │  [/&lt;command&gt; 补全菜单] (slash command 时)       │      |
+|  │                                                  │      |
+|  │  同时 ChatInput 还负责把 messages 新增条目用     │      |
+|  │  writeMessageToStdout + process.stdout.write    │      |
+|  │  提交到终端 scrollback（即我们控的区域上方）。    │      |
+|  │  提交前先 eraseRegion 擦自己的 frame, BSU/ESU    │      |
+|  │  包一次，提交+重绘原子化。                        │      |
+|  └────────────────────────────────────────────────┘       |
+|                                                            |
+|  ┌─ 输入管线 (usePromptInput) ──────────────────────┐      |
+|  │  stdin → bracketed paste[^bp] / debounce →       │      |
+|  │              onPaste / onText / onKey            │      |
+|  │  paste-refs → [Pasted text #N +M lines] 占位     │      |
+|  │                                                  │      |
+|  │  [^bp] bracketed paste mode：终端通过 ESC[?2004h │      |
+|  │   开启，粘贴前后加 \x1b[200~ / \x1b[201~，       │      |
+|  │   应用据此把&quot;粘贴&quot;和&quot;逐键输入&quot;区分开。           │      |
+|  └────────────────────────────────────────────────┘       |
++----------------------------------------------------------+
+|                Hook 桥接层 (use-agent.ts)                 |
+|  useStreamBuffer ←→ AgentCallbacks ←→ Core Agent Loop     |
+|  使用 React state 管理 messages / spinner / permission     |
++----------------------------------------------------------+
+|                      Core 层 (core/)                       |
+|  agentLoop() → runTurn() → streamText() → processToolCalls() |
+|  Knowledge / Session / Permission / LoopGuard / FileIngest |
++----------------------------------------------------------+
+|                   AI SDK +供应商层                     |
+|  Anthropic / OpenAI / Google / DeepSeek / ...              |
++----------------------------------------------------------+
+</code></pre>
+<hr />
+<h2 id="b-3-完整时序图">B.3 完整时序图</h2>
+<pre><code>用户            CLI入口          Ink/React UI        useAgent Hook       agentLoop (Core)       AI Provider       Tool Registry
+ |                |                  |                    |                    |                    |                  |
+ |  xc 命令启动    |                  |                    |                    |                    |                  |
+ |---------------&gt;|                  |                    |                    |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                | 1. checkNodeVersion()                 |                    |                    |                  |
+ |                | 2. loadEnvFile()                      |                    |                    |                  |
+ |                | 3. yargs 解析参数                      |                    |                    |                  |
+ |                | 4. resolveModelId()                   |                    |                    |                  |
+ |                | 5. createModelRegistry()              |                    |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                | 6. printHeader() — 直接写 stdout       |                    |                    |                  |
+ |  &lt;ASCII Logo&gt;  |&lt;-----------------------------------------                  |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                | 7. startApp()    |                    |                    |                    |                  |
+ |                |-----------------&gt;|                    |                    |                    |                  |
+ |                |     render(&lt;App&gt;)|                    |                    |                    |                  |
+ |                |                  | 9. useAgent() 初始化                    |                    |                  |
+ |                |                  |---&gt; 状态初始化      |                    |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |  &gt; 输入提示符   |                  | &lt;ChatInput&gt; 渲染    |                    |                    |                  |
+ |&lt;------------------------------------                  |                    |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |  用户输入问题   |                  |                    |                    |                    |                  |
+ |-------------------------------------&gt;                  |                    |                    |                  |
+ |                |                  | 11. handleSubmit() |                    |                    |                  |
+ |                |                  |---&gt; submit(text)   |                    |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |    12. initialize() (首次)              |                    |                  |
+ |                |                  |    | initMemories()                     |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |    13. setState → isLoading=true        |                    |                  |
+ |                |                  |    14. 添加 user message 到 messages    |                    |                  |
+ |  &lt;Spinner&gt;     |&lt;------------------------------------                      |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |    15. 创建 callbacks                   |                    |                  |
+ |                |                  |    16. agentLoop() |                    |                    |                  |
+ |                |                  |    |---------------&gt;                    |                    |                  |
+ |                |                  |                    | 17. buildKnowledgeContext()             |                  |
+ |                |                  |                    | 18. buildSystemPrompt()                 |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | 20. streamText()   |                    |                  |
+ |                |                  |                    |-------------------&gt;|                    |                  |
+ |                |                  |                    |                    | API 请求            |                  |
+ |                |                  |                    |                    |-------------------&gt;|                  |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | 21. 流式接收 chunks |                    |                  |
+ |                |                  |                    |&lt;-------------------|                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | text-delta →       |                    |                  |
+ |                |                  |                    | callbacks.onTextDelta()                 |                  |
+ |                |                  |                    |---&gt; useStreamBuffer.appendTextDelta() |                     |
+ |                |                  |  每 delta 进 bufferRef → findSafeBoundary 找安全切点 → queueChunk |                |
+ |                |                  |  150ms 合并窗口内的多次 commit 合并成一次 appendMessage           |                |
+ |  &lt;scrollback&gt;  |&lt;------- ChatInput.useEffect 把新 messages 走 writeMessageToStdout + 内联 scrollback 插入,frame 在内容下方就地重绘 |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | tool-call →        |                    |                  |
+ |                |                  |                    | callbacks.onToolCall()                  |                  |
+ |  Thinking ↓    |&lt;------- setState 把 entry push 进 activeToolCalls[]; bufferingReads = isReadOnly      |
+ |                |          只读工具(Read/Glob/Grep/ListDir)被 frame .filter 跳过, spinner 文案翻成 &quot;Reading…&quot;;|
+ |                |          其它工具走 'tool-use' spinner mode 显示逐行 ● Tool / ⎿ Running…              |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | 22. finishReason=tool-calls             |                  |
+ |                |                  |                    | 23. processToolCalls() (tool-execution.ts) |              |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    |    权限检查 (write tools)                |                  |
+ |                |                  |    onAskPermission |&lt;---                |                    |                  |
+ |  [权限对话框]   |&lt;------- permissionQueue 推入 (ChatInput cell buffer 展开 Yes / Always / No 三选项行)        |
+ |  用户按 y/a/n   |-------------------------------------&gt;|                    |                    |                  |
+ |                |                  |    resolve('yes'   |---&gt;                |                    |                  |
+ |                |                  |    'always'/'no')  |    'always' → addSessionAllowRule（后续匹配自动放行）       |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    |    工具执行          |                    |                  |
+ |                |                  |                    |-------------------------------------------&gt;|              |
+ |                |                  |                    |    工具结果          |                    |&lt;--------------|
+ |                |                  |                    |&lt;-------------------------------------------|              |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | 24. pushToolResult()                    |                  |
+ |                |                  |                    | 25. 继续 while 循环 → 下一轮 streamText()                   |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | ... (可能多轮工具调用; 每轮顶端 flushPendingMessages() 把上一轮新消息    |
+ |                |                  |                    | append 到 &lt;slug&gt;-&lt;id&gt;.jsonl; 每轮末尾 appendUsage() append 一行 meta.usage) |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |                    | 26. finishReason=stop (最终文本回复)      |                  |
+ |                |                  |                    | agentLoop 末尾再 flushPendingMessages 一次,写入最后一轮内容              |
+ |                |                  |                    |&lt;--- return { state, turnCount }                              |
+ |                |                  |                    |     useAgent 只取 state 存回 loopStateRef,丢弃 turnCount     |
+ |                |                  |                    |                    |                    |                  |
+ |                |                  |    27. flushBuffer() — drain residual stream buffer 到 messages               |
+ |                |                  |    28. 若 stream 无 text-delta，extractLastAssistantText 降级取文本 |                  |
+ |                |                  |    29. setState → isLoading=false       |                    |                  |
+ |                |                  |                    |                    |                    |                  |
+ |  &lt;scrollback&gt;  |&lt;------- ChatInput.useEffect 逐条把新 message 经 writeMessageToStdout 写到终端     |
+ |  &gt; 输入提示符   |&lt;------- ChatInput spinner 消失, 输入框接受下一轮问题                             |
+ |                |                  |                    |                    |                    |                  |
+</code></pre>
+<hr />
+<h2 id="b-4-具体示例">B.4 具体示例</h2>
+<p>用户输入：「帮忙分析一下项目产品功能以及优化点」</p>
+<h3 id="完整执行流程">完整执行流程</h3>
+<pre><code>
+1. 用户在终端输入 &quot;帮忙分析一下项目产品功能以及优化点&quot;，按 Enter
+
+2. ChatInput 组件
+   └─ onSubmit(&quot;帮忙分析一下项目产品功能以及优化点&quot;)
+
+3. App.handleSubmit()
+   └─ 非 / 开头，走普通提交路径
+   └─ submit(&quot;帮忙分析一下项目产品功能以及优化点&quot;)
+
+4. useAgent.submit()
+   ├─ initialize() (首次)
+   │ └─ 加载 AutoMemory (用户级 + 项目，驱逐 90 天前条目)
+   │
+   ├─ setState
+   │ → messages 追加用户消息
+   │ → isLoading = true
+   │
+   │ [终端显示]
+   │ &gt; 帮忙分析一下项目产品功能以及优化点
+   │ ⠋ Thinking...
+   │
+   ├─ 构建 callbacks
+   └─ agentLoop(&quot;帮忙分析一下项目产品功能以及优化点&quot;, model, options, callbacks)
+
+5. agentLoop() — 第一轮
+   ├─ messages: [{ role: 'user', content: '帮忙分析一下项目产品功能以及优化点' }]
+   │
+   ├─ buildKnowledgeContext()
+   │ → 拼接用户级/项目 AGENTS.md chain、auto memory、local preferences
+   │
+   ├─ buildSystemPrompt()
+   │ → 完整 system prompt (约 2000-3000 tokens)
+   │ → 包含: 身份、工具列表、规则、环境信息、知识上下文
+   │
+   ├─ streamText({ model, system, messages, tools })
+   │ → API 请求发送到 AI Provider (如 Anthropic)
+   │
+   ├─ AI 决定先了解项目结构，返回 tool-calls:
+   │ ├─ tool-call: glob({ pattern: &quot;**/\*.{ts,tsx,json}&quot; })
+   │ └─ tool-call: readFile({ filePath: &quot;package.json&quot; })
+   │
+   │ [终端显示 —— 只读工具(glob/readFile/listDir/grep)走 read-group collapser，
+   │  ChatInput frame 上**不**显示逐 tool 的 ⠋ Running… live 行;只显示
+   │  spinner 文案翻成 &quot;Reading…&quot;:
+   │ ⠋ Reading… (3s · esc to interrupt)
+   │
+   ├─ finishReason = 'tool-calls'
+   ├─ processToolCalls()
+   │ ├─ glob → 自动执行 (always-allow) → 返回文件列表
+   │ └─ readFile → 自动执行 (always-allow) → 返回 package.json 内容
+   │
+   │ [工具完成后,read-group collapser 暂存,**不**立刻 commit。
+   │  等链条结束(出现非只读工具 / text-delta / turn 结束)再一次性
+   │  flush 成一行摘要 —— 见下面&quot;轮 3 末尾&quot;的合并形式。]
+   │
+   └─ continue (进入下一轮)
+
+6. agentLoop() — 第二轮
+   ├─ messages 现在包含: user + assistant(tool-calls) + tool-results
+   │
+   ├─ streamText() → AI 继续分析
+   │
+   ├─ AI 可能再次调用工具读取更多文件:
+   │ ├─ readFile({ filePath: &quot;packages/core/src/index.ts&quot; })
+   │ ├─ readFile({ filePath: &quot;packages/cli/src/ui/components/App.tsx&quot; })
+   │ └─ listDir({ path: &quot;packages/core/src/tools&quot; })
+   │
+   │ [终端显示 —— 仍然在只读链中,collapser 继续累积,frame 仍只
+   │  显示 &quot;Reading…&quot; spinner,不逐 tool 出 live 行]
+   │
+   └─ continue
+
+7. agentLoop() — 第三轮 (可能更多轮)
+   ├─ AI 已获得足够信息，开始生成分析报告
+   │
+   ├─ streamText() → AI 返回纯文本分析 (finishReason = 'stop')
+   │
+   ├─ 第一个 text-delta 到达 → bufferingReads = false（spinner 切回 &quot;Thinking…&quot;），
+   │  read-group collapser flush:
+   │  在 scrollback 里写一行
+   │    ● Read 6 files, listed 1 directory (package.json, index.ts, App.tsx, +3 more)
+   │    ⎿
+   │  (label 粗体,detail 蓝紫色,样式与单工具行对齐)
+   │
+   ├─ 流式输出过程（按&quot;安全单 \n 切点&quot;逐行 commit，150ms 合并窗口去抖）:
+   │ ├─ text-delta: &quot;## 项目产品功能分析\n\n&quot;
+   │ │ → callbacks.onTextDelta(delta)
+   │ │ → useStreamBuffer.bufferRef.current += delta
+   │ │ → findSafeBoundary 找到末尾安全 \n → queueChunk(prefix)
+   │ │ → 150ms 窗口合并多个 chunk → drainPending → appendMessage
+   │ │ → setState: messages 追加 { role: 'assistant', content: chunk, streamingChunk: true }
+   │ │ → ChatInput useEffect: writeMessageToStdout → renderMarkdown → 落到 scrollback
+   │ │
+   │ │ [终端显示 — 直接到 scrollback, 由 ChatInput 经 process.stdout.write 直写]
+   │ │ 项目产品功能分析
+   │ │
+   │ ├─ text-delta: &quot;### 核心功能\n\n1. 多模型支持...&quot;
+   │ │ → 累积至 300 字或下一个 \n\n → 继续 flush
+   │ ├─ text-delta: &quot;### 2. 智能工具调用\n...&quot;
+   │ ├─ ... (持续段落 flush，每段独立 scrollback 写入)
+   │ └─ text-delta: &quot;### 优化建议\n...&quot;
+   │
+   └─ finishReason = 'stop' → break 退出循环
+
+8. 回到 useAgent.submit()
+   ├─ flushBuffer() // drain buffer 的最后一段残留到 messages
+   │
+   ├─ 安全网：若本轮 onTextDelta 从未触发
+   │ → extractLastAssistantText(loopState.messages) 降级取文本
+   │ → 追加为 assistant message
+   │
+   ├─ setState({
+   │ isLoading: false,
+   │ activeToolCalls: [],
+   │ })
+   │
+   │ [终端最终显示 — 所有 message 已在 scrollback 里]
+   │
+   │ ❯ 帮忙分析一下项目产品功能以及优化点 ← user message (writeUserMessage)
+   │
+   │ ● Read 6 files, listed 1 directory ← 只读链摘要 (formatReadGroupSummary)
+   │ ⎿ (package.json, index.ts, App.tsx, +3 more)
+   │ ← AI 回复 (按行 flush 拼接)
+   │ 项目产品功能分析 ← h2, bold + underline + accent blue
+   │
+   │ 核心功能 ← h3, bold
+   │
+   │ 1. 多模型 AI 对话 ← ordered list
+   │ 支持 Anthropic, OpenAI, Google,
+   │ DeepSeek 等多个 AI 服务商...
+   │
+   │ 2. 智能工具调用
+   │ 11 个内置工具: 文件读写, Shell 执行,
+   │ 代码搜索, 网络搜索...
+   │
+   │ 3. 知识管理系统
+   │ - 分层知识加载 (用户级/项目/本地)
+   │ - AutoMemory 自动记忆
+   │ - 会话持久化与恢复
+   │
+   │ ...
+   │
+   │ 优化建议
+   │
+   │ 1. 性能优化
+   │ - 工具结果截断阈值可配置化
+   │ - 流式刷新频率自适应
+   │ ...
+   │
+   │ &gt; █ ← ChatInput 重新可用
+   │
+   └─ 等待用户下一次输入
+
+</code></pre>
+<h3 id="ai-回复中可能的工具调用序列示意">AI 回复中可能的工具调用序列示意</h3>
+<p>对于“分析项目产品功能以及优化点”这类问题，AI 可能执行如下工具调用链：</p>
+<pre><code>
+Turn 1: AI 需要了解项目结构
+├─ glob({ pattern: &quot;\*\*/package.json&quot; }) → 找到 monorepo 结构
+├─ readFile({ filePath: &quot;package.json&quot; }) → 根 package.json
+└─ listDir({ path: &quot;packages&quot; }) → 发现 cli/ 和 core/
+
+Turn 2: AI 深入了解各包
+├─ readFile({ filePath: &quot;packages/core/package.json&quot; })
+├─ readFile({ filePath: &quot;packages/cli/package.json&quot; })
+└─ listDir({ path: &quot;packages/core/src&quot; })
+
+Turn 3: AI 阅读核心代码
+├─ readFile({ filePath: &quot;packages/core/src/agent/loop.ts&quot; })
+├─ readFile({ filePath: &quot;packages/core/src/tools/index.ts&quot; })
+└─ readFile({ filePath: &quot;packages/cli/src/ui/components/App.tsx&quot; })
+
+Turn 4: AI 生成最终分析报告 (纯文本回复, 无工具调用)
+→ finishReason = 'stop'
+
+</code></pre>
+<hr />
+<h2 id="b-5-阶段一-cli-启动">B.5 阶段一：CLI 启动</h2>
+<p>入口文件：<code>cli/src/index.ts</code> → <code>main()</code></p>
+<h3 id="步骤-1-node-版本检查">步骤 1: Node 版本检查</h3>
+<pre><code>main()
+  └─ checkNodeVersion()    // 要求 Node &gt;= 20.19.0，不满足则 process.exit(1)
+</code></pre>
+<h3 id="步骤-2-加载环境变量">步骤 2: 加载环境变量</h3>
+<pre><code>main()
+  └─ loadEnvFile()         // 从 cwd 向上查找 .env 文件
+       └─ process.loadEnvFile(envPath)  // 原生加载 .env
+</code></pre>
+<h3 id="步骤-3-解析-cli-参数">步骤 3: 解析 CLI 参数</h3>
+<pre><code>main()
+  └─ yargs(hideBin(process.argv))
+       --model / -m    模型选择 (如 sonnet, deepseek, openai:gpt-4.1)
+       --trust / -t    信任模式 (跳过所有权限确认，含破坏性命令)
+       --print / -p    非交互模式 (输出结果后退出)
+       --max-turns     单次提交的 Agent 循环轮数上限 (可选；不传则无上限)
+       --plan          以 plan 模式启动（permissionMode='plan'，模型只能读 +
+                        通过 enterPlanMode/exitPlanMode 写 plan 文件）
+       --continue / -c 直接加载本项目最近一次 session（不弹 picker）
+       --resume / -r [&lt;key&gt;]
+                       resume 路径：
+                         无值        → 启动后弹出 session picker
+                         &lt;slug-id&gt;   → 直接加载这个 session（exact 或 prefix 匹配）
+       --version / -v  显示版本
+</code></pre>
+<h3 id="步骤-4-配置-模型与子系统注册表">步骤 4: 配置、模型与子系统注册表</h3>
+<pre><code>main()
+  ├─ getAvailableProviders()       // 检测哪些供应商有 API Key（env 变量扫描）
+  ├─ resolveModelId(argv.model)
+  │    ├─ 优先级: --model 参数 &gt; config.json model 字段 &gt; X_CODE_MODEL &gt; 自动检测
+  │    └─ MODEL_ALIASES 映射: &quot;sonnet&quot; → &quot;anthropic:claude-sonnet-4-6&quot; 等
+  ├─ 应用持久化主题（在 startApp 之前 —— 第一行 scrollback 就用对色）
+  │    └─ parseThemeName(loadUserConfig().theme) → setTheme + setSyntaxTheme
+  ├─ createModelRegistry()         // AI SDK Provider Registry
+  │    └─ 注册所有有 API Key 的供应商 (Anthropic/OpenAI/Google/DeepSeek/...)
+  │
+  ├─ 插件 / Skill / Command / MCP / Hook 子系统初始化
+  │  按依赖顺序组成一条链 — 每一步的输出传递给下一步:
+  │
+  │  1. ensureDefaultMarketplaces()
+  │       首次启动预置默认 marketplace 订阅 (anthropic-marketplace).
+  │       Idempotent — 用户手动 remove 之后不会自动恢复.
+  │       (--no-plugins 跳过整条链)
+  │
+  │  2. loadAllPlugins({ cwd, disabled: argv.plugins === false })
+  │       两遍扫:
+  │       a) ~/.x-code/plugins/installed_plugins.json (user-scope, marketplace 装)
+  │       b) &lt;cwd&gt;/.x-code/plugins/&lt;name&gt;/ (project-scope, 跟项目走)
+  │       单个坏 manifest 不阻塞 — 进 PluginLoadError[], 给 /plugin doctor 看
+  │
+  │  3. buildPluginIntegration(pluginLoad)
+  │       每个 enabled 插件的 skills/agents/commands/mcpServers/hooks
+  │       汇聚成 { agentsDirs, skillsDirs, commandsDirs, mcpServers, hookBus }
+  │       跨插件命名冲突: MCP server first-wins (记到 mcpCollisions)
+  │
+  │  4. createSubAgentRegistry({ extraDirs: pluginIntegration.agentsDirs })
+  │     createSkillRegistry({ extraDirs: pluginIntegration.skillsDirs })
+  │     createCommandRegistry({ extraDirs: pluginIntegration.commandsDirs })
+  │       三个子 registry 把内置 / 用户级 / 插件贡献的目录合并:
+  │       - subAgent: 内置 4 个 + ~/.x-code/agents/*.md + &lt;repo&gt;/.x-code/agents/*.md + 插件 agentsDirs
+  │       - skill: ~/.x-code/skills/ + &lt;repo&gt;/.x-code/skills/ + 插件 skillsDirs
+  │       - command: 插件 commandsDirs (目前没有 user/project scope)
+  │
+  │  5. loadMcpFromDisk({ extraServers: pluginIntegration.mcpServers, askUser, ... })
+  │       加载 user / project / 插件 三层 MCP 配置 + OAuth provider + 信任对话
+  │       (Ink 挂载前用 readline-based 提示, 见 Ch.37)
+  │
+  │  6. mcpPermissionStore.preload()
+  │       预读 always-allow list, 避免第一次工具调用付 fs 延迟
+  │
+  └─ HookBus 来自 buildPluginIntegration.hookBus
+     --no-hooks 时换成 emptyHookBus() — 所有 emit 站点变 no-op
+</code></pre>
+<p><code>AgentOptions</code> 在这一步组装完毕，<code>subAgentRegistry</code>、<code>skillRegistry</code>、<code>commandRegistry</code>、<code>mcpRegistry</code>、<code>mcpPermissionStore</code>、<code>pluginRegistry</code>、<code>hookBus</code> 一并填入。后续 <code>startApp</code> 拿到的 <code>options</code> 已经是所有插件子系统初始化完毕的状态。</p>
+<p>构造完 <code>AgentOptions</code> 之后、<code>startApp</code> 之前还有一步：触发 <code>SessionStart</code> hook。如果有插件注册了这个事件，CLI 在这里 emit 一次（fire-and-forget，不等返回）。位置选在 Ink 挂载之前，这样 hook 能执行 env 校验、context 预热之类的会话级初始化；而且 hook 在 agentLoop 之外触发，意味着用户只执行 slash 命令就退出（从来不发 prompt）的会话也能触发 SessionStart。</p>
+<pre><code class="language-ts">if (options.hookBus?.has('SessionStart')) {
+  options.hookBus.emit({ name: 'SessionStart', session: { cwd: process.cwd(), modelId } })
+    .catch((err) =&gt; debugLog('agent.hook-session-start-error', String(err)))
+}
+</code></pre>
+<p>这与 <code>gracefulShutdown</code> 里的 <code>SessionEnd</code> fire 对称（详见 B.11 节）。</p>
+<blockquote>
+<p>配置文件存在但只用于持久化用户偏好。<code>~/.x-code/config.json</code> 存放 <code>{ model?: string, thinking?: boolean, theme?: string, mcpServers?: Record&lt;string, McpServerConfig&gt; }</code>，即 <code>/model</code> 选定的模型 id、<code>/thinking</code> 开关、<code>/theme</code> 选定的主题名以及用户级 MCP 服务器配置。API key 永远只来自环境变量（<code>config/index.ts</code> 顶部注释明确：API keys &quot;never stored on disk&quot;）。CLI 启动时 <code>loadUserConfig()</code> 读这两个字段：<code>model</code> 字段的优先级排在 <code>--model</code> 参数之后、<code>X_CODE_MODEL</code> 环境变量之前；<code>thinking</code> 字段则被读到 <code>AgentOptions.thinking</code>。<code>X_CODE_HOME</code> 环境变量可重定向配置目录（用于测试沙箱）。</p>
+</blockquote>
+<p>模型别名映射表（定义在 <code>core/src/types/index.ts:MODEL_ALIASES</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>别名</th>
+<th>完整 Model ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sonnet</td>
+<td>anthropic:claude-sonnet-4-6</td>
+</tr>
+<tr>
+<td>opus</td>
+<td>anthropic:claude-opus-4-7</td>
+</tr>
+<tr>
+<td>haiku</td>
+<td>anthropic:claude-haiku-4-5</td>
+</tr>
+<tr>
+<td>gpt4</td>
+<td>openai:gpt-4.1</td>
+</tr>
+<tr>
+<td>gemini</td>
+<td>google:gemini-2.5-pro</td>
+</tr>
+<tr>
+<td>deepseek</td>
+<td>deepseek:deepseek-v4-flash</td>
+</tr>
+<tr>
+<td>deepseek-pro</td>
+<td>deepseek:deepseek-v4-pro</td>
+</tr>
+<tr>
+<td>qwen</td>
+<td>alibaba:qwen-max</td>
+</tr>
+<tr>
+<td>glm</td>
+<td>zhipu:glm-4-plus</td>
+</tr>
+<tr>
+<td>kimi</td>
+<td>moonshotai:kimi-k2.5</td>
+</tr>
+</tbody>
+</table>
+<p>Provider 检测顺序为 DeepSeek → Anthropic → OpenAI → Alibaba → Google → xAI → Zhipu → Moonshot（OpenAI 兼容自定义端点单独识别，不在此主顺序中）。</p>
+<h3 id="步骤-5-构建启动参数与-resume-预加载">步骤 5: 构建启动参数与 resume 预加载</h3>
+<pre><code class="language-typescript">const options: AgentOptions = {
+  modelId, // 如 &quot;anthropic:claude-sonnet-4-6&quot;
+  trustMode: argv.trust, // 默认需确认写操作与破坏性命令
+  printMode: argv.print, // 默认交互模式
+  maxTurns: argv['max-turns'], // 可选；不传时 agentLoop 视为无上限
+  thinking: loadUserConfig().thinking ?? false, // /thinking 持久化开关
+  permissionMode: argv.plan ? 'plan' : 'default', // --plan 启动 flag
+  modelRegistry: providerRegistry,
+  subAgentRegistry,
+}
+
+// resume 预加载（在 startApp 之前同步完成，让 App 第一帧就有历史 messages）
+let initialSession: LoadedSession | null = null
+let resumeIntent: 'pick' | null = null
+if (argv.continue) {
+  // -c：本项目最近一次 session
+  const latest = await pickLatestSession()
+  if (latest) initialSession = await loadSession(latest.filePath)
+} else if (typeof argv.resume === 'string') {
+  if (argv.resume === '') {
+    resumeIntent = 'pick' // --resume 无值 → 进 picker
+  } else {
+    const filePath = await findSessionFile(argv.resume) // exact 或 prefix
+    initialSession = await loadSession(filePath)
+  }
+}
+</code></pre>
+<blockquote>
+<p>此外，CLI 入口在非 TTY 时会先 <code>readStdin()</code>（1 秒超时）把管道输入拼到 prompt 之后，并在 <code>--print/-p</code> 模式下完全绕过 Ink，走 <code>print.ts</code> 里的 <code>runPrintMode(model, options, fullPrompt, initialSession)</code> 直出文本到 stdout 后退出。无 API key 时 <code>printNoApiKeyMessage()</code> 打印按当前 shell 类型（powershell / cmd / zsh / bash / fish）定制的 export 命令模板再 <code>process.exit(0)</code>。无 TAVILY/BRAVE key 时再 <code>printNoWebSearchKeyHint()</code> 打一条提示（webSearch 工具不可用，但 webFetch 仍可用）。</p>
+</blockquote>
+<h3 id="会话内动态刷新-refreshplugincontributions-单一入口">会话内动态刷新：<code>refreshPluginContributions</code> 单一入口</h3>
+<p>启动序列把 plugin、skill、command、MCP、hook 都装在了对应 registry 里。但 registry 是一次性加载、会话内冻结的。如果会话期间用户装了新插件、改了订阅或修改了 user-config，要让 CLI 看见新状态该怎么处理？</p>
+<p>X-Code CLI 不做 fs.watch 自动检测，而是要求用户显式执行 <code>/plugin refresh</code>（详见 Ch.39 决定四）。这个命令背后是 <code>refreshPluginContributions()</code> 一个单一入口，五件事按固定顺序执行：</p>
+<pre><code>PluginRefreshTargets 字段:
+  pluginRegistry: PluginRegistry        // 必填 — 主 registry, 永远需要重 reload
+  skillRegistry?: SkillRegistry         // 可选 — 不传则跳过 skill 折回
+  subAgentRegistry?: SubAgentRegistry   // 可选 — 不传则跳过 sub-agent 折回
+  commandRegistry?: CommandRegistry     // 可选 — 不传则跳过 command 折回
+  hookBus?: HookBus                     // 可选 — 不传则跳过 hook bus 折回
+  mcpRegistry?: McpRegistry             // 可选, 必须跟 askUser 一起传才会触发 MCP 重启
+  askUser?: LoadOptions['askUser']      // 可选, 跟 mcpRegistry 配对
+  cwd?: string                          // 可选, 默认 process.cwd()
+
+refreshPluginContributions(targets):
+  ├─ loadAllPlugins({ cwd })
+  │    重读 installed_plugins.json + 项目级目录 + enabledPlugins 状态
+  ├─ targets.pluginRegistry.reload(load.registry.listAll(), [...loadErrors()])
+  │    替换主 registry 内的插件列表, 保留对象身份(所有持有引用的下游继续有效)
+  ├─ buildPluginIntegration(load)
+  │    重新算出 agentsDirs / skillsDirs / commandsDirs / mcpServers / hookBus
+  ├─ 折回四个子 registry — 都用 reload-in-place 保留对象身份:
+  │    if (targets.skillRegistry)    reloadSkillRegistry(..., { extraDirs })
+  │    if (targets.subAgentRegistry) reloadSubAgentRegistry(..., { extraDirs })
+  │    if (targets.commandRegistry)  reloadCommandRegistry(..., { extraDirs })
+  │    if (targets.hookBus)          targets.hookBus.replaceRegistry(integration.hookRegistry)
+  └─ 重启 MCP 服务器 (条件: mcpRegistry + askUser 都传了才走):
+       loadMergedConfigsFromDisk({extraServers}) →
+       targets.mcpRegistry.restartAll(merged.configs)
+</code></pre>
+<p>每个子 registry 都是可选的，<code>--no-plugins</code> 启动时上层不传 skillRegistry / subAgentRegistry，refresh 时这几步自动跳过。MCP 重启条件更特殊：必须 <code>mcpRegistry</code> 和 <code>askUser</code> 都传才执行（<code>askUser</code> 用于处理项目级 MCP 信任对话）。</p>
+<p>CLI 端 <code>handleRefreshPlugins</code> 还做两件事：调 <code>invalidateSystemPromptCache()</code> 作废 system prompt cache（同 <code>/skill refresh</code> 第 1 步），输出文案告诉用户下一条消息会 cache miss 一次。</p>
+<p>选择单一入口的原因在于五件事必须按上述顺序执行：先重扫拿到新插件列表，再计算 integration 拿到 extraDirs，再折进各子 registry。任何一步顺序错位都会让某项扩展不可见。把这条流程封装在一个函数里，CLI 的两个调用点（<code>/plugin refresh</code> slash 命令和 <code>/mcp refresh</code> 单独执行时也走类似路径）就不会因为漏写一步导致 silent data loss。</p>
+<hr />
+<h2 id="b-6-阶段二-ui-渲染初始化">B.6 阶段二：UI 渲染初始化</h2>
+<p>入口文件：<code>cli/src/app.tsx</code> → <code>startApp()</code></p>
+<h3 id="步骤-6-打印启动-banner">步骤 6: 打印启动 Banner</h3>
+<pre><code>startApp()
+  └─ printHeader(modelId)    // 直接 process.stdout.write，在 Ink 启动前执行
+       ├─ 根据终端宽度选择 Logo (&gt;= 52列: 大Logo, &gt;= 30列: 紧凑, 否则: 文字)
+       └─ 输出: Logo + 版本 + 模型名 + 帮助提示
+</code></pre>
+<p>终端显示效果如下：</p>
+<pre><code>  ██╗  ██╗       ██████╗ ██████╗ ██████╗ ███████╗
+  ╚██╗██╔╝      ██╔════╝██╔═══██╗██╔══██╗██╔════╝
+   ╚███╔╝ █████╗██║     ██║   ██║██║  ██║█████╗
+   ██╔██╗ ╚════╝██║     ██║   ██║██║  ██║██╔══╝
+  ██╔╝ ██╗      ╚██████╗╚██████╔╝██████╔╝███████╗
+  ╚═╝  ╚═╝       ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝
+ vX.Y.Z │ anthropic / claude-sonnet-4-7
+ Type /help for commands, Ctrl+C to abort
+</code></pre>
+<h3 id="步骤-7-ink-react-应用渲染">步骤 7: Ink React 应用渲染</h3>
+<pre><code>startApp(model, options, initialPrompt, { initialSession, resumeIntent })
+  └─ render(&lt;App model={model} options={options}
+                 initialPrompt={...}
+                 initialSession={...}     // 来自 -c / --resume &lt;id&gt;
+                 resumeIntent={...} ... /&gt;)
+       └─ App 组件初始化
+            ├─ useAgent(model, options, initialSession)
+            │   └─ useState&lt;AgentState&gt;(initialState 已用 initialSession 填充)
+            │   └─ useEffect (一次性) — 若 initialSession 存在:
+            │       loopStateRef.current = hydrateLoopState(initialSession,
+            │                                                permissionMode)
+            │       把 messages / tokenUsage / sessionId / taskSlug /
+            │       startedAt / persistedMessageCount 全部沿用，让用户首次
+            │       提问时 agentLoop 收到 existingState 直接续上。
+            ├─ useEffect → onCleanupReady（注册 saveSession + 退出快照 getter）
+            ├─ useEffect → onSessionInfoReady（同步 getter，用于 printResumeHint）
+            └─ useEffect → initialPrompt    // 如有 CLI 传入 prompt，自动提交
+                          | resumeIntent='pick' → 弹出 session picker
+</code></pre>
+<p>初始 AgentState 结构如下：</p>
+<pre><code class="language-typescript">{
+  messages: initialSession ? modelMessagesToDisplay(...) : [],
+                                   // resume 时直接用 session 的消息填充，第一帧
+                                   //   就有历史 scrollback；fresh launch 是空数组
+  isLoading: false,                // 加载状态
+  activeToolCalls: [],             // 当前正在执行的工具数组（每个 entry
+                                   //   { id, toolName, input, progress?, subToolHistory? };
+                                   //   完成时按 id 移除）
+  shellOutput: '',                 // Shell 实时输出（保留数据，frame 上不直接显示）
+  permissionQueue: [],             // 待用户确认的权限请求队列（FIFO，按 toolCallId 去重）
+  pendingQuestion: null,           // askUser / /model / /theme / /resume 等交互选择
+  usage: initialSession ? { ...session.tokenUsage } : {
+    inputTokens: 0, outputTokens: 0, totalTokens: 0,
+    cacheReadTokens: 0, cacheCreationTokens: 0,
+    currentContextTokens: 0,        // 6 字段；最近一轮的 input+output 瞬时快照,
+                                   //   驱动 footer &quot;6.6k / 200k · 3%&quot; 进度条
+  },
+  error: null,
+  modelId: options.modelId,        // mirror modelIdRef，/model 切换立刻触发 UI 重渲染
+  permissionMode: options.permissionMode ?? 'default',
+                                   // 'default' | 'plan' | 'acceptEdits'（核心代码里
+                                   //   只有这三档；--trust 不是一种 mode，是
+                                   //   AgentOptions.trustMode 旁路，跳过所有权限确认含 deny）
+                                   //   plan = 只读 + 必须 enterPlanMode 提交后才能改文件
+                                   //   acceptEdits = exitPlanMode 用户批准后翻到这一档,
+                                   //                 写工具自动放行
+                                   //   default = 标准 ask 流程
+                                   // 由 onPlanModeChange 回调与 LoopState 同步;
+                                   // 驱动 footer 左侧的 &quot;· plan mode&quot; / &quot;· accept edits&quot;
+                                   // 提示行
+  todos: [],                       // todoWrite 维护的 live checklist；空数组时不渲染
+                                   //   ChatInput 内的 todo 面板（详见 Ch.20）
+  bufferingReads: false,           // 进入连续只读工具链（Read/Glob/Grep/ListDir）
+                                   //   时翻 true，驱动 spinner 文案从 &quot;Thinking…&quot;
+                                   //   切到 &quot;Reading…&quot;。任何非只读工具 / 文本流 /
+                                   //   abort / loop 结束都会翻回 false。
+  compressionLabel: null,          // 压缩阶段的 spinner 文案（如 &quot;Compressing — light compact&quot;）;
+                                   //   非空时 spinner label 显示 `Compressing — ${label}`,
+                                   //   优先级高于 bufferingReads / 默认 &quot;Thinking…&quot;
+}
+</code></pre>
+<blockquote>
+<p>注：权限请求是队列而不是单值。同一轮 <code>processToolCalls</code> 里可能触发多次 <code>onAskPermission</code>（例如 AI 一次返回多个 edit 调用），UI 逐个弹出，这些权限对话框在 ChatInput 内部的 cell buffer 里渲染。</p>
+</blockquote>
+<blockquote>
+<p>注：<code>activeToolCalls</code> 是数组而不是单值，因为 AI SDK 在一个 turn 里可能并行发出多个 tool call（<code>tool-call A</code>，<code>tool-call B</code>，<code>tool-result A</code>，<code>tool-result B</code>）。每个 <code>ActiveToolCall</code> 含可选 <code>progress</code> 字段（工具内部通过 <code>reportProgress(toolCallId, msg)</code> 流式上报“当前在做什么”，取代默认的 <code>Running…</code> 占位）和可选 <code>subToolHistory</code>（task 工具委派子 agent 时把子 agent 的 tool-call 汇成一行 progress 反馈给父级）。</p>
+<p>注：<code>flushBuffer()</code>（刷出流式文本）和 <code>setState</code>（push 进 activeToolCalls）在同一同步 tick 完成，靠 React 18 自动批处理折叠成一帧。快工具会闪一下 “Running…” 行（~1 帧），慢工具（WebSearch / shell / 网络）的 text→tool-call 过渡没有可见闪烁。</p>
+</blockquote>
+<blockquote>
+<p>注：没有独立的 streamingText state。<code>useStreamBuffer(appendMessage)</code> 每次 delta 进 bufferRef，在安全 markdown 边界（table/code fence 不被切断）切片，150ms 合并窗口内的多个切片合并成一次 <code>appendMessage</code>。每次提交直接落进 <code>messages</code>，ChatInput useEffect 把它经 <code>writeMessageToStdout</code> 写到终端历史区。不在 cell buffer 里做半截 markdown 预览，避免提交前后的视觉跳动。详见 B.10 节的「流式文本累积策略」。</p>
+</blockquote>
+<h3 id="步骤-8-初始-ui-渲染">步骤 8: 初始 UI 渲染</h3>
+<p>App 组件 JSX 结构（极简，App 直接返回单个 ChatInput，不 wrap Fragment / Box，Ink 子树永远为空）：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-jsx">{
+  /* ChatInput 独占整个终端区域。职责包括：
+       - 把 messages 新增条目写到 scrollback (writeMessageToStdout)
+       - cell buffer 内渲染 spinner / streaming / permission / error / 输入框 / footer
+       - SelectOptions / Permission 对话框都在 cell buffer 里渲染
+       - 键盘事件路由（permission 激活时吸收 Up/Down/Enter/y/n） */
+}
+;&lt;ChatInput
+  messages={state.messages}
+  initialContentRows={getHeaderRowCount(state.modelId)}
+  onSubmit={handleSubmit}
+  onInterrupt={handleCtrlC} // 双击 Ctrl+C 才退出（见阶段七）
+  onEscapeCancel={abort}    // Esc 取消当前 turn
+  isLoading={state.isLoading}
+  spinner={
+    state.isLoading &amp;&amp; !selectActive
+      ? {
+          label: state.compressionLabel
+            ? `Compressing — ${state.compressionLabel}`
+            : state.bufferingReads ? 'Reading' : 'Thinking',
+          mode: state.activeToolCalls.length &gt; 0 ? 'tool-use' : 'requesting',
+        }
+      : null
+  }
+  activeToolCalls={state.activeToolCalls}
+  errorMessage={state.error}
+  permission={permissionRequest ? { toolName, input, onResolve } : null}
+  selectRequest={state.pendingQuestion ? { question, options, onResolve } : null}
+  permissionMode={state.permissionMode} // 驱动 footer 左侧 mode 提示
+  contextUsage={
+    // 驱动 footer 右侧进度条
+    state.usage.currentContextTokens &gt; 0
+      ? { used: state.usage.currentContextTokens, window: getContextWindow(state.modelId) }
+      : null
+  }
+  todos={state.todos} // 非空时在 spinner 上方渲染 checklist
+  notice={notice} // Ctrl+C &quot;Press again to exit&quot; 提示
+  commands={allCommands} // SLASH_COMMANDS + skillCommands + fileCommands 三者拼接
+/&gt;
+</code></pre>
+<p>几个设计要点：</p>
+<ul>
+<li><code>&lt;ChatInput&gt;</code> 通过 props 接收所有动态信息，内部构建 cell buffer 一帧。</li>
+<li>ChatInput 自己根据 <code>permission</code>/<code>selectRequest</code> 是否存在决定键盘路由，无需外层 <code>disabled</code>/<code>hidden</code> prop。加载中不锁键盘（允许预输入下一个问题，Enter 被 <code>spinner != null</code> 守卫忽略）。</li>
+<li>整个 useEffect 包在 DEC 2026 <code>\x1b[?2026h</code> / <code>\x1b[?2026l</code> 同步更新块里，终端历史区内容 + frame diff 一次原子写入，消除「擦了再画」的闪烁。</li>
+<li>底栏行（输入框下分隔线下方）由窄 cell 序列组成：左侧 <code>notice</code> / <code>· plan mode · /plan to toggle</code> / <code>· accept edits</code>（互斥，优先级 notice &gt; plan &gt; acceptEdits）；右侧 <code>6.6k / 200k · 3%</code> 进度条（读 <code>contextUsage</code>）。两侧都为空则整行省略。底栏不右对齐到 <code>termWidth-1</code>，原因在于末 cell 落在终端 wrap-column 时，xterm.js 的 BSU/ESU 同步路径会在每次 commit 的 LF 自动滚动时把残留 cell 漏进终端历史区，留下幽灵「Thinking…」行。</li>
+</ul>
+<hr />
+<h2 id="b-7-阶段三-用户输入处理">B.7 阶段三：用户输入处理</h2>
+<p>组件：<code>cli/src/ui/components/ChatInput.tsx</code>
+输入 Hook：<code>cli/src/ui/hooks/use-prompt-input.ts</code>
+Paste 辅助：<code>cli/src/ui/paste-refs.ts</code></p>
+<h3 id="输入管线-usepromptinput">输入管线：<code>usePromptInput</code></h3>
+<p>ChatInput 自己挂 stdin 监听（Ink 自带的 <code>useInput</code> 不认 bracketed paste 标记，大粘贴会被拆成多个 chunk 逐字处理）。stdin 三层分流：</p>
+<ol>
+<li><strong>bracketed paste 快路径</strong>：<code>\x1b[200~</code> / <code>\x1b[201~</code> 包裹的整块走 <code>onPaste</code></li>
+<li><strong>30ms 防抖托底</strong>：老终端（cmd.exe）不支持标记时，依赖时间窗口区分逐键和粘贴突发</li>
+<li><strong>单段大小判定</strong>：防抖刷出时内容 ≥ 32 字符或含 <code>\n</code> 视为粘贴，否则视为文本</li>
+</ol>
+<p>paste 入口统一做 <code>\r\n?/g → \n</code> 归一化（裸 <code>\r</code> 在终端里会被当 carriage return 覆盖之前的字符）。完整实现 + 阈值常量论证详见 [Ch.24。</p>
+<h3 id="chatinput-的-onpaste-ontext-onkey-处理">ChatInput 的 onPaste / onText / onKey 处理</h3>
+<pre><code>onPaste(content)
+  ├─ lineCount = content.split(/\r\n|\r|\n/).length
+  ├─ isLarge = lineCount &gt;= 3 || content.length &gt;= 400
+  │    ├─ 是 → nextPasteIdRef++ → setPastedContents({ [id]: { content, lineCount } })
+  │    │       setText(text + formatPasteRef(id, lineCount))
+  │    │       // 输入框里只显示 &quot;[Pasted text #1 +115 lines]&quot;
+  │    └─ 否 → setText(text + content)           // 短粘贴内联
+  │
+onText(chunk)
+  └─ setText((prev) =&gt; prev + chunk)
+  //  setCompletionIndex(0)
+
+onKey('return')   // 用户按下回车键
+  ├─ 备选：光标前一字符是 `\` → 删 `\` 插 `\n`（不提交）
+  │     适配大多数无法区分 Ctrl+Enter 与 Enter 的终端 —— 普适方案
+  └─ handleSubmit()
+       ├─ expandPasteRefs(text, pastedContents) — 把所有 [Pasted text #N +M lines]
+       │     替换回 pastedContents 里存的完整原文
+       └─ onSubmit(expanded) — agent 看到的是完整内容
+
+onKey('newline')  // Alt/Option+Enter / modifyOtherKeys CSI-u — 显式换行
+  └─ 在光标位置插入字面 `\n`，绕开 @ / slash 补全菜单的拦截（用户已显式要求换行）
+
+onKey('backspace')
+  └─ stripTrailingRef(text):
+       ├─ 若文本末尾是 [Pasted text #N ...] → 整体剥离整个 ref + 从 pastedContents 删除对应 id
+       └─ 否则 → text.slice(0, -1)              // 删一个字符
+
+onKey('tab')  → 接受当前补全候选
+onKey('up/down') → 切换补全候选项
+</code></pre>
+<h3 id="多行渲染-上限">多行渲染 + 上限</h3>
+<p>ChatInput 把 <code>text</code> 按行拆成多行，在有上下边框的 Box 里逐行渲染，输入框高度随行数自动伸缩。上限为 <code>MAX_VISIBLE_LINES = 10</code>：超过 10 行时显示一个以光标位置为中心的 10 行滚动视口，顶部显示 <code>… (+N above)</code>、底部显示 <code>… (+N below)</code>，完整 text 仍在 state 里，只是显示截断。即使上游粘贴检测失败让大量字符进了 onText，输入框也不会膨胀到撑满 Ink 动态区。</p>
+<p>斜杠命令补全：</p>
+<ul>
+<li>用户输入 <code>/</code> 时，显示所有命令列表</li>
+<li>模糊匹配：输入 <code>/m</code> 匹配 <code>/model</code></li>
+<li>Tab 键接受补全候选</li>
+</ul>
+<p>终端显示效果如下：</p>
+<pre><code>&gt; /█                          ← 用户正在输入
+  /help            Show this help message
+  /model           Pick a model (no-arg = interactive) — choice is saved
+  /thinking        Toggle extended thinking on/off (no-arg = show status) — saved
+  /theme           Pick UI theme (no-arg = interactive picker) — drives diff colors + syntax palette
+  /plan            Toggle plan mode on/off (no-arg = show status) — saved
+  /clear           Clear conversation history
+  /compact         Manually compress context
+  /resume          Pick a past session in this project to resume
+  /init            Initialize project knowledge
+  /review          Review a pull request (no-arg = list open PRs)
+  /usage           Show current-session token usage (input/output/cache)
+  /usage-history   List past sessions in this project
+  /memory          Show auto-memory entries (project + user)
+  /rewind          Rewind conversation to a previous checkpoint
+  /mcp             MCP server management
+  /skill           List / activate skills
+  /plugin          Plugin management
+  /doctor          Diagnose configuration issues
+  /exit            Exit (flushes session)
+</code></pre>
+<h3 id="提交处理">提交处理</h3>
+<p>组件：<code>cli/src/ui/components/App.tsx</code> → <code>handleSubmit()</code></p>
+<pre><code>handleSubmit(text)
+  ├─ 以 / 开头 → switch (command)
+  │    ├─ /help          → addInfoMessage(HELP_TEXT)
+  │    ├─ /model         → handleModelSwitch() （interactive picker | 显式 alias）
+  │    ├─ /thinking      → handleThinkingToggle()
+  │    ├─ /theme         → handleThemeSwitch()  （持久化到 config.theme，驱动 diff bg
+  │    │                                          + syntax 调色板）
+  │    ├─ /plan          → handlePlanToggle()   （翻 LoopState.permissionMode，
+  │    │                                          systemPromptCache 跟着失效；底部
+  │    │                                          footer 出现 &quot;· plan mode&quot; 指示符）
+  │    ├─ /clear         → clear()
+  │    │                   写 `\x1b[2J\x1b[3J\x1b[H` 真的擦掉可视区 + xterm
+  │    │                   scrollback，重置 ChatInput 的 frame 跟踪 ref。**不**
+  │    │                   echo 命令、**不**写&quot;Conversation cleared&quot;提示行 ——
+  │    │                   防止清空后立刻在第 1 行重新贴一行字。LoopState.todos
+  │    │                   保留——清屏与清单各管各的，不连带。
+  │    ├─ /compact       → compact() → compressMessages() + markBoundaryAndReflush
+  │    ├─ /resume        → handleResume()      （列出本项目所有 session jsonl，
+  │    │                                          picker 选中后 hydrateLoopState
+  │    │                                          + 重画 scrollback + 显示 60%
+  │    │                                          阈值的 compactionHintForResume）
+  │    ├─ /init          → submit(INIT_PROMPT, { silent: true })
+  │    │                   长 prompt 不进 scrollback(silent),走正常 agent 流程让
+  │    │                   模型用 readFile / Edit / writeFile 在项目根读写 AGENTS.md;
+  │    │                   已存在时让模型 Edit-merge 而不是覆盖。不再有确定性 init.ts。
+  │    ├─ /usage         → handleUsage()        （读 state.usage 当前快照）
+  │    ├─ /usage-history → handleUsageHistory() （扫 .x-code/sessions/*.jsonl，
+  │    │                                          每行 meta.usage 取末项）
+  │    ├─ /memory        → handleMemory()        （addInfoMessage 列出 project + user
+  │    │                                          memory 条目；要删/改直接编辑 auto.md）
+  │    ├─ /review        → submit(REVIEW_PROMPT(arg), { silent: true })
+  │    │                                          （PR review；arg 可以是 PR 号或留空列开放 PR）
+  │    ├─ /rewind        → handleRewind()         （回退到上一个 checkpoint）
+  │    ├─ /skill         → handleSkillCommand()   （列出 / 激活 skill）
+  │    ├─ /mcp           → handleMcpCommand()     （MCP server 管理）
+  │    ├─ /plugin        → handlePluginCommand()  （插件管理）
+  │    ├─ /doctor        → handleDoctor()         （诊断配置问题）
+  │    ├─ /exit          → cleanup() → saveSession + exit
+  │    └─ default        → &quot;Unknown command&quot; 提示
+  │
+  └─ 普通文本 → submit(text)   // 进入 Agent 流程
+</code></pre>
+<hr />
+<h2 id="b-8-阶段四-agent-循环执行">B.8 阶段四：Agent 循环执行</h2>
+<p>Hook：<code>cli/src/ui/hooks/use-agent.ts</code> → <code>submit()</code>
+Core：<code>core/src/agent/loop.ts</code> → <code>agentLoop()</code></p>
+<h3 id="步骤-9-useagent-submit-准备阶段">步骤 9: useAgent.submit() — 准备阶段</h3>
+<pre><code>submit(text)
+  │
+  ├─ 1. initialize() (仅首次调用)
+  │    ├─ initMemories()          // 加载用户级 + 项目 AutoMemory
+  │    │    ├─ Promise.all([projectMemory.load(), userMemory.load()])  // 并行加载
+  │    │    ├─ projectMemory.evict(90)  // 清除 90 天前的记忆（project 先）
+  │    │    └─ userMemory.evict(90)
+  │    └─ loadPersistedRules(process.cwd())  // 从 .x-code/local/permissions.json
+  │                                          // 预加载持久化的 shell 前缀放行规则
+  │
+  ├─ 2. 更新 UI 状态
+  │    setState({
+  │      isLoading: true,
+  │      shellOutput: '',
+  │      error: null,
+  │      messages: [...prev.messages, { role: 'user', content: text }],
+  │    })
+  │    // ChatInput 的 useEffect 检测到 messages 增长, eraseRegion + writeMessageToStdout
+  │    // 直接 process.stdout.write 把 user message 落到 scrollback
+  │
+  ├─ 3. 创建 AbortController (用于 Ctrl+C 取消)
+  │
+  ├─ 4. 构建 AgentCallbacks (Core Agent → UI 桥接)
+  │    {
+  │      onTextDelta:       delta → useStreamBuffer.appendTextDelta(delta)
+  │                                   → bufferRef += delta
+  │                                   → findSafeBoundary 找最晚的安全单 \n 切点
+  │                                     (跳过 open table / code fence)
+  │                                   → 找到 boundary → queueChunk(prefix)
+  │                                     (150ms 合并窗口内多个 chunk 合成一次)
+  │                                   → drainPending → appendMessage 推入 state.messages
+  │                                     ChatInput useEffect 把它经 writeMessageToStdout
+  │                                     写到 scrollback (内联插入 + frame 浮动重绘)
+  │      onToolCall:        (toolCallId, name, input) → flushBuffer() 先把 buffer 残留文本提交
+  │                                       → pendingToolsRef.set(toolCallId,
+  │                                         { toolName, input, startedAt })
+  │                                       → 同步 setState({
+  │                                           activeToolCalls: [...prev, { id, toolName, input }],
+  │                                           bufferingReads: isCollapsibleReadOnlyTool(toolName)
+  │                                         }) — flushBuffer + setState 在同一 tick,
+  │                                           靠 React 18 auto-batching 折叠成一帧
+  │      onToolProgress:    (toolCallId, message) → setState(更新对应 entry 的 progress 字段)
+  │                                       → cell buffer 里的 ⎿ 行替换默认 &quot;Running...&quot;
+  │      onToolResult:      (id, result, isError) → 计算 durationMs
+  │                                       → 构建 DisplayToolCall { toolName, input, output,
+  │                                         status: isError ? 'error' : 'completed', durationMs }
+  │                                       → setState 把它从 activeToolCalls 数组移除 +
+  │                                         push 到 messages
+  │      onAskPermission:   (toolCall) → new Promise&lt;'yes'|'always'|'no'&gt; →
+  │                                       permissionResolversRef.push(resolve) +
+  │                                       permissionQueue 推入 entry
+  │                                       (ChatInput cell buffer 展开 Yes / [Yes don't ask again] / No)
+  │      onAskUser:         (question, opts) → new Promise → setState({ pendingQuestion })
+  │                                       (ChatInput cell buffer 渲染 SelectOptions 对话框,
+  │                                        Ink 子树仍然是空)
+  │      onShellOutput:     chunk → setState(shellOutput += chunk) (当前未在 UI 显示)
+  │      onUsageUpdate:     usage → setState({ usage }) (累计 input/output/cache 的快照)
+  │      onContextCompressed: (msg) → (可选通知 — light/full compaction 都会触发)
+  │      onError:           error → setState({ error })
+  │    }
+  │
+  │    callbacks 之外, submit 还会先调 buildUserContent(text, capabilitiesOf(modelIdRef))
+  │    把用户文本里的 @path / 裸绝对路径展开为多模态 ContentPart 数组(图片/PDF/Office),
+  │    并通过 onNotice 回调把 ingest 阶段的 vision 子代理 caption 提示作为命令-result 类型的
+  │    消息插入 messages, 让用户看到 &quot;图已转给 Gemini caption&quot; 之类的灰行。
+  │
+  ├─ 5. 调用 agentLoop(text, model, options, callbacks, loopStateRef.current ?? undefined)
+  │    └─ 第五个参数 existingState 复用上一次 submit 的 LoopState，使同一次 CLI 会话内
+  │       多轮提问共享同一个 state.messages / tokenUsage / sessionId / recentToolCalls。
+  │       (不是启动时自动恢复历史会话 —— 启动时 loopStateRef 为 null。)
+  │
+  └─ 6. 收尾：
+       ├─ flushBuffer() 把 stream buffer 的最后一段残留文本 push 到 messages
+       ├─ 安全网：若本轮 onTextDelta 从未触发 (某些推理模型把全部文本放在 response.messages
+       │   的最终 part 里)，使用 extractLastAssistantText(loopState.messages) 降级取文本
+       │   追加为 assistant message
+       └─ setState({ isLoading: false, activeToolCalls: [] })
+</code></pre>
+<h3 id="步骤-10-agentloop-核心循环">步骤 10: agentLoop() — 核心循环</h3>
+<pre><code>agentLoop(userMessage, model, options, callbacks, existingState)
+  │
+  ├─ 1. 初始化或复用 LoopState（共 18 个字段，仅列出主线相关的）
+  │    {
+  │      messages: [],            // AI SDK ModelMessage 数组
+  │      tokenUsage: {            // 6 字段 token 计量
+  │        inputTokens, outputTokens, totalTokens,    // 累计（billing）
+  │        cacheReadTokens, cacheCreationTokens,      // 累计（cache 子集，不重复计入 total）
+  │        currentContextTokens,  // 瞬时快照: 最近一轮 input + output（overwrite），
+  │                               //   驱动 footer &quot;6.6k / 200k · 3%&quot; 进度条
+  │      },
+  │      lastInputTokens: 0,      // 上一轮 API 返回的 inputTokens，用于触发压缩
+  │      recentToolCalls: [],     // loop-guard 滚动窗口 Array&lt;{ toolName, hash }&gt; cap 16
+                               //   （LOOP_WINDOW_SIZE*2；扫描窗口为 8，存储上限为 16）
+  │                               //   hash = sha256(toolName + stableStringify(input))[:16]
+  │      sessionId: '...',        // 会话 ID，格式 YYYYMMDD-HHMMSS-mmm（本地时间 + 毫秒尾），
+  │                               //   `ls .x-code/sessions/` 直接可读
+  │      startedAt: '...',        // 会话起始时间 (ISO)
+  │      filesModified: Set&lt;&gt;,    // 已修改文件集合
+  │                               //   注意：LoopState 上没有 turn 计数字段——它是
+  │                               //   agentLoop 函数内的局部变量,per-invocation,
+  │                               //   通过返回值 { state, turnCount } 暴露给调用方。
+  │                               //   主交互 loop 忽略它;sub-agent runner 与
+  │                               //   --print 模式靠它做触顶检查与展示。
+  │      systemPromptCache: null, // System prompt 在 session 内复用以保持字节稳定 ——
+  │                               //   仅在缓存为 null 时调 buildSystemPrompt() 重建。
+  │                               //   只有 permissionMode 翻转（default ↔ plan ↔
+  │                               //   acceptEdits）会把它置回 null，让下一轮 turn
+  │                               //   付一次缓存 miss 重建。这是 OpenAI 兼容供应商
+  │                               //   (DeepSeek/Moonshot/Alibaba/Zhipu/xAI) 自动
+  │                               //   prefix-cache 的硬性前提。
+  │      permissionMode: 'default'│'plan'│'acceptEdits',
+  │                               //   plan: 模型只能调读 + enterPlanMode/exitPlanMode/
+  │                               //         todoWrite，写工具被白名单挡住
+  │                               //   acceptEdits: exitPlanMode 用户批准后翻到这一档，
+  │                               //         写工具(writeFile/edit) 自动放行
+  │                               //   default: 标准 ask-before-write 行为
+  │      currentPlanPath: null,   // plan 模式下 plan 文件路径（首次进入 plan-mode 时由
+  │                               //   makePlanFilePath 从 taskSlug + sessionId 生成，
+  │                               //   例如 .x-code/plans/&lt;slug&gt;-&lt;id&gt;.md）
+  │      taskSlug: '',            // 用户首句话提取的人类可读 slug（2-4 个英文小写词）。
+  │                               //   ASCII 第一句话直接 slugify 不发网络；非 ASCII
+  │                               //   (CJK/emoji-only) 走 generateTaskSlug 一次
+  │                               //   isolated generateText 提取关键词。决定
+  │                               //   &lt;slug&gt;-&lt;sessionId&gt;.jsonl / .md 文件名，
+  │                               //   set-once，session 内不变。
+  │      todos: [],               // todoWrite 工具维护的 live checklist。全替换语义，
+  │                               //   每次 todoWrite 重写整个数组。in-memory only，
+  │                               //   不持久化。所有 item completed 后自动清空。
+  │                               //   /clear 不动它——清屏与清单解耦。
+  │      persistedMessageCount: 0,// 已 append 到 session jsonl 的消息数。
+  │                               //   flushPendingMessages 每轮把
+  │                               //   state.messages.slice(persistedMessageCount)
+  │                               //   增量写入，再把计数提到 messages.length。
+  │      checkpoints: [],         // /rewind 功能的快照数组（每轮结束时 push 一份
+  │                               //   messages + todos 的冻结副本）
+  │      prevTurnCacheRead: 0,    // 上一轮 API 返回的 cacheReadTokens（用于检测
+  │                               //   cache break —— 本轮 cacheRead 突降时说明
+  │                               //   缓存失效，触发 expectCacheMiss 标记）
+  │      expectCacheMiss: false,  // 标记下一轮预期 cache miss（permissionMode 翻转
+  │                               //   或 system prompt 重建时置 true，避免误报
+  │                               //   cache break 告警）
+  │      knowledgeContext, isGitRepo, // session 启动时缓存，给子 agent 用
+  │    }
+  │
+  ├─ 2. state.messages.push({ role: 'user', content: userMessage })
+  │
+  ├─ 3. 并发启动三件 IO（都不阻塞主线）:
+  │    ├─ generateTaskSlug(taskText, model, ...) — ASCII 文本本地 slugify;
+  │    │   非 ASCII 文本调一次 isolated generateText 提取 2-4 个英文词。
+  │    │   这次往返与 buildKnowledgeContext + git stat 重叠，不增加首轮串行延迟。
+  │    ├─ buildKnowledgeContext()              // 5 层加载链，详见 Ch.36
+  │    │   ├─ 用户偏好       ~/.x-code/AGENTS.md           （缺失回退 CLAUDE.md）
+  │    │   ├─ 用户自动记忆   ~/.x-code/memory/auto.md
+  │    │   ├─ 项目 AGENTS.md chain              （cwd → .git 根，每层 AGENTS.md 优先 / CLAUDE.md fallback，root→leaf）
+  │    │   ├─ 项目自动记忆   .x-code/memory/auto.md
+  │    │   └─ 本地偏好       AGENTS.local.md（项目根，gitignored）
+  │    └─ fs.stat('.git')(用于 system prompt 的 Environment 段)
+  │
+  ├─ 4. await taskSlugPromise → 写入 state.taskSlug（永久定型，session 内不变）
+  │    plan 模式 + 首次: state.currentPlanPath = makePlanFilePath(taskText, { slug })
+  │    → void appendHeader(state, modelId, taskText)
+  │       把 session header 作为一行 JSON append 到 .x-code/sessions/
+  │       &lt;slug&gt;-&lt;sessionId&gt;.jsonl（已存在则跳过，resume 场景幂等）。
+  │       fire-and-forget，不阻塞循环。
+  │
+  ├─ 5. effectiveTools = buildTools(options)
+  │    └─ 一次性构造本 session 的工具集:
+  │       - 13 个静态工具 (read / edit / glob / grep / shell / ...)
+  │       - 可选 task 工具 (subAgentRegistry 存在时)
+  │       - 可选 activateSkill 工具 (skillRegistry 里至少有 1 条 enabled skill 时)
+  │       - MCP 工具 (mcpRegistry 里每个 connected server 的 tool 用
+  │         `&lt;server&gt;__&lt;tool&gt;` 命名暴露给模型)
+  │       - toolFilter allow/deny (子 agent loop 用)
+  │       session 内不变 — 但插件 refresh / MCP 重连后下一轮重建.
+  │
+  ├─ 6. compressionThreshold = getCompressionThreshold(modelId)
+  │    └─ contextWindow * 0.8     (如 anthropic 200k * 0.8 = 160k)
+  │
+  └─ 7. let turn = 0
+        while (maxTurns === undefined || turn &lt; maxTurns) 主循环
+       │
+       ├─ turn++  // turn 是 agentLoop 函数内的局部变量,不在 state 上
+       │
+       ├─ void flushPendingMessages(state)
+       │    把 state.messages.slice(persistedMessageCount) 增量 append 到
+       │    &lt;slug&gt;-&lt;sessionId&gt;.jsonl，再把 persistedMessageCount 提到
+       │    state.messages.length。第 1 轮把首条 user message 写入文件；后续
+       │    轮把上一轮 collectTurnResponse 写入 state.messages 的 assistant
+       │    + tool 消息写入文件。diff-based，无新增消息时是 no-op。
+       │    必须在 checkAndCompressContext 之前 —— 压缩会原地重写
+       │    state.messages 并自己写一条 compact-boundary + re-flush，
+       │    它假设压缩前的消息已经在盘上了。
+       │
+       ├─ Proactive 压缩检查 (checkAndCompressContext，在 compression.ts)
+       │    if (state.lastInputTokens &gt; threshold
+       │        || estimateTokenCount(messages) &gt; threshold)
+       │      ├─ Step 1 — lightCompactMessages(messages):
+       │      │    O(n) 删除 [loop-guard] 命中的 tool-result，并配对剥离同
+       │      │    一 toolCallId 的 assistant tool-call part；若 assistant
+       │      │    因此变空则整条丢弃。这是核心不变量：tool-call ↔ tool-result
+       │      │    必须始终成对，孤立 tool-call 会让供应商直接拒收下一
+       │      │    次请求。无 LLM 调用、无网络。如果 dropped&gt;0 且压缩后仍
+       │      │    超阈值，才走 Step 2；多数 loop 性 bloat 在这步就解决了。
+       │      │    成功后 → markBoundaryAndReflush(state)（boundary 行无 summary）
+       │      ├─ Step 2 — truncateOldToolResults(messages):
+       │      │    原地截断历史消息中过大的 tool-result（保留最近几条不动），
+       │      │    把旧 tool 输出缩短到 per-tool 预算。无 LLM 调用。
+       │      │    可能独立把上下文压到阈值以下，避免走 Step 3 的 LLM 往返。
+       │      └─ Step 3 — 深度压缩（LLM summary 路径）:
+       │           ├─ generateSessionSummary(...) — 失败 fallthrough 不报错
+       │           ├─ compressMessages():
+       │           │    保留最近 KEEP_RECENT(=6) 条 + 对旧消息调 AI 生成摘要 →
+       │           │    [Previous conversation summary] 替换前面所有 +
+       │           │    lastInputTokens = 0
+       │           └─ markBoundaryAndReflush(state, summaryText)
+       │              在 jsonl 里写一条 compact-boundary meta 行（带 summary），
+       │              然后把修剪后的 state.messages 重新 append。loader 的
+       │              &quot;取最后一个 boundary 之后的内容&quot;规则保证 resume 时重建出
+       │              和压缩后一致的 in-memory 状态。
+       │
+       ├─ 构建 System Prompt（缓存为 null 时才重建）
+       │    buildSystemPrompt({
+       │      knowledgeContext,                   // 知识上下文
+       │      modelId,                            // 模型标识
+       │      isGitRepo,                          // 一次性 stat .git 的结果
+       │      planMode: state.permissionMode === 'plan',
+       │      planFilePath: state.currentPlanPath ?? undefined,
+       │    }) → 写入 state.systemPromptCache
+       │    后续 turn 直接读 state.systemPromptCache，保持字节稳定。
+       │    permissionMode 翻转（enterPlanMode / exitPlanMode tool 触发）
+       │    会把缓存置回 null —— 只有该过渡 turn 付一次缓存 miss 重建。
+       │
+       ├─ runTurn(state, model, options, systemPrompt, callbacks, effectiveTools):
+       │    runTurn 在每次 streamText 前依次跑 6 步（详见 Ch.08）：
+       │      1. repairOrphanToolCalls(state.messages) — 配对修复
+       │      2. downgradeBinaryPartsForProvider(messages, modelId) — text-only供应商降级
+       │      3. applyCacheControl({ system, messages, tools, modelId, sessionId }) — Anthropic 在 system + 最后一个 tool + 最后两条消息共打 4 个 breakpoint
+       │      4. getThinkingProviderOptions(modelId, options.thinking) — /thinking 翻译
+       │      5. streamText({ system, messages, tools, abortSignal, providerOptions, ... })
+       │         流式：text-delta / tool-call / tool-result / reasoning-*(忽略)
+       │         isContextTooLongError → handleContextTooLong() → 返回 'retry' 重跑当前轮
+       │      6. collectTurnResponse() — truncate + push response.messages + 累加 tokenUsage
+       │         + currentContextTokens overwrite + onUsageUpdate + void appendUsage
+       │         返回 finishReason。
+       │
+       ├─ outcome.finishReason 分支:
+       │    ├─ 'tool-calls'      → await processToolCalls() → continue
+       │    │                      continuationAttempts 重置为 0(模型在做实事)
+       │    ├─ 'length'          → 推一条 user 消息 &quot;Output token limit hit. Resume directly...&quot;,
+       │    │                      continue 重跑(用户看到的是连续流式 reply); 累计 ≥ 3 次
+       │    │                      仍 length 才向用户报错 &quot;ask a narrower question&quot;
+       │    ├─ 'content-filter'  → onError &quot;Response stopped by the provider content filter&quot; → break
+       │    └─ 其他 (stop)       → completedNormally = true → break (AI 完成回复)
+       │
+       └─ maxTurns !== undefined &amp;&amp; turn &gt;= maxTurns → onError &quot;Reached maximum turns (N). Stopping agent loop.&quot;
+          (交互模式不传 maxTurns,这条出口永不触发;sub-agent 与 --print 模式才走这里)
+
+agentLoop 末尾依次:
+
+1. void flushPendingMessages(state) —— 抓住最后一轮(finishReason='stop' /
+   'error' / 'aborted')的内容(这些路径不会再触发下一轮顶端的 flush)。
+
+2. void runMemoryExtractor({ parentState, parentModel, abortSignal, onWrite })
+   —— 仅当 completedNormally === true &amp;&amp; !abortSignal.aborted 时触发。
+   fire-and-forget 的单次 generateText + Output.object 调用(不是
+   sub-agentLoop):用主 model + zod schema 4 类 taxonomy,从最近 12 条
+   messages 抽至多 MAX_MEMORIES_PER_PASS = 3 条持久知识,直接调
+   getAutoMemory(scope).add(fact) 写入磁盘。
+
+   关键约束(详见 Ch.36):
+   - MIN_TRANSCRIPT_MESSAGES = 4 跳过过短对话
+   - 模块级 inflight Promise 串行化防并发撞车
+   - 每条成功写入触发 onWrite 回调,UI 注入 ⎿ Remembered (...) 行
+   - 沿用主 abortSignal;只在 stop 触发,失败 / aborted 路径不抽
+</code></pre>
+<h3 id="持久化层-每个-session-一个-jsonl">持久化层：每个 session 一个 JSONL</h3>
+<pre><code>.x-code/sessions/&lt;slug&gt;-&lt;sessionId&gt;.jsonl   # 一个 session 一个文件，append-only
+
+6 种 entry：     meta.header / msg / meta.usage / meta.compact-boundary / meta.interrupted / checkpoint
+6 个写入函数：   appendHeader / flushPendingMessages / appendUsage / markBoundaryAndReflush / appendCheckpoint / appendInterrupted
+                 （全部 fire-and-forget，不阻塞 agent loop）
+
+读取入口：listSessions / pickLatestSession / loadSession / hydrateLoopState。
+摘要随 compact-boundary 行嵌入，usage 随 meta.usage 行嵌入；
+`/resume` `/usage-history` `--continue` `--resume` 都从同一个 jsonl 取数。
+</code></pre>
+<p>详见 Ch.36。</p>
+<hr />
+<h2 id="b-9-阶段五-ai-流式响应与工具调用">B.9 阶段五：AI 流式响应与工具调用</h2>
+<h3 id="system-prompt-结构">System Prompt 结构</h3>
+<pre><code>buildSystemPrompt()
+  生成的 System Prompt 包含:
+
+  1. 身份与能力描述
+     &quot;You are X-Code, an AI coding assistant running in the user's terminal...&quot;
+     &quot;You are powered by {model}&quot;
+
+  2. 工具列表与使用说明（13 个静态 + task）
+     readFile, writeFile, edit, shell, glob, grep, listDir,
+     webSearch, webFetch, askUser, todoWrite,
+     enterPlanMode, exitPlanMode, task
+     (主 agent 没有 memory 写工具——memory 写入由后台 extractor
+      独占,见阶段七末尾)
+
+  3. 行为规则
+     - 文件操作规则 (先读后改, 优先 edit)
+     - 命令执行规则 (平台兼容, 破坏性命令按用户要求执行并显示 [dangerous] 警告)
+     - 交互规则 (不确定时 askUser)
+     - 安全规则 (不输出密钥)
+     - 格式规则 (禁止 emoji, 用用户语言回复)
+     - todoWrite 多步任务必跑（live checklist 给用户看）
+
+  4. 环境信息
+     Platform: win32 | darwin | linux
+     Shell: bash | powershell | cmd
+     Working Directory: /path/to/project
+     Is Git Repo: yes | no
+
+  5. [可选] 知识上下文 (buildKnowledgeContext 的输出)
+     5 段 H3 小节按&quot;用户偏好 → 用户自动记忆 → 项目 AGENTS.md chain →
+     项目自动记忆 → 本地偏好&quot;顺序拼接。section 标题用真实文件名
+     （CLAUDE.md fallback 命中时也会显示原文件名）。详见
+     Ch.36。
+
+  6. [可选] Plan-mode overlay（permissionMode === 'plan' 时才注入）
+     - 模型只能调读 + enterPlanMode/exitPlanMode/todoWrite
+     - 写 plan 文件用 enterPlanMode（{ planFilePath } 已通过模板注入）
+     - exitPlanMode 是离开 plan 模式的**唯一**通道；askUser
+       的&quot;approve plan?&quot;选项 NOT 等价（HARD RULE）
+     这段 overlay 是 systemPromptCache 的一部分；permissionMode 翻转时
+     缓存置 null 重建。
+</code></pre>
+<blockquote>
+<p>注：Session Context（上一次 session 的 SessionSummary）不注入 system prompt。原因在于把上次 pendingWork 自动注入 system prompt 会让模型把「hi」也当成「continue exploring」。会话续接由 UI 显式驱动：用户在 picker 里选了 session 之后，pending work 作为第一条 user 消息显式送入对话，而不是注入 system prompt。</p>
+</blockquote>
+<h3 id="工具注册表">工具注册表</h3>
+<pre><code>toolRegistry (core/src/tools/index.ts) — 13 静态 + 4 组动态注入
+  静态 13 个:
+  ├─ readFile        读取文件内容 (带行号)          — 自动允许
+  ├─ writeFile       创建/覆盖文件                  — 需要确认
+  ├─ edit            字符串替换编辑文件              — 需要确认
+  ├─ shell           执行 Shell 命令                — 只读自动允许 / 写入需确认 / 破坏性拒绝
+  ├─ glob            按模式查找文件                  — 自动允许
+  ├─ grep            按正则搜索文件内容              — 自动允许
+  ├─ listDir         列出目录内容                    — 自动允许
+  ├─ webSearch       网络搜索 (Tavily / Brave)       — 自动允许
+  ├─ webFetch        获取网页内容                    — 自动允许
+  ├─ askUser         向用户提问 (含自由文本 Other)   — 自动允许
+  ├─ todoWrite       写 / 更新会话内任务清单  — 自动允许
+  ├─ enterPlanMode   进入 plan mode 等用户审批 — 自动允许 (会唤起 SelectOptions 模态)
+  └─ exitPlanMode    从 plan mode 切回 default — 自动允许
+
+  动态注入（在 buildTools() 里按 options 字段决定加不加）:
+  ├─ task              委派子 agent — subAgentRegistry 存在时加
+  │                    子 agent 内部仍走自己的权限（toolFilter 限定可用工具）
+  ├─ activateSkill     激活一份 SKILL.md 注入消息历史 — skillRegistry 有 enabled skill 时加
+  │                    跟用户 `/&lt;skillname&gt;` 走同一套激活逻辑
+  ├─ listMcpResources / readMcpResource
+  │                    MCP 资源读取工具 — mcpRegistry 存在时加（与 per-server 工具独立）
+  └─ &lt;server&gt;__&lt;tool&gt;  MCP server 暴露的远端工具 — mcpRegistry 存在时加
+                       X-Code CLI 不加 `mcp__` 总前缀（详见 Ch.37）；
+                       一份 server 多个 tool 都会注册
+
+(主 agent 没有 memory 写工具——memory 写入由后台 extractor
+ 用 generateText + Output.object + getAutoMemory().add() 独占)
+</code></pre>
+<blockquote>
+<p>Plan mode 下，工具集合本身不被过滤，<code>writeFile</code>、<code>edit</code>、<code>shell</code> 仍在 schema 里。<code>buildSystemPrompt()</code> 注入的 plan-mode overlay 用强 prompt 约束告诉模型只能调读 + <code>enterPlanMode</code> / <code>exitPlanMode</code> / <code>todoWrite</code> / <code>task</code>（只读子 agent），写工具被 hard rule 禁止。这是纯 prompt 层面的约束，<code>tool-execution.ts</code> 没有专门的 plan-mode 写工具拦截——如果模型不遵守仍 emit 写工具 tool-call，走普通 <code>permission</code> 流程，用户在对话框拒绝即可。详见 Ch.21。</p>
+</blockquote>
+<h3 id="工具调用处理流程">工具调用处理流程</h3>
+<pre><code>processToolCalls(toolCalls, state, options, callbacks, parentModel)  // tool-execution.ts
+  │
+  ├─ collectActiveAssistantToolCallIds(state) — 把上一条 assistant 消息里
+  │    实际声明的 tool_call id 提出来,SDK rejected 的 ghost call 直接跳过
+  │
+  for each toolCall:
+  │
+  ├─ abort 短路: options.abortSignal.aborted → 给当前及之后所有 toolCall
+  │    pushToolResult('[Tool execution interrupted by user]', isError=true) 后 return
+  │    （保证孤立 tool_call 不会被带去下一次 API 请求）
+  │
+  ├─ ghost 跳过: tc.toolCallId 不在 activeIds 里 → continue（assistant 没声明它，
+  │    pushToolResult 反而会成为 reverse-orphan，sanitizer 下轮还要清掉）
+  │
+  ├─ Bypass-loop-guard 工具组（不走 loop-guard、各自 push 自己的 result）:
+  │    ├─ askUser     → callbacks.onAskUser(question, options) → UI 选项行 → resolve
+  │    ├─ task        → runSubAgent(definition, prompt, state, ...) →
+  │    │                 result.resultText + &lt;task_stats /&gt; 摘要回灌父 turn
+  │    │                 详见下方&quot;子 Agent 嵌套循环&quot;
+  │    ├─ todoWrite   → handleTodoWrite() 全替换 state.todos，
+  │    │                 onTodosUpdate 同步给 UI；所有项 completed 时自动清空
+  │    ├─ enterPlanMode → handleEnterPlanMode():
+  │    │   ├─ callbacks.onAskPermission() — 用户审批后才继续
+  │    │   ├─ state.permissionMode = 'plan'
+  │    │   ├─ state.systemPromptCache = null  ← 让下一轮重建带 plan overlay
+  │    │   ├─ state.currentPlanPath = makePlanFilePath(...)  ← 只派生路径，不写 plan body
+  │    │   └─ onPlanModeChange('plan') 告诉 UI 翻 mode 显示
+  │    ├─ listMcpResources / readMcpResource → MCP 资源读取（bypass loop-guard）
+  │    └─ exitPlanMode → handleExitPlanMode():
+  │         ├─ callbacks.onPlanApprovalRequest(planText)
+  │         │  （UI: 把 plan 渲染到 scrollback + 弹 Yes/No 对话框）
+  │         ├─ Yes → permissionMode = 'acceptEdits'，systemPromptCache = null,
+  │         │       onPlanModeChange('acceptEdits')
+  │         └─ No  → 留在 plan 模式不动
+  │
+  ├─ Loop-guard（其它工具一律走）
+  │    → SHA-256(toolName + stable-stringify(input)) 推入 state.recentToolCalls (cap 16，
+  │      即 LOOP_WINDOW_SIZE*2；扫描窗口为最近 8 条)
+  │    → 同 hash 在窗口内出现 ≥3 次（soft-warn） → 注入合成 tool-result
+  │       &quot;This exact {toolName} call (same arguments) has already been attempted
+  │       {N} times this session with the same result. DO NOT retry it. Change your
+  │       approach...&quot;，不实际执行该工具
+  │    → 出现 ≥5 次（hard-block） → 同样注入合成 tool-result，并调 callbacks.onAskUser
+  │       让用户选 Pause / Continue：选 Pause 则 state.recentToolCalls 清空 + 在 turn
+  │       结束时追加一条 user 消息 &quot;[loop-guard] User paused the loop. Wait for further
+  │       instructions ...&quot;；选 Continue 则照常继续（guard 保持武装）
+  │    → 整个 turn 不会被强制终止，agentLoop 也不会上报 &quot;Possible doom-loop detected&quot;
+  │       —— 控制权在用户手里，agent 自己不替用户做主
+  │
+  ├─ writeFile / edit / shell (写入工具)
+  │    → checkPermission(toolCall, trustMode, onAskPermission, permissionMode, cwd)
+  │         ├─ getPermissionLevel(toolName, input)
+  │         │    ├─ 'always-allow' → 自动通过
+  │         │    ├─ 'deny' → 标记 [dangerous]，进入下层判定
+  │         │    └─ 'ask' → 进入下层判定
+  │         ├─ always-allow || trustMode → 自动通过所有（含 deny 级）
+  │         ├─ permissionMode === 'acceptEdits' + 写工具 → 自动通过
+  │         ├─ sessionRulesMatch(toolName, input) → 命中已保存规则时自动放行
+  │         └─ onAskPermission → UI 显示 Permission 对话框
+  │              → 用户选择 'yes' / 'always' / 'no'
+  │              → 'always' 时 buildAllowRule + addSessionAllowRule（+ persistRule
+  │                 如适用 —— shell prefix 写 .x-code/local/permissions.json，
+  │                 writeFile/edit 仅 session 内有效）
+  │
+  ├─ writeFile 执行
+  │    → fs.readFile 旧内容（不存在则 oldContent = null）
+  │    → fs.mkdir + fs.writeFile
+  │    → computeEditDiff(filePath, oldContent, content) → callbacks.onFileEdit(
+  │       toolCallId, payload) ← UI 侧 channel,只给渲染用,不进 state.messages
+  │    → state.filesModified.add(filePath)
+  │
+  ├─ edit 执行
+  │    → fs.readFile → 检查 oldString 唯一性 → string.replace → fs.writeFile
+  │    → computeEditDiff → onFileEdit(toolCallId, payload)
+  │
+  ├─ shell 执行
+  │    → execa(shell, ['-c', command], { cancelSignal: abortSignal, timeout })
+  │    → stdout/stderr → callbacks.onShellOutput (实时流式输出)
+  │
+  └─ readFile/glob/grep/listDir/webSearch/webFetch (auto-execute)
+       → AI SDK 在 streamText 内部自己调 execute() —— 在 processToolCalls
+         看到这些 toolCall 时 result 已经在 response.messages 里了，这里只
+         走 loop-guard 记录（命中时把 [loop-guard] 提示作为新 user 消息追加）
+       → 结果超过 `MAX_TOOL_RESULT_LINES = 2000` 行或 `MAX_TOOL_RESULT_BYTES = 51200`
+         字节时自动截断（头部保留 20%、尾部保留 80% + 中间标注截断信息，详见 Ch.17）
+</code></pre>
+<h3 id="折叠连续只读工具-read-group-collapser">折叠连续只读工具（read-group collapser）</h3>
+<p><code>onToolCall</code> / <code>onToolResult</code> 路径上，UI 对连续的只读工具链做特殊处理。典型场景如「分析一下项目」会立即触发：模型连发若干 <code>readFile</code> / <code>glob</code>，逐条显示进度行会刷出一长串闪烁，折叠成一行摘要更可读。</p>
+<pre><code>判定: isCollapsibleReadOnlyTool(toolName) — readFile / glob / grep / listDir
+                                            的统一别名集合返回 true
+
+只读工具进入 frame 的路径:
+  onToolCall(id, name, input)
+    ├─ flushBuffer()                  // 先把流式文本 commit 到 scrollback
+    ├─ pendingToolsRef.set(id, ...)   // 仍然记 startedAt
+    ├─ setState({
+    │    activeToolCalls: [...prev, { id, toolName, input }],
+    │    bufferingReads: isReadOnly ? true : false,
+    │  })
+    └─ 关键: ChatInput frame 在渲染 active live 行时 .filter(tc =&gt;
+       !isCollapsibleReadOnlyTool(tc.toolName))
+       —— 只读工具**不进 live 区**,不显示 `● Read(file) / ⎿ Running…`
+
+只读工具完成路径:
+  onToolResult(id, result, isError)
+    ├─ stdout-writer 把 DisplayToolCall 收到一个 buffer 里(stdout-writer.ts
+    │   有 readGroup 累积器),不立刻 write 进 scrollback
+    └─ 链条结束 → flush:
+        触发条件:
+          • 出现非只读工具(edit / write / shell / task / askUser ...)
+          • 出现 text-delta(模型开始打文本)
+          • turn 结束(finishReason='stop' / 'error' / 'aborted')
+          • 用户 abort
+        flush 动作:
+          formatReadGroupSummary(buffered) →
+            label  = &quot;Read 3 files, searched for 1 pattern&quot;
+                     (按 readCount/grepCount/globCount/lsCount 分组,
+                      首句首字大写,逗号连接)
+            detail = &quot;(foo.ts, bar.ts, +1 more)&quot;  ← 只在 readPaths 非空时显示,
+                     最多列 3 个 basename,超出 → &quot;+N more&quot;
+          作为一行写进 scrollback,样式与单工具 ●/⎿ 行对齐(粗体 label +
+          蓝紫色 detail)
+
+期间 spinner 文案靠 AgentState.bufferingReads 翻:
+  - 进入只读工具链          → bufferingReads = true  → &quot;Reading…&quot;
+  - 文本流 / 写入 / 结束    → bufferingReads = false → &quot;Thinking…&quot;
+
+为什么这么做:
+  - 多数 readFile / glob 在 1-5ms 完成,显示 live 行会有&quot;出现 → 立刻消失&quot;
+    的闪烁(commit 节流 50ms 比工具完成还慢)
+  - 长链条上&quot;Reading…&quot;持续显示的体验比&quot;逐 tool 短暂出现后立即消失&quot;清晰
+  - 慢 read 会丢失 per-file 可见性,但慢 read 在链中是少数情形
+  - 链尾摘要列出每个 basename,用户仍能看到&quot;读了什么&quot;
+</code></pre>
+<h3 id="权限系统详解">权限系统详解</h3>
+<p>三级 <code>PermissionLevel</code>（<code>always-allow</code> / <code>ask</code> / <code>deny</code>） + Shell 智能分级（<code>splitShellCommands</code> / <code>isReadOnly</code> / <code>isDestructive</code>，混合命令 → <code>ask</code>） + Trust Mode（<code>--trust</code> 跳过所有权限确认，含 deny 级）。详见 Ch.29；对话框 UI（edit 走结构化 diff + <code>(a)ccept-edits</code> 切 <code>permissionMode</code>）详见 Ch.28。</p>
+<h3 id="子-agent-嵌套循环">子 Agent 嵌套循环</h3>
+<p>当父 turn 命中 <code>tool-call: task({ agentName, prompt, model? })</code> 时，<code>processToolCalls</code> 走 <code>runSubAgent</code> 而不是普通 execute：</p>
+<pre><code>runSubAgent(parentState, toolCall, parentCallbacks)
+  │
+  ├─ 1. 读 agent 注册表 (内置 + .x-code/agents/*.md 自定义) 拿 agentDef:
+  │    {
+  │      name, description, longDescription,    // longDescription 进父 prompt
+  │      tools: ['readFile','glob','grep',...], // 白名单, 派生新 toolRegistry
+  │      systemPromptOverlay,                   // 子 agent 专属 prompt 段
+  │      modelOverride?,                        // 强制用某个模型(如 vision)
+  │    }
+  │
+  ├─ 2. 派生 nested LoopState（独立、不继承父 messages）
+  │    subState = createLoopState('default')        // 普通 LoopState,无 parentSessionId
+  │                                                 //   / depth / transcriptPath 这类字段
+  │    subState.systemPromptCache = subSystemPrompt // 预填子 agent 专属 prompt
+  │                                                 // 递归靠 subAgentRegistry: undefined 阻断,
+  │                                                 // 不靠 depth 字段计数
+  │
+  ├─ 3. 派生 child callbacks
+  │    subCallbacks = {
+  │      onTextDelta:  delta  =&gt; parentCallbacks.onSubAgentEvent({ kind:'text-delta', ... })
+  │      onToolCall:   ...    =&gt; parentCallbacks.onSubAgentEvent({ kind:'tool-call', ... })
+  │                              + onToolProgress(toolCallId, '&lt;subTool&gt;: &lt;preview&gt;')
+  │      onUsageUpdate: () =&gt; {}   // no-op；子 token 在 agentLoop 返回后
+  │                                //   由 runner 直接累加到 parentState.tokenUsage
+  │      onAskPermission: ... =&gt; 父 permission queue (统一审批)
+  │    }
+  │
+  ├─ 4. await agentLoop(prompt, model, subOptions, subCallbacks, subState)
+  │     其中 subOptions.subAgentRegistry = undefined —— 这就是禁止 task 工具
+  │     套 task 工具的硬约束:子 agent 的 buildTools 看到 registry 是 undefined
+  │     就不注册 task 工具,模型连这个工具名都看不到
+  │
+  └─ 5. 把 child 的 finalText 当作 tool-result 回灌父 turn
+       parent.tool-result = { toolUseId, output: childFinalText, usage: childUsage }
+</code></pre>
+<p>在 UI 层面，父 ChatInput 的 <code>activeToolCalls[]</code> 里 task entry 显示 <code>▼ Task(agentName)</code> + 子 turn 的 progress 行；深度 ≥1 的 entry 在左侧多一道竖线缩进，与 markdown blockquote 视觉一致。详见 Ch.19。</p>
+<h3 id="plan-mode-约束机制">Plan Mode 约束机制</h3>
+<p>Plan 模式下「模型只能调读 + <code>enterPlanMode</code> / <code>exitPlanMode</code> / <code>todoWrite</code> / <code>task</code>（只读子 agent）」的约束由 system prompt overlay 强制（<code>system-prompt.ts</code> 里的 plan-mode overlay，<code>permissionMode === 'plan'</code> 时拼到 base prompt 末尾），模型被 prompt-level hard rule 禁止调写工具。如果模型不遵守仍 emit <code>writeFile</code> / <code>edit</code> / <code>shell</code> tool-call，代码里没有专门的 <code>isWriteTool</code> 拦截将其替换成合成 error tool-result，而是仍走普通 <code>permission</code> 流程：<code>default</code> 模式下用户在对话框拒绝即可；<code>acceptEdits</code> 模式（用户 exitPlanMode 批准后翻到这档）则写工具自动放行，这是设计意图。</p>
+<p>工具集合本身在 plan 模式下也不被剔除，<code>buildTools(options)</code> 只看 <code>subAgentRegistry</code> + <code>toolFilter</code>，不看 <code>permissionMode</code>。</p>
+<p>详见 Ch.21。</p>
+<hr />
+<h2 id="b-10-阶段六-终端-ui-渲染">B.10 阶段六：终端 UI 渲染</h2>
+<h3 id="渲染架构">渲染架构</h3>
+<p>X-Code CLI 用 Ink（React for CLI）渲染终端 UI，但消息历史完全不走 Ink 的布局引擎，而是直接打到终端的滚动缓冲区。Ink 只管底部一小块动态区。</p>
+<pre><code>┌─────────────────────────────────────────┐
+│  终端滚动缓冲区 (由终端自己管理)           │  ← 不走 Ink 布局
+│  - 启动 Banner (printHeader, Ink 外)     │
+│  - 历史消息 (走 ChatInput 内部提交)       │
+│    - 用户消息: &quot;❯ 问题内容&quot;               │
+│    - AI 回复: Markdown 渲染后的文本       │
+│    - 工具调用记录 (committed 后落进 scrollback) │
+├─────────────────────────────────────────┤
+│  Ink 动态区 (永远是空)                   │
+│  - 没有任何 Ink 子节点；ChatInput 独占底部 │
+│  - askUser / 权限 / 选择菜单 / spinner / │
+│    错误 / 输入框全部在 ChatInput cell     │
+│    buffer 里渲染                          │
+├─────────────────────────────────────────┤
+│  &lt;ChatInput&gt; cell buffer (浮动定位)     │  ← cell-level diff + BSU/ESU 同步更新
+│  - 内容少时 frame 紧贴最后内容行下方;    │
+│    内容多到撑满屏幕后 frame 自然到底部   │
+│  - Error 行  (可选)                      │
+│  - 工具调用 live 状态 (运行中, 完成后    │
+│    会 commit 到 scrollback)              │
+│  - Permission 对话框 (含键盘路由)       │
+│  - Thinking... spinner                   │
+│  - ─── 输入框顶部分隔线                  │
+│  - 输入框 (多行 textarea)               │
+│  - ─── 输入框底部分隔线                  │
+│  - / 补全菜单 (可选)                    │
+└─────────────────────────────────────────┘
+</code></pre>
+<p>为什么消息历史不走 Ink 布局、Ink 动态区永远为空、对话框统一进 ChatInput cell buffer，详见 Ch.23（Yoga 抖动溯源 + 混合方案）。</p>
+<h3 id="消息写入管线-stdout-writer-ts-chatinput-useeffect">消息写入管线（<code>stdout-writer.ts</code> + ChatInput useEffect）</h3>
+<pre><code>use-agent.ts setState({ messages: [...prev, newMsg] })
+  │
+  └─ React commit
+       │
+       └─ ChatInput useEffect 触发（无 deps，每次 render 都跑）
+            │
+            ├─ 进入 DEC 2026 同步更新块 \x1b[?2026h (BSU)
+            │
+            ├─ 检测 messages.length &gt; writtenMessageCountRef.current?
+            │   │
+            │   └─ 是 (有新消息要 commit) →
+            │      ├─ 收集 scrollbackContent (各条 message 走
+            │      │   writeMessageToStdout 拼成一个大字符串)
+            │      ├─ 计算 startRow / preScrollRows / leftoverBlanks
+            │      ├─ 按需在 termRows 行写 \n 触发 auto-scroll
+            │      │   (把顶部行推入终端 scrollback 历史)
+            │      ├─ \x1b[startRow;1H\x1b[J  擦旧 frame 区
+            │      ├─ 写 scrollbackContent (行内插入)
+            │      └─ 重绘 frame at 新的 frameTop (浮动定位)
+            │
+            ├─ 帧高变化 (spinner 出现/消失,permission 开关) →
+            │  按 grow/shrink 路径处理 (consume freeBlanks 或 preScroll)
+            │
+            ├─ cell-level diff 对比 prevFrameRef 只写差异
+            │  per-row 绝对定位 \x1b[absRow;colH (不走相对 walk)
+            │  未变行完全跳过 (不踢渲染状态机)
+            │
+            └─ 结束 \x1b[?2026l (ESU)
+               不发 \x1b7 (DECSC) —— 会跟 fork 内部的 log-update
+               抢同一个 cursor 寄存器
+</code></pre>
+<p><code>writeMessageToStdout</code> 的消息格式化流程如下：</p>
+<pre><code>writeMessageToStdout(write, msg)
+  ├─ 归一化 \r\n / \r → \n
+  ├─ user message     → write(&quot;❯ &lt;line1&gt;\n  &lt;line2&gt;...\n\n&quot;)
+  ├─ assistant toolCalls:
+  │   每个 tc 顺序写:
+  │     ├─ ` ● Tool(preview)`           ← 绿色 ● + 粗体 label + 蓝紫色 input
+  │     ├─ tc.editPayload 存在(writeFile/edit) →
+  │     │   render-diff.ts 输出主题化彩色 unified diff:
+  │     │     ` ⎿  src/index.ts (file edit)`
+  │     │     `      37 │  const old = '...'`        ← 旧行红 bg
+  │     │     `      37 │  const new = '...'`        ← 新行绿 bg
+  │     │   diff bg / fg 取自当前 theme(setTheme 设的);syntax 高亮取自
+  │     │   syntax-highlight.ts 的当前 palette。窄屏自适应宽度。
+  │     └─ tc.editPayload 不存在 → ` ⎿  result_summary (Nms)` 单行摘要
+  │   连续被 read-group collapser 缓存的只读工具:在 flush 时机改输出
+  │     ` ● Read 3 files (foo.ts, bar.ts, +1 more)\n   ⎿` 摘要格式,详见
+  │     上面《折叠连续只读工具（read-group collapser）》小节
+  └─ assistant content   → renderMarkdown → 2 空格缩进 → write(indented + '\n\n')
+</code></pre>
+<p>几个设计要点：</p>
+<ul>
+<li><code>write</code> 函数是 <code>(data) =&gt; process.stdout.write(data)</code>，直接进终端 stdout。但实际写入路径是先把终端历史区内容收到一个字符串里，跟 frame 写入合并成一次 <code>process.stdout.write</code>，整个提交由外层 BSU/ESU 包成一帧原子提交，杜绝撕裂。</li>
+<li>提交不做每帧 <code>eraseRegion()</code>，而是走「行内插入」路径：<code>\x1b[startRow;1H\x1b[J</code> 只擦旧 frame 区，然后写新的终端历史区内容，frame 在新位置重绘，避开了「擦了再画」的双重写入。</li>
+<li>不发 <code>\x1b7</code>（DECSC），避免跟 fork 内 log-update 抢光标寄存器；采用挂载时一次 <code>?25l</code> 隐藏光标 + 按行绝对定位的方式替代。</li>
+<li>frame 是浮动定位的：根据 <code>freeBlanksAboveFrameRef</code>，frame 上移贴到内容下方；内容撑满屏幕后才钉底。</li>
+<li>跨终端的工程细节（终端能力差异、副作用写入、节奏失配三类根因，对应光标可见性反复切换、空 BSU/ESU 包装、150ms 提交合并、进度指示器字符选择等）详见 Ch.25。</li>
+<li>跨平台 Unicode glyph 降级方面，老式 ConHost 缺装饰字符时由 <code>cli/src/ui/terminal-glyphs.ts</code> 单点降级（<code>●→*</code>、<code>❯→&gt;</code>、<code>⎿→|</code>、spinner 走 ASCII palindrome）。检测逻辑与完整降级表详见 Ch.25。</li>
+</ul>
+<h3 id="markdown-渲染">Markdown 渲染</h3>
+<pre><code>renderMarkdown(text)  (cli/src/ui/render-markdown.ts)
+  ├─ marked.lexer(text) → AST Token 树 (禁用 del 扩展防 ~/path 误判)
+  ├─ renderTokens(tokens) 递归 → ANSI (主题色从 theme.ts import)
+  └─ 外层 try/catch 容错 → 半截 fence 时直接 return 原文不崩
+</code></pre>
+<p>每类 token 的具体 ANSI 样式（h1/h2 字重、行内 code BLUE_PURPLE、链接 SPINNER_BLUE+OSC 8、列表 / 表格 / blockquote / hr 各样式）详见 Ch.27 主题色表与 token 渲染分支。</p>
+<h3 id="流式文本累积策略">流式文本累积策略</h3>
+<p><code>useStreamBuffer</code> hook (<code>use-stream-buffer.ts</code>)：</p>
+<ol>
+<li><code>onTextDelta(delta)</code> 累积到 <code>bufferRef</code></li>
+<li><code>findSafeBoundary(buffer)</code> 找最晚的“安全单 <code>\n</code>”切点（跳过未闭合的 table / code fence；800 字节 + 未闭合 fence 时强制切断）</li>
+<li><code>queueChunk(chunk)</code> 推入 <code>pendingChunksRef</code>，第一个 chunk 来时 <code>setTimeout(drainPending, 150ms)</code>（<code>COMMIT_BATCH_MS</code> 合并窗口；后续 chunk 加入同一窗口不延期）</li>
+<li><code>drainPending</code> 合并 chunks → <code>appendMessage({ role: 'assistant', ..., streamingChunk: true })</code> → ChatInput useEffect 写到终端历史区</li>
+</ol>
+<p>强制刷出时机：onToolCall 前 / submit 收尾 / 轮中断（resetBuffer）。完整实现 + <code>CODE_FENCE_COMMIT_THRESHOLD</code> 容错常量 + “按行切 vs 按段切” 取舍详见 Ch.26。</p>
+<h3 id="spinner-footer-todo-面板-cell-buffer-内的非滚动元素">Spinner / Footer / Todo 面板（cell buffer 内的非滚动元素）</h3>
+<p>ChatInput 的 cell buffer frame 自下而上依次包含：</p>
+<pre><code>[error 行]                        ← 仅 state.error 非空
+[active tool 块]                  ← activeToolCalls 过滤掉只读后的逐项
+                                    ` ● Tool(preview)\n   ⎿  Running…`
+[permission 对话框]               ← permissionQueue[0] 存在时
+[选择对话框 SelectOptions]        ← pendingQuestion 存在时
+[空行]
+[todo 面板]                        ← state.todos 非空时
+                                     ` ☐ pending item`
+                                     ` ▣ in-progress item`         ← 高亮
+                                     ` ☑ completed item (灰)`
+[Thinking… / Reading…]             ← state.isLoading + 无 modal 时
+                                     `⠋ Thinking… (3s · esc to interrupt)`
+                                     文案规则:
+                                       - state.bufferingReads → &quot;Reading…&quot;
+                                       - 否则                 → &quot;Thinking…&quot;
+                                     mode (内部用):
+                                       - activeToolCalls.length &gt; 0 → 'tool-use'
+                                       - 否则                       → 'requesting'
+                                     spinner 行不显示 token 计数 —— 计数在 footer
+[─── 输入框顶分隔线 ───]
+[&gt; 用户输入(支持多行)]
+[─── 输入框底分隔线 ───]
+[/&lt;command&gt; 补全菜单]              ← 用户在输入 / 时
+[footer 行]                        ← 左右两侧任一非空时才显示
+   左:                              右:
+     · plan mode · /plan to toggle    6.6k / 200k · 3%
+     · accept edits
+     &quot;Press Ctrl+C again to exit&quot;   ← notice 优先级最高
+   右侧 contextUsage 来自 state.usage.currentContextTokens
+   (collectTurnResponse 每轮 overwrite,不是累加),分母从
+   getContextWindow(modelId) 拿
+</code></pre>
+<p>底栏的关键工程细节在于整行用窄 cell 序列，不右对齐到 <code>termWidth-1</code>：</p>
+<pre><code>✓  ` · plan mode · /plan to toggle  6.6k / 200k · 3%`           ← 末 cell 离 wrap-column 还有空白
+✗  ` · plan mode · /plan to toggle ........... 6.6k / 200k · 3%` ← 一直补到 termWidth-1,末 cell 落在 wrap 边界
+</code></pre>
+<p>末 cell 落到终端 wrap-column 时，xterm.js（VS Code 内置终端）在 BSU/ESU 同步模式下，每次提交触发的 LF 自动滚动都会把残留 cell 漏进原生终端历史区，表现为 frame 上方堆积「Thinking…」幽灵行。走非 LF 自动滚动的 TUI 栈不存在该问题；ChatInput 这条 BSU/ESU + LF auto-scroll 路径必须避开 wrap-column，因此底栏不右对齐。</p>
+<h3 id="writemessagetostdout-的输出格式">writeMessageToStdout 的输出格式</h3>
+<p>用 <code>cli/src/ui/utils.ts</code> 提供的共享显示函数（<code>getToolLabel</code> / <code>formatReadGroupSummary</code> / <code>isCollapsibleReadOnlyTool</code> 等）+ chalk 直出 ANSI：</p>
+<pre><code>
+user message (writeUserMessage):
+❯ &lt;first line&gt;
+&lt;line 2 — 两空格缩进对齐&gt;
+&lt;line 3&gt;
+...
+
+assistant with toolCalls (formatToolCall):
+● ToolName(input_preview) ← 绿色圆点 + 粗体标签
+⎿ result_summary (duration) ← 缩进结果 + 耗时
+(denied 状态显示为红色)
+
+assistant with content:
+(2 空格缩进)
+
+# Heading
+
+Paragraph text...
+
+- bullet
+  ...
+
+</code></pre>
+<p>所有路径都先跑 <code>replace(/\r\n?/g, '\n')</code> 归一化，防止裸 <code>\r</code> 在终端里被当 carriage return（会导致后续字符覆盖之前打印的内容，产生粘贴拼接 bug）。</p>
+<hr />
+<h2 id="b-11-阶段七-退出与清理">B.11 阶段七：退出与清理</h2>
+<h3 id="正常退出流程">正常退出流程</h3>
+<pre><code>
+/exit 命令 或 Ctrl+C 双击
+│
+├─ 触发源
+│    ├─ /exit       → App handleSubmit → cleanup() (await) → exit()（Ink unmount）
+│    ├─ Ctrl+C 1 次 → App handleCtrlC：
+│    │   ├─ isLoading → useAgent.abort()（取消当前 turn，frame 仍在）
+│    │   └─ 设 notice &quot;Press Ctrl+C again to exit&quot;，arm 2 秒窗口
+│    │   （此时不退出 —— 用户有 2 秒反悔时间）
+│    └─ Ctrl+C 2 次（在 2 秒窗口内）→ Ink exit() → unmount
+│
+├─ Ink unmount → waitUntilExit() 在 main() 里返回
+│
+└─ gracefulShutdown(0) (index.ts)
+     ├─ cleanup().catch(() =&gt; undefined)   // fire-and-forget
+     │    └─ saveSession(loopState, model)
+     │         └─ flushPendingMessages(state)
+     │             把 state.messages.slice(persistedMessageCount) 增量
+     │             append 到 &lt;slug&gt;-&lt;sessionId&gt;.jsonl。最后一轮的内容
+     │             （/exit 路径上一般已经被 agentLoop 末尾的 flush 写入
+     │             过；这里是为 abort / 异常退出容错）。
+     │
+     │   注：saveSession 只 flush jsonl,不生成 LLM summary、不写
+     │   latest.json / &lt;id&gt;.json。摘要以 compact-boundary 行嵌在 jsonl
+     │   里（只在压缩时生成），usage 以 meta.usage 行嵌在 jsonl 里
+     │   （每 turn 一次）。
+     │
+     │   cleanup 不被 await —— 进程可能在 flush 写入完成前就 exit。
+     │   但 flushPendingMessages 是同步组装 + 单次 fs.appendFile，正常情况
+     │   &lt;10ms 完成；极端情况下丢失最后几条 message 是可接受代价。
+     │   每轮 turn 顶端的 flush 已经把绝大部分内容写入了。
+     │
+     ├─ resetTerminal()
+     │   → \x1b[0m SGR 重置 + \x1b[?2004l bracketed paste off
+     │   + \x1b[?25h 光标显示 + \x1b[?1049l 退出 alt screen + \r\n + setRawMode(false)
+     │
+     ├─ printResumeHint()
+     │   读 getSessionExitInfo() 同步快照（App 通过 onSessionInfoReady
+     │   注册的 getter；进程死后才读 React state 是不可能的）。打印一行:
+     │     Resume this session: xc --resume &lt;slug-id&gt;
+     │   有 taskSlug 时优先 `&lt;slug&gt;-&lt;sessionId&gt;`（人类可读），无 slug 时
+     │   退回纯 sessionId。session 没有任何 message（用户启动但没提交）
+     │   时跳过 —— 提示也没意义。
+     │
+     └─ process.exit(0)
+
+</code></pre>
+<blockquote>
+<p>注：退出不打印 token 用量摘要。原因在于 pnpm/tsx 多级 stdout 缓冲会让该行在 shell 提示符之后才闪现，观感像 bug。退出只打印一行「想回看这次会话用 <code>xc --resume</code>」的恢复提示。要查看本会话 token 用量，应在交互态使用 <code>/usage</code> 命令。</p>
+</blockquote>
+<h3 id="ctrl-c-处理-双层">Ctrl+C 处理（双层）</h3>
+<pre><code>
+Layer 1 — App.handleCtrlC (主路径，cli/src/ui/components/App.tsx)
+├─ ctrlCArmedAtRef = 0  默认值（未 arm）
+├─ ctrlCArmWindowMs = 2000
+│
+├─ 第 1 次按下:
+│    ├─ now - ctrlCArmedAtRef &gt;= 2000 → 未在窗口内
+│    ├─ ctrlCArmedAtRef = now（arm 2 秒窗口）
+│    ├─ if state.isLoading → abort()（取消当前 turn）
+│    └─ setNotice(&quot;Press Ctrl+C again to exit&quot;)
+│       2 秒后 useEffect 自动清空 notice
+│
+└─ 第 2 次按下（2 秒内）:
+     └─ now - ctrlCArmedAtRef &lt; 2000 → 在窗口内 → exit()
+        → Ink unmount → waitUntilExit → gracefulShutdown(0)
+
+Layer 2 — process.on('SIGINT') (cli/src/index.ts) — 安全网
+├─ sigintCount++ + process.exitCode = 0
+├─ Layer 1 在 raw mode 下消化绝大多数 Ctrl+C；这里只在
+│   Ink 已 unmount 后或 raw mode 已关时才生效
+└─ sigintCount &gt;= 2 → resetTerminal + printResumeHint + process.exit(0)
+   极端场景: Ink unmount 卡住时跳过剩余的 fire-and-forget cleanup 强退
+</code></pre>
+<blockquote>
+<p>两次 Ctrl+C 退出码都是 <code>0</code>。区别在于第 1 层的「双击」是 2 秒内用户主动选择退出（取消在第 1 次就发生），第 2 层是托底，即使 Ink 卡死也能让终端恢复可用。</p>
+</blockquote>
+<hr />
+<h2 id="b-12-关键数据流总结">B.12 关键数据流总结</h2>
+<pre><code>┌─────────────┐ onSubmit  ┌──────────┐ submit() ┌────────────┐
+│ ChatInput   │──────────&gt;│   App    │─────────&gt;│  useAgent  │
+│ (cell buf)  │           │ (React)  │          │   (Hook)   │
+└─────────────┘           └──────────┘          └─────┬──────┘
+                                                      │ agentLoop()
+                                                      v
+                    ┌──────────────────────────────────────────────┐
+                    │          agentLoop (Core)                    │
+                    │                                              │
+                    │  generateTaskSlug ║ buildKnowledgeContext    │
+                    │  ║ stat(.git)（并发,首轮一次）                │
+                    │             │                                │
+                    │             v                                │
+                    │  appendHeader → &lt;slug&gt;-&lt;id&gt;.jsonl            │
+                    │             │                                │
+                    │             v                                │
+                    │  per-turn loop:                              │
+                    │    flushPendingMessages (jsonl append)       │
+                    │    ↓ checkAndCompressContext                 │
+                    │    ↓   ↳ markBoundaryAndReflush (压缩点写入) │
+                    │    ↓ buildSystemPrompt（cache=null 时重建）   │
+                    │    ↓ runTurn                                 │
+                    │       ├─ repairOrphanToolCalls(messages)     │
+                    │       ├─ applyCacheControl                   │
+                    │       ├─ streamText                          │
+                    │       │    ├─ text-delta  ───────┐           │
+                    │       │    └─ tool-calls ──┐     │           │
+                    │       │                    v     │           │
+                    │       │         processToolCalls │           │
+                    │       │         ├─ bypass-loop:  │           │
+                    │       │         │  askUser/task/ │           │
+                    │       │         │  todoWrite/    │           │
+                    │       │         │  enter-/exit-  │           │
+                    │       │         │  PlanMode      │           │
+                    │       │         ├─ loop-guard    │           │
+                    │       │         ├─ permission    │           │
+                    │       │         └─ execute(+onFileEdit diff payload)
+                    │       └─ collectTurnResponse                 │
+                    │            └─ appendUsage (jsonl meta.usage) │
+                    └────────────────┬──────────┼──────────────────┘
+                                     │          │
+                                 callbacks  callbacks
+                                     v          v
+                    ┌──────────────────────────────────────────────┐
+                    │             useAgent (Hook)                  │
+                    │                                              │
+                    │ onTextDelta   → bufferingReads=false +        │
+                    │                  useStreamBuffer              │
+                    │   ├─ findSafeBoundary 找单 \n 安全切点         │
+                    │   └─ 150ms 合并窗口内 chunks 合并 commit      │
+                    │ onToolCall    → flushBuffer + push activeTC + │
+                    │                  bufferingReads = isReadOnly  │
+                    │ onToolProgress → 替换 activeTC 的 progress    │
+                    │ onFileEdit    → 暂存 EditDiffPayload          │
+                    │ onToolResult  → messages += DisplayToolCall   │
+                    │                  (含 editPayload → render-diff) │
+                    │ onAskPermission → permissionQueue += ...      │
+                    │ onAskUser / onPlanApprovalRequest             │
+                    │   → pendingQuestion = ...                     │
+                    │ onPlanModeChange → state.permissionMode +     │
+                    │                  permissionModeRef            │
+                    │ onTodosUpdate → state.todos                   │
+                    │ onUsageUpdate → state.usage（含 currentContext│
+                    │                  Tokens,驱动 footer 进度条）   │
+                    └─────────────────┬────────────────────────────┘
+                                      │ setState({...})
+                                      v
+                    ┌──────────────────────────────────────────────┐
+                    │  &lt;ChatInput&gt; useEffect                       │
+                    │   (no deps, runs every render).              │
+                    │   ONE synchronous block wrapped in           │
+                    │   DEC 2026 BSU/ESU:                          │
+                    │                                              │
+                    │   1. 检测 messages.length 变化:              │
+                    │      shrink (/clear) → \x1b[2J\x1b[3J\x1b[H │
+                    │                       擦可视 + xterm scrollback│
+                    │      grow → 收集 scrollbackContent:          │
+                    │        - tool-call 走 read-group collapser   │
+                    │          (只读链尾才一次性写一行摘要)         │
+                    │        - editPayload 在 bullet 下渲染主题化   │
+                    │          彩色 unified diff                   │
+                    │        - assistant text 走 renderMarkdown    │
+                    │      → \x1b[startRow;1H\x1b[J 擦旧 frame     │
+                    │      → 写 scrollbackContent（内联插入）      │
+                    │      → 在新 frameTop 重绘 frame              │
+                    │      （按需用 \n at termRows 触发            │
+                    │       auto-scroll 推顶部行进 scrollback）    │
+                    │                                              │
+                    │   2. 构建 2D cell 网格 (frame，自上而下):    │
+                    │      [error] [active tool live(过滤掉只读)]  │
+                    │      [permission] [SelectOptions]            │
+                    │      [todo 面板] [Reading…/Thinking… spinner]│
+                    │      [top sep] [input] [bottom sep]          │
+                    │      [/&lt;command&gt; 补全菜单]                    │
+                    │      [footer: 左 mode 提示 + 右 ctx 进度条]   │
+                    │      frame 浮动:freeBlanks &gt; 0 时上移        │
+                    │      贴到内容下方,撑满后才钉底                │
+                    │                                              │
+                    │   3. Cell-level diff per-row 绝对定位,       │
+                    │      未变行完全跳过                           │
+                    │                                              │
+                    │   4. \x1b[?2026l (ESU 结束同步更新)          │
+                    │      不发 \x1b7 (会跟 fork log-update         │
+                    │      抢光标寄存器)                            │
+                    └─────────────────┬────────────────────────────┘
+                                      │
+                                      v
+                    终端 scrollback (user/assistant/tool 消息) +
+                    ChatInput 底部 cell buffer (实时 UI)
+
+ Ink 动态区永远是空 — askUser / 权限对话框 / 选择菜单全部
+ 在 ChatInput cell buffer 里渲染，无 Ink 子节点例外。
+
+ 平行的持久化链路（fire-and-forget,不阻塞 UI）：
+   appendHeader / flushPendingMessages / appendUsage /
+   markBoundaryAndReflush / appendCheckpoint / appendInterrupted
+   全部 append 到 .x-code/sessions/&lt;slug&gt;-&lt;sessionId&gt;.jsonl
+   —— 这是 /resume / /usage-history / -c / -r 的唯一数据源。
+</code></pre>
+<hr />
+<h2 id="b-13-文件索引">B.13 文件索引</h2>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>文件</th>
+<th>关键函数/组件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CLI 入口</td>
+<td><code>cli/src/index.ts</code></td>
+<td><code>main()</code>，<code>checkNodeVersion()</code>，<code>loadEnvFile()</code></td>
+</tr>
+<tr>
+<td>Ink 渲染</td>
+<td><code>cli/src/app.tsx</code></td>
+<td><code>startApp()</code>，<code>getCleanupFn()</code></td>
+</tr>
+<tr>
+<td>根组件</td>
+<td><code>cli/src/ui/components/App.tsx</code></td>
+<td><code>App</code>，<code>handleSubmit()</code>，<code>SLASH_COMMANDS</code></td>
+</tr>
+<tr>
+<td>Agent Hook</td>
+<td><code>cli/src/ui/hooks/use-agent.ts</code></td>
+<td><code>useAgent()</code>, <code>submit()</code>, <code>AgentState</code></td>
+</tr>
+<tr>
+<td>Agent 循环</td>
+<td><code>core/src/agent/loop.ts</code></td>
+<td><code>agentLoop()</code>，<code>runTurn()</code>，<code>saveSession()</code> — 只 flush jsonl，不生成 LLM summary</td>
+</tr>
+<tr>
+<td>上下文压缩</td>
+<td><code>core/src/agent/compression.ts</code></td>
+<td><code>compressMessages()</code>，<code>checkAndCompressContext()</code> (proactive), <code>handleContextTooLong()</code> (reactive),<code>KEEP_RECENT=6</code></td>
+</tr>
+<tr>
+<td>Session 持久化</td>
+<td><code>core/src/agent/session-store.ts</code></td>
+<td><code>appendHeader()</code>，<code>flushPendingMessages()</code>，<code>appendUsage()</code>，<code>markBoundaryAndReflush()</code>，<code>appendCheckpoint()</code>，<code>appendInterrupted()</code>，<code>loadSession()</code>，<code>listSessions()</code>，<code>pickLatestSession()</code>，<code>hydrateLoopState()</code> — JSONL transcript</td>
+</tr>
+<tr>
+<td>工具执行</td>
+<td><code>core/src/agent/tool-execution.ts</code></td>
+<td><code>processToolCalls()</code> — bypass 组（askUser/task/todoWrite/enterPlanMode/exitPlanMode/listMcpResources/readMcpResource) + loop-guard + permission + write/shell 分发 + onFileEdit diff payload</td>
+</tr>
+<tr>
+<td>Plan 工具</td>
+<td><code>core/src/agent/plan-tools.ts</code></td>
+<td><code>handleEnterPlanMode()</code>，<code>handleExitPlanMode()</code>，<code>handleTodoWrite()</code> — permissionMode 切换 + plan 文件写入 + 驱动 systemPromptCache 失效</td>
+</tr>
+<tr>
+<td>Plan 文件</td>
+<td><code>core/src/agent/plan-storage.ts</code></td>
+<td><code>generateTaskSlug()</code> （非 ASCII 走 generateText), <code>makePlanFilePath()</code> — <code>&lt;slug&gt;-&lt;sessionId&gt;.md</code></td>
+</tr>
+<tr>
+<td>Edit diff</td>
+<td><code>core/src/agent/diff.ts</code></td>
+<td><code>computeEditDiff()</code> — 把 writeFile/edit 的旧/新内容算出结构化 hunks，通过 onFileEdit 回调送 UI</td>
+</tr>
+<tr>
+<td>上下文窗口</td>
+<td><code>core/src/agent/context-window.ts</code></td>
+<td><code>getCompressionThreshold()</code>，<code>estimateTokenCount()</code> + 模型 / 供应商表</td>
+</tr>
+<tr>
+<td>API 错误</td>
+<td><code>core/src/agent/api-errors.ts</code></td>
+<td><code>classifyApiError()</code>，<code>isContextTooLongError()</code>，<code>extractHttpStatus()</code></td>
+</tr>
+<tr>
+<td>Stream 工具</td>
+<td><code>core/src/agent/stream-utils.ts</code></td>
+<td><code>StreamResult</code> 类型， <code>drainStreamResult()</code></td>
+</tr>
+<tr>
+<td>System Prompt</td>
+<td><code>core/src/agent/system-prompt.ts</code></td>
+<td><code>buildSystemPrompt()</code></td>
+</tr>
+<tr>
+<td>消息处理</td>
+<td><code>core/src/agent/messages.ts</code></td>
+<td><code>userMessage()</code>，<code>toolResultMessage()</code>，<code>toolErrorString()</code> / <code>toolErrorFromUnknown()</code> / <code>isToolErrorString()</code>（含附件构造在 <code>file-ingest.ts:buildUserContent</code>)</td>
+</tr>
+<tr>
+<td>文件附件</td>
+<td><code>core/src/agent/file-ingest.ts</code></td>
+<td><code>buildUserContent()</code> — <code>@path</code> / 裸绝对路径解析；分类 text/image/pdf/office;多模态 vs OCR/caption</td>
+</tr>
+<tr>
+<td>视觉子 agent</td>
+<td><code>core/src/agent/vision-fallback.ts</code></td>
+<td><code>pickVisionProvider()</code> + <code>captionImage()</code> — DeepSeek 等纯文本供应商自动借用其他供应商的视觉模型给图片打 caption（结果 session 内缓存）</td>
+</tr>
+<tr>
+<td>Loop state</td>
+<td><code>core/src/agent/loop-state.ts</code></td>
+<td><code>LoopState</code> 类型（18 字段），<code>createLoopState()</code> 工厂；<code>systemPromptCache</code> / <code>permissionMode</code> / <code>currentPlanPath</code> / <code>taskSlug</code> / <code>todos</code> / <code>persistedMessageCount</code> 等；sessionId = YYYYMMDD-HHMMSS-mmm</td>
+</tr>
+<tr>
+<td>Loop guard</td>
+<td><code>core/src/agent/loop-guard.ts</code></td>
+<td><code>hashToolCall()</code>，<code>checkForLoop()</code>，<code>recordToolCall()</code>，<code>syntheticLoopBlockResult()</code> — 滚动窗口 SHA-256 检测重复 tool call （常量 SOFT=3 / HARD=5 / WINDOW=8)</td>
+</tr>
+<tr>
+<td>Tool 净化</td>
+<td><code>core/src/agent/tool-result-sanitize.ts</code></td>
+<td><code>truncateToolResultsInMessages()</code> — 把 response.messages 里 auto-execute tool 的超大输出截到 per-tool 预算，防止历史消息无限膨胀</td>
+</tr>
+<tr>
+<td>Tool 进度</td>
+<td><code>core/src/tools/progress.ts</code></td>
+<td><code>setProgressReporter()</code>，<code>clearProgressReporter()</code>，<code>reportProgress()</code> — 工具向 UI 流式上报“当前在做什么”</td>
+</tr>
+<tr>
+<td>Truncate</td>
+<td><code>core/src/tools/truncate.ts</code></td>
+<td><code>truncateToolResult()</code>，常量 <code>MAX_TOOL_RESULT_LINES</code> / <code>MAX_TOOL_RESULT_BYTES</code></td>
+</tr>
+<tr>
+<td>Shell 抽象</td>
+<td><code>core/src/tools/shell-provider.ts</code> + <code>shell-utils.ts</code></td>
+<td><code>getShellProvider()</code> 跨平台 shell 调用； <code>splitShellCommands</code> / <code>isReadOnly</code> / <code>isDestructive</code></td>
+</tr>
+<tr>
+<td>Cache control</td>
+<td><code>core/src/providers/cache-control.ts</code></td>
+<td><code>applyCacheControl()</code> — Anthropic 4 个 cache_control breakpoint（system + <code>tagLastTool</code> 给最后一个 tool + 最后两条消息）/ OpenAI promptCacheKey / OpenAI 兼容裸前缀</td>
+</tr>
+<tr>
+<td>Thinking 翻译</td>
+<td><code>core/src/providers/thinking.ts</code></td>
+<td><code>getThinkingProviderOptions()</code>，<code>mergeThinkingOptions()</code> — <code>/thinking</code> 开关 → 各供应商私有字段</td>
+</tr>
+<tr>
+<td>Usage 持久化</td>
+<td><code>core/src/agent/session-store.ts</code> <code>appendUsage</code></td>
+<td>每轮 collectTurnResponse 末尾 append 一行 meta.usage 到 jsonl;<code>/usage</code> 读 in-memory state，<code>/usage-history</code> 扫所有 jsonl 取末项</td>
+</tr>
+<tr>
+<td>Print 模式</td>
+<td><code>cli/src/print.ts</code></td>
+<td><code>runPrintMode()</code> — <code>-p</code> / <code>--print</code> 完全绕过 Ink，流式输出到 stdout 后退出</td>
+</tr>
+<tr>
+<td>Light compact</td>
+<td><code>core/src/agent/light-compact.ts</code></td>
+<td><code>lightCompactMessages()</code> — O(n) 删除 [loop-guard] 命中的 tool-call/result 对，proactive 压缩前先走一遍</td>
+</tr>
+<tr>
+<td>供应商兼容</td>
+<td><code>core/src/agent/provider-compat.ts</code></td>
+<td>DeepSeek-v4 reasoning_content 多轮 shim、ImagePart 剥离 → vision-fallback、PDF FilePart 适配</td>
+</tr>
+<tr>
+<td>工具注册</td>
+<td><code>core/src/tools/index.ts</code> + <code>core/src/agent/loop.ts:buildTools</code></td>
+<td><code>toolRegistry</code>（13 个静态工具）+ <code>buildTools(options)</code> 在 <code>agentLoop</code> 入口动态注入：<code>task</code> 工具（subAgentRegistry 存在时）+ <code>activateSkill</code> 工具（skillRegistry 有 enabled skill 时）+ MCP 工具（mcpRegistry connected server 的 tool，命名 <code>&lt;server&gt;__&lt;tool&gt;</code>）+ 应用 <code>toolFilter.allow/deny</code>（子 agent 用）</td>
+</tr>
+<tr>
+<td>Sub-agent</td>
+<td><code>core/src/tools/task.ts</code> + <code>core/src/agent/sub-agents/</code></td>
+<td><code>task</code> 工具 schema；<code>runSubAgent()</code>、<code>SubAgentRegistry</code>、<code>builtInAgents</code>（4 个内置）、<code>loader.ts</code>（自定义 agent 从 <code>~/.x-code/agents/*.md</code> 与 <code>.x-code/agents/*.md</code> 加载）</td>
+</tr>
+<tr>
+<td>TodoWrite</td>
+<td><code>core/src/tools/todo-write.ts</code></td>
+<td><code>todoWrite</code> 工具 schema、状态机硬约束（只能一个 in_progress)、verification nudge</td>
+</tr>
+<tr>
+<td>Plan Mode</td>
+<td><code>core/src/tools/enter-plan-mode.ts</code> + <code>core/src/tools/exit-plan-mode.ts</code> + <code>core/src/agent/plan-tools.ts</code></td>
+<td><code>enterPlanMode</code> / <code>exitPlanMode</code> 工具 schema(tools/) + dispatch handler(agent/plan-tools.ts);permissionMode 状态机；plan content 持久化 (<code>.x-code/plans/&lt;slug&gt;-&lt;sessionId&gt;.md</code>)</td>
+</tr>
+<tr>
+<td>权限系统</td>
+<td><code>core/src/permissions/index.ts</code></td>
+<td><code>checkPermission()</code>，<code>getPermissionLevel()</code>，<code>extractCommandPrefix()</code>，<code>suggestRuleLabel()</code>，<code>buildAllowRule()</code></td>
+</tr>
+<tr>
+<td>权限规则记忆</td>
+<td><code>core/src/permissions/session-store.ts</code></td>
+<td><code>AllowRule</code> 类型， <code>SessionPermissionStore</code>，<code>sessionRulesMatch()</code>，<code>addSessionAllowRule()</code>，<code>loadPersistedRules()</code>，<code>persistRule()</code> — shell prefix 持久化 + write session-only</td>
+</tr>
+<tr>
+<td>知识加载</td>
+<td><code>core/src/knowledge/loader.ts</code></td>
+<td><code>buildKnowledgeContext()</code>，<code>collectProjectKnowledgeChain()</code> 向上遍历 + AGENTS.md/CLAUDE.md fallback;<code>KNOWLEDGE_FILENAMES = ['AGENTS.md','CLAUDE.md']</code> 集中优先级</td>
+</tr>
+<tr>
+<td>会话摘要生成</td>
+<td><code>core/src/knowledge/session.ts</code></td>
+<td><code>generateSessionSummary()</code> — 仅压缩点用（结果嵌进 jsonl 的 compact-boundary 行）</td>
+</tr>
+<tr>
+<td>退出写入</td>
+<td><code>core/src/agent/loop.ts</code></td>
+<td><code>saveSession()</code> → <code>flushPendingMessages()</code>（只 flush jsonl，不写额外快照文件）</td>
+</tr>
+<tr>
+<td>自动记忆</td>
+<td><code>core/src/knowledge/auto-memory.ts</code></td>
+<td><code>AutoMemory</code>，<code>initMemories()</code> — 4 类 taxonomy（user/feedback/project/reference），<code>add()</code> 同 key 覆盖，<code>evict(90)</code> 启动驱逐</td>
+</tr>
+<tr>
+<td>记忆抽取器</td>
+<td><code>core/src/agent/memory-extractor.ts</code></td>
+<td><code>runMemoryExtractor()</code> — 主对话 stop 后 fire-and-forget 单次 <code>generateText</code> + <code>Output.object</code> + zod schema;直接 <code>getAutoMemory().add()</code> 写入磁盘；<code>onWrite</code> 回调驱动 UI 的 ⎿ Remembered 通知；模块级 <code>inflight</code> Promise 串行化；Hard rules 含反 hallucination 约束 + 现有 memory snapshot 注入做语义级去重</td>
+</tr>
+<tr>
+<td><code>/init</code> 命令</td>
+<td><code>cli/src/ui/components/App.tsx</code>(<code>INIT_PROMPT</code> 常量）</td>
+<td><code>/init</code> 不再走确定性代码；<code>case 'init'</code> 调 <code>submit(INIT_PROMPT, { silent: true })</code> 把长 prompt 静默喂给模型，模型用 readFile / Edit / writeFile 自己在项目根读写 AGENTS.md（已存在则 Edit-merge 而不是覆盖）。<code>silent: true</code> 让 prompt 不进 scrollback，只显示 <code>/init</code> 这一行</td>
+</tr>
+<tr>
+<td>配置</td>
+<td><code>core/src/config/index.ts</code></td>
+<td><code>resolveModelId()</code>，<code>getAvailableProviders()</code>，<code>getEnvVarName()</code>（env 变量为唯一来源）</td>
+</tr>
+<tr>
+<td>Provider</td>
+<td><code>core/src/providers/registry.ts</code></td>
+<td><code>createModelRegistry()</code> + <code>permanentErrorFetch</code> （按 body 关键词把 4xx/5xx 永久错误重写到 402/413/422/401/404 让 SDK 不重试） + <code>deepseekReasoningFetch</code> (v4 reasoning_content 回填后再 fall through 到 permanentErrorFetch)</td>
+</tr>
+<tr>
+<td>底部 UI</td>
+<td><code>cli/src/ui/components/ChatInput.tsx</code></td>
+<td><code>ChatInput</code> — 整个底部区域唯一 owner: scrollback 提交 + cell-level diff 渲染 spinner/streaming/permission/error/输入框/补全菜单， DEC 2026 同步更新</td>
+</tr>
+<tr>
+<td>输入 Hook</td>
+<td><code>cli/src/ui/hooks/use-prompt-input.ts</code></td>
+<td><code>usePromptInput()</code>，bracketed paste + 30ms debounce fallback，<code>\r\n</code> 归一化</td>
+</tr>
+<tr>
+<td>粘贴引用</td>
+<td><code>cli/src/ui/paste-refs.ts</code></td>
+<td><code>formatPasteRef()</code>，<code>expandPasteRefs()</code>，<code>stripTrailingRef()</code></td>
+</tr>
+<tr>
+<td>流式缓冲</td>
+<td><code>cli/src/ui/hooks/use-stream-buffer.ts</code></td>
+<td><code>useStreamBuffer()</code>, findSafeBoundary 切单 \n 安全边界， 150ms 合并窗口 (<code>COMMIT_BATCH_MS</code>) 把多 chunk 合并成一次 appendMessage</td>
+</tr>
+<tr>
+<td>Glyph 回退</td>
+<td><code>cli/src/ui/terminal-glyphs.ts</code></td>
+<td>legacy ConHost 的 Unicode 装饰字符降级表（<code>●→*</code>、<code>❯→&gt;</code>、<code>⎿→|</code>、spinner ASCII palindrome、<code>⏸→=</code> 等），<code>IS_LEGACY_TERMINAL</code> 启动时常量检测</td>
+</tr>
+<tr>
+<td>Todo / Context / askUser / @-mention 等 UI</td>
+<td><code>cli/src/ui/components/ChatInput.tsx</code> + <code>cli/src/ui/file-completion.ts</code> + <code>cli/src/ui/hooks/use-file-completion.ts</code></td>
+<td>整套 todo 面板、context-window 占用率、askUser 选项行、@-mention 候选菜单都是 ChatInput 内 cell buffer 的子绘制路径，没有独立组件文件；@-mention 文件路径模糊匹配在 <code>file-completion.ts</code>（纯函数搜索） + <code>hooks/use-file-completion.ts</code>（状态钩子）</td>
+</tr>
+<tr>
+<td>Stdout 写入</td>
+<td><code>cli/src/ui/stdout-writer.ts</code></td>
+<td><code>writeMessageToStdout()</code>, user/assistant/tool 格式化 + ANSI + 行尾归一化</td>
+</tr>
+<tr>
+<td>工具显示</td>
+<td><code>cli/src/ui/utils.ts</code></td>
+<td><code>getToolLabel()</code>，<code>getToolInputPreview()</code>，<code>getToolResultSummary()</code>，<code>isCollapsibleReadOnlyTool()</code>，<code>formatReadGroupSummary()</code> — 只读链摘要</td>
+</tr>
+<tr>
+<td>Diff 渲染</td>
+<td><code>cli/src/ui/render-diff.ts</code></td>
+<td>把 <code>EditDiffPayload</code> 渲染成主题化彩色 unified diff（写入工具的 ⎿ 行下方）</td>
+</tr>
+<tr>
+<td>语法高亮</td>
+<td><code>cli/src/ui/syntax-highlight.ts</code></td>
+<td><code>setSyntaxTheme()</code>，<code>highlightLine()</code>，<code>detectLanguage()</code> — 给 markdown code fence 和 diff 内容上色，palette 跟随 /theme 切换</td>
+</tr>
+<tr>
+<td>版本注入</td>
+<td><code>cli/src/version.ts</code></td>
+<td><code>VERSION</code> — esbuild define <code>__CLI_VERSION__</code> 注入（零运行时成本）；tsx dev 模式 fallback 走 package.json 向上查</td>
+</tr>
+<tr>
+<td>Header</td>
+<td><code>cli/src/ui/components/AppHeader.tsx</code></td>
+<td><code>printHeader()</code>, ASCII Logo</td>
+</tr>
+<tr>
+<td>Markdown</td>
+<td><code>cli/src/ui/render-markdown.ts</code></td>
+<td><code>renderMarkdown()</code>, marked lexer + chalk</td>
+</tr>
+<tr>
+<td>主题</td>
+<td><code>cli/src/ui/theme.ts</code></td>
+<td><code>setTheme()</code>，<code>getThemeColors()</code>，<code>parseThemeName()</code> — 持久化到 config.theme，驱动 diff bg + syntax palette</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="b-14-小结">B.14 小结</h2>
+<p>从 <code>xc</code> 命令启动到用户输入、从 AI 流式回复到工具调用、从终端渲染到退出清理，七个阶段各自对应一组明确的文件入口，B.13 节的文件索引表按阶段做了汇总。</p>
+<p>贯穿这七个阶段的有三大共享数据结构：Core 层的 <code>LoopState</code>（messages、tokenUsage、sessionId、systemPromptCache、permissionMode、taskSlug、persistedMessageCount、checkpoints 等 18 个字段，生命周期等于整个 CLI 会话）、React 侧的 <code>AgentState</code>（messages、activeToolCalls、permissionQueue、pendingQuestion、usage、bufferingReads 等，驱动 UI 渲染）、以及 <code>SLASH_COMMANDS</code>（<code>/help</code>、<code>/model</code>、<code>/plan</code>、<code>/clear</code>、<code>/compact</code>、<code>/resume</code>、<code>/review</code>、<code>/memory</code> 等，在 <code>handleSubmit</code> 里分发）。理解这三套结构的分工与同步机制，是读者排查任何具体环节的前提。</p>
+<p>在持久化方面，每个会话对应一个 <code>.x-code/sessions/&lt;slug&gt;-&lt;sessionId&gt;.jsonl</code> 文件，六种 entry 类型（<code>meta.header</code>、<code>msg</code>、<code>meta.usage</code>、<code>meta.compact-boundary</code>、<code>checkpoint</code>、<code>meta.interrupted</code>）的写入分散在六个 fire-and-forget 函数里，不阻塞主循环。<code>/resume</code>、<code>/usage-history</code>、<code>-c</code>、<code>-r</code> 等恢复与查询操作都从同一个 jsonl 文件取数据。在渲染方面，所有 UI 元素只走 ChatInput cell buffer 一条路径，Ink 动态区始终为空，外层用 DEC 2026 BSU/ESU 做原子刷新。在中断方面，一条 <code>abortSignal</code> 从 <code>useAgent.abort</code> 一路传递到 <code>agentLoop</code> → <code>streamText</code> → <code>execa</code>，中断时 <code>processToolCalls</code> 会给所有未完成的 tool_call 补合成 tool-result，保持 tool-call 与 tool-result 的配对不变量，确保下一次 API 请求不被供应商拒收。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-41.html">← 附录一 构建工具链内部</a>
+      <a class="next" href="ch-43.html">附录三 术语表 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#b-1-术语速查">B.1 术语速查</a></li>
+      <li class="lv2"><a href="#b-2-架构概览">B.2 架构概览</a></li>
+      <li class="lv2"><a href="#b-3-完整时序图">B.3 完整时序图</a></li>
+      <li class="lv2"><a href="#b-4-具体示例">B.4 具体示例</a></li>
+      <li class="lv3"><a href="#完整执行流程">完整执行流程</a></li>
+      <li class="lv3"><a href="#ai-回复中可能的工具调用序列示意">AI 回复中可能的工具调用序列示意</a></li>
+      <li class="lv2"><a href="#b-5-阶段一-cli-启动">B.5 阶段一：CLI 启动</a></li>
+      <li class="lv3"><a href="#步骤-1-node-版本检查">步骤 1: Node 版本检查</a></li>
+      <li class="lv3"><a href="#步骤-2-加载环境变量">步骤 2: 加载环境变量</a></li>
+      <li class="lv3"><a href="#步骤-3-解析-cli-参数">步骤 3: 解析 CLI 参数</a></li>
+      <li class="lv3"><a href="#步骤-4-配置-模型与子系统注册表">步骤 4: 配置、模型与子系统注册表</a></li>
+      <li class="lv3"><a href="#步骤-5-构建启动参数与-resume-预加载">步骤 5: 构建启动参数与 resume 预加载</a></li>
+      <li class="lv3"><a href="#会话内动态刷新-refreshplugincontributions-单一入口">会话内动态刷新：`refreshPluginContributions` 单一入口</a></li>
+      <li class="lv2"><a href="#b-6-阶段二-ui-渲染初始化">B.6 阶段二：UI 渲染初始化</a></li>
+      <li class="lv3"><a href="#步骤-6-打印启动-banner">步骤 6: 打印启动 Banner</a></li>
+      <li class="lv3"><a href="#步骤-7-ink-react-应用渲染">步骤 7: Ink React 应用渲染</a></li>
+      <li class="lv3"><a href="#步骤-8-初始-ui-渲染">步骤 8: 初始 UI 渲染</a></li>
+      <li class="lv2"><a href="#b-7-阶段三-用户输入处理">B.7 阶段三：用户输入处理</a></li>
+      <li class="lv3"><a href="#输入管线-usepromptinput">输入管线：`usePromptInput`</a></li>
+      <li class="lv3"><a href="#chatinput-的-onpaste-ontext-onkey-处理">ChatInput 的 onPaste / onText / onKey 处理</a></li>
+      <li class="lv3"><a href="#多行渲染-上限">多行渲染 + 上限</a></li>
+      <li class="lv3"><a href="#提交处理">提交处理</a></li>
+      <li class="lv2"><a href="#b-8-阶段四-agent-循环执行">B.8 阶段四：Agent 循环执行</a></li>
+      <li class="lv3"><a href="#步骤-9-useagent-submit-准备阶段">步骤 9: useAgent.submit() — 准备阶段</a></li>
+      <li class="lv3"><a href="#步骤-10-agentloop-核心循环">步骤 10: agentLoop() — 核心循环</a></li>
+      <li class="lv3"><a href="#持久化层-每个-session-一个-jsonl">持久化层：每个 session 一个 JSONL</a></li>
+      <li class="lv2"><a href="#b-9-阶段五-ai-流式响应与工具调用">B.9 阶段五：AI 流式响应与工具调用</a></li>
+      <li class="lv3"><a href="#system-prompt-结构">System Prompt 结构</a></li>
+      <li class="lv3"><a href="#工具注册表">工具注册表</a></li>
+      <li class="lv3"><a href="#工具调用处理流程">工具调用处理流程</a></li>
+      <li class="lv3"><a href="#折叠连续只读工具-read-group-collapser">折叠连续只读工具（read-group collapser）</a></li>
+      <li class="lv3"><a href="#权限系统详解">权限系统详解</a></li>
+      <li class="lv3"><a href="#子-agent-嵌套循环">子 Agent 嵌套循环</a></li>
+      <li class="lv3"><a href="#plan-mode-约束机制">Plan Mode 约束机制</a></li>
+      <li class="lv2"><a href="#b-10-阶段六-终端-ui-渲染">B.10 阶段六：终端 UI 渲染</a></li>
+      <li class="lv3"><a href="#渲染架构">渲染架构</a></li>
+      <li class="lv3"><a href="#消息写入管线-stdout-writer-ts-chatinput-useeffect">消息写入管线（`stdout-writer.ts` + ChatInput useEffect）</a></li>
+      <li class="lv3"><a href="#markdown-渲染">Markdown 渲染</a></li>
+      <li class="lv3"><a href="#流式文本累积策略">流式文本累积策略</a></li>
+      <li class="lv3"><a href="#spinner-footer-todo-面板-cell-buffer-内的非滚动元素">Spinner / Footer / Todo 面板（cell buffer 内的非滚动元素）</a></li>
+      <li class="lv3"><a href="#writemessagetostdout-的输出格式">writeMessageToStdout 的输出格式</a></li>
+      <li class="lv2"><a href="#b-11-阶段七-退出与清理">B.11 阶段七：退出与清理</a></li>
+      <li class="lv3"><a href="#正常退出流程">正常退出流程</a></li>
+      <li class="lv3"><a href="#ctrl-c-处理-双层">Ctrl+C 处理（双层）</a></li>
+      <li class="lv2"><a href="#b-12-关键数据流总结">B.12 关键数据流总结</a></li>
+      <li class="lv2"><a href="#b-13-文件索引">B.13 文件索引</a></li>
+      <li class="lv2"><a href="#b-14-小结">B.14 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

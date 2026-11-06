@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>跨终端渲染：三条工程原则 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li class="active"><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 25 章 跨终端渲染：三条工程原则</h1>
+<p>Ch.24 给出了单元格级别差异比对加 DEC 2026 同步更新的方案——理论上每帧只写差异单元格，外层包成原子提交。不过当我们把这套方案放到 Windows Terminal、VS Code 内嵌的 xterm.js、Ghostty、Alacritty、老 ConHost 上实际运行时，仍然会发现问题，运行时能看到残余闪烁，而且不同终端的症状各不相同。原因在于「原子帧」只解决了「半帧画到一半被用户看到」这一类问题，真实终端环境中还有另外三类闪烁源：终端之间的能力差异导致同一套写入策略在某些终端上失效，帧写入路径上附带的非必要字节在弱终端上触发额外重渲染，以及模型和进度指示器的内部更新频率超过人眼感知阈值导致的视觉噪音。跨终端调优积累的具体闪烁场景有几十处，逐条列出补丁对读者的迁移价值有限。本章把这些工程经验归纳为三条可迁移的原则，每条配一个产品中的实例。读者掌握这三条思路后，遇到自己终端界面新闪烁问题时可以按原则定位根因。本章分为如下几个部分进行介绍。</p>
+<ul>
+<li>25.1 节介绍第一条原则：先识别终端能力，再选写入策略。</li>
+<li>25.2 节介绍第二条原则：消除帧写入路径上的副作用字节。</li>
+<li>25.3 节介绍第三条原则：更新速率对齐人类感知阈值。</li>
+<li>25.4 节补充调试方法：debugLog 与 burst 模式。</li>
+<li>25.5 节给出本章小结。</li>
+</ul>
+<h2 id="25-1-先识别终端能力-再选写入策略">25.1 先识别终端能力，再选写入策略</h2>
+<p>不同终端仿真器对 Unicode 字符的字体覆盖范围、对控制序列的支持程度、对滚动区域的实现方式各不相同。一套写入策略在 Windows Terminal 上表现正常，换到老 ConHost 上可能出现缺字框或宽度错位。我们的解决思路不是为每种终端写一条独立的渲染路径，而是在启动时一次性检测当前终端属于哪一档能力等级，主路径保持统一，能力不达标的部分走降级分支。</p>
+<p>以 X-Code CLI 的 Unicode 装饰字符为例。产品在输入框、工具状态、任务清单等位置使用了十余个扩展 Unicode 字符：用户输入提示符 <code>❯</code>、工具结果折角 <code>⎿</code>、计划模式标记 <code>⏸</code>、accept-edits 标记 <code>⚡</code>、任务状态 <code>✓</code> / <code>◼</code> / <code>◻</code>、引用块边条 <code>▎</code>、列表项 <code>•</code> 等。这些字符在 Windows Terminal（默认字体 Cascadia Mono）、VS Code 内嵌终端、macOS 和 Linux 的主流终端仿真器上都能正常显示。但在老 ConHost（即 <code>cmd.exe</code> 或 Windows PowerShell 在 Windows Terminal 之外打开的窗口）上，默认可用的字体只有 Lucida Console、Consolas、SimSun 等几款，全都不包含这些扩展字符。结果是部分字符渲染成缺字框，部分字符的渲染宽度与 cell buffer 记录的宽度不一致，从该字符起整行后续内容全部错位。下面用任务清单和输入框的场景直观展示这种错位：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-text">  Windows Terminal（正常）              老 ConHost（缺字框 + 错位）
+
+  ✓ 读取配置文件                        □  读取配置文件
+  ◻ 生成类型定义                        □  生成类型定义
+  ───────────────                      ───────────────
+  ❯ 帮我重构 utils.ts_                  □  帮我重构 utils.ts  _
+                                        ↑
+                                 ❯ 渲染为缺字框 □，终端按 2 列宽度显示，
+                                 而 cell buffer 记录的宽度仍为 1 列。
+                                 差异导致该行后续所有字符向右偏移 1 列，
+                                 光标定位也随之错位（注意末尾 _ 的位置偏移）。
+</code></pre>
+<p>修复方式是把所有装饰字符集中到一份回退表中，启动时一次性检测当前终端的能力等级，命中旧终端即启用 ASCII 替代字符：</p>
+<!-- check:ignore=code-source,emoji,punctuation -->
+<pre><code class="language-ts">// 源码：packages/cli/src/ui/terminal-glyphs.ts
+export const IS_LEGACY_TERMINAL =
+  process.platform === 'win32'
+  &amp;&amp; !process.env.WT_SESSION
+  &amp;&amp; process.env.TERM_PROGRAM !== 'vscode'
+
+export const GLYPH_PROMPT_ARROW   = IS_LEGACY_TERMINAL ? '&gt;'  : '❯'
+export const GLYPH_RESULT_BRACKET = IS_LEGACY_TERMINAL ? '|'  : '⎿'
+export const GLYPH_PLAN_MODE      = IS_LEGACY_TERMINAL ? '='  : '⏸'
+export const GLYPH_TODO_CHECK     = IS_LEGACY_TERMINAL ? '+'  : '✓'
+export const GLYPH_TODO_PENDING   = IS_LEGACY_TERMINAL ? '-'  : '◻'
+// ... 完整回退表共 14 个常量
+</code></pre>
+<p>检测逻辑的核心思路是通过环境变量判定当前终端是否属于老 ConHost——代码中已经能看到，<code>WT_SESSION</code> 和 <code>TERM_PROGRAM</code> 两项有任意一项命中即判定为现代终端，否则走 ASCII 回退。更关键的设计决定是：检测结果集中存储在 <code>terminal-glyphs.ts</code> 的常量中，所有渲染路径从同一份常量读取，不在各自模块中硬编码字面量。这样做的好处是避免了「输入框显示 <code>❯</code> 但历史区显示 <code>&gt;</code>」这种不同模块各自判定导致的渲染割裂。代价是检测粒度较粗——只区分了「老 ConHost」和「其他」两档，如果将来出现一种支持部分扩展字符但不支持全部的终端，需要增加新的检测维度。</p>
+<p>同一思路也体现在 DEC 2026 同步更新的处理上。BSU/ESU 这对控制序列在现代终端上被正确识别并缓冲渲染，在老 ConHost 上被直接忽略（退化为非原子路径，仍然可用），不支持该协议的终端同样静默忽略。所有这些情况下，写入 BSU/ESU 都不会报错——支持就受益，不支持就降级，写入路径不分支。这与装饰字符回退的思路一致：能力检测决定的是「用什么值」而非「走哪条路径」，降级的代价是体验打折而非功能缺失。</p>
+<h2 id="25-2-消除帧写入路径上的副作用字节">25.2 消除帧写入路径上的副作用字节</h2>
+<p>回到示例场景：模型正在流式回复，进度指示器每 200 毫秒切换一帧，旋转符号从 <code>·</code> 变成 <code>✢</code>——整帧只有这一个字符发生了变化。读者可能预期终端也只需要处理这一个字符的更新，但实际上一次帧刷新发往终端的字节流远不止于此。如果不做优化，终端收到的写入如下图左侧所示——8 条序列中只有 1 条是真正的帧内容更新，其余 7 条都是与画面变化无关的「副作用字节」（光标隐藏/显示、经过未变行的光标跳转）；优化后如右侧所示，只剩 3 条序列：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-text">  优化前（8 条序列）                        优化后（3 条序列）
+
+  \x1b[?25l       ← 隐藏光标      ┐
+  \x1b[?2026h     ← BSU           │       \x1b[?2026h     ← BSU
+  \x1b[1;1H       ← 跳到第 1 行   │ 副
+  \x1b[2;1H       ← 跳到第 2 行   │ 作    \x1b[3;1H✢      ← 定位 + 写入
+  \x1b[3;1H✢      ← 写入符号  ←───┤ 用
+  \x1b[4;1H       ← 跳到第 4 行   │ 字    \x1b[?2026l     ← ESU
+  \x1b[?2026l     ← ESU           │ 节
+  \x1b[?25h       ← 显示光标      ┘
+</code></pre>
+<p>这 7 条副作用序列在 macOS 终端或 iTerm2 上通常看不出问题——终端处理一条冗余的控制序列不会产生可见效果。但在 Windows Terminal、VS Code 内嵌的 xterm.js、老 ConHost 上，每条控制序列都可能触发一次终端内部渲染流程的状态切换，肉眼表现为闪烁或光标不规则跳动。以下拆解三类副作用写入各自的现象、成因和修复方式。</p>
+<h3 id="光标可见性的反复切换">光标可见性的反复切换</h3>
+<p>上面字节流图中的第一条 <code>\x1b[?25l</code>（隐藏光标）和最后一条 <code>\x1b[?25h</code>（显示光标）就属于这一类。通常每帧写入前隐藏光标、写入后恢复光标，避免用户看到光标在不同位置跳转的中间过程。问题出在「恢复光标」上。终端的文本光标自带一个「亮 → 暗 → 亮 → 暗」的闪烁周期，大约 1 秒一轮。Windows Terminal、xterm.js、老 ConHost 在执行 <code>\x1b[?25h</code> 时不只是把光标显示出来，还会把这个闪烁周期强行拉回起点——光标被重置为「亮」状态，重新开始计时。下面的时间线展示了这一过程：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-text">  时间（ms）     终端收到的序列              光标闪烁周期的状态
+  ─────────────────────────────────────────────────────────────
+      0          \x1b[?25h（第 1 帧结束）    → 重置为「亮」，开始计时
+    100          （光标自然闪烁中……）          亮
+    200          \x1b[?25h（第 2 帧结束）    → 重置为「亮」← 还没走到「暗」就被打断
+    300          （光标自然闪烁中……）          亮
+    400          \x1b[?25h（第 3 帧结束）    → 重置为「亮」← 又被打断
+    ...          每 200ms 重复一次            光标永远停在「亮」的头 200ms
+
+  正常闪烁：亮 500ms → 暗 500ms → 亮 500ms → ...（平稳节奏）
+  被打断后：亮 200ms → 重置 → 亮 200ms → 重置 → ...（不规则跳动）
+</code></pre>
+<p>进度指示器每秒换 5 帧，光标的闪烁周期每秒被打断 5 次，永远无法完成一轮完整的亮暗交替。用户看到的效果是：输入框的光标在原地持续跳动，明明没有在打字。修复方式是把光标的隐藏和显示绑定到组件的挂载/卸载生命周期上，而不是每帧重复发送——整个组件存活期间只发一次隐藏、一次恢复：</p>
+<!-- check:ignore=code-source,punctuation -->
+<pre><code class="language-ts">// 源码：packages/cli/src/ui/components/ChatInput.tsx
+useEffect(() =&gt; {
+  try {
+    process.stdout.write('\x1b[?25l')   // 挂载时隐藏光标，整个生命周期内只发这一次
+  } catch { /* 终端已关闭 */ }
+  return () =&gt; {
+    try {
+      process.stdout.write('\x1b[?25h') // 卸载时恢复光标，也只发这一次
+    } catch { /* 终端已关闭 */ }
+  }
+}, [])
+</code></pre>
+<p>帧写入中间过程的光标跳转交给 BSU/ESU 接管——支持同步更新的终端会将 BSU 与 ESU 之间的所有写入缓冲起来、收到 ESU 时一次性渲染，中间的光标跳转对用户本来就不可见。代价是如果组件因异常退出而未触发卸载回调，光标将保持隐藏状态，不过 Node.js 进程结束时终端会自动重置光标可见性，实际使用中不会造成持久影响。</p>
+<p>回看前面的字节流对比图，优化后砍掉的不只是光标隐藏/显示。图中 <code>\x1b[1;1H</code>、<code>\x1b[2;1H</code>、<code>\x1b[4;1H</code> 这三条序列的作用是把光标移动到第 1、2、4 行——但这三行的内容并没有变化，光标移过去又不写入任何字符，纯粹是浪费。优化后这三条直接去掉，只为真正变化的第 3 行发送一条定位序列。如果整帧都没有变化，连 BSU/ESU 包裹都不发送，标准输出写入量为零。判断标准很简单：每条序列都问一句「它对最终画面有贡献吗」，没有就不发。</p>
+<h2 id="25-3-更新速率对齐人类感知阈值">25.3 更新速率对齐人类感知阈值</h2>
+<p>模型输出和进度指示器的内部更新频率远高于人眼的感知频率。如果每次内部状态变化都立即刷新到屏幕上，大量写入既浪费标准输出带宽，又因为帧与帧之间的视觉差异太小而被人眼合成为「闪烁」而非「平滑过渡」。我们的解决思路是找到用户感知不到差别的最短聚合窗口（Aggregation Window），将窗口内的多次更新压缩为一次标准输出写入。</p>
+<p>以模型流式输出为例。模型回复「段落 + 分隔 + 标题」这种结构时，几次提交往往挤在 30–150 毫秒的时间窗内陆续到达。如果每次到达都立即刷新到终端，相当于每秒 6–10 次帧重绘——单元格缓冲区的写入压力和视觉闪烁都会成倍放大。X-Code CLI 在负责流式缓冲的 Hook 中引入了一个约 150 毫秒的聚合窗口：窗口期内陆续到达的提交合并为同一批，到期时一次性刷出。150 毫秒这个阈值处在两个边界之间——低于约 200 毫秒的人眼感知阈值（读者不会觉得文本输出卡顿），同时足够覆盖大多数连发场景的间隔。帧重绘频率因此削减约一半，闪烁次数显著减少。代价是段落在屏幕上出现时有轻微的「成块」感——不是逐字流出而是每隔一个聚合窗口刷出一批——但仍在人眼感知阈值以下，用户主观感受仍然是流式输出。聚合窗口的具体实现——定时器策略、安全边界扫描与强制刷出时机——详见 Ch.26。</p>
+<p>同一原则的延伸还体现在进度指示器的字符选择上。在帧写入字节数和换帧频率相同的前提下，不同字符序列给人眼的「晃动感」截然不同。X-Code CLI 的进度指示器使用 <code>· ✢ * ✶ ✻ ✽</code> 六个字符构成星号脉冲（Asterisk Pulse）序列——6 帧前进加 6 帧倒退构成一个 12 帧、2.4 秒的回文循环。每帧字符在格子内的中心位置不变，只是大小和笔画密度变化，人眼将其感知为「原地呼吸」。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0b50b63a483842ac9259ebb00be9fe44~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=301&amp;h=34&amp;s=7732&amp;e=gif&amp;f=8&amp;b=262820" alt="loading.gif" /></p>
+<p>从流式输出的聚合窗口到进度指示器的字符选择，这条原则的核心思路始终一致：找到不影响用户体感的最短聚合窗口，将窗口内的多次更新压缩为一次标准输出写入。在写入频率相同的前提下，字符序列的视觉特征同样是影响感知稳定性的变量——我们不仅要控制「多久写一次」，还要考虑「写出来的东西在人眼中晃不晃」。</p>
+<h2 id="25-4-调试方法-debuglog-与-burst-模式">25.4 调试方法：debugLog 与 burst 模式</h2>
+<p>前面三条原则解决的是「如何避免闪烁」，本节讨论「闪烁已经发生时如何定位根因」。修复终端闪烁问题的关键不在于猜测原因，而在于建立可观测（Observable）的写入日志，将「屏幕闪了一次」这个模糊的用户感知映射到具体的标准输出写入记录上。</p>
+<p>X-Code CLI 在关键写入路径上设置了调试日志埋点。启用方式是设置环境变量 <code>DEBUG_STDOUT=1</code>，之后所有调试日志调用才会真正写入文件；不设置时是空操作，零运行时开销。日志写入 <code>~/.x-code/logs/debug.log</code>（Windows 上对应 <code>%USERPROFILE%\.x-code\logs\debug.log</code>），文件达到 10 MB 时自动滚动到备份文件，最多占用约 20 MB 磁盘空间。</p>
+<pre><code class="language-bash"># Linux / macOS（bash / zsh）
+DEBUG_STDOUT=1 xc
+
+# Windows PowerShell
+$env:DEBUG_STDOUT=&quot;1&quot;; xc
+</code></pre>
+<p>ChatInput 的帧刷新路径上有一处关键埋点，每次标准输出写入都记录一行日志，包含以下字段：</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">// 源码：packages/cli/src/ui/components/ChatInput.tsx
+debugLog(
+  'chatinput.flush',
+  `bytes=${payload.length} preBufBytes=${preBuf.length} bufBytes=${buf.length} ` +
+    `msgsCommitted=${writtenMessageCountRef.current} pendingBlanks=${pendingFreeBlanks} ` +
+    `frameTop=${frameTop} nextH=${nextH}`,
+)
+</code></pre>
+<p>排查闪烁时最常关注的是前三个字段：<code>bytes</code>（本次写入的总字节数）、<code>preBufBytes</code>（前置控制序列的字节数，即光标跳转、清行等非帧内容的副作用写入）、<code>bufBytes</code>（帧内容字节数，即实际写到单元格的字符和样式）。将一段闪烁时间窗内的日志按时间戳排列后，可以按以下模式识别根因所属的原则类别：</p>
+<p>（1）300 毫秒内出现多条总字节数较大的写入记录——属于原则三（节奏失配）的范畴，更新频率过高导致视觉噪音，需要引入聚合窗口。</p>
+<p>（2）<code>preBufBytes</code> 占比大、<code>bufBytes</code> 占比小——属于原则二（副作用写入）的范畴，帧内容本身的变化很小但附带了大量非必要的控制序列，需要逐条审视哪些序列可以省去。</p>
+<p>（3）写入频繁但每条字节量都很小——可能属于原则一（能力降级）的范畴，某些终端对特定控制序列的处理方式与预期不同，需要检查终端能力检测是否覆盖了当前环境。</p>
+<p>完整的调试流程是：首先在能稳定复现闪烁的对话场景中启用调试日志运行一次；然后从日志中筛选 <code>chatinput.flush</code> 记录，按时间戳观察写入的分布模式；根据上述三种模式判断根因属于哪一条原则；修复后在同一场景中重新运行，对比写入频率和字节分布验证修复效果。这套方法本身可以迁移到任何高频写入终端的界面程序——只要在关键写入点埋设调试日志并定义清楚闪烁对应的写入模式，就能在不依赖猜测的前提下定位根因。</p>
+<h2 id="25-5-小结">25.5 小结</h2>
+<p>跨终端渲染的残余闪烁可以归为三类根因，对应三条工程原则。第一条是先识别终端能力再选写入策略——启动时一次性检测，能力不达标走降级而非直接报错，检测结果集中存储供所有渲染路径共享。第二条是消除帧写入路径上的副作用字节——原子帧提交只解决半帧暴露的问题，光标隐显、空包裹、遍历未变行等额外字节在弱终端上同样会触发可见闪烁。第三条是更新速率对齐人类感知阈值——模型流式输出通过 150 毫秒的聚合窗口将多次提交压缩为一次刷新，进度指示器通过字符序列的视觉特征选择降低晃动感。调试时通过 <code>DEBUG_STDOUT=1</code> 启用写入日志，按时间戳和字节分布模式将用户感知到的闪烁映射到具体的根因类别。Ch.26 将回到上层时序，讨论模型的流式文本片段如何按安全边界切段、提交时如何与本章的聚合窗口配合。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-24.html">← 单元格级别差异渲染</a>
+      <a class="next" href="ch-26.html">流式输出 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#25-1-先识别终端能力-再选写入策略">25.1 先识别终端能力，再选写入策略</a></li>
+      <li class="lv2"><a href="#25-2-消除帧写入路径上的副作用字节">25.2 消除帧写入路径上的副作用字节</a></li>
+      <li class="lv3"><a href="#光标可见性的反复切换">光标可见性的反复切换</a></li>
+      <li class="lv2"><a href="#25-3-更新速率对齐人类感知阈值">25.3 更新速率对齐人类感知阈值</a></li>
+      <li class="lv2"><a href="#25-4-调试方法-debuglog-与-burst-模式">25.4 调试方法：debugLog 与 burst 模式</a></li>
+      <li class="lv2"><a href="#25-5-小结">25.5 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>错误恢复：从 SDK 异常到人类可读提示 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li class="active"><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 11 章 错误恢复：从 SDK 异常到人类可读提示</h1>
+<p>上一章讨论了流式 chunk 的处理过程，其中错误 chunk 的主动抛出和结果 Promise 的排空是异常处理链条的起点。本章接手这条链条的下半段：当异常从流消费层到达外层异常捕获块之后，如何对错误分类、决定重试还是终止，并将技术性的 SDK 异常转化为用户可以理解并采取行动的提示信息。本章分为如下几个部分进行介绍。</p>
+<ul>
+<li>11.1 节讨论错误分类器如何把 14 种异构错误归为一张判定表。</li>
+<li>11.2 节讲解如何解包嵌套错误，从 SDK 包装层下提取真实信息。</li>
+<li>11.3 节介绍上下文超限和 orphan tool_call 这两类需要在流之前预处理的错误。</li>
+<li>11.4 节讨论 HTTP 层拦截如何识别永久错误并将其短路掉。</li>
+<li>11.5 节讲解 SDK 内部重试与用户中止信号的处理路径。</li>
+<li>11.6 节讨论输出截断的自动续写与内容审核拦截。</li>
+<li>11.7 节介绍从内部异常到用户提示的转化过程。</li>
+<li>11.8 节给出本章小结。</li>
+</ul>
+<blockquote>
+<p>AI 知识背景：LLM 的结构性失败模式</p>
+<p>在讨论 API 层的错误恢复之前，有必要先区分两类不同性质的失败。LLM 本身存在一组结构性失败模式（Structural Failure Modes），它们不是网络层能解决的。幻觉（Hallucination）是指模型自信地输出错误事实，原因在于训练目标是预测概率最高的下一个 token，而非保证事实正确；Agent 场景中的典型表现包括编造不存在的 API、引用错误的函数签名、声称「已经执行了 X」但实际并未调用工具。指令偏移（Instruction Drift）在长对话中尤为明显，模型会逐渐忽略早期的系统指令，多轮工具调用加上下文压缩后问题更加突出。过度自信（Overconfidence）使模型倾向于给出一个答案而非承认不确定性，导致 Agent 不知道何时该停下来询问用户。输出截断发生在撞到 max_tokens 上限时（详见本章 11.6 节自动续写）。格式错误则表现为工具调用参数不符合 schema 或 JSON 结构不完整。此外还有 doom-loop（详见 Ch.32），即模型对相同错误反复重试却不做任何实质性改变。这些失败由提示词工程、工具描述精细化和循环护栏（Loop Guard）等机制应对，不在本章范围内。本章讨论的「错误恢复」专指 API、网络和协议层面的错误。</p>
+</blockquote>
+<h2 id="11-1-为什么要把-14-种异构错误归为一张判定表">11.1 为什么要把 14 种异构错误归为一张判定表</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/api-errors.ts::classifyApiError</code></p>
+</blockquote>
+<p>错误分类器（Error Classifier）的职责是把来源各异、格式不统一的 SDK 错误映射成统一的人类可读消息，并标记该错误是否可重试。当前版本一共识别 14 种错误形态，按优先级从高到低依次判定。优先级顺序很重要，因为同一个错误消息可能同时命中多条规则，排在前面的规则先匹配就先返回。以下是分类器的判定链结构（伪代码省略了返回值的完整字段，只保留语义）。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">export function classifyApiError(err: unknown): ClassifiedError {
+  const msg = extractErrorMessage(err)        // 见下文：要先提取真实错误
+  const status = extractHttpStatus(msg)
+
+  if (isContextTooLongError(err))           return { 提示压缩或 /clear, retryable: false }
+  if (isReasoningContentError(msg))         return { 提示 SDK 兼容问题, retryable: false }
+  if (isMissingApiKeyError(msg))            return { 提示设置环境变量, retryable: false }
+  if (isUnauthorizedError(msg, status))     return { '401 鉴权失败', retryable: false }
+  if (isInsufficientBalanceError(msg, st))  return { '402 余额不足', retryable: false }
+  if (isForbiddenError(msg, status))        return { '403 禁止访问', retryable: false }
+  if (isModelNotFoundError(msg, status))    return { '404 模型不存在', retryable: false }
+  if (isContentPolicyError(msg, status))    return { '422 内容审核拦截', retryable: false }
+  if (isMaxTokensError(msg))                return { 'max_tokens 超模型限', retryable: false }
+  if (isServiceUnavailableError(msg, st))   return { '503 服务不可用', retryable: false }
+  if (isRateLimitedError(msg, status))      return { '429 限流', retryable: true }
+  if (isNetworkError(msg))                  return { '网络错误', retryable: true }
+  if (isTypeValidationError(err, msg))      return { '供应商返回非法响应', retryable: false }
+  if (isMalformedToolHistoryError(msg))     return { 'orphan tool_call 历史', retryable: false }
+
+  return { message: msg, retryable: false }
+}
+</code></pre>
+<p>14 条规则中，多数按 HTTP 状态码或错误消息关键词直接归类（401 鉴权失败、403 禁止访问、429 限流、503 服务不可用、网络错误），逻辑直接。以下几条需要单独解释为什么必须作为独立规则存在，而不能只靠状态码一刀切。</p>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>为什么需要单独识别</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>isContextTooLongError</code></td>
+<td>不能走普通错误退出路径，必须触发响应式压缩（Reactive Compression）并重试当前轮（详见 11.3 节和 Ch.31）</td>
+</tr>
+<tr>
+<td><code>isReasoningContentError</code></td>
+<td>DeepSeek Reasoner 在 tool-call 链中要求每条 assistant 消息携带 <code>reasoning_content</code> 字段，这是 SDK 兼容问题而非用户错误，需给出清晰提示</td>
+</tr>
+<tr>
+<td><code>isMissingApiKeyError</code></td>
+<td>从错误消息中提取出供应商名称（如 &quot;Anthropic API key is missing&quot; → &quot;Anthropic&quot;），告诉用户具体需要设置哪个环境变量</td>
+</tr>
+<tr>
+<td><code>isInsufficientBalanceError</code>（402）</td>
+<td>与 401 鉴权失败不同，402 表示余额耗尽。匹配时使用小写比较以兼容不同供应商的措辞差异（Moonshot 用 <code>please recharge</code>，DeepSeek 用 <code>Insufficient Balance</code>）</td>
+</tr>
+<tr>
+<td><code>isModelNotFoundError</code>（404）</td>
+<td>模型 ID 写错、被弃用或当前账号未开通。OpenAI 的错误体在 &quot;model&quot; 和 &quot;does not exist&quot; 之间插入模型名，因此匹配条件是两个关键词同时出现即命中</td>
+</tr>
+<tr>
+<td><code>isContentPolicyError</code>（422）</td>
+<td>供应商安全过滤拦截，重试相同内容必定再次被拦截，因此标记为不可重试，提示用户改写或切换模型</td>
+</tr>
+<tr>
+<td><code>isMaxTokensError</code></td>
+<td>不同模型的输出上限不同，用户或配置传入了超过模型限制的值会被拒绝，需要提示调整</td>
+</tr>
+<tr>
+<td><code>isTypeValidationError</code></td>
+<td>AI SDK 用 Zod 校验响应结构，部分供应商（如阿里 dashscope）出错时返回 JSON 错误体而非 SSE 流，触发类型校验错误。真实的供应商错误信息嵌套在包装层内部（详见 11.2 节）</td>
+</tr>
+<tr>
+<td><code>isMalformedToolHistoryError</code></td>
+<td>tool_call 与 tool_result 配对错乱时多数供应商会拒绝整个请求，需要触发修复机制（详见 11.3 节）</td>
+</tr>
+</tbody>
+</table>
+<p>其余几条（401、403、429、503、网络错误）按 HTTP 状态码直接归类。404 和 422 这两条实际上也可以按状态码归类——后文 11.4 节的 HTTP 层拦截已经把对应的响应体重写到了这两个状态码上，分类器只需检查状态码即可命中；表中列出的消息关键词是为绕过 HTTP 拦截直接抛出的路径提供降级匹配。</p>
+<h2 id="11-2-解包嵌套错误-sdk-包装层下的真实信息">11.2 解包嵌套错误：SDK 包装层下的真实信息</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/api-errors.ts::extractErrorMessage</code></p>
+</blockquote>
+<p>分类器在做模式匹配之前，首先要解决一个前置问题：SDK 抛出的异常对象的 <code>message</code> 字段未必包含供应商返回的真实错误信息。AI SDK 在校验响应结构时使用 Zod，当供应商返回的不是预期的 SSE 流而是一个 JSON 错误体时，Zod 校验失败会抛出类型校验异常，原始的供应商错误（如「账户余额不足」或「模型不存在」）被嵌套在异常对象的深层属性中。如果不做解包直接读取异常的 <code>message</code> 字段，看到的只是 Zod 的结构转储信息，后续的关键词匹配全部失败，最终用户看到的是一段无法理解的技术信息。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">function extractErrorMessage(err: unknown): string {
+  if (!(err instanceof Error)) return String(err)
+  const msg = err.message
+  // AI SDK TypeValidationError 把真实供应商错误嵌套在 `.value` 里
+  const val = (err as Record&lt;string, unknown&gt;).value
+  if (val &amp;&amp; typeof val === 'object') {
+    const inner = (val as Record&lt;string, unknown&gt;).error
+    if (inner &amp;&amp; typeof inner === 'object') {
+      const innerMsg = (inner as Record&lt;string, string&gt;).message
+      if (typeof innerMsg === 'string') return innerMsg
+    }
+  }
+  return msg
+}
+</code></pre>
+<p>解包逻辑的层次结构反映了 SDK 的异常包装方式：异常对象上的 <code>.value</code> 属性是 Zod 校验的原始输入（即供应商返回的 JSON 体），其中 <code>.error.message</code> 才是供应商的错误描述。以阿里 dashscope 为例，当请求出错时它返回的不是 SSE 流而是一个标准的 JSON 错误体，AI SDK 的 Zod 校验失败后抛出类型校验异常，原始的「余额不足」或「模型不存在」信息就嵌套在这个层次结构中。解包函数先尝试沿这条路径提取，提取失败则回退到异常本身的 <code>message</code> 字段。这条路径在接入新的、会返回非 SSE 错误体的供应商时尤其关键——如果解包逻辑未能覆盖该供应商的错误结构，用户将只看到 Zod 转储而非可操作的错误提示。</p>
+<h2 id="11-3-两类需要预处理的错误">11.3 两类需要预处理的错误</h2>
+<p>14 种错误形态中，有两类不能等到分类器判定后再处理，而是需要在错误到达分类器之前（甚至在流开始之前）就完成预处理。</p>
+<p>第一类是上下文超限（Context Too Long）。这类错误的处理路径与普通错误完全不同：命中后不是退出循环，而是触发响应式压缩并重试当前轮（详见 Ch.31），因此它在分类器中排在最高优先级位置。识别的难点在于各家供应商返回超限错误的措辞各不相同——OpenAI 返回 <code>context_length_exceeded</code>，Anthropic 返回 <code>prompt is too long</code>，其他供应商又各有表述。识别函数维护了一个字符串模式列表（当前 7 条），对错误消息逐条做子串匹配；同时还检查 HTTP 413 状态码，这是 11.4 节的 HTTP 层拦截为上下文超限错误重写的目标码值。新增供应商时只需往列表中添加一条匹配模式，不需要修改判定逻辑。</p>
+<p>第二类是 orphan tool_call。当消息历史中出现没有配对 tool_result 的 tool_call 时（最常见的触发场景是模型给出的工具入参未通过 Zod 校验，SDK 拒绝执行），下一轮请求携带这段残缺历史发送给供应商，供应商会直接返回 400 拒绝。三家主要供应商的拒绝措辞如下。</p>
+<pre><code class="language-text">OpenAI:    &quot;Messages with role 'tool' must be a response to a preceding message with 'tool_calls'.&quot;
+DeepSeek:  &quot;tool_calls and tool_call_ids ...&quot;
+Anthropic: &quot;tool_use without tool_result&quot;
+</code></pre>
+<p>修复函数在每轮流开始之前对消息历史做一次预防性扫描，为没有配对的 tool_call 补充一条合成的错误 tool_result。扫描是幂等的，每轮执行的开销极低。修复机制的详细设计见 Ch.17。</p>
+<h2 id="11-4-永久错误的-http-层短路">11.4 永久错误的 HTTP 层短路</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/providers/registry.ts::permanentErrorFetch</code></p>
+</blockquote>
+<p>供应商返回的 HTTP 状态码并不总是准确反映「重试能否解决问题」，有时一个不可恢复的永久错误会伪装成可重试的状态码——我们称之为「假可重试」。最典型的反例是 Moonshot——账户余额耗尽时它返回 HTTP 429，响应体是 <code>&quot;... is suspended due to insufficient balance, please recharge ...&quot;</code>。AI SDK 按状态码判断可重试性，将 429 视为限流可重试，于是启动 3 次指数退避重试，每次都打在同一个余额不足的错误上。约 30 秒后用户才看到一个被多层包装的错误对象，原始的「余额不足」信息深藏在最内层。这 30 秒完全是浪费。</p>
+<p>X-Code CLI 的解决方案是在所有供应商的 HTTP 请求上挂载一层 fetch 拦截器。拦截器在收到错误响应（状态码 ≥ 400）后，先读取响应体并按关键词扫描是否属于永久错误，命中后将 HTTP 状态码重写为 SDK 视为不可重试的码值，使 SDK 在第一次尝试就跳出重试循环，错误直接到达分类器。图 11-1 以 Moonshot 余额不足为例展示了拦截器的工作时序。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6b8dfb0465764595a7b8d2170c535e55~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1041&amp;h=497&amp;s=50659&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<blockquote>
+<p>图 11-1 永久错误拦截时序——步骤 2 在 SDK 看到响应之前完成状态码重写，避免 3 次无效的指数退避</p>
+</blockquote>
+<p>5 类永久错误对应的目标状态码如下。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>目标状态码</th>
+<th>命中关键词举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>余额不足 / 配额耗尽</td>
+<td>402</td>
+<td><code>insufficient balance</code> / <code>exceeded_current_quota</code> / <code>please recharge</code></td>
+</tr>
+<tr>
+<td>上下文超限</td>
+<td>413</td>
+<td><code>context_length_exceeded</code> / <code>prompt is too long</code> / <code>maximum context length</code></td>
+</tr>
+<tr>
+<td>内容安全策略拦截</td>
+<td>422</td>
+<td><code>content_policy_violation</code> / <code>content_filter_triggered</code></td>
+</tr>
+<tr>
+<td>API key 失效</td>
+<td>401</td>
+<td><code>invalid api key</code> / <code>expired api key</code></td>
+</tr>
+<tr>
+<td>模型 ID 不存在 / 未开通</td>
+<td>404</td>
+<td><code>model_not_found</code> / <code>model … does not exist</code></td>
+</tr>
+</tbody>
+</table>
+<p>匹配依据是响应体关键词而非 HTTP 状态码本身，因此任何 4xx/5xx 错误响应都会经过这一层扫描。成功响应（状态码 &lt; 400）直接放行，不读取响应体，避免把 SSE 流提前消费掉。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">const permanentErrorFetch: typeof fetch = async (input, init) =&gt; {
+  const response = await fetch(input, init)
+  if (response.status &lt; 400) return response
+
+  const text = await response.clone().text().catch(() =&gt; '')
+  if (!text) return response
+
+  const lower = text.toLowerCase()
+  for (const category of PERMANENT_ERROR_CATEGORIES) {
+    const hit = category.patterns.some((p) =&gt;
+      typeof p === 'string' ? lower.includes(p) : p.test(lower),
+    )
+    if (!hit) continue
+    if (response.status === category.status) return response
+    return new Response(text, {
+      status: category.status,
+      statusText: category.statusText,
+      headers: response.headers,
+    })
+  }
+  return response
+}
+</code></pre>
+<p>拦截器只修改状态码，响应体原样传递——分类器仍然需要从响应体中提取供应商的错误消息做关键词匹配，状态码重写不能影响响应体内容。注册供应商时将这个拦截器作为自定义 fetch 传入即可。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">providers.anthropic = createAnthropic({ fetch: permanentErrorFetch })
+providers.openai = createOpenAI({ fetch: permanentErrorFetch })
+// Google、xAI、Alibaba、Moonshot、自定义端点同样使用 permanentErrorFetch
+providers.deepseek = createDeepSeek({ fetch: deepseekReasoningFetch })
+</code></pre>
+<p>DeepSeek 使用的是另一个专用的 fetch 包装器，它先为 v4 系列模型回填 <code>reasoning_content</code> 字段（详见 Ch.34 thinking 模式），最后再调用永久错误拦截器，两层效果叠加。</p>
+<h2 id="11-5-sdk-内部重试与中止信号">11.5 SDK 内部重试与中止信号</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop.ts</code></p>
+</blockquote>
+<p>经过 HTTP 层拦截后，进入 SDK 重试层的只剩下真正可重试的错误——429 限流、5xx 服务端临时故障、网络连接中断等。AI SDK 的 <code>streamText</code> 调用通过 <code>maxRetries: 3</code> 启用自动指数退避重试。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">streamText({
+  model,
+  system,
+  messages,
+  tools,
+  maxRetries: 3,
+  abortSignal: options.abortSignal,
+  onError: ({ error }) =&gt; {
+    // 抑制 SDK 默认的 console.error 转储；真错误统一走 classifyApiError
+    if (process.env.DEBUG_STDOUT) debugLog('stream.onError', String(error))
+  },
+})
+</code></pre>
+<p>重试期间对用户完全透明，SDK 在内部处理失败并重新发起请求，流仍按正常流程产出 chunk。永久错误已经被上一节的 HTTP 层拦截重写为不可重试的状态码，不会消耗这 3 次重试预算。3 次重试全部用完后仍然失败，SDK 将最后一次的错误抛出，由分类器处理。调试模式下（<code>DEBUG_STDOUT=1</code>），SDK 的重试日志会写入 <code>~/.x-code/logs/debug.log</code>，方便排查间歇性失败。</p>
+<p><code>onError</code> 回调必须显式覆盖，这一点容易被忽略。SDK 的默认实现是调用 <code>console.error(error)</code>，会把整个重试错误对象（含嵌套的 API 调用错误数组和供应商响应体）用 <code>util.inspect</code> 完整转储到 stderr，内容冗长且对用户没有参考价值。X-Code CLI 将其替换为仅在调试模式下记录一条简短日志，UI 用户只看到分类器输出的简洁提示。</p>
+<p>中止信号（Abort Signal）是用户按 Esc 或 Ctrl+C 时的传导通道。信号触发后，进行中的 fetch 请求立即取消，流式迭代器抛出中止异常。</p>
+<pre><code>用户 Esc → AbortController.abort() → fetch 立即取消 + 流式抛 AbortError
+                                  ↓
+runTurn try/catch 捕获 → isAbortError(err, signal) → 返回 { kind: 'aborted' }
+                                  ↓
+agentLoop 看到 'aborted' → 跳出，不调 onError（Ch.08 已述）
+</code></pre>
+<p>中止是不可重试的中断信号，Agent Loop 捕获后直接退出当前轮，不触发错误回调，不向用户显示错误信息——UI 只显示一条「请求已被用户中断」的状态提示。</p>
+<h2 id="11-6-输出截断与内容审核">11.6 输出截断与内容审核</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop.ts</code></p>
+</blockquote>
+<p>当模型的输出被 max_tokens 截断时，结束原因（Finish Reason）为 <code>length</code>。这不是一个错误，但用户看到的是一段被截断到一半的回复，体验很差。X-Code CLI 的策略是自动追加一条续写提示，让模型从断点继续输出。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">const MAX_CONTINUATIONS = 3
+let continuationAttempts = 0
+
+if (outcome.finishReason === 'length') {
+  if (continuationAttempts &lt; MAX_CONTINUATIONS) {
+    continuationAttempts++
+    state.messages.push({
+      role: 'user',
+      content:
+        'Output token limit hit. Resume directly — no apology, no recap. Pick up mid-thought if that is where the cut happened. Break remaining work into smaller pieces.',
+    })
+    continue
+  }
+  callbacks.onError(
+    new Error(`Response still truncated after ${MAX_CONTINUATIONS} continuation attempts — ask a narrower question.`),
+  )
+  break
+}
+</code></pre>
+<p>续写提示只进入内部消息历史，不显示在 UI 的对话流中，用户只看到一段完整的回复，不会意识到中间发生了截断和续写。续写次数上限为 3 次，超过后提示用户缩小问题范围。计数器在任何成功的工具执行轮次后重置为零，避免连续的 <code>length</code> 截断累计触发上限。续写提示的文案经过精心设计——要求模型「直接续写、不致歉、不重述上文、必要时把剩余工作拆成更小的段落」，目的是避免模型在续写时浪费 token 做总结和重复。</p>
+<p>结束原因为 <code>content-filter</code> 时，表示供应商的内容审核系统拦截了模型输出。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">if (outcome.finishReason === 'content-filter') {
+  callbacks.onError(new Error('Response stopped by the provider content filter.'))
+}
+break
+</code></pre>
+<p>与截断不同，内容审核拦截是确定性的——用相同的输入重试必定再次被拦截，因此不做重试，直接通知用户这是审核问题而非网络或模型故障，让用户能针对性地调整提问或通过 <code>/model</code> 切换到其他模型。</p>
+<h2 id="11-7-从内部异常到用户提示">11.7 从内部异常到用户提示</h2>
+<p>错误分类器的最终产物是一条人类可读的提示信息。设计原则是不暴露内部调用栈，而是给出简洁的错误描述加上用户可以采取的操作建议。以下是几种典型错误从 SDK 异常到用户看到的提示的映射关系。</p>
+<table>
+<thead>
+<tr>
+<th>内部错误</th>
+<th>用户看到的消息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Error: 401 Unauthorized</code></td>
+<td>API authentication failed (401). Please check your API key...</td>
+</tr>
+<tr>
+<td><code>Error: 402 Insufficient Balance</code></td>
+<td>API account balance insufficient (402). Top up... or /model</td>
+</tr>
+<tr>
+<td><code>Error: 404 model_not_found</code></td>
+<td>Model not found (404). ... Switch with /model</td>
+</tr>
+<tr>
+<td><code>Error: 422 content_policy_violation</code></td>
+<td>Content blocked by the provider's safety filter (422). Rephrase... or /model</td>
+</tr>
+<tr>
+<td><code>Error: 429 Too Many Requests</code></td>
+<td>Rate limited (429). Waiting for retry...</td>
+</tr>
+<tr>
+<td><code>Error: ECONNRESET</code></td>
+<td>Network error: ECONNRESET. Retrying...</td>
+</tr>
+<tr>
+<td><code>Error: prompt is too long: 250000 &gt; 200000</code></td>
+<td>Context too long — try /compact or /clear</td>
+</tr>
+<tr>
+<td><code>AI_TypeValidationError: ...</code></td>
+<td>Provider returned an error: &lt;真实错误&gt;. Try /model</td>
+</tr>
+<tr>
+<td><code>AbortError: The operation was aborted</code></td>
+<td>（UI 显示 [Request interrupted by user]，不触发错误回调）</td>
+</tr>
+</tbody>
+</table>
+<p>每条提示都包含两个要素：错误的性质描述和用户可以采取的下一步操作（充值、切换模型、压缩上下文、改写提问等）。调试所需的完整错误信息保留在日志中供排查，UI 层只展示这条精简后的提示。</p>
+<p>错误处理分布在循环的三个阶段：（1）发起流式请求阶段——鉴权失败、配置错误、orphan tool_call 历史等错误在请求发出时就会抛出，异常捕获块直接交给分类器处理；（2）流消费阶段——网络中断、上下文超限等错误在迭代过程中抛出，捕获后先执行排空操作（Ch.10 已述）再判断是否属于上下文超限以决定重试还是分类；（3）响应收集阶段——流结束后的解析错误同样经过排空和分类。三个阶段的异常处理结构相同：先排空结果 Promise 防止未处理 reject 导致进程崩溃，再交给分类器统一处理。</p>
+<h2 id="11-8-小结">11.8 小结</h2>
+<p>本章从错误的产生到最终呈现给用户，完整地走过了 X-Code CLI 的错误恢复链路。分类器识别 14 种典型错误形态，每种都映射为人类可读消息并标记是否可重试。在分类之前，解包函数从 SDK 的类型校验异常中提取出真实的供应商错误信息，否则后续的关键词匹配全部失效。上下文超限和 orphan tool_call 这两类错误需要在流开始之前预处理——前者触发响应式压缩并重试当前轮，后者为残缺的工具调用历史补上合成的错误结果。HTTP 层拦截器把 5 类永久错误的状态码重写为不可重试的码值，防止 SDK 对余额不足、模型不存在等不可能通过重试解决的问题做无谓的指数退避。SDK 的 3 次自动重试只对真正的临时故障生效，中止信号提供了用户随时终止请求的通道。输出截断时自动追加续写提示（上限 3 次），内容审核拦截则直接退出并告知用户原因。所有错误最终都汇入统一的分类器，转化为简洁的提示信息加上可操作的下一步建议。</p>
+<h3 id="part-2-对照-hello-agent-填上的部分">Part 2 对照：Hello Agent 填上的部分</h3>
+<p>读完 Ch.07-11，我们已经把序章的 50 行 hello-agent 升级到了真实可用的 Agent Loop。回到序章那张差距对照表，Part 2 直接填上的部分如下。</p>
+<table>
+<thead>
+<tr>
+<th>Hello Agent 没做的事</th>
+<th>Part 2 填上的位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只支持一家供应商——更换供应商就要改代码</td>
+<td>Ch.09 多供应商支持：8 家加自定义端点共用 streamText</td>
+</tr>
+<tr>
+<td>没有错误恢复——网络抖动就导致整个对话中断</td>
+<td>Ch.11 错误分类器 14 种形态加 HTTP 层永久错误短路加 SDK 内部 3 次重试</td>
+</tr>
+<tr>
+<td>供应商特有字段差异需要单独适配（cache / thinking）</td>
+<td>Ch.08 runTurn 预处理步骤加 Ch.09 providerOptions 透传</td>
+</tr>
+<tr>
+<td>没有循环护栏——模型死循环只能靠 stepCount 硬上限</td>
+<td>Ch.08 提及路径，详见 Ch.32</td>
+</tr>
+<tr>
+<td>不支持上下文压缩</td>
+<td>Ch.08 提及路径，详见 Ch.31</td>
+</tr>
+</tbody>
+</table>
+<p>Part 2 没有填上、留给后续部分的内容如下。</p>
+<table>
+<thead>
+<tr>
+<th>尚未覆盖的能力</th>
+<th>对应章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>没有终端 UI（输入框、流式渲染）</td>
+<td>第四部分（Ch.23-28 终端 UI）</td>
+</tr>
+<tr>
+<td>没有权限确认（写文件直接执行）</td>
+<td>Ch.29 三级权限模型</td>
+</tr>
+<tr>
+<td>只有一个工具（缺 shell / grep / web）</td>
+<td>第三部分（Ch.12-22 工具系统）</td>
+</tr>
+<tr>
+<td>不支持上下文压缩</td>
+<td>Ch.31</td>
+</tr>
+<tr>
+<td>没有 prompt caching</td>
+<td>Ch.33</td>
+</tr>
+<tr>
+<td>没有循环护栏</td>
+<td>Ch.32</td>
+</tr>
+<tr>
+<td>没有思考模式 / 多模态 / 子 agent / Plan Mode / 知识系统 / 会话恢复</td>
+<td>Ch.19-22 / Ch.34-36</td>
+</tr>
+</tbody>
+</table>
+<p>对照这两张表可以看出 Part 2 的定位：它把「模型与工具之间的通信主轴」打通到了可用于生产工作流的程度——多供应商注册、错误分类、流式 chunk 处理、orphan tool_call 修复、中止路径——但所有面向用户的能力（UI、权限、工具集、压缩、缓存、会话）尚未涉及。下一部分将离开 Agent Loop 引擎进入工具系统（Ch.12-22），本章的分类器把错误拦在了 API 层，而工具系统将引入一整套新的错误来源——文件读写失败、命令执行超时、网页抓取被拒等——它们走的是工具结果路径而非 API 异常路径。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-10.html">← 流式 Chunk 处理：从模型输出到终端渲染</a>
+      <a class="next" href="ch-12.html">工具系统总览：从注册表到可用工具集 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#11-1-为什么要把-14-种异构错误归为一张判定表">11.1 为什么要把 14 种异构错误归为一张判定表</a></li>
+      <li class="lv2"><a href="#11-2-解包嵌套错误-sdk-包装层下的真实信息">11.2 解包嵌套错误：SDK 包装层下的真实信息</a></li>
+      <li class="lv2"><a href="#11-3-两类需要预处理的错误">11.3 两类需要预处理的错误</a></li>
+      <li class="lv2"><a href="#11-4-永久错误的-http-层短路">11.4 永久错误的 HTTP 层短路</a></li>
+      <li class="lv2"><a href="#11-5-sdk-内部重试与中止信号">11.5 SDK 内部重试与中止信号</a></li>
+      <li class="lv2"><a href="#11-6-输出截断与内容审核">11.6 输出截断与内容审核</a></li>
+      <li class="lv2"><a href="#11-7-从内部异常到用户提示">11.7 从内部异常到用户提示</a></li>
+      <li class="lv2"><a href="#11-8-小结">11.8 小结</a></li>
+      <li class="lv3"><a href="#part-2-对照-hello-agent-填上的部分">Part 2 对照：Hello Agent 填上的部分</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

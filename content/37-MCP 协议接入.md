@@ -1,0 +1,891 @@
+# 第 37 章 MCP 协议接入
+
+
+
+上一章讲完了长期事实（`AGENTS.md` / `auto.md`）如何注入 system prompt，那是扩展模型知识的路径。本章讲的 MCP 是另一条路径，扩展的是模型工具集本身。一个最小的 CLI 也许只内置十几个文件 / shell / web 工具，但用户想让模型直接读 Sentry issue、提交 GitHub PR、查 Linear 任务时，内置工具不可能覆盖每一家服务的 API。MCP 协议就是为这条扩展路径设计的：CLI 只实现一次 client，任何符合 MCP 规范的 server 都能即插即用。X-Code CLI 的 MCP 实现分布在 `packages/core/src/mcp/` 下十多个文件中，协议层依赖官方 `@modelcontextprotocol/sdk`，业务层从配置加载、信任校验、工具命名、权限分发到 OAuth 流程全部自己实现。本章将分为如下几个部分进行介绍。
+
+- 37.1 节以 Sentry 为例，从用户视角走完一次端到端 MCP 调用。
+- 37.2 节把同一个例子在协议层展开，展示 client 和 server 之间实际交换的 JSON-RPC 字节。
+- 37.3 节用不到 40 行代码实现一个最小 MCP server，让协议交互完全闭环。
+- 37.4 节讨论 MCP 的定位：为什么内置工具和 MCP 工具的边界是「通用底层 vs 领域专用」。
+- 37.5 节拆解协议层（SDK）与业务层（自研）的分工。
+- 37.6 节说明传输选择（stdio / Streamable HTTP）以及为什么不接入 SSE。
+- 37.7 节讲解工具集在启动时一次性发现、会话内保持冻结的设计，以及 `/mcp refresh` 的热加载机制。
+- 37.8 节展开 `<server>__<tool>` 命名规则的每一步决策：分隔符、超长截断、跨 server 同名消歧。
+- 37.9 节讨论项目级配置的信任授权机制。
+- 37.10 节讲解 MCP 工具独立的 ask-first 权限模型和 always-allow 持久化。
+- 37.11 节以 Sentry 为例走完 OAuth 2.1 的三阶段流程：准备、授权、换取令牌。
+- 37.12 节说明为什么把 MCP 状态拆分到四个独立文件而非合并存储。
+- 37.13 节给出本章小结。
+
+> AI 知识背景：MCP 是什么
+>
+> MCP（Model Context Protocol）是 Anthropic 在 2024 年 11 月开源的协议规范，底层用 JSON-RPC 2.0 做 wire protocol。它定义了「AI 应用」和「工具供应方」之间的标准接口，server 可以暴露三类原语：tools（可调用函数）、resources（可读数据）、prompts（对话模板）。2025 年陆续被主流 AI Coding CLI 客户端采纳，公开 server 已达数百量级，覆盖错误监控、项目管理、设计协作、数据库、内部 API 等领域。
+>
+> MCP 跟编辑器领域的 LSP（Language Server Protocol）形态接近。相同点在于：都把「工具供应方」和「消费方」解耦，定义一套稳定的 RPC 协议，一方实现一次、另一方接入一次，中间走 stdio 或 socket 传输 JSON-RPC 消息。不同点有两个：LSP 服务的对象是 IDE 代码编辑功能（补全、跳转、诊断），协议本身耦合代码语义（symbol / range / diagnostic）；MCP 服务的对象是 LLM 调用，协议保持语义中立，只约定「调函数 / 读数据」两类原语，具体语义由 server 端的 description 字符串告诉模型。
+>
+> <!-- analogy: mcp-lsp -->
+
+## 37.1 一次完整的 Sentry MCP 调用走查
+
+本节以 sentry server 为例。Sentry 是一个错误监控产品：开发者把它的 SDK 接进生产代码后，运行时的异常和崩溃会自动上报、按 issue 聚合，每条 issue 附带 stack trace、影响用户数、发生时间、关联 release 等信息，方便排查根因。Sentry 官方提供 MCP server（`https://mcp.sentry.dev/mcp`），接入后模型能直接读 issue 详情、检索事件、查询项目元数据，这是典型的「领域专用第三方服务」接入场景。
+
+先把端到端流程走一遍。添加一个 MCP server 有两条路径，二选一即可。路径 A 是用 slash 命令，在 CLI 里执行：
+
+```text
+/mcp add --http sentry https://mcp.sentry.dev/mcp
+```
+
+CLI 会把这条配置写到 `~/.x-code/config.json`（`~` 在 Windows 上对应 `C:\Users\<用户名>\`），并提示执行 `/mcp refresh` 或重启生效。路径 B 是手动编辑配置文件，直接改 `~/.x-code/config.json`：
+
+```jsonc
+{
+  "mcpServers": {
+    "sentry": {
+      "url": "https://mcp.sentry.dev/mcp",
+    },
+  },
+}
+```
+
+两条路径最终生成的配置文件等价，slash 命令只是把参数翻译成 JSON 对象写入配置文件。
+
+启动 CLI 后执行 `/mcp list`，得到的状态是：
+
+```text
+MCP servers:
+  sentry     needs auth — run /mcp auth sentry to log in
+```
+
+`needs_auth` 表示连上了协议元数据端点、但没有可用 token，HTTP MCP server 第一次访问通常如此。按提示执行 `/mcp auth sentry` 走完 OAuth 流程（本章末尾会拆解），再次执行 `/mcp list`：
+
+```text
+MCP servers:
+  sentry     connected — 14 tools, 0 resources
+```
+
+14 个工具已经注入 system prompt。现在直接对话：
+
+```text
+> 分析 https://your-org.sentry.io/issues/12345/ 这条 issue 可能的根因
+```
+
+模型在终端面板上会先列出工具调用、再给结论：
+
+```text
+● sentry__find_organizations(your-org)
+  ⎿  Organizations
+     ... +7 lines (1.3s)
+
+● sentry__get_sentry_resource(issue-12345)
+  ⎿  Issue DXSXT-APP-T in your-org
+     Description: OutOfMemoryError: Failed to allocate ...
+     ... +171 lines (15.4s)
+
+  根据 stack trace,这条 OOM 发生在 MediaCodec 视频解码路径,
+  影响 613 个用户,主要在 2-4GB RAM 的 Android 设备 ...
+```
+
+几个细节：工具名带 server 前缀（`sentry__find_organizations` 而不是裸的 `find_organizations`），前缀既能防止跨 server 同名冲突，也让模型直接从工具名识别「这工具属于 sentry」。首次调用某工具时弹出权限对话框，用户选「始终允许」会写入 `~/.x-code/mcp-permissions.json`，之后该工具不再触发对话框。结果通过 tool-result 消息回到上下文，模型按结果继续推理，跟内置工具走完全相同的 Agent Loop 流程（Ch.08）。
+
+这就是 MCP 在 CLI 里的实际用法。后面几节将展开讨论为什么这么设计、具体怎么实现。
+
+## 37.2 协议层字节级走查
+
+上一节从用户视角走完了整个 MCP 流程：写配置、执行 `/mcp auth` 获取令牌、在权限对话框里选允许、在终端面板上看到工具调用结果。但 client 和 server 之间究竟交换了什么消息、模型在 API 请求里看到的工具列表是什么形态、`sentry__find_organizations` 这个名字怎么从模型传到 Sentry 后端再传回来，这些还没有展开。本节沿着 Sentry 这个例子，从启动阶段的协议握手一路追到工具调用完成，把网络层的细节完整走一遍。
+
+MCP 在传输层使用 JSON-RPC 2.0 协议，每条消息都是一个 JSON 对象，包含版本号（`jsonrpc:"2.0"`）、请求编号（`id`）、方法名（`method`）或应答字段（`result` / `error`）。传输方式有两种：标准输入输出（stdio）模式把每条 JSON 用换行符分隔，依次写入子进程的 stdin 和 stdout；HTTP 流式（Streamable HTTP）模式把请求发给 server，server 用分块传输回传应答。本节以 HTTP 模式为例，stdio 模式的消息格式完全一致，区别仅在于少了 HTTP 头部。
+
+### 启动期间：initialize + tools/list
+
+CLI 启动后，MCP client 从配置中读到 Sentry server 的 URL，通过 SDK 创建 `StreamableHTTPClientTransport` 并调用 `client.connect(transport)`。SDK 内部首先发出 `initialize` 请求，声明 client 的身份和支持的能力：
+
+```json
+// → client 发(POST https://mcp.sentry.dev/mcp)
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2025-03-26",
+    "capabilities": {},
+    "clientInfo": { "name": "x-code-cli", "version": "0.3.3" }
+  }
+}
+```
+
+server 返回：
+
+```json
+// ← server 返回
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "protocolVersion": "2025-03-26",
+    "capabilities": { "tools": {}, "resources": {} },
+    "serverInfo": { "name": "sentry-mcp", "version": "1.0.0" }
+  }
+}
+```
+
+这一步双方确认了 server 暴露的原语类型。从应答可以看到，该 server 支持工具（tools）和资源（resources）两类原语，不支持提示词模板（prompts）。X-Code CLI 后续只查询工具列表和资源列表，不查询提示词模板列表。不过当前这并不是协议协商的结果——CLI 端硬编码只发这两种查询——原因是产品还没有桥接 prompts 这一类原语（37.3 节会展开）。`capabilities` 字段目前更多是协议层面的扩展预留：未来新增原语类型时，server 在此声明支持范围，client 按声明决定调用哪些方法。
+
+接着 client 发送 `tools/list`：
+
+```json
+// → client 发
+{ "jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {} }
+```
+
+server 返回 14 个工具描述。下面只展示其中一个，另外 13 个结构相同，包含 `name`、`description`、`inputSchema` 三个字段：
+
+```json
+// ← server 返回(只保留 find_organizations 一项)
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "tools": [
+      {
+        "name": "find_organizations",
+        "description": "List Sentry organizations the authenticated user has access to. Use this first to discover the organization slug needed by other tools.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      }
+    ]
+  }
+}
+```
+
+到这里 CLI 已经拿到全部工具元信息（名字、给模型读的 description、参数 JSON Schema）。这就是「启动时一次性发现、会话内冻结」在协议层的依据：两次 JSON-RPC 往返（`initialize` + `tools/list`）就能拿全，会话期间不再查询。
+
+### 工具描述如何进入模型的工具集
+
+CLI 获取这 14 条工具描述后，做两件事。第一，给每个工具名加上 server 前缀——例如 `find_organizations` 变成 `sentry__find_organizations`——避免不同 server 之间的同名冲突（详见 37.8 节）。第二，在注册表里同时记录加前缀后的名字（供模型识别和路由使用）和 server 端原始名字（后续调用 server 时还原），连同工具描述和参数结构一起存入。
+
+构造下一轮 API 请求时，CLI 把内置工具和注册表里的所有 MCP 工具合并成一个数组，一起传给模型。模型在 API 请求里看到的工具列表大致如下：
+
+```json
+// X-Code CLI → Anthropic API(简化版)
+{
+  "model": "claude-sonnet-4-6",
+  "tools": [
+    { "name": "readFile", "description": "...", "input_schema": {...} },
+    { "name": "writeFile", "description": "...", "input_schema": {...} },
+    { "name": "shell", "description": "...", "input_schema": {...} },
+    {
+      "name": "sentry__find_organizations",
+      "description": "List Sentry organizations the authenticated user has access to.",
+      "input_schema": { "type": "object", "properties": {}, "required": [] }
+    }
+  ],
+  "messages": [...]
+}
+```
+
+模型并不知道哪些工具来自 MCP。`sentry__find_organizations` 在 API 眼里跟其他工具没区别，只是名字里多了一对 `__`。模型靠 `description` 判断「这个工具是做什么的、什么时候该调」，server 端的 description 写得越清楚，模型选对的概率越高。这也意味着内置工具和 MCP 工具在描述质量上的控制权完全不同（37.4 节会展开讨论）。
+
+> 关于本节 JSON 示例的字段命名：`tool_use` / `tool_result` / `input_schema` 是 Vercel AI SDK 在业务层暴露的统一形态，不一定是底层线上字节流的字面形态。换用 OpenAI API Key 时，OpenAI 实际回传的是 `tool_calls: [{ id, type: 'function', function: { name, arguments } }]`，工具结果用 `role: 'tool'` 消息发回；Google 则是 `functionCall` / `functionResponse`。SDK 把三家协议都翻译成上面这种统一形式给 CLI 用，业务层代码完全不必区分。各供应商工具格式的字段差异、SDK 怎么做统一抽象、`providerOptions` 怎么透传供应商专属参数，详见 Ch.07。
+
+### 模型决定调用：tool_use → tools/call
+
+用户输入「分析 issue 12345 的根因」后，模型在响应里产生一个 `tool_use`：
+
+```json
+// X-Code CLI(响应里的 content 块)
+{
+  "type": "tool_use",
+  "id": "toolu_01ABC123",
+  "name": "sentry__find_organizations",
+  "input": {}
+}
+```
+
+X-Code CLI 收到这个工具调用请求后做三件事。（1）在注册表中查找：名字命中 MCP 条目，确认走 MCP 调用路径。（2）弹出权限对话框（仅当用户之前没选过「始终允许」时）。（3）通过 MCP client 向 server 发起调用。关键细节：发给 server 的工具名要还原为原始名 `find_organizations`，而不是加了前缀的 `sentry__find_organizations`：
+
+```json
+// X-Code CLI → sentry server(POST https://mcp.sentry.dev/mcp)
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "find_organizations",
+    "arguments": {}
+  }
+}
+```
+
+为什么要还原为 rawName：MCP server 只知道自己暴露的 `find_organizations`，并不知道 callable name 里被加了什么前缀。`sentry__` 前缀是 CLI 单方面的命名空间管理，供模型识别、供 registry 路由。如果要 server 配合，每个 server 都得知道自己被 CLI 加了什么前缀，等于把命名空间冲突的问题转嫁给 server 作者。registry 同时保留 `callableName` 和 `rawName` 两个字段，正是为此预留。
+
+server 处理完请求（实际是 Sentry 后端查询了一次用户的 organization 列表），返回：
+
+```json
+// sentry server → X-Code CLI
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Organizations:\n  - your-org (your-org)\n  - team-2 (team-2)"
+      }
+    ],
+    "isError": false
+  }
+}
+```
+
+`content` 是一个数组，可以包含 `text` / `image` / `resource_link` 等多种类型；`isError: true` 表示工具内部失败（参数错误、上游 API 报错等），但不通过 JSON-RPC `error` 字段返回。MCP 把「工具调用失败」建模成「正常完成但语义为错」的响应，使模型可以在下一轮基于错误信息继续推理。
+
+### tool_result 回到下一轮 API 请求
+
+X-Code CLI 把 server 返回的 `content` 数组拼成字符串（图片等非文本类型另作处理），封装成 Anthropic API 所需的 `tool_result` 块，加入下一轮请求的 `messages`：
+
+```json
+// 下一轮 API 请求的 messages 末尾追加这一项
+{
+  "role": "user",
+  "content": [
+    {
+      "type": "tool_result",
+      "tool_use_id": "toolu_01ABC123",
+      "content": "Organizations:\n  - your-org (your-org)\n  - team-2 (team-2)"
+    }
+  ]
+}
+```
+
+
+模型收到 `tool_result` 后继续推理，可能再调用一次 `sentry__get_sentry_resource(issue-12345)` 获取具体 issue 的细节，重复「tool_use → registry 查询 → tools/call → content → tool_result」的过程，直到模型不再发起新调用、给出最终自然语言答复。
+
+### 整条链路一览
+
+把上述所有步骤连起来，沿着时间轴看就是这样一张时序图：
+
+```text
+   CLI            MCP client       Anthropic API     sentry server
+    │                 │                  │                  │
+    │  ──── 启动期间(每个 MCP server 各执行一次) ────       │
+    │ ── connect ──→  │                  │                  │
+    │                 │ ── initialize ───────────────────→  │
+    │                 │ ←──── serverInfo + capabilities ──  │
+    │                 │ ── tools/list ───────────────────→  │
+    │                 │ ←──── 14 个工具 (name/desc/schema) ─│
+    │ ←─ 14 工具 ──── │                  │                  │
+    │ 重命名 sentry__<name> 存入 registry │                  │
+    │                 │                  │                  │
+    │  ─────── 每轮对话(模型决策点) ──────                  │
+    │ ── 请求 (tools = 内置 + 所有 MCP) ─→│                  │
+    │ ←─ 响应 (tool_use: sentry__find_organizations) ──     │
+    │ 查 registry → 命中 MCP → 取 rawName='find_organizations'│
+    │ ── callTool ──→ │                  │                  │
+    │                 │ ── tools/call ───────────────────→  │
+    │                 │ ←──── content 数组 ───────────────  │
+    │ ←─ content ──── │                  │                  │
+    │ 封装为 tool_result,加入下一轮 messages                 │
+    │ ── 下一轮请求 ─────────────────────→│                  │
+    │       (模型继续推理或给出最终答复)   │                  │
+    ▼                 ▼                  ▼                  ▼
+```
+
+可以看到 MCP client 在整个链路里是一个纯粹的协议翻译器：把 LLM 发出的 `tool_use` 译成 JSON-RPC `tools/call`，把 server 返回的 `content` 译回 LLM 能理解的 `tool_result`。它不参与模型决策、不修改工具语义、不缓存任何业务数据，只负责「用 MCP 协议向 server 表达 LLM 的意图，用 LLM 能理解的格式回传 server 的应答」。
+
+理解了这条链路再读后面的小节会容易很多：命名空间解决 registry 路由阶段的名字冲突；权限是在 tool_use → tools/call 之间设的拦截点；OAuth 解决首次访问 server 时如何获取访问令牌；信任对话框控制启动期哪些 server 允许被加载。每一处业务层设计都对应链路里某个具体节点的需求。
+
+## 37.3 实现一个最小 MCP server
+
+前面通过 Sentry 的官方 server 把 client 一侧的链路完整走了一遍。本节将用不到 40 行代码写一个最小可运行的 MCP server，看完 server 端 SDK 长什么样，前面的协议交互就闭环了。
+
+### 三类原语：tools / resources / prompts
+
+在看代码之前，先把 server 端能暴露的三类内容讲清楚，后面 `capabilities` 字段的含义才有铺垫。
+
+（1）tools，可被模型主动调用的函数。每次调用对 server 来说就是收到一次 RPC，返回结果回到模型上下文。Sentry / GitHub / Linear 这种 MCP server 几乎全是 tools，本节实现的 time-server 也是这一类。
+
+（2）resources，通过 URI 暴露的可读数据片段。client 用 `resources/list` 拿目录、`resources/read` 按 URI 取内容。适合 server 把一份会持续变化的数据（项目配置、日志摘要、外部 API 的 schema 缓存等）暴露成端点让 client 主动读，免去模型每次都发起工具调用。
+
+（3）prompts，预制对话模板，带参数槽位。用户在 CLI 里通过 slash 命令选一个、填参，client 渲染后作为 user message 发给模型。把团队约定俗成的高质量提示词集中在 server 端，所有 client 共享一份。
+
+三类原语各自独立，server 可以把三类原语全暴露，也可以只挑其中一类（本节的 time-server 就只暴露 tools）。`capabilities` 字段就是 server 在 `initialize` 阶段向 client 声明「我支持哪几类原语」，让 client 不去调用未支持的方法。
+
+> X-Code CLI 对三类原语的支持范围
+>
+> 工具（tools）完整支持。每个连接成功的 server 暴露的工具，都按 `<server>__<tool>` 命名规则注入模型工具集（详见 37.5 节）。资源（resources）通过两个内置工具暴露给模型按需查阅：一个列出所有可用资源，一个按 URI 读取具体内容。CLI 不会自动把每个 resource 都灌进系统提示词——token 成本高且大多数 resource 与当前任务无关——而是让模型先列出目录、再按需读取。提示词模板（prompts）当前未实现，server 即便声明了该能力也会被忽略。
+
+### server 代码
+
+为了让示例聚焦在 MCP 协议本身，time-server 不调用任何外部网络服务，只暴露一个返回当前时间的工具 `get_current_time`。完整代码：
+
+> 源码：`time-server/index.ts`（独立项目）
+
+```ts
+import { Server } from '@modelcontextprotocol/sdk/server/index.js'
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js'
+
+// 1. 创建 server, 声明身份与能力(只暴露 tools, 不暴露 resources/prompts)
+const server = new Server({ name: 'time-server', version: '0.1.0' }, { capabilities: { tools: {} } })
+
+// 2. 注册 tools/list 处理器 —— 告诉 client 我有哪些工具
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: 'get_current_time',
+      description: 'Return the current time in ISO 8601 format.',
+      inputSchema: { type: 'object', properties: {}, required: [] },
+    },
+  ],
+}))
+
+// 3. 注册 tools/call 处理器 —— client 调用工具时返回什么
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  if (request.params.name === 'get_current_time') {
+    return { content: [{ type: 'text', text: new Date().toISOString() }] }
+  }
+  throw new Error(`未知工具: ${request.params.name}`)
+})
+
+// 4. 用 stdio transport 启动 —— server 通过 stdin 收请求、stdout 回响应
+const transport = new StdioServerTransport()
+await server.connect(transport)
+```
+
+整个 server 只做三件事：声明身份和 capabilities、向 client 公告自己提供的工具、被调用时返回结果。SDK 负责处理 JSON-RPC 编排、stdio 帧解析、错误包装这些底层细节，server 作者只需要实现业务逻辑。
+
+把上面的代码保存为 `time-server/index.ts`，再添加一个 `package.json`（声明 `@modelcontextprotocol/sdk` 依赖）和 `tsx` 启动方式，然后注册到 X-Code CLI：
+
+```text
+/mcp add time-server npx -y tsx /abs/path/to/time-server/index.ts
+```
+
+`/mcp add` 后面的命令是 stdio server 的启动方式，X-Code CLI 启动时会 spawn 这个子进程，通过 stdin/stdout 与之通讯。重启 CLI 后执行 `/mcp list`：
+
+```text
+MCP servers:
+  time-server  connected — 1 tool, 0 resources
+```
+
+现在直接问模型当前时间：
+
+```text
+> 现在几点了
+
+● time-server__get_current_time()
+  ⎿  2026-05-22T08:34:17.123Z
+
+现在 UTC 时间是 2026 年 5 月 22 日 08:34。
+```
+
+### 跟前面字节级走查的对应关系
+
+本节实现的 server 接到 client 的 `initialize` / `tools/list` / `tools/call` 请求时，回的就是前面字节级走查里看到的那种 JSON-RPC 消息，只是 `name`、`description`、`content` 换成了 time-server 自己的内容。
+
+协议层是 client 和 server 之间的契约，server 作者只负责写业务逻辑。SDK 的价值就是把这件事压到上面这 30 多行代码。Sentry / GitHub MCP 这种生产环境的 server 结构完全一样，只是工具数量更多，`tools/call` 处理器里多了调用外部 HTTP API、做权限校验、组织返回内容等这些步骤。本节的 time-server 是最小可运行的骨架，再往上扩充工具数量和业务逻辑就是生产级的 server。
+
+## 37.4 MCP 的定位：生态扩展口而非内置工具替代
+
+既然 MCP 接入第三方服务这么方便，那么一个自然的想法是：能不能把文件读写、shell 执行、网页抓取这些内置工具也改造成 MCP server，让 X-Code CLI 自身只保留 agent loop 框架，所有工具能力都通过 MCP 接入？这个方向在实际运行中会有三个具体的问题。
+
+（1）延迟累积。内置工具的调用是同进程函数调用，开销在微秒级别。MCP 工具的调用要走 stdio 子进程通讯或 HTTP 网络往返，单次多出 5-50 ms。单看一次调用这个差距不大，但一次对话里模型可能连续调用多次文件读取，累加起来就是几秒的额外延迟。
+
+（2）工具描述失去调优能力。内置工具的描述由 CLI 作者编写，可以跟系统提示词协同调优——描述里告诉模型什么时候该用这个工具、参数怎么填、有哪些约束条件，这些措辞直接影响模型选对工具的概率。改成 MCP 之后，工具描述由 server 作者编写，CLI 无法修改，只能在超过 200 字符时截断后透传。server 作者写的描述未必针对 X-Code CLI 的使用场景优化过，模型可能因为描述措辞不够精确而选错工具或传错参数。
+
+（3）权限模型无法区分读写。内置工具的语义对 CLI 是已知的：文件读取工具只读不写，可以自动放行；文件写入工具有副作用，需要用户确认；shell 工具按命令前缀做启发式判断。MCP 工具的语义对 CLI 是不透明的——CLI 看到一个叫 `list_issues` 的工具，无法判断它到底是只查询还是会修改服务端状态。在这种情况下，唯一安全的默认策略是每次调用都弹出权限对话框让用户确认。如果文件读取也走 MCP，用户每读一个文件都要点一次「允许」，体验会退化到不可用的程度。
+
+那么反过来，把 Sentry、GitHub、Linear 这些第三方服务直接内置进 X-Code 核心包行不行？同样不现实。以 Sentry 为例，把 Sentry SDK 打包进核心意味着 X-Code 要替每个用户做一系列决定：用 Sentry SaaS 还是用户自建的 self-hosted 实例？OAuth 申请哪些权限范围？查 issue 列表用哪个接口？这些决定因用户而异，CLI 不可能替所有人回答。
+
+两条路径各自的适用范围因此就很清楚了：底层、通用、需要精细调优的能力做成内置工具；领域专用、用户私有、第三方服务的能力通过 MCP 接入。下面这张表展示了两者的差异：
+
+<!-- check:ignore=punctuation -->
+
+| 维度                  | 内置工具                                                    | MCP 工具                                                                |
+| --------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 定位                  | 通用底层能力：文件读写、shell 执行、代码搜索、网页抓取      | 第三方服务连接器：Sentry / GitHub / Linear / 公司内部 API               |
+| 调用路径              | 同进程函数调用，开销在微秒级别                              | stdio 子进程或 HTTP 网络往返，单次多 5-50 ms                            |
+| 工具描述由谁写        | CLI 作者写，与系统提示词协同调优                            | server 作者写，CLI 只能截断到 200 字符后透传                            |
+| 工具语义对 CLI 是否透明 | 透明：文件读取只读、文件写入有副作用、shell 按前缀判断    | 不透明：CLI 无法判断一个 MCP 工具是否会修改服务端状态                   |
+| 权限模型              | 按工具名静态分类，只读工具自动放行，写工具走确认路径        | 一律默认弹出权限对话框，无法预判副作用                                  |
+| 工具描述的 token 成本 | 系统提示词里固定一份，与对话历史无关                        | 每个 server 暴露若干工具，描述和参数结构全部进入提示词，随接入 server 数量线性增长 |
+
+> 内置工具和 MCP 工具的功能覆盖范围有时会重叠
+>
+> 例如内置的 shell 工具加上 `gh` 命令行也能查 GitHub PR，接入 GitHub MCP server 之后同样能查。CLI 不强制模型走某一条路径，具体选哪条由模型根据各自的工具描述判断。
+
+## 37.5 协议层依托官方 SDK，业务层完整自研
+
+完全手写一个 MCP client 要做的事不少：JSON-RPC 2.0 消息的编排与解析、stdio 和 HTTP 两种传输的适配、启动阶段的 initialize 握手与能力协商、三类原语的请求与响应处理、OAuth 2.1 动态注册流程，再加上规范修订后的版本兼容。MCP 规范有 100 多页，逐条复刻既容易出错，又跟不上后续的版本修订。
+
+官方 `@modelcontextprotocol/sdk` 已经把这部分封装好，业务侧只负责装配：
+
+> 源码：`packages/core/src/mcp/client.ts`
+
+```ts
+import { Client } from '@modelcontextprotocol/sdk/client/index.js'
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
+import { VERSION } from '../version.js'
+
+const CLIENT_INFO = { name: 'x-code-cli', version: VERSION }
+const client = new Client(CLIENT_INFO, { capabilities: {} })
+const transport = isStdio
+  ? new StdioClientTransport({ command, args, env, cwd, stderr: 'pipe' })
+  : new StreamableHTTPClientTransport(new URL(url), {
+      requestInit: headers ? { headers } : undefined, // 把用户配的静态 header 注入每次请求
+      authProvider,
+    })
+
+await client.connect(transport, { signal: ctrl.signal })
+const tools = await client.listTools()
+```
+
+这十多行代码覆盖了从启动到拿到工具列表的全部协议交互，连 OAuth 流程都是 SDK 在连接过程中主动抛出未授权异常来触发的。协议层的事 SDK 已经做完了，但一个可用的 MCP 子系统还需要业务层补齐以下几项工作：
+
+<!-- check:ignore=punctuation -->
+
+| 业务层文件         | SDK 不做的事                                                                                 |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `loader.ts`        | 从 `~/.x-code/config.json` 读 `mcpServers`、做环境变量展开、并发连接全部 server              |
+| `trust.ts`         | 项目级配置首次加载时弹出信任对话框，授权结果持久化到 `~/.x-code/trusted-projects.json`       |
+| `name-mangling.ts` | server 名 + 工具名 → `<server>__<tool>` 形式的 callable name，处理冲突与超长截断             |
+| `registry.ts`      | 把所有 server 的工具合并成一张会话内冻结的注册表，接入主循环的工具集                        |
+| `permissions.ts`   | 每个 MCP 工具独立的「按次询问 / 本次会话 / 永久允许」三档决策，持久化到 `mcp-permissions.json` |
+| `oauth/`           | OAuth 2.1 的本地 callback server、token 与 client_info 持久化到 `mcp-auth.json`              |
+
+边界很清楚：MCP 规范明文规定的事归 SDK（JSON-RPC 编排、传输、initialize、tools/list、tools/call、OAuth token endpoint 调用），「用户体验 / 持久化 / 权限 / 信任」这几类规范没约束的事归业务层。
+
+这样划分的好处是：SDK 后续做版本兼容升级时，改动只发生在协议层一边，业务层的配置加载、权限决策、token 持久化都不必跟着改。
+
+## 37.6 传输选择：stdio 与 Streamable HTTP
+
+要接入一个新的 MCP server，首先要确定传输方式（transport）。MCP 现行规范定义了两种传输方式：stdio 模式通过本地子进程的标准输入输出收发消息，适合 server 实现可以装在用户本地的场景；Streamable HTTP 模式通过 HTTP 请求与远程 server 通讯，适合 SaaS 服务或部署在远端的 server。选择哪一种，可以按下面的决策树判断：
+
+**Q1**：server 实现能装在用户本地吗（npx package / 二进制 / 一个本地脚本）？
+
+■ 是 → 用 stdio。X-Code 启动时 spawn 子进程，通过 stdin/stdout 收发 JSON-RPC。前面的 time-server 就是这种形态，部署最轻量、零网络依赖。
+
+■ 否（server 部署在远端 / 是 SaaS 服务）→ 跳 Q2
+
+**Q2**：server 走 HTTP，需要鉴权吗？
+
+■ 需要 OAuth（用户身份登录）→ 用 Streamable HTTP，通过 `/mcp auth <name>` 走完 OAuth 2.1 流程（37.11 节会拆解）。Sentry / Linear / GitHub 这类 SaaS 走这条
+
+■ 仅需静态 header（API Key / 内网 token）→ 用 Streamable HTTP，通过 `--header "K: V"` 注入静态请求头
+
+**Q3**：用户希望团队共享这份接入配置吗？
+
+■ 是 → 加 `--scope project`，把配置写到项目级文件 `<仓库根目录>/.x-code/config.json`，提交到 git 让协作者克隆后即用
+
+■ 否 → 默认写到用户级配置 `~/.x-code/config.json`
+
+X-Code 的 config schema 用一对互斥字段对应 Q1 的两个分支：`command` 填 stdio 启动命令、`url` 填 HTTP 地址，两者必须二选一：
+
+> 源码：`packages/core/src/mcp/config-schema.ts`
+
+<!-- check:ignore=code-block-size -->
+
+```ts
+const serverSchema = z
+  .object({
+    command: z.string().min(1).optional(), // 有 command → stdio
+    args: z.array(z.string()).optional(),
+    env: z.record(z.string(), z.string()).optional(),
+    cwd: z.string().optional(),
+    url: z.string().url().optional(), // 有 url → http
+    headers: z.record(z.string(), z.string()).optional(),
+    timeout: z.number().int().positive().optional(),
+    enabled: z.boolean().optional(), // 默认 true,设 false 跳过此 server(registry 显示 disabled)
+  })
+  .superRefine((v, ctx) => {
+    const hasCommand = typeof v.command === 'string'
+    const hasUrl = typeof v.url === 'string'
+    if (hasCommand && hasUrl) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'mcpServers entry has both `command` and `url` — set only one' })
+    }
+    if (!hasCommand && !hasUrl) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'mcpServers entry must set either `command` (stdio) or `url` (http)' })
+    }
+    // Cross-field: HTTP-only fields on stdio / stdio-only fields on HTTP → reject early
+    if (hasCommand && typeof v.headers !== 'undefined') {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: '`headers` is only valid for HTTP servers' })
+    }
+    if (hasUrl && (v.args || v.env || v.cwd)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: '`args`/`env`/`cwd` are only valid for stdio servers' })
+    }
+  })
+```
+
+`/mcp add` 子命令把这套决策包装成两条命令路径：
+
+```text
+# stdio (本地子进程, 用 --env 注入子进程环境变量, 用 --scope 决定写哪份配置)
+/mcp add github --env GITHUB_PERSONAL_ACCESS_TOKEN=ghp_xxx -- npx -y @modelcontextprotocol/server-github
+
+# Streamable HTTP (远程 SaaS, 后续 /mcp auth 走 OAuth)
+/mcp add --http sentry https://mcp.sentry.dev/mcp
+```
+
+MCP 规范里还有一种基于 SSE 的传输，但规范修订时已被标记为 deprecated。X-Code 不实现 SSE 的原因有两个：新发布的 server 几乎不会单独支持 SSE，仅支持 SSE-only 的旧 server 到 2025 年已是极少数；Streamable HTTP 在大多数场景下能覆盖 SSE 的功能（单向流式响应），多接一种 transport 意味着多一份 transport 类、多写一份测试用例，投入产出不划算。
+
+## 37.7 工具集启动发现与会话冻结
+
+用户在配置文件里新增一个 MCP server 之后，自然期望不重启 CLI 就能用上新工具。最直接的实现方式是监听配置文件的变化，文件一改就重新向所有 server 查询工具列表并替换注册表，表面上用户体验更顺滑。
+
+但这种自动热加载在 X-Code CLI 的场景下有一个隐藏的代价：提示词缓存（prompt cache）失效。前面在 Ch.33 讨论过，多家 OpenAI 兼容的模型供应商（DeepSeek、Moonshot、通义千问、智谱、xAI）使用隐式前缀缓存，要求系统提示词和工具集描述在一次会话内保持字节级稳定才能命中缓存。工具列表属于这个前缀的一部分，配置文件一变，工具列表跟着变，前缀就变了，下一轮请求的缓存全部失效，token 成本翻倍、首字延迟上升。用户在保存配置文件的那一刻并不知道这件事，一次看似无害的保存操作就让接下来的对话贵了几倍。
+
+X-Code CLI 选了相反的方向：启动时一次性发现，会话期间冻结；热加载靠 `/mcp refresh` 显式触发，提示文案明确告诉用户 cache 会 miss 一次，把成本暴露在用户面前，而不是让它悄悄发生。
+
+具体加载在 `loader.ts`：
+
+> 源码：`packages/core/src/mcp/loader.ts`
+
+<!-- check:ignore=code-block-size -->
+
+```ts
+export async function loadMcpServers(options: LoadOptions): Promise<LoadResult> {
+  // Merge three layers (project goes through trust gate); order: user → plugin → project,
+  // later entry wins on same key (project config overrides any source)
+  const merged: Record<string, McpServerConfig> = {
+    ...userParsed.servers,
+    ...(options.extraServers ?? {}), // plugin manifest declared mcpServers
+    ...projectServersToUse,
+  }
+
+  // Connect all enabled servers concurrently; single failure does not affect others
+  const tasks = Object.entries(merged).map(async ([name, raw]) => {
+    return connectOneServer(name, raw, options.oauthProviderFor)
+  })
+  const results = await Promise.all(tasks)
+
+  // Build registry; hash suffix on name collision
+  const tools: McpToolEntry[] = []
+  const taken = new Set<string>()
+  for (const r of results) {
+    for (const t of r.tools) {
+      const callable = buildCallableName(r.server.name, t.name, taken)
+      taken.add(callable)
+      tools.push({ callableName: callable, rawName: t.name, ... })
+    }
+  }
+  return { registry: new McpRegistry({ servers, tools, resources, ... }), ... }
+}
+```
+
+冻结在功能上也是安全的：MCP 规范不包含 server 主动推送工具变更的机制，一个 server 在启动时暴露了哪些工具，整个会话期间不会改变。因此冻结不会遗漏任何运行时新增的工具——这种情况在当前协议版本里不存在。
+
+热加载用 `/mcp refresh` 显式触发：重新读取配置文件，所有 server 全部断开重连，替换注册表，清空系统提示词缓存让下一轮重建。提示文案明确告诉用户缓存会失效一次：
+
+```text
+> /mcp refresh
+  ⎿  Re-reading MCP config and reconnecting servers...
+     Reloaded MCP — added: gh; reconnected: sentry.
+     Note: next message rebuilds the system prompt, so prompt-cache will miss once.
+```
+
+文案里 `reconnected:` 列出的是配置没变但仍然被重新连接的那一批 server。显示成「reconnected」而不是「unchanged」，是因为它们确实被断开并重新连接了一次，只是配置本身没有改动。
+
+如果想查看某个 server 当前暴露了哪些工具，可以执行 `/mcp tools [server-name]`（不带参数则列出全部）：
+
+```text
+> /mcp tools sentry
+  ⎿  MCP tools on sentry:
+       sentry__find_organizations — Find Sentry organizations the user belongs to.
+       sentry__get_sentry_resource — Fetch an issue/event/release by ID or URL.
+       sentry__search_issues — Search Sentry issues with the structured query DSL...
+       ... (共 14 个)
+```
+
+输出里每条描述会二次截断到 160 字符并折叠空白，让终端列表更紧凑（与模型侧看到的 200 字符截断规则独立，两者不同步）。
+
+另外在配置里把某个 server 的 `enabled` 设为 `false`，加载器会跳过该 server 的连接，但 `/mcp list` 仍然会以 disabled 状态显示这一条。
+
+```jsonc
+{
+  "mcpServers": {
+    "linear": {
+      "url": "https://mcp.linear.app/mcp",
+      "enabled": false, // 暂时不连,但保留配置以便后续 enable
+    },
+  },
+}
+```
+
+## 37.8 工具命名与冲突消歧
+
+一个开发者同时接入 sentry、github、linear、context7 这样几个 MCP server 是常见的配置。当多个 server 暴露的工具名称相同时——例如 github 和 linear 都有 `search`——模型发起调用后，注册表无法判断该把请求派给哪个 server。因此需要一套命名规则来区分不同 server 的同名工具。
+
+最容易想到的方案是在工具名前加上 server 名作为前缀。方向没问题，但具体实现需要回答三个问题：用什么字符做分隔符、拼出来的名字超长怎么办、两个 server 的工具名加完前缀后仍然相同怎么办。完整的命名规则实现在 `buildCallableName` 函数中：
+
+> 源码：`packages/core/src/mcp/name-mangling.ts`
+
+<!-- check:ignore=code-block-size -->
+
+```ts
+export const MCP_MAX_NAME_LEN = 64
+
+export function buildCallableName(serverName: string, rawToolName: string, existing: ReadonlySet<string>): string {
+  const s = sanitize(serverName) // [^A-Za-z0-9_] → '_'
+  const t = sanitize(rawToolName)
+  let name = `${s}__${t}`
+
+  // Truncate with 6-char content hash to prevent two long names from colliding at the same prefix
+  if (name.length > MCP_MAX_NAME_LEN) {
+    const hash = shortHash(`${serverName}::${rawToolName}`, 6)
+    const room = MCP_MAX_NAME_LEN - 1 - hash.length
+    name = `${(s + '__' + t).slice(0, room)}_${hash}`
+  }
+
+  // Cross-server name collision: append server hash suffix to the later-loaded tool;
+  // candidate may still hit 64-char limit, so slice again
+  if (existing.has(name)) {
+    for (let extra = 4; extra <= 12; extra++) {
+      const suffix = '_' + shortHash(serverName, extra)
+      const candidate =
+        name.length + suffix.length <= MCP_MAX_NAME_LEN
+          ? name + suffix
+          : name.slice(0, MCP_MAX_NAME_LEN - suffix.length) + suffix
+      if (!existing.has(candidate)) return candidate
+    }
+    // pathological fallback: hash length up to 12 still collides → hash name+now() for uniqueness
+    return name.slice(0, MCP_MAX_NAME_LEN - 9) + '_' + shortHash(name + Date.now(), 8)
+  }
+  return name
+}
+```
+
+下面逐个说明这三个问题的解决方式。
+
+### 分隔符：为什么用双下划线
+
+最自然的写法是用单下划线拼接，例如 `fs_read_file`。但 MCP server 暴露的工具名本身通常就带单下划线（`read_file`、`list_issues`），拼出来的 `fs_read_file` 有 3 个下划线，无法判断哪一段是 server 名、哪一段是工具名。需要从完整名字反推回 server 来做日志归类或错误定位时，这条信息就丢失了。
+
+X-Code CLI 选择双下划线 `__` 作为分隔符：`fs__read_file`、`sentry__find_issues`。MCP 生态约定 server 端工具名不使用 `__`，因此按 `__` 切分就能准确拆回 server 名和工具名。用点号（`fs.read_file`）读起来更像命名空间，但主流模型供应商的工具名只允许字母、数字、下划线和连字符，点号是非法字符，API 层会直接拒绝。
+
+### 超长名字的处理
+
+各家模型供应商对工具名长度的限制不同，OpenAI 的上限是 64 字符，Anthropic 和 Google 更宽松。为了跨供应商兼容，X-Code CLI 统一按 64 字符作为上限。当 server 名加工具名拼出来超过这个上限时，简单截断到 64 字符会导致名字相近的两个工具截断后完全相同，模型无法区分。代码中的处理方式是：名字超长时对完整的 server 名加工具名取一个 6 字符的短哈希，把前面的部分截短，末尾拼上这段哈希。这样即使两个工具的前缀相同，哈希部分也能把它们区分开，同时保证相同输入每次都得到相同的名字。
+
+### 跨 server 同名工具的消歧
+
+如果两个不同的 server 暴露了同名工具（例如 filesystem 和另一个自定义 server 都有 `read_file`），加完前缀后仍可能映射到同一个名字。遇到这种情况时，代码会给后加载的那个工具追加一段基于 server 名的短哈希后缀，最终结果形如 `fs__read_file_a3f9`——主体保持可读，末尾的哈希负责消歧。后缀基于 server 名而不是工具名生成，因为冲突的根源在于两个不同的 server 暴露了同名工具，用 server 的指纹消歧最直接。
+
+### 路由不看名字，看 registry
+
+写完命名规则，再看真正派发工具调用的逻辑。派发时并不依赖名字前缀来判断一个工具是否属于 MCP，而是直接查注册表里是否存在这条记录：
+
+> 源码：`packages/core/src/agent/tool-execution.ts`
+
+```ts
+// MCP 工具走专属权限路径(按工具弹权限框 + always-allow 文件)
+// 而不是 writeFile / edit / shell 那套规则
+if (ctx.options.mcpRegistry?.get(ctx.toolName)) {
+  await handleMcpToolCall(ctx, deferred)
+  return
+}
+```
+
+代码里没有按名字前缀做字符串匹配的判断，注册表是 MCP 工具集的唯一权威来源，名字前缀只是给模型看的视觉提示。这样做的好处是：后续如果把命名规则改成别的形态（去掉双下划线、换成其他分隔符），只需调整注册表的注册逻辑，派发那一行不必改动。
+
+## 37.9 项目级配置的信任授权
+
+X-Code CLI 支持三层 `mcpServers` 配置：用户级（`~/.x-code/config.json`）、插件贡献（插件 manifest 里声明的 `mcpServers`）和项目级（`<仓库根目录>/.x-code/config.json`）。其中项目级把团队共享的 MCP 配置跟项目代码一起提交到 git，例如某个仓库需要 Linear、Datadog、内部 API 三个 server，维护者写好配置提交，协作者克隆后即可直接使用。本节讨论的信任问题只针对项目级这一层（用户级和插件级各有不同的信任前置，见本节末尾）。
+
+但项目级配置引入了一个安全风险：stdio server 的 `command` 字段可以是任意命令。攻击者只需在仓库的 `.x-code/config.json` 里写入恶意命令，诱导目标克隆仓库并启动 CLI，就能在目标机器上执行任意代码。
+
+X-Code CLI 通过一道信任对话框来防范这个风险：
+
+> 源码：`packages/core/src/mcp/trust.ts`
+
+```ts
+export async function isProjectTrusted(projectPath: string): Promise<boolean> {
+  const normalized = normalize(projectPath) // win32 上 toLowerCase
+  const store = await readStore()
+  return store.trusted.some((e) => normalize(e.path) === normalized)
+}
+```
+
+第一次进入未信任的项目时，加载器在启动任何 server 子进程之前先弹出对话框：
+
+```text
+This project wants to load 3 MCP server(s):
+  • filesystem:  npx -y @modelcontextprotocol/server-filesystem .
+  • postgres:    docker run --rm -i custom-pg-mcp
+  • my-tool:     ./scripts/mcp-server.sh
+
+These commands will run on your machine. Trust only if you trust this project.
+
+  Trust this project       — 记住选择,下次直接加载
+  Skip project MCP         — 仅本次仅用户级配置生效
+  Exit X-Code              — 关闭 CLI 不加载任何 server
+```
+
+用户选 Trust 后路径写入 `~/.x-code/trusted-projects.json`：
+
+```jsonc
+{
+  "trusted": [{ "path": "/Users/me/projects/foo", "trustedAt": "2026-05-17T10:00:00Z" }],
+}
+```
+
+有几个细节值得说明。
+
+（1）路径精确匹配：信任 `/foo` 不代表信任 `/foo/sub`，避免父级目录的授权被子目录继承导致误授权。
+
+（2）Windows 大小写不敏感：路径归一化在 Windows 上会先转小写再比较，因为 NTFS 文件系统默认不区分大小写，同一个项目路径可能因为大小写不同而被当成两个不同的路径。
+
+（3）失败降级：如果对话框机制本身出问题（例如非交互式终端没有 TTY），加载器会降级到跳过项目级 server，而不是在无人确认的情况下默认信任。宁可少加载也不能绕过信任检查。
+
+（4）`/mcp add --scope project` 自动信任：用户主动执行这条命令本身就意味着明确同意在当前项目使用 MCP server，后续不再为这个项目重复弹出对话框。
+
+用户级配置不走这道信任检查，因为配置文件是用户自己编写的，信任是隐含的。插件贡献的 server 也跳过信任检查——用户执行 `/plugin install <id>` 那一刻已经表达了对该插件的信任，不必为同一个插件每次启动都重复弹出对话框。
+
+## 37.10 MCP 工具权限与 always-allow 持久化
+
+X-Code CLI 的内置工具按静态规则分类管理权限：文件读取和代码搜索类工具永远自动放行，文件写入和编辑类工具走用户确认路径，shell 工具按命令前缀做启发式判断（详见 Ch.29）。这套体系建立在一个前提上：工具名是已知的静态字符串，每个工具的行为对 CLI 透明。
+
+但这套规则无法直接应用于 MCP 工具。以下几种替代方案各有各的问题。
+
+（1）全 MCP 工具一律自动放行。用户接入 Sentry MCP 后，模型调用 `sentry__delete_issue` 会直接删除 issue，写类副作用完全没拦截。
+
+（2）全 MCP 工具一律拒绝（视为只读）。等同于接入 MCP 却无法使用，权限设计完全失败。
+
+（3）按工具名 pattern 区分读写。例如 `*_get_*` / `*_search_*` / `*_list_*` 视为只读自动放行，`*_create_*` / `*_delete_*` 视为写需要确认。但 server 作者的命名完全自由：`sentry__search_issues` 是只读、`linear__find_team` 可能创建新 team、`github__list_repositories` 是只读但参数里允许带 `?action=archive`，无法可靠归类。
+
+（4）让 server 在 description 里声明读写。要求 server 作者在每个工具 description 里写 `(readonly)` 或 `(mutating)`。但 X-Code 无法强制：server 是第三方代码，X-Code 改不了 server 作者的描述；即使强制，也等于把权限决定权下放给 server 作者，安全模型形同虚设。
+
+四种常见的归类方式都走不通，MCP 工具的语义对 CLI 而言永远是不透明的，唯一安全的默认策略是一律 ask-first，把决定权交给用户。因此走一条独立的权限路径：
+
+> 源码：`packages/core/src/mcp/permissions.ts`
+
+```ts
+export class McpPermissionStore {
+  private persisted: Set<string> | null = null // ~/.x-code/mcp-permissions.json
+  private session = new Set<string>() // 会话内"本次允许"
+
+  async isApproved(callableName: string): Promise<boolean> {
+    if (this.session.has(callableName)) return true
+    await this.ensurePersistedLoaded()
+    return this.persisted!.has(callableName)
+  }
+
+  async approvePermanently(callableName: string): Promise<void> {
+    await this.ensurePersistedLoaded()
+    this.persisted!.add(callableName)
+    this.session.add(callableName) // 立即生效,避免和文件写入竞态
+    await this.writePersisted() // 原子写 + 0600 权限
+  }
+}
+```
+
+每个 MCP 工具首次被模型调用时，若既不在 always-allow 集合里，也不在本次会话允许集合里，弹出对话框：
+
+```text
+Allow sentry__search_issues to run?
+  1. Yes               — 仅本次
+  2. Yes, always       — 持久化到 ~/.x-code/mcp-permissions.json
+  3. No                — 拒绝,返回 "Permission denied by user."
+```
+
+`mcp-permissions.json` 文件的结构如下：
+
+```jsonc
+{
+  "alwaysAllow": ["gh__search_issues", "sentry__find_organizations", "sentry__search_issues", "sentry__whoami"],
+}
+```
+
+与其他权限模式的关系：
+
+<!-- check:ignore=punctuation -->
+
+| 全局模式                        | MCP 工具行为                                                                                            |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `trustMode: true`               | 直接通过，不触发对话框                                                                                  |
+| `permissionMode: 'default'`     | 走上面的 ask / always-allow 决策                                                                        |
+| `permissionMode: 'acceptEdits'` | 仍走 ask。`handleMcpToolCall` 里没有 acceptEdits 分支，自然 fallthrough 到默认权限路径。`acceptEdits` 本来是「用户审过 plan、放行后续 writeFile/edit」的会话级模式切换，MCP 工具的副作用不可知，不该被这个豁免覆盖，因此「没写分支」正好是对的 |
+| `permissionMode: 'plan'`        | 一律拒绝。plan 模式应当只读，MCP 工具语义未知，默认归类为「可能写」                                     |
+
+> 典型反模式
+>
+> 想把 MCP 工具的权限规则合并进内置工具的权限规则表里「统一管理」，会发现该表要求工具名静态可枚举，而 MCP 工具名运行时才知道，放不进这个结构。强行加一条通配规则也不行——MCP 的 always-allow 是按单个工具粒度持久化的，内置工具的 acceptEdits 是按会话粒度的模式切换，两种权限语义混在一起，日后想给 MCP 加更细的策略（按 server 粒度或按 scope 粒度）就改不动。从一开始就拆成两份独立存储才是正确做法。
+
+## 37.11 OAuth 2.1 流程的时序设计
+
+stdio server 的鉴权依赖环境变量：通过 `--env KEY=VAL` 把凭证注入子进程（GitHub MCP 读 `GITHUB_PERSONAL_ACCESS_TOKEN`，数据库 server 读连接串），不涉及 OAuth。HTTP server 的鉴权采用标准 OAuth 2.1，完整流程涉及多个环节：client 第一次访问时向 auth server 自动注册自身（dynamic registration，动态注册），获得 `client_id` 和 `client_secret`；然后引导用户在浏览器里完成授权，通过本地回调服务器接收授权码；最后用授权码加 PKCE 校验码向 token 端点换取访问令牌。协议层的交互——动态注册、PKCE 校验、token 端点调用——由 SDK 完成。X-Code CLI 在此基础上实现业务层：token 与注册信息的本地持久化（写入 `mcp-auth.json`）、回调服务器的端口分配与生命周期管理、浏览器的打开时机控制、以及 `/mcp auth <name>` 命令的用户交互。
+
+这里第一次出现 PKCE（Proof Key for Code Exchange，RFC 7636），先简单介绍一下。PKCE 是 OAuth 2.1 强制要求的安全扩展，目的是防止授权码在传输过程中被截获后冒用。流程是这样的：client 在发起授权前先生成一个随机字符串作为校验码，把校验码的哈希值附在授权 URL 里发给 auth server；用户在浏览器里完成授权后，client 拿到授权码，连同校验码原文一起发到 token 端点；auth server 验证哈希匹配后才发放 token。这样即使授权 URL 泄露（浏览器历史、代理日志、抓包工具都可能记录），攻击者拿到授权码也换不到 token，因为校验码只存在 client 内存里。下面的流程走查会看到校验码在哪一步生成、在哪一步发送。
+
+上述业务逻辑集中在 OAuth provider 类中（源码在 `packages/core/src/mcp/oauth/provider.ts`），通过 SDK 定义的回调接口与协议层对接。下面仍以 Sentry 为例，从用户执行 `/mcp auth sentry` 开始，按时间顺序走完整个 OAuth 流程。流程分三个阶段：准备（启动回调服务器、动态注册）、授权（打开浏览器、接收授权码）、换取令牌（用授权码和校验码兑换 token）。
+
+### 准备阶段：启动回调服务器与动态注册
+
+用户执行 `/mcp auth sentry` 后，CLI 首先启动本地回调服务器（callback server）。回调服务器是一个临时的 HTTP 服务，监听在 `127.0.0.1` 的一个随机端口上（例如 54321），作用是在用户完成浏览器授权后，接收 Sentry 的 auth server 发回的授权码。端口随机分配是为了避免跟其他进程冲突，回调地址形如 `http://127.0.0.1:54321/callback`。回调服务器必须在 SDK 开始读取客户端元数据之前就启动好，因为 OAuth 动态注册要求注册时提交的回调地址与后续授权时使用的地址完全一致。
+
+> 源码：`packages/core/src/mcp/oauth/provider.ts` + `packages/core/src/mcp/client.ts`
+
+```ts
+async prepareForAuth(): Promise<void> {
+  this.interactive = true
+  await this.ensureCallbackServer()    // 在 SDK 读 clientMetadata 之前就启好
+}
+
+// client.ts: connectWithOAuth() 在 runOAuthDance() 前调用
+await provider.prepareForAuth()
+try {
+  return await this.runOAuthDance()
+} finally {
+  provider.setInteractive(false)
+}
+```
+
+回调服务器启动后，SDK 读取客户端元数据（此时回调地址已包含实际端口），然后向 Sentry 的 auth server 发起动态注册——把 CLI 的身份信息和回调地址提交上去——拿到 `client_id` 和 `client_secret`。注册信息由 provider 写入 `mcp-auth.json` 持久化，下次连接同一个 server 时跳过注册直接使用。
+
+### 授权阶段：打开浏览器与接收授权码
+
+动态注册完成后，SDK 用拿到的 `client_id`、回调地址和 PKCE 校验码的哈希值构造授权 URL。以 Sentry 为例，URL 大致形如：
+
+<!-- check:ignore=punctuation -->
+
+```text
+https://sentry.io/oauth/authorize?
+  response_type=code
+  &client_id=abc123
+  &redirect_uri=http://127.0.0.1:54321/callback
+  &code_challenge=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+  &code_challenge_method=S256
+  &state=xyz789
+```
+
+其中 `code_challenge` 是 PKCE 校验码的 SHA-256 哈希（本节开头介绍过），auth server 会记住这个值，后续换取 token 时用来验证。`redirect_uri` 指向本地回调服务器，与注册时提交的地址一致。
+
+SDK 把这个 URL 传给 provider 的授权重定向方法，provider 负责打开浏览器。在不同操作系统上打开浏览器的命令不同：macOS 用 `open`，Linux 按 `xdg-open` → `gio` → `wslview` 的顺序依次尝试。Windows 上不能用 `cmd /c start`，因为 `cmd.exe` 把 URL 里的 `&` 解释为命令分隔符，会在第一个 `&` 处截断 URL，导致 auth server 收到不完整的请求。X-Code CLI 改用 `rundll32 url.dll,FileProtocolHandler`，URL 原样透传。
+
+浏览器打开后，用户看到 Sentry 的授权页面。点击「允许」后，Sentry 把授权码附在 URL 参数里，让浏览器跳转回 `http://127.0.0.1:54321/callback?code=AUTH_CODE&state=xyz789`。回调服务器收到请求，取出授权码，流程进入最后阶段。
+
+### 换取令牌：授权码加校验码兑换 token
+
+回调服务器收到授权码后，provider 关闭回调服务器（端口不再需要），然后 SDK 向 Sentry 的 token 端点发起请求，同时附上授权码和 PKCE 校验码原文。auth server 对比校验码的哈希与授权 URL 中的 `code_challenge` 是否一致，验证通过后返回 access token 和 refresh token。provider 把 token 写入 `mcp-auth.json`，CLI 再次调用连接方法——这次 SDK 发现已有有效 token，连接成功，Sentry MCP server 进入可用状态。在 37.1 节看到的 `sentry__find_organizations` 等 14 个工具现在可以正常调用了。
+
+## 37.12 MCP 状态的四文件拆分
+
+MCP 子系统在运行过程中会产生四类持久化数据：server 配置、OAuth 凭证、工具权限白名单、项目信任记录。这四类数据的敏感度不同（配置可分享，token 和权限属机密），读写频率也不同（token 每隔几小时自动刷新，配置很少改动），因此 X-Code CLI 把它们拆到 `~/.x-code/` 下的 4 个独立文件，按各自的安全需求和读写模式分别管理：
+
+<!-- check:ignore=punctuation -->
+
+| 文件                              | 内容                                                             | 权限 | 写入时机                                                         |
+| --------------------------------- | ---------------------------------------------------------------- | ---- | ---------------------------------------------------------------- |
+| `config.json`                     | `mcpServers` 配置：server 名、命令/url、env、headers 等。用户级（`~/.x-code/`）和项目级（`<仓库>/.x-code/`）各一份 | 默认 | `/mcp add` / `/mcp remove` 写入，手动编辑也可                    |
+| `mcp-auth.json`                   | 每个 OAuth server 的 `url`（用来对比 server 是否改了端点） / `clientInformation`（动态注册结果含 `client_id`/`client_secret`) / `tokens`(access + refresh) / `tokensIssuedAt`（本地算 token 过期用）| 0600 | OAuth 流程 `saveTokens` / `saveClientInformation` 触发           |
+| `mcp-permissions.json`            | always-allow 工具名列表（`<server>__<tool>`)                     | 0600 | 用户在权限对话框选「始终允许」                                   |
+| `trusted-projects.json`           | 已信任的项目绝对路径列表 + 时间戳                                | 0600 | 用户在信任对话框选 Trust，或 `/mcp add --scope project` 自动写入 |
+
+`config.json` 用默认文件权限，用户可以把它放进 dotfiles 仓库做版本管理或直接分享给同事。其余三个文件都以 `0o600` 权限写入（仅当前用户可读写），因为它们包含 OAuth token、工具白名单或信任路径这类不应外泄的信息。`/mcp logout sentry` 只需删除 `mcp-auth.json` 中 sentry 对应的条目，不影响 `config.json` 里的 server 定义，下次执行 `/mcp auth sentry` 即可重新登录。
+
+## 37.13 小结
+
+本章讨论了 X-Code CLI 的 MCP 协议接入。MCP 是为生态留的扩展口，内置工具覆盖通用底层能力（文件 / shell / grep / 网页），MCP 接领域专用与长尾服务（Sentry / GitHub / Linear / 公司内部 API），两者边界清晰，各自的工具描述、token 成本、权限模型都按各自定位优化。协议层用官方 `@modelcontextprotocol/sdk` 处理 JSON-RPC 编排和传输，业务层自研加载 / 注册 / 命名空间 / 权限 / 信任 / OAuth 六层适配。传输只支持 stdio 与 Streamable HTTP，SSE 已在规范修订里标记为 deprecated 不予接入，按字段存在性（`command` vs `url`）区分两种传输。工具集在启动时一次性发现、会话内冻结，`/mcp refresh` 显式触发热加载（无论配置是否变化都全部重连），避免 prompt-cache 隐性失效。工具名 `<server>__<tool>` 防冲突，跨 server 同名和超长名走 hash 后缀；三类原语里 tools 完整支持、resources 通过两个内置工具暴露给模型按需查阅、prompts 未实现。项目级配置必须走信任对话框，`trusted-projects.json` 按绝对路径精确匹配，Windows 上做大小写不敏感归一化。MCP 工具永远 ask-first，独立的 `mcp-permissions.json` 持久化 always-allow，不挂在内置工具的 rules 表上；plan mode 下一律拒绝，acceptEdits 不豁免不透明的副作用。OAuth 流程按「准备 → 授权 → 换取令牌」三阶段推进：CLI 先启动本地回调服务器并完成动态注册，再打开浏览器让用户授权，最后用授权码和 PKCE 校验码向 token 端点兑换令牌，全程由 SDK 驱动、provider 提供本地存储和浏览器交互。MCP 状态拆到四个独立文件（config / auth / permissions / trust），按读写频率、敏感度和删除粒度分开管理。

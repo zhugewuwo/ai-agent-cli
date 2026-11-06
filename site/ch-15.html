@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>代码库探索：glob、grep 与 listDir - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li class="active"><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 15 章 代码库探索：glob、grep 与 listDir</h1>
+<p>模型在动手修改代码之前，需要先定位目标：哪个文件定义了目标函数？哪些文件调用了它？项目目录的结构是什么样的？X-Code CLI 为这三类需求各提供了一个专用工具：</p>
+<p>（1）<code>glob</code>——按文件名模式匹配文件路径</p>
+<p>（2）<code>grep</code>——按正则表达式搜索文件内容中的匹配行</p>
+<p>（3）<code>listDir</code>——列出指定目录的直接子项</p>
+<p>三个工具的实现代码都不算长，<code>glob</code> 和 <code>grep</code> 各不到 100 行，共用 <code>@vscode/ripgrep</code> 提供的 <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a> 二进制执行底层搜索；<code>listDir</code> 只有 30 行，直接调用 Node.js 内置的 <code>fs.readdir</code>。本章的重点不在实现代码本身，而在于这些「看似现成的 Unix 工具」被封装为面向大语言模型的工具接口时做出的一系列设计选择：默认参数如何选定、输出上限设为多少、错误信号如何传递、description 里需要写哪些禁令。这些选择直接影响模型在「搜索 → 决策 → 修改」链路上的准确性和效率。本章分为如下几个部分进行介绍。</p>
+<ul>
+<li>15.1 节用一个贯穿示例展示三件工具在一次搜索中如何协作。</li>
+<li>15.2 节讨论工具粒度的设计选择：三种意图为什么对应三个独立工具。</li>
+<li>15.3 节介绍 ripgrep 共用与路径解析缓存。</li>
+<li>15.4 节拆解 <code>glob</code> 的修改时间倒序排列与 catch-all 特殊处理。</li>
+<li>15.5 节讲解 <code>grep</code> 的三层截断与退出码语义翻译。</li>
+<li>15.6 节解释 <code>grep</code> description 中的禁用指令及其背后的原因。</li>
+<li>15.7 节介绍 <code>listDir</code> 的绝对路径策略与极简输出格式。</li>
+<li>15.8 节讨论工具执行过程中的进度上报机制。</li>
+<li>15.9 节给出本章小结。</li>
+</ul>
+<h2 id="15-1-贯穿示例-从一次搜索看三件工具如何协作">15.1 贯穿示例：从一次搜索看三件工具如何协作</h2>
+<p>假设用户在终端输入：</p>
+<blockquote>
+<p>帮我看看项目里所有用到 <code>formatDate</code> 的地方，看看能不能在不破坏旧调用的前提下加一个时区参数</p>
+</blockquote>
+<p>模型读完请求后，第一步不是动手改代码，而是先确认「哪些地方用到了 <code>formatDate</code>」。它发出一个 <code>grep</code> 工具调用：</p>
+<pre><code class="language-jsonc">{
+  &quot;name&quot;: &quot;grep&quot;,
+  &quot;args&quot;: { &quot;pattern&quot;: &quot;formatDate&quot;, &quot;glob&quot;: &quot;*.ts&quot; }
+}
+</code></pre>
+<p>X-Code CLI 收到调用后启动 ripgrep 子进程执行搜索，将匹配结果截断到 250 行上限后返回模型：</p>
+<pre><code class="language-text">src/utils.ts:42:export function formatDate(d: Date): string {
+src/utils.ts:43:  return d.toISOString().slice(0, 10)
+src/components/Header.tsx:8:import { formatDate } from '../utils'
+src/components/Header.tsx:31:  &lt;span&gt;{formatDate(post.createdAt)}&lt;/span&gt;
+src/api/posts.ts:15:import { formatDate } from '../utils'
+src/api/posts.ts:42:    publishedAt: formatDate(p.publishedAt),
+src/api/posts.ts:78:  date: formatDate(comment.date),
+</code></pre>
+<p>如果匹配总数超出上限，末尾还会追加一行提示：</p>
+<pre><code class="language-text">... [42 more lines not shown — at least 49 total matches, capped at 250.
+     Narrow your pattern or use glob to reduce results.]
+</code></pre>
+<p>模型读完这段结果就掌握了三个关键信息：<code>formatDate</code> 定义在 <code>utils.ts:42</code>，调用方分布在 <code>Header.tsx</code> 和 <code>posts.ts</code>，目前没有任何调用方传入时区参数。下一步它会调用 <code>readFile</code> 读取 <code>src/utils.ts</code> 的完整定义，再规划如何添加新参数以及是否需要修改现有调用方。如果模型还想了解项目的整体结构，可能会在 <code>grep</code> 之前先调用 <code>listDir</code> 查看 <code>src/</code> 目录下有哪些子目录，或者先用 <code>glob &quot;src/**/*.ts&quot;</code> 估算 TypeScript 文件的总数再决定是否需要按目录拆分搜索。三个工具往往组合使用，下面逐节展开它们各自的关键设计选择。</p>
+<h2 id="15-2-工具粒度-三种意图对应三个独立工具">15.2 工具粒度：三种意图对应三个独立工具</h2>
+<p>三种搜索能力也可以合成一个「全能搜索工具」，例如 <code>search({ files?, content?, dir? })</code>，通过参数组合覆盖所有场景。X-Code CLI 没有选择这条路，而是有意将其拆成三个独立工具。原因在于模型的决策路径在这三种场景下完全不同：使用 <code>glob</code> 时，模型已经知道想找什么类型的文件（「所有 <code>.ts</code> 文件」或「所有测试文件」），不关心文件内容；使用 <code>grep</code> 时，模型已经知道想找什么内容（「所有用到 <code>formatDate</code> 的地方」），不关心文件名模式；而 <code>listDir</code> 的典型使用场景是模型对项目结构一无所知，想先看一眼目录再决定下一步行动。</p>
+<p>如果将三者合成一个工具，模型在每次调用前都必须先在心智中完成一次场景分类——「我现在到底想做哪件事」，然后再去填写对应的参数组合。这种额外的认知负担会导致模型在简单查询中选错参数组合。三个工具分开之后，模型选择哪个工具本身就已经表达了它的意图，参数填写出错的概率大幅下降。这项设计原则和 Ch.20 todoWrite 中「给大语言模型设计工具应当合粗」的判断看似矛盾，实际上遵循同一项准则：todoWrite 之所以合粗，是因为「维护一份清单」属于单一意图，拆细只会让模型在多次调用之间维持状态时出错；而搜索工具之所以拆细，是因为「找文件」「搜内容」「看目录」是三种独立意图，合并反而强迫模型做无意义的分类。简言之，单一意图合粗，多种意图拆细。</p>
+<h2 id="15-3-ripgrep-共用与路径解析缓存">15.3 ripgrep 共用与路径解析缓存</h2>
+<p>三个工具的底层实现各自依赖一个成熟方案：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>底层实现</th>
+<th>选择原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>glob</code></td>
+<td>ripgrep 的 <code>rg --files --glob &lt;pattern&gt; --sortr=modified</code></td>
+<td>ripgrep 已是 <code>grep</code> 工具的依赖，复用不增加包体积；Rust 实现的目录遍历配合内置 <code>.gitignore</code> 过滤，远快于 Node.js 的 glob 库</td>
+</tr>
+<tr>
+<td><code>grep</code></td>
+<td>ripgrep 的 <code>rg &lt;pattern&gt; &lt;path&gt;</code></td>
+<td>Rust 多线程实现，比 Node.js 单线程 <code>fs</code> + <code>RegExp</code> 方案快几个数量级；内置 <code>.gitignore</code> 解析、Unicode 正则支持和并行目录遍历</td>
+</tr>
+<tr>
+<td><code>listDir</code></td>
+<td>Node.js 内置 <code>fs.readdir</code></td>
+<td>功能简单，无需引入外部依赖</td>
+</tr>
+</tbody>
+</table>
+<p><code>@vscode/ripgrep</code> 是 Microsoft 维护的 npm 包，它将 ripgrep 二进制按平台预编译好（macOS、Linux、Windows 各有 x64 和 arm64 版本），通过 <code>require('@vscode/ripgrep').rgPath</code> 即可拿到当前平台的可执行文件路径，不需要用户预先通过系统包管理器安装 ripgrep。图 15-1 展示了三个工具的调用路径：<code>glob</code> 和 <code>grep</code> 在 <code>getRipgrepPath()</code> 处汇合，共用同一个 ripgrep 子进程；<code>listDir</code> 走独立的 <code>fs.readdir</code> 路径，不依赖 ripgrep。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4facc1d44bb34c4081416905ffbc1c9a~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=1134&amp;h=267&amp;s=25366&amp;e=png&amp;b=ffffff" alt="image.png" /></p>
+<blockquote>
+<p>图 15-1 三个搜索工具的调用路径——glob 和 grep 共用 ripgrep，listDir 走 fs.readdir</p>
+</blockquote>
+<p><code>glob</code> 和 <code>grep</code> 共用一个路径解析辅助函数 <code>getRipgrepPath</code>，定义在 <code>tools/utils.ts</code> 中。<code>tools/</code> 目录下文件名与工具名一一对应（<code>glob.ts</code>、<code>grep.ts</code>、<code>shell.ts</code> 各定义一个工具），单函数级别的公共辅助则集中放入 <code>utils.ts</code>，避免与工具文件并列时被读者误认为也是一个工具定义：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/utils.ts</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">// X-Code CLI 是 ESM 包（&quot;type&quot;: &quot;module&quot;），
+// 全局 require 不存在，需要 createRequire 加载 CJS 模块
+const _require = createRequire(import.meta.url)
+
+let _rgPath: string | null = null
+
+export function getRipgrepPath(): string {
+  if (_rgPath) return _rgPath
+  try {
+    const rg = _require('@vscode/ripgrep') as { rgPath: string }
+    _rgPath = rg.rgPath
+  } catch {
+    // 包未安装时降级为系统 PATH 中的 rg
+    _rgPath = 'rg'
+  }
+  return _rgPath
+}
+</code></pre>
+<p>这段代码有两个细节值得说明。第一，项目采用 ESM 模块规范（<code>package.json</code> 中 <code>&quot;type&quot;: &quot;module&quot;</code>），运行时不存在全局 <code>require</code> 函数，因此需要通过 <code>createRequire(import.meta.url)</code> 手动构造一个 <code>require</code>，才能加载 <code>@vscode/ripgrep</code> 这类只提供 CommonJS 导出的包。第二，<code>_rgPath</code> 变量实现了单进程级别的缓存：首次调用时解析路径并缓存结果，后续调用直接返回，避免重复执行 <code>require</code> 解析。<code>catch</code> 分支是一道降级措施——如果 <code>@vscode/ripgrep</code> 包因安装失败等原因不可用，回退到系统 PATH 中的 <code>rg</code> 命令，让开发者在本地开发和测试时仍能正常使用搜索工具（前提是系统中已安装 ripgrep）。</p>
+<h2 id="15-4-glob-修改时间倒序与-catch-all-特殊处理">15.4 glob：修改时间倒序与 catch-all 特殊处理</h2>
+<p>回到 15.1 的示例。如果模型在调用 <code>grep</code> 之前想先了解项目里有多少 TypeScript 文件，它会发出一个 <code>glob</code> 调用：</p>
+<pre><code class="language-jsonc">{
+  &quot;name&quot;: &quot;glob&quot;,
+  &quot;args&quot;: { &quot;pattern&quot;: &quot;src/**/*.ts&quot; }
+}
+</code></pre>
+<p>X-Code CLI 返回按修改时间倒序排列的绝对路径列表：</p>
+<pre><code class="language-text">/Users/dev/proj/src/utils.ts
+/Users/dev/proj/src/api/posts.ts
+/Users/dev/proj/src/components/Header.tsx
+... (共 47 个文件)
+</code></pre>
+<p>模型一眼就能看到最近改过的文件排在最前面，决定下一步对哪些文件调用 <code>grep</code> 做内容搜索。X-Code CLI 内部组装 ripgrep 参数的逻辑如下：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/glob.ts</code></p>
+</blockquote>
+<pre><code class="language-ts">const isCatchAll = /^(\*\*\/?\*?|\*)$/.test(pattern.trim())
+const args = ['--files', '--sortr=modified', '--hidden', '--glob', '!.git']
+if (!isCatchAll) {
+  args.push('--glob', pattern)
+}
+const { stdout } = await execFileAsync(getRipgrepPath(), args, {
+  cwd: searchDir,
+  maxBuffer: RG_MAX_BUFFER,
+  timeout: 30000,
+})
+</code></pre>
+<p>每个参数各管一件事。<code>--files</code> 告诉 ripgrep 只列出文件路径而不搜索内容，关闭了默认的内容搜索行为。<code>--sortr=modified</code> 按修改时间（mtime）倒序输出，最近改过的文件排在最前面（注意是 <code>sortr</code> 带 <code>r</code> 表示 reverse，不带 <code>r</code> 的 <code>--sort=modified</code> 是正序）。<code>--hidden</code> 将以 <code>.</code> 开头的文件也纳入搜索范围，让模型能找到 <code>.eslintrc</code>、<code>.prettierrc</code>、<code>.env.example</code> 等配置文件，因为 ripgrep 默认会跳过 dotfiles。<code>--glob '!.git'</code> 显式排除 <code>.git/</code> 元数据目录，这条排除规则不是多余的安全措施，而是必要的：<code>.gitignore</code> 中通常不会列出 <code>.git/</code>（git 自身管理该目录），而 <code>--hidden</code> 一旦开启就会让 ripgrep 进入 <code>.git/objects/</code> 遍历内部文件，不过滤的话结果中会出现成千上万条无意义的 hash 路径。最后一个 <code>--glob &lt;pattern&gt;</code> 是用户传入的文件名模式，仅在非 catch-all 模式时追加。</p>
+<h3 id="为什么-catch-all-模式需要特殊处理">为什么 catch-all 模式需要特殊处理</h3>
+<p>当用户传入的 pattern 是 <code>**/*</code>、<code>**</code> 或 <code>*</code> 这类通配全量模式（Catch-all Pattern）时，代码不会把它传给 ripgrep 的 <code>--glob</code> 参数。这是因为 ripgrep 的 <code>--glob</code> 采用白名单语义：一旦显式指定了 <code>--glob</code> 参数，ripgrep 就将其理解为「只要这些文件」，并绕过 <code>.gitignore</code> 的过滤规则。对于 <code>**/*.ts</code> 这样的限定模式，白名单行为符合预期；但当 pattern 是 <code>**/*</code> 时，等于告诉 ripgrep「所有文件都要」，<code>.gitignore</code> 的过滤被完全绕过，结果中会涌入 <code>node_modules/</code> 下的数万条文件路径、<code>dist/</code> 中的各种构建产物以及 <code>*.tsbuildinfo</code> 等缓存文件。这种行为不会触发任何错误提示，只是悄悄返回大量无关路径，将模型的上下文窗口塞满噪声。因此代码在检测到 catch-all 模式时选择不传 <code>--glob</code> 参数，让 ripgrep 的默认文件遍历行为接管——默认行为会严格遵守 <code>.gitignore</code> 规则。</p>
+<h3 id="为什么修改时间倒序对模型更友好">为什么修改时间倒序对模型更友好</h3>
+<p>假设模型搜索 <code>**/*.ts</code>，匹配到 500 个文件，但工具的输出上限是 200 条。此时排序方式决定了哪些文件被保留、哪些被截断。如果按字典序排列，前 200 条可能全是 <code>src/aaa.ts</code>、<code>src/abc.ts</code> 等字母靠前的文件名，用户最近修改过的、与当前任务最相关的文件反而排在 300 位之后被截掉。如果按修改时间倒序排列，前 200 条是用户最近改动过的文件，与当前对话上下文最相关的概率最高；被截掉的则是放置数月未动的稳定模块。修改时间倒序让模型在截断场景下优先看到最有可能需要关注的文件，而不是碰巧名字靠前的无关文件。</p>
+<p>工具的 description 字符串中也明确写道 <code>Returns absolute file paths sorted by modification time, most recent first</code>，模型会按字面意思推理——「前几条是最近修改的文件」。如果代码实际给出字典序，模型在截断场景下就会做出错误判断。工具描述对模型做出的承诺必须与代码的实际行为严格一致。此外需要说明的是，<code>--sortr</code> 会强制 ripgrep 以单线程模式运行以保证排序的确定性，多线程加速主要体现在不需要排序的 <code>grep</code> 路径上。</p>
+<h3 id="gitignore-由-ripgrep-默认处理"><code>.gitignore</code> 由 ripgrep 默认处理</h3>
+<p>在非 catch-all 路径上，ripgrep 自动尊重项目的 <code>.gitignore</code> 文件，不需要传递额外参数。X-Code CLI 没有在代码中内置一份硬编码的忽略列表（如 <code>node_modules</code>、<code>dist</code> 等），原因在于用户的 <code>.gitignore</code> 通常已经覆盖了这些路径，由 ripgrep 统一处理即可。如果工具层再内置一份固定列表，就会出现两套忽略规则并存的问题：monorepo 子包使用 <code>build/</code> 而非 <code>dist/</code> 时，硬编码的 <code>dist</code> 规则无法命中；某些项目将 <code>dist</code> 标记为需要追踪的产物时，内置规则又会错误地将其忽略。唯一的硬编码排除是前面提到的 <code>--glob '!.git'</code>，这条规则无法依赖用户配置来覆盖，因为 git 不会把 <code>.git/</code> 写进 <code>.gitignore</code>。</p>
+<p>让 <code>.gitignore</code> 加上唯一一条硬编码的 <code>.git</code> 排除共同构成忽略规则的来源，行为便是可预测的：用户在终端中通过 <code>git status</code> 看到的忽略规则，与 <code>glob</code> 工具所遵守的忽略规则基本一致（只多出一条 <code>.git/</code> 排除）。</p>
+<h3 id="路径转绝对值与截断提示">路径转绝对值与截断提示</h3>
+<p>ripgrep 返回的是相对路径（相对于 <code>cwd</code> 参数指定的搜索目录），<code>glob</code> 工具在拿到结果后逐条检查：已经是绝对路径的原样保留，相对路径则通过 <code>path.join(searchDir, p)</code> 拼接为绝对路径再返回。绝对路径让模型在跨目录任务中引用文件时不会因为工作目录切换而导致路径失效。文件总数超过上限时，工具截断结果并附带引导提示：</p>
+<pre><code class="language-ts">const MAX_GLOB_RESULTS = 200
+// ...
+if (truncated) {
+  return `${result}\n\n... [${absolutes.length - MAX_GLOB_RESULTS} more files not shown — ${absolutes.length} total matches, capped at ${MAX_GLOB_RESULTS}. Use a more specific pattern to narrow results.]`
+}
+</code></pre>
+<p><code>Use a more specific pattern to narrow results</code> 是写给模型读的引导语。模型看到这句话就知道下一步应当把 pattern 写得更精确（例如从 <code>**/*.ts</code> 改为 <code>src/auth/**/*.ts</code>），而不是重试同样的调用或放弃搜索。截断不是终点，而是一个「换条路再来」的信号。</p>
+<h2 id="15-5-grep-三层截断与退出码语义翻译">15.5 grep：三层截断与退出码语义翻译</h2>
+<p>回到 15.1 的示例。模型调用 <code>grep</code> 搜索 <code>formatDate</code> 时，<code>grep</code> 工具内部设置了三道独立的限制，各自防范一种失控场景：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/grep.ts</code></p>
+</blockquote>
+<pre><code class="language-ts">const DEFAULT_HEAD_LIMIT = 250
+const MAX_COLUMNS = 500
+const RG_MAX_BUFFER = 20 * 1024 * 1024
+</code></pre>
+<p>（1）行数上限（<code>DEFAULT_HEAD_LIMIT = 250</code>）。常见的 <code>grep</code> 失控场景是 pattern 写得过于宽泛，例如搜索 <code>import</code> 字样可能命中数千行。250 行的上限让模型既能看清结果的分布规律，又不至于一次性接收几十 KB 的 token。截断时拼接的提示语 <code>Narrow your pattern or use glob to reduce results</code> 直接告诉模型下一步该如何调整：要么把 pattern 写得更精确，要么通过 <code>glob</code> 参数限制搜索的文件类型。</p>
+<p>（2）单行列数上限（<code>MAX_COLUMNS = 500</code>）。传给 ripgrep 的 <code>--max-columns 500</code> 配合 <code>--max-columns-preview</code> 会把长行（如压缩后的 JS bundle 或单行嵌套的 JSON）截断到 500 字符，并在截断处标注省略信息。这样模型读到的每一行都保持结构化的 <code>file:line:content</code> 格式，不会被一行数十 KB 的 minified 代码淹没整个工具结果。</p>
+<p>（3）ripgrep stdout 缓冲上限（<code>RG_MAX_BUFFER = 20 * 1024 * 1024</code>）。这是传给 <code>execFile</code> 的 <code>maxBuffer</code> 参数，与 Ch.14 shell 工具的 <code>MAX_SHELL_BUFFER</code> 属于同一数量级。超出此限制时 ripgrep 子进程会被终止并抛出异常，而不是无限吞噬内存。</p>
+<p>除了三层截断之外，还有一个容易被忽略的语义翻译：</p>
+<pre><code class="language-ts">catch (err) {
+  if (err &amp;&amp; typeof err === 'object' &amp;&amp; 'code' in err &amp;&amp; err.code === 1) {
+    return 'No matches found.'
+  }
+  return formatToolError('searching', err)
+}
+</code></pre>
+<p>ripgrep 在没有找到任何匹配时返回退出码 1，而 <code>execFile</code> 看到非零退出码会抛出 <code>Error</code>。如果直接把这个异常透传给模型，模型会将「没找到匹配」解读为工具执行出错，可能开始无意义的重试或切换到其他工具。这里专门拦截 <code>code === 1</code> 的情况，将其转换为 <code>No matches found.</code> 这一正常结果返回，在语义上将「无匹配」和「执行出错」区分开来。模型读到 <code>No matches found.</code> 就能理解这是空结果而非故障，不会触发重试逻辑。<code>glob</code> 工具也采用了完全相同的处理方式，返回 <code>No files found matching the pattern.</code>。</p>
+<h2 id="15-6-grep-description-的禁用指令">15.6 grep description 的禁用指令</h2>
+<p><code>grep</code> 工具的 description 开头就写了一条明确的禁用指令：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/grep.ts</code></p>
+</blockquote>
+<!-- check:ignore=punctuation -->
+<pre><code>A powerful search tool built on ripgrep.
+
+Usage:
+- ALWAYS use this grep tool for content search tasks. NEVER invoke grep or
+  rg as a shell command — this tool has been optimized for correct
+  permissions and access.
+</code></pre>
+<p>中文译义：基于 ripgrep 的搜索工具。用法——搜索内容时永远使用 <code>grep</code> 工具，永远不要通过 shell 执行 <code>grep</code> 或 <code>rg</code> 命令，本工具已针对权限和访问路径做了优化。</p>
+<p>这条指令和 Ch.14 shell 工具 description 中的禁令互为对照：shell 工具那边说「不要用 shell 执行 grep」，<code>grep</code> 工具这边说「不要走 shell 执行 rg」。两端都做引导，模型在选择工具时无论从哪一端出发都能被引向正确路径。之所以需要在 <code>grep</code> 工具自身的 description 中再写一遍，是因为模型的训练数据中包含大量 <code>rg pattern .</code> 和 <code>grep -r pattern dir</code> 的用法，默认倾向是通过 shell 工具执行命令行调用。如果禁令只写在 shell 工具的 description 中，模型可能根本不会进入选择 shell 工具的决策路径，它直接就生成了 grep 命令交给 shell 执行。将禁令同时写在 <code>grep</code> 工具的 description 中，相当于在搜索入口处建立了第二道引导：模型一旦考虑到 <code>grep</code> 工具，看到这段说明就知道这是内容搜索的正式入口。</p>
+<p>description 中还指出了 ripgrep 正则语法的一个常见陷阱：</p>
+<!-- check:ignore=punctuation -->
+<pre><code>- Pattern syntax: Uses ripgrep — literal braces need escaping
+  (use interface\{\} to find interface{} in Go code).
+</code></pre>
+<p>ripgrep 使用 Rust 的 regex crate 实现正则表达式，其中 <code>{</code> 和 <code>}</code> 是量词元字符（<code>{n,m}</code> 语法）。如果要在 Go 代码中搜索 <code>interface{}</code> 字面量，必须转义为 <code>interface\{\}</code>。这种边角细节不写在 description 中，模型很容易在搜索 Go 代码时全部返回空结果却不知道原因。</p>
+<h2 id="15-7-listdir-绝对路径与极简输出">15.7 listDir：绝对路径与极简输出</h2>
+<p>回到 15.1 的示例。如果模型对项目结构一无所知，想先看看 <code>src/</code> 下有哪些子目录再决定搜索范围，它会发出一个 <code>listDir</code> 调用：</p>
+<pre><code class="language-jsonc">{
+  &quot;name&quot;: &quot;listDir&quot;,
+  &quot;args&quot;: { &quot;dirPath&quot;: &quot;/Users/dev/proj/src&quot; }
+}
+</code></pre>
+<p>返回结果极简——只有名称和类型后缀：</p>
+<pre><code class="language-text">api/
+components/
+utils.ts
+index.ts
+</code></pre>
+<p>模型看到 <code>api/</code> 和 <code>components/</code> 两个子目录后，就知道下一步可以用 <code>grep</code> 分别搜索这两个目录下的 <code>formatDate</code> 调用。<code>listDir</code> 是三个工具中最简单的，schema 只有一个字段：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/tools/list-dir.ts</code></p>
+</blockquote>
+<pre><code class="language-ts">inputSchema: z.object({
+  dirPath: z.string().describe('Absolute path to the directory'),
+})
+</code></pre>
+<p>execute 函数直接调用 <code>fs.readdir(dirPath, { withFileTypes: true })</code>，每个条目输出文件名加类型后缀（目录加 <code>/</code>），空目录返回 <code>(empty directory)</code>：</p>
+<pre><code class="language-text">src/
+README.md
+package.json
+tsconfig.json
+.gitignore
+</code></pre>
+<p>这个工具有两个看似不起眼但有意为之的设计选择。</p>
+<p>（1）只接受绝对路径。schema 描述中写明 <code>Absolute path to the directory</code>。<code>glob</code> 工具支持可选的 <code>cwd</code> 参数加相对路径，<code>listDir</code> 为什么不这样设计？原因在于相对路径的语义在大语言模型的工具调用场景中不够稳定。模型在多轮对话中可能记错「当前目录」是什么（尤其在执行过 <code>cd</code> 类 shell 命令之后），相对路径的解析基准也随之变得模糊。绝对路径让每次调用的语义独立且可重现：参数中写明 <code>/Users/foo/proj/src</code> 就是这个目录，与对话历史无关。</p>
+<p>（2）输出不包含文件大小信息。结果中只有文件名和 <code>/</code> 后缀，没有 KB、字节数等元数据。这是因为 <code>listDir</code> 的定位是「快速浏览目录结构」，大小信息在绝大多数任务场景中属于噪声——用户问「看下 <code>src</code> 下有什么」，模型的回答中夹杂一堆数字反而干扰主要信息的传递。真正需要查看文件大小的场景（例如找出最大的日志文件）通过 shell 工具执行 <code>du</code> 或 <code>ls -lh</code> 更为直接。工具的输出形态决定了它适合什么场景，<code>listDir</code> 的极简输出将其定位明确限定在「探索式浏览」，而非「文件元数据查询」。</p>
+<h2 id="15-8-进度上报">15.8 进度上报</h2>
+<p>三个工具的 execute 函数开头都调用一次 <code>reportProgress</code>：</p>
+<pre><code class="language-ts">// glob
+reportProgress(toolCallId, `Matching ${pattern}`)
+// grep
+reportProgress(toolCallId, `Searching for /${pattern}/`)
+// listDir
+reportProgress(toolCallId, `Listing ${dirPath}`)
+</code></pre>
+<p>这条调用的作用是在工具结果尚未返回之前，让终端界面实时显示一行当前工具正在执行的操作。读者在终端中看到的工具调用下方那行 <code>⎿ ⠋ Searching for /formatDate/</code> 就是它推送上去的。两条边界需要说明：进度消息只面向用户展示，模型不会读到这些中间状态，它最终接收的只是工具的返回结果；<code>toolCallId</code> 是每条上报的标识符，同一轮中模型并行调用多个工具时，各工具的进度消息凭借不同的 <code>toolCallId</code> 各自显示、互不干扰。至于 <code>reportProgress</code> 内部如何将消息推送到终端界面（注册表机制、清除时机、shell 工具和子 Agent 工具是否共用同一条通路），属于流式渲染层面的话题，详见 Ch.26。本节只需要理解一点：这条调用是给用户的实时反馈，不影响工具的语义行为。</p>
+<h2 id="15-9-小结">15.9 小结</h2>
+<p>本章围绕 <code>glob</code>、<code>grep</code> 和 <code>listDir</code> 三个代码库探索工具，讨论了它们在工具粒度、底层实现选择、输出格式和错误处理等方面的设计决策。三个工具拆分而非合并，遵循的是「单一意图合粗、多种意图拆细」的准则——找文件、搜内容和查看目录是三种独立的模型意图，合成一个工具只会增加参数选择时的认知负担。<code>glob</code> 和 <code>grep</code> 共用 <code>@vscode/ripgrep</code> 提供的 ripgrep 二进制，通过 <code>getRipgrepPath</code> 实现单进程级别的缓存和降级回退。<code>glob</code> 选择修改时间倒序输出，使得截断场景下保留的是与当前任务最相关的近期文件；对 catch-all 模式的特殊处理则避免了 <code>.gitignore</code> 被绕过导致的噪声泛滥。<code>grep</code> 的三层截断（250 行、500 列、20 MB 缓冲）各自防范一种失控场景，退出码 1 到 <code>No matches found.</code> 的语义翻译则将「无匹配」和「执行出错」在模型层面区分开来。<code>listDir</code> 只接受绝对路径以保证每次调用的语义独立性，极简的输出格式将其定位明确限定在探索式浏览而非元数据查询。下一章将讨论网络工具 <code>webSearch</code> 和 <code>webFetch</code>，它们让模型能够在对话过程中实时获取外部信息。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-14.html">← Shell 工具：跨平台命令执行与失败信号传递</a>
+      <a class="next" href="ch-16.html">网络工具：webSearch 与 webFetch →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#15-1-贯穿示例-从一次搜索看三件工具如何协作">15.1 贯穿示例：从一次搜索看三件工具如何协作</a></li>
+      <li class="lv2"><a href="#15-2-工具粒度-三种意图对应三个独立工具">15.2 工具粒度：三种意图对应三个独立工具</a></li>
+      <li class="lv2"><a href="#15-3-ripgrep-共用与路径解析缓存">15.3 ripgrep 共用与路径解析缓存</a></li>
+      <li class="lv2"><a href="#15-4-glob-修改时间倒序与-catch-all-特殊处理">15.4 glob：修改时间倒序与 catch-all 特殊处理</a></li>
+      <li class="lv3"><a href="#为什么-catch-all-模式需要特殊处理">为什么 catch-all 模式需要特殊处理</a></li>
+      <li class="lv3"><a href="#为什么修改时间倒序对模型更友好">为什么修改时间倒序对模型更友好</a></li>
+      <li class="lv3"><a href="#gitignore-由-ripgrep-默认处理">`.gitignore` 由 ripgrep 默认处理</a></li>
+      <li class="lv3"><a href="#路径转绝对值与截断提示">路径转绝对值与截断提示</a></li>
+      <li class="lv2"><a href="#15-5-grep-三层截断与退出码语义翻译">15.5 grep：三层截断与退出码语义翻译</a></li>
+      <li class="lv2"><a href="#15-6-grep-description-的禁用指令">15.6 grep description 的禁用指令</a></li>
+      <li class="lv2"><a href="#15-7-listdir-绝对路径与极简输出">15.7 listDir：绝对路径与极简输出</a></li>
+      <li class="lv2"><a href="#15-8-进度上报">15.8 进度上报</a></li>
+      <li class="lv2"><a href="#15-9-小结">15.9 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

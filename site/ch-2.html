@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coding Agent 的三个工程层级 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li class="active"><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 2 章 Coding Agent 的三个工程层级</h1>
+<p>上一章用 50 行代码实现了一个最小可运行的 Agent，读者已经看到了 Agent 在终端中的实际形态。接下来需要回答一个更高层面的问题：包裹模型的这一圈工程，内部应当如何分层？各层之间的边界又在哪里？这并非一个学术性的问题——后续每一章都要落在某一层之下，如果分层不清晰，讲到具体机制时就会发现「这个机制到底属于哪里」难以准确界定。</p>
+<p>业界在不同时期给出过不同的切分方式。2022 至 2023 年，提示词工程（Prompt Engineering）是最受关注的方向，但很快人们发现仅凭「优化字符串」只能解决一部分问题。2024 年起，Karpathy 等人在博客中将上下文工程（Context Engineering）单独提出来，讨论「什么内容应当进入 context window」这一议题。2025 年，METR、Anthropic 等研究团队又开始将驾驭工程（Harness Engineering）作为独立讨论领域，聚焦于让模型能完成任务的整套外围软件系统。这三层不是定理，但有一条清晰的轴线贯穿其中：距模型的远近。字符串最近，数据居中，代码最远。本章按这条轴线展开，讲清每一层各做什么、相邻层的边界在哪里、以及为什么业界的注意力正在从内层向外层转移。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>2.1 节给出三层的定义与分工总览，配嵌套关系图。</li>
+<li>2.2 节讲提示词工程——它的兴衰轨迹、边际收益为什么递减、X-Code CLI 在这一层做了哪些具体工作。</li>
+<li>2.3 节讲上下文工程——它为什么到 2024 年才从提示词工程中独立出来、X-Code CLI 的落地清单、引入这一层的代价。</li>
+<li>2.4 节讲驾驭工程——它为什么是本书的主战场、工业界在这一层做了什么、演化趋势。</li>
+<li>2.5 节讨论三层的边界与交叉，并给出一张「全书章节归入三层」的阅读地图。</li>
+<li>2.6 节给出本章小结。</li>
+</ul>
+<h2 id="2-1-为什么要分三层">2.1 为什么要分三层</h2>
+<p>模型本身只是一个推理引擎。给它一段 prompt，它做一次推理，返回一段 token 序列。要让它真正完成「在 8000 行代码库中把鉴权模块重构为 JWT 方案」这样的任务，外面需要构建一整套工程。从工程师介入的位置来看，这套工程可以分为三层，如表 2-1 所示。</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>介入位置</th>
+<th>主要工作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>提示词工程（Prompt Engineering）</td>
+<td>字符串</td>
+<td>编写 system prompt、tool description、Chain-of-Thought 引导、输出格式约束</td>
+</tr>
+<tr>
+<td>上下文工程（Context Engineering）</td>
+<td>数据</td>
+<td>决定哪些内容进入 context window，以何种方式压缩、截断、选择</td>
+</tr>
+<tr>
+<td>驾驭工程（Harness Engineering）</td>
+<td>代码</td>
+<td>搭建调用模型的整套系统：Agent Loop、工具系统、护栏、用户交互</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表 2-1 三层工程的分工</p>
+</blockquote>
+<p>三层之间的嵌套关系如图 2-1 所示。最内层是提示词工程，直接作用于模型的输入字符串；中间层是上下文工程，决定哪些数据被组装进 prompt；最外层是驾驭工程，搭建驱动整个流程的代码系统。从外到内，距模型越来越近，工程师介入的位置也从代码逐步过渡到字符串。</p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/28af47976e5e40568398d43886fa0afe~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=278&amp;h=460&amp;s=23604&amp;e=png&amp;b=fdfdfd" alt="image.png" /></p>
+<blockquote>
+<p>图 2-1 三层工程的嵌套关系——从代码到字符串，距模型由远及近</p>
+</blockquote>
+<p>这三层并不互斥。多数复杂机制跨越两层甚至三层，例如提示词缓存（Prompt Caching）同时涉及上下文层和驾驭层。但每一层各有自己的关注点、指标和工具方法。读完本章再进入后续章节时，读者可以有意识地判断：当前讨论的这个机制，主要在解决哪一层的问题。</p>
+<h2 id="2-2-提示词工程-优化输入给模型的字符串">2.2 提示词工程：优化输入给模型的字符串</h2>
+<p>提示词工程（Prompt Engineering）的定义是：通过优化输入给模型的字符串内容来改善输出质量。涵盖 system prompt 设计、工具 description 写法、思维链（CoT，Chain-of-Thought）引导、少样本（Few-shot）示例、输出格式约束等。</p>
+<p>2022 年 ChatGPT 上线后，这一层迅速兴起。2023 年达到顶峰，学术界涌现了一批 prompting 技巧，如 CoT、Self-Consistency、ReAct、Tree of Thoughts 等，逐渐成为 AI 工程师的基础技能。2024 年起，这一层的边际收益开始递减，主流模型已经能从较粗略的提示中推断出用户意图，单独调优某条 prompt 所获得的回报明显降低。</p>
+<p>这层为什么从顶峰回落？原因有三，且相互叠加。其一，模型对不精确表述的理解能力提高了。早期模型对 prompt 措辞非常敏感，同一个意思换种说法可能导致效果差异显著，而当前模型基本能从粗略提示中推断出用户意图，精心打磨每一个词的边际收益在降低。其二，任务复杂度上移了。当 Agent 需要完成「跨文件重构鉴权模块」这类任务时，prompt 写得再好也无法替代正确的工具集和合理的上下文管理。其三，prompt 能带来的收益上限受到多重因素约束。能写入 system prompt 的信息量受到 context window 大小、字节稳定性（为命中缓存需要保持不变）等因素的约束。</p>
+<p>尽管如此，这层的工作仍然是后两层的基础。驾驭层调度的工具描述、上下文层注入的知识文件，归根到底都是字符串。如果这一层做不好，后两层的效果都无法发挥。以 X-Code CLI 为例，提示词工程这一层最基础的两项工作是编写系统提示词和工具描述。系统提示词（<code>system-prompt.ts</code>）定义了 Agent 的角色与工作风格，例如是优先确认方案再动手，还是拿到任务就直接开始编码。这两种风格在工具选择和代码生成的激进程度上会产生显著差异。工具描述（<code>description</code>）决定了模型在什么场景下选用该工具。例如 <code>readFile</code> 的描述里专门写了「对大文件使用 <code>offset / limit</code>」，这句话的有无直接决定了模型面对一个 8000 行文件时，是一次性读取全部内容（大概率撑满上下文窗口），还是分段读取关键部分。除这两项之外，循环护栏的提示措辞（Ch.32）、计划模式的约束文字（Ch.21）、子 Agent 的独立系统提示词、内存提取器的输出格式约束（Ch.36）等，都属于提示词工程的范畴，后续各章会逐一展开。每一处都是字符级别的工程，一个词、一句话的调整都可能改变模型行为。</p>
+<h2 id="2-3-上下文工程-管理模型看到什么">2.3 上下文工程：管理模型看到什么</h2>
+<p>上下文工程（Context Engineering）的定义是：管理什么内容进入模型的上下文窗口（Context Window），以及内容以什么形式呈现。Karpathy、Anthropic 在 2024 至 2025 年的博客中将这一层从提示词工程中独立出来。</p>
+<p>提示词工程关注的是「对模型说什么」，上下文工程关注的是「让模型看到什么」。举一个例子：让 Agent 修改一个文件，提示词工程关心的是怎么告诉它「用 JWT 方案重构」，上下文工程关心的是这个文件、相邻文件、调用链上的依赖、过往对话历史中，哪些应当放进 context、按什么顺序放、是否需要先压缩。</p>
+<p>这一层为什么到 2024 年才被独立出来？原因在于 context window 的容量在过去两年中经历了数量级的扩展，从 4K token 扩展到 200K 乃至 1M。理论上「放入更多信息就够了」，但 「中间信息丢失」（Lost-in-the-Middle）等研究发现，模型在长 context 中段的信息提取能力明显下降。仅凭「放入」还不够，需要主动管理：哪些信息放在前面、哪些可以压缩、哪些应当丢弃。这套管理策略就是上下文工程的核心。</p>
+<p>以 X-Code CLI 为例，这一层最常触发的两项工作是对话压缩和工具结果截断。对话压缩（Ch.31）解决的是一个必然会发生的问题：随着对话轮次增加，消息历史会逐渐逼近窗口容量上限。X-Code CLI 采用由轻到重的逐级压缩策略，先删除已失效的临时消息，不够时再用模型对早期对话生成摘要来替换原文，最坏情况下直接截断中间部分。工具结果截断（Ch.17）解决的是单次返回过大的问题：一次 <code>grep</code> 可能命中几千行代码，如果全部放入 context，两三轮就会将窗口耗尽。截断时保留开头和结尾的内容，中间加入标记告知模型「内容被截断，如需查看完整结果请缩小搜索范围」。除这两项之外，知识文件注入（Ch.36）、子 Agent 隔离（Ch.19）、提示词缓存的字节稳定性（Ch.33）也属于上下文工程的范畴，后续各章会详细讨论。</p>
+<p>引入这一层的代价是数据到达模型之前的处理步骤增多了。以前 prompt 写完即可发出，现在需要在 prompt 与模型之间增加一道选择、压缩、截断的处理。每增加一道处理都会提高错配的概率：截取过多会导致模型看不到关键信息，截取不足则 context 仍然溢出；压缩遗漏一条关键消息，后续用户问起来时模型无法回答。因此，这一层的工作伴随着可观的测试与评测开销。业界目前还没有通用的标准评测集，多数产品依靠用户反馈和 A/B 实验来调整参数。这也是不同 Agent 产品在使用同一模型时效果差异显著的主要原因：多数差异来自上下文工程这一层。</p>
+<h2 id="2-4-驾驭工程-本书的主战场">2.4 驾驭工程：本书的主战场</h2>
+<p>驾驭工程（Harness Engineering）的定义是：搭建包裹模型的整套软件系统，包括 Agent Loop、工具系统、护栏、错误恢复、用户交互、评测钩子等。Harness 的字面意思是「挽具」，形象地说，就是给一个只会预测下一个 token 的模型配备一套能完成实际任务的外围系统。</p>
+<p>这是一个较新的概念，2024 年末至 2025 年起作为独立讨论领域受到关注，METR、Anthropic 等研究团队推动较多。其背景是：当业界发现优化 prompt 的边际收益已大幅下降、模型原始能力的提升速度也在放缓时，模型外面那层工程系统的设计便成为了主要的优化空间。应用层产品所做的工作，多数都属于驾驭工程——这些产品都不训练模型，它们构建的是模型之上的工程系统。模型供应商提供推理能力，应用层负责将推理能力转化为可用的产品。</p>
+<p>X-Code CLI 的多数章节讲的都是驾驭工程：Agent Loop 引擎（Ch.08）、多供应商抽象（Ch.09）、流式 Chunk 处理（Ch.10）、错误恢复（Ch.11）、工具系统（Ch.12-22）、循环护栏（Ch.32）、三级权限模型（Ch.29）、计划模式状态机（Ch.21）、取消流（<code>abortSignal</code> 一路穿透到 shell 子进程）、会话持久化与 <code>/resume</code>（Ch.36）、终端 UI 全套（Ch.23-28）、跨平台兼容（Ch.25）。读到这里读者会发现：驾驭工程并不仅仅是 Agent Loop，而是让大语言模型（LLM）真正能在生产环境中完成任务的所有外围工程。</p>
+<p>这一层为什么近期才被单独讨论？原因在于，当前两层的边际收益递减之后，剩下的几乎全是工程问题。错误恢复、用户中断、跨平台兼容、权限确认、流式渲染、token 经济学——每一项单独来看都属于传统软件工程的话题，但在模型驱动的场景中重新实现时，会产生新的设计决策。例如：错误应当如何分类才能让 Agent 自行跨过而不是退回给用户？权限确认是否应当打断流？<code>abortSignal</code> 如何穿透到 shell 子进程才能让 Esc 键真正起作用？这些问题在传统工程中有答案，但在 Agent 工程中需要重新思考。</p>
+<p>驾驭工程的演化趋势是逐步精简。模型能力越强、SDK 越成熟，需要自己编写的代码就越少。但即使模型再强，在其执行边界之外仍然需要有人负责权限、负责 UI、负责容错。驾驭工程的下限会持续降低，但不会消失。</p>
+<h2 id="2-5-三层的边界与交叉">2.5 三层的边界与交叉</h2>
+<p>三层是分析框架，不是教条。多数复杂机制跨越两层甚至三层：</p>
+<ul>
+<li>提示词缓存（Prompt Caching，Ch.33）：上下文工程（决定哪段内容缓存）+ 驾驭工程（实现 API 调用路径）。</li>
+<li>循环护栏合成消息（Loop Guard Synthetic Message，Ch.32）：提示词工程（合成消息的措辞）+ 驾驭工程（检测与注入时机）。</li>
+<li>计划模式（Plan Mode，Ch.21）：提示词工程（overlay 文字内容）+ 驾驭工程（权限门与状态机实现）。</li>
+<li>工具结果截断（Tool Result Truncation，Ch.17）：上下文工程（确定截断量）+ 提示词工程（marker 字面量告知模型内容被截断）。</li>
+</ul>
+<p>判断的标准不是「在哪一层」，而是「主要在哪一层」。例如某个机制 70% 的复杂度在数据筛选上，就应归为上下文工程为主。读者在阅读某个具体机制时，如果能快速判断出「这件事的重点在哪一层」，就能更准确地把握学习的侧重。</p>
+<p>工业界的资金与工程师注意力当前正在从内层向外层转移。图 2-2 展示了这条演进轨迹。</p>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e8e2cdc4b96a4de3aa4f2b7f036d1415~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=731&amp;h=102&amp;s=15528&amp;e=png&amp;b=fef9f8" alt="image.png" /></p>
+<blockquote>
+<p>图 2-2 工业界注意力从内层向外层转移的演进轨迹</p>
+</blockquote>
+<p>表 2-2 给出了后续各章的主要层级归属。「+」表示该章跨多层。读者可以在阅读每一章时回来查阅此表，快速定位当前章节在三层中的位置。</p>
+<table>
+<thead>
+<tr>
+<th>章节</th>
+<th>主要层</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ch.07 Tool Use 协议</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.08 Agent Loop</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.09 多供应商</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.10 流式 Chunk</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.11 错误恢复</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.12-22 工具系统</td>
+<td>驾驭 + 提示词（tool description）</td>
+</tr>
+<tr>
+<td>Ch.23-28 终端 UI</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.29 三级权限</td>
+<td>驾驭</td>
+</tr>
+<tr>
+<td>Ch.30 Token 经济学</td>
+<td>上下文</td>
+</tr>
+<tr>
+<td>Ch.31 上下文压缩</td>
+<td>上下文</td>
+</tr>
+<tr>
+<td>Ch.32 Loop Guard</td>
+<td>驾驭 + 提示词</td>
+</tr>
+<tr>
+<td>Ch.33 Prompt Caching</td>
+<td>上下文 + 驾驭</td>
+</tr>
+<tr>
+<td>Ch.34 Thinking 模式</td>
+<td>提示词 + 驾驭</td>
+</tr>
+<tr>
+<td>Ch.35 文件附件</td>
+<td>上下文</td>
+</tr>
+<tr>
+<td>Ch.36 知识与会话系统</td>
+<td>上下文 + 驾驭</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表 2-2 后续各章的主要层级归属</p>
+</blockquote>
+<p>从表 2-2 可以看出，全书的重心在驾驭工程——20 章以上的内容集中在这一层。这一安排反映了当前工业界投资重心的分布。提示词工程和上下文工程并未单独成章，而是嵌入在驾驭层的各个环节中讨论。</p>
+<h2 id="2-6-小结">2.6 小结</h2>
+<p>本章为后续所有章节建立了坐标系：提示词工程负责字符串层——编写 system prompt、tool description、CoT 引导；上下文工程负责数据层——决定哪些内容进入 context window、如何压缩与截断；驾驭工程负责代码层——搭建 Agent Loop、工具系统、护栏、错误恢复、用户交互等整套外围系统。三层之间不互斥，多数复杂机制跨越两层甚至三层，判断标准是「主要在哪一层」。</p>
+<p>业界注意力正从内层向外层转移，原因在于提示词工程的边际收益递减、模型原始能力提升放缓之后，模型外面那层工程系统的设计便成为了主要的优化空间。本书 70% 的内容集中在驾驭工程，其余的提示词工程与上下文工程嵌入在驾驭层的各个环节中讨论。读者在进入后续章节时，可以有意识地判断当前讨论的机制主要在解决哪一层的问题，结合表 2-2 的阅读地图快速定位。</p>
+<p>下一章（Ch.03）将从三层的元视角回到具体场景——梳理一个生产级 Agent 要防御的常见失败模式，以及这些失败模式如何驱动了后续各章的工程决策。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-1.html">← 开篇示例：50 行代码跑通一个 Agent</a>
+      <a class="next" href="ch-3.html">生产级 Agent 要防的 7 类失败 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#2-1-为什么要分三层">2.1 为什么要分三层</a></li>
+      <li class="lv2"><a href="#2-2-提示词工程-优化输入给模型的字符串">2.2 提示词工程：优化输入给模型的字符串</a></li>
+      <li class="lv2"><a href="#2-3-上下文工程-管理模型看到什么">2.3 上下文工程：管理模型看到什么</a></li>
+      <li class="lv2"><a href="#2-4-驾驭工程-本书的主战场">2.4 驾驭工程：本书的主战场</a></li>
+      <li class="lv2"><a href="#2-5-三层的边界与交叉">2.5 三层的边界与交叉</a></li>
+      <li class="lv2"><a href="#2-6-小结">2.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

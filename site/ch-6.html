@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>本地搭建与运行 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li class="active"><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 6 章 本地搭建与运行</h1>
+<p>上一章分析了 X-Code CLI 从 <code>main()</code> 入口到屏幕出现交互界面的完整启动流程，读者已经知道四步流水线的每一步做了什么。本章将从源码分析转入实际操作：把 X-Code CLI 的源码克隆到本地、安装依赖并构建、配置 API Key、启动验证。完成这四步之后，读者的终端上会出现一个可以正常对话的 CLI 实例，后续章节中所有「打开源码对照阅读」的操作都以这一步为前提。配套源码：<a href="https://github.com/woai3c/x-code-cli">github.com/woai3c/x-code-cli</a>，本章及后续章节对应 <a href="https://github.com/woai3c/x-code-cli/tree/v0.3.3">v0.3.3 tag</a>（详见序章「配套源码与版本对应」）。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>6.1 节列出前置环境要求——Node.js、pnpm、Git 三项硬依赖及其版本约束的来由。</li>
+<li>6.2 节讲拉取代码与构建——从 clone 到 <code>pnpm build</code> 产出可执行的 bundle 文件。</li>
+<li>6.3 节讲配置 API Key——环境变量和 <code>.env</code> 两种方式的适用场景与注意事项。</li>
+<li>6.4 节讲启动验证——首次运行时的 Shell 侦测提示机制和通信链路确认。</li>
+<li>6.5 节说明后续章节的代码片段约定。</li>
+<li>6.6 节给出本章小结。</li>
+</ul>
+<h2 id="6-1-前置要求">6.1 前置要求</h2>
+<p>在开始操作之前，读者需要确认本机已安装以下三项工具，如表 6-1 所示。</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>版本</th>
+<th>安装方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node.js</td>
+<td>≥ 20.19.0</td>
+<td><a href="https://nodejs.org/en/download">nodejs.org/download</a>；推荐用 <a href="https://github.com/nvm-sh/nvm">nvm</a>（macOS / Linux）或 <a href="https://github.com/coreybutler/nvm-windows">nvm-windows</a> 多版本管理</td>
+</tr>
+<tr>
+<td>pnpm</td>
+<td>≥ 10（仓库 <code>package.json</code> 的 <code>packageManager</code> 字段固定到 pnpm@10.x）</td>
+<td><code>npm install -g pnpm</code> 或 <code>corepack enable</code>（Corepack 会自动按 <code>packageManager</code> 字段激活对应版本）</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>任意近版本</td>
+<td><a href="https://git-scm.com/downloads">git-scm.com/downloads</a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表 6-1 前置环境要求</p>
+</blockquote>
+<p>Node.js 版本下限为 20.19.0 的原因在 Ch.05 中已经讨论过：<code>.env</code> 文件加载依赖 Node 20.12 引入的内置 <code>process.loadEnvFile</code> 接口，20.19.0 以上的小版本在 ESM 模块解析等基础功能上更为稳定。pnpm 的版本约束来自仓库根 <code>package.json</code> 中的 <code>packageManager: &quot;pnpm@10.7.1&quot;</code> 字段，Corepack 会根据该字段自动下载并使用对应版本的 pnpm，确保所有开发者和 CI 环境使用同一版本的包管理器，避免因包管理器版本差异导致的 <code>pnpm-lock.yaml</code> 冲突。如果读者的系统中尚未安装 Node.js，推荐使用 nvm（macOS / Linux）或 nvm-windows（Windows）进行多版本管理，以便在不同项目之间切换 Node 版本而互不干扰。确认环境就绪后，在终端执行以下命令验证：</p>
+<pre><code class="language-bash">node -v    # v20.19.0+
+pnpm -v    # 10+
+git --version
+</code></pre>
+<h2 id="6-2-拉取代码并构建">6.2 拉取代码并构建</h2>
+<h3 id="6-2-1-克隆仓库">6.2.1 克隆仓库</h3>
+<pre><code class="language-bash">git clone --branch v0.3.3 https://github.com/woai3c/x-code-cli.git
+cd x-code-cli
+</code></pre>
+<p><code>--branch v0.3.3</code> 将本地工作树固定到与本书正文严格对应的 commit。如果读者希望跟踪最新主干，可以省略 <code>--branch</code> 开关直接拉取默认分支，但需要注意最新代码可能已超出本书覆盖范围，部分文件路径或接口签名可能与正文描述不一致。建议首次跟读时使用指定 tag 的方式，等对整体架构有了充分理解之后，再切换到主干观察最新的演进。</p>
+<h3 id="6-2-2-安装依赖并构建">6.2.2 安装依赖并构建</h3>
+<pre><code class="language-bash">pnpm install
+pnpm build
+</code></pre>
+<p><code>pnpm install</code> 首次执行会下载约 500 个 npm 包（含传递依赖；直接依赖约 50 个，分布在 <code>core</code> 和 <code>cli</code> 两个工作区（Workspace）包中），耗时约 1–2 分钟，后续再执行时 pnpm 的全局内容寻址存储（Content-Addressable Store）会命中缓存，速度会快得多。<code>pnpm build</code> 内部按工作区拓扑顺序先后执行两步：先在 <code>packages/core</code> 中运行 <code>tsc -b</code> 将 TypeScript 编译为 JavaScript，再在 <code>packages/cli</code> 中运行 esbuild 将 cli 包打包成单文件 bundle（<code>packages/cli/dist/cli.js</code>），整个过程通常在数秒内完成。Ch.04 中已经讨论过选择 esbuild 而非 webpack 的原因：对于一个纯 Node.js CLI 应用，esbuild 的打包速度优势足以覆盖它在插件生态成熟度上的不足。构建工具链的完整配置细节详见附录一。</p>
+<h2 id="6-3-配置-api-key">6.3 配置 API Key</h2>
+<p>X-Code CLI 至少需要一个供应商（Provider）的 API Key 才能启动。本书示例统一使用 DeepSeek 的 Key——在 <a href="https://platform.deepseek.com">platform.deepseek.com</a> 注册后，进入「API Keys」页面创建即可。</p>
+<h3 id="6-3-1-环境变量方式">6.3.1 环境变量方式</h3>
+<p>下表给出各 Shell 的「永久」与「临时」两种写法，读者按所在系统选择一行即可，如表 6-2 所示。</p>
+<table>
+<thead>
+<tr>
+<th>Shell / 系统</th>
+<th>永久（用户级，新开终端生效）</th>
+<th>临时（仅当前会话）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macOS / Linux bash</td>
+<td><code>echo 'export DEEPSEEK_API_KEY=sk-...' &gt;&gt; ~/.bashrc &amp;&amp; source ~/.bashrc</code></td>
+<td><code>export DEEPSEEK_API_KEY=sk-...</code></td>
+</tr>
+<tr>
+<td>macOS / Linux zsh</td>
+<td><code>echo 'export DEEPSEEK_API_KEY=sk-...' &gt;&gt; ~/.zshrc &amp;&amp; source ~/.zshrc</code></td>
+<td><code>export DEEPSEEK_API_KEY=sk-...</code></td>
+</tr>
+<tr>
+<td>fish</td>
+<td><code>set -Ux DEEPSEEK_API_KEY sk-...</code></td>
+<td><code>set -x DEEPSEEK_API_KEY sk-...</code></td>
+</tr>
+<tr>
+<td>Windows PowerShell</td>
+<td><code>[Environment]::SetEnvironmentVariable('DEEPSEEK_API_KEY','sk-...','User')</code></td>
+<td><code>$env:DEEPSEEK_API_KEY = &quot;sk-...&quot;</code></td>
+</tr>
+<tr>
+<td>Windows cmd</td>
+<td><code>setx DEEPSEEK_API_KEY &quot;sk-...&quot;</code></td>
+<td><code>set DEEPSEEK_API_KEY=sk-...</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表 6-2 各 Shell 下 API Key 的配置方式</p>
+</blockquote>
+<p>建议使用永久写法，新开终端即自动生效，不依赖特定的仓库目录。临时写法适合快速试用或在同一终端内切换不同的 Key。如果使用其他供应商，将 <code>DEEPSEEK_API_KEY</code> 替换为对应的变量名即可：<code>ANTHROPIC_API_KEY</code>、<code>OPENAI_API_KEY</code>、<code>GOOGLE_GENERATIVE_AI_API_KEY</code>、<code>XAI_API_KEY</code>、<code>ALIBABA_API_KEY</code>、<code>ZHIPU_API_KEY</code>、<code>MOONSHOT_API_KEY</code>。此外，<code>OPENAI_COMPATIBLE_API_KEY</code> 配合 <code>OPENAI_COMPATIBLE_BASE_URL</code> 可以接入任意 OpenAI 兼容端点（OpenAI Compatible Endpoint）。网页搜索工具（<code>webSearch</code>）需要额外配置 <code>TAVILY_API_KEY</code> 或 <code>BRAVE_API_KEY</code>（二选一即可，Tavily 优先），不配置则该工具无法返回搜索结果——模型仍然能看到并尝试调用它，但会收到一条包含注册地址和配置命令的错误提示，CLI 启动和其他 12 个内置工具均不受影响。以上模型供应商变量至少填写一项即可启动 CLI。</p>
+<h3 id="6-3-2-env-文件方式">6.3.2 <code>.env</code> 文件方式</h3>
+<p>在仓库根目录新建 <code>.env</code> 文件，内容形如 <code>DEEPSEEK_API_KEY=sk-...</code>。CLI 启动时会从当前工作目录逐级向上搜索 <code>.env</code> 文件，找到第一个即加载，底层使用 Node 20.12+ 的内置 <code>process.loadEnvFile</code> 接口（详见 Ch.05 第 5.2.2 节）。<code>.env</code> 中定义的变量不会覆盖已存在的环境变量，因此通过 <code>export</code> 或系统级环境变量设置的值优先级更高。这个优先级顺序是合理的：用户在 Shell 配置文件中显式设置的值代表更明确的意图，不应被项目目录中的 <code>.env</code> 文件静默覆盖。</p>
+<p>使用 <code>.env</code> 文件时有一个需要注意的安全细节。仓库自带的 <code>.gitignore</code> 已经包含 <code>.env</code> 和 <code>.env.*</code> 两条规则（仅排除 <code>.env.example</code>），因此 <code>.env</code>、<code>.env.local</code>、<code>.env.dev</code> 等常见变体都不会被 Git 跟踪。尽管如此，仍然建议读者养成在执行 <code>git add</code> 前先运行 <code>git status</code> 的习惯——如果将 Key 写入了 <code>.gitignore</code> 未覆盖的文件名（例如 <code>keys.txt</code>），或者在 fork 后修改了 <code>.gitignore</code> 规则，都有可能导致敏感信息被意外提交。日常开发仍建议以用户级环境变量为主，<code>.env</code> 仅作为项目内临时配置或多人协作时的补充手段。</p>
+<h2 id="6-4-启动验证">6.4 启动验证</h2>
+<pre><code class="language-bash">node packages/cli/dist/cli.js
+</code></pre>
+<p>执行上述命令后，终端应出现 X-Code CLI 的启动横幅（ASCII Logo、版本号、当前模型名称）和交互输入框。首次启动时，如果 CLI 未检测到任何已配置的 API Key，它会根据当前 Shell 类型自动输出对应的设置命令。Shell 侦测逻辑位于 <code>packages/cli/src/shell.ts</code>，覆盖 PowerShell、cmd、bash、zsh、fish、sh 共 6 种类型：在 Windows 上通过检测 <code>PSModulePath</code> 环境变量区分 PowerShell 与 cmd，在 Unix 系统上通过 <code>SHELL</code> 环境变量判断具体的 Shell 类型。这样设计的好处是用户不需要查文档就能获得与自己环境匹配的配置命令，按照终端输出的提示执行后重新启动即可。</p>
+<p>启动成功后，读者可以输入一条简单的消息（如「帮我介绍一下这个项目」）来验证模型通信是否正常。如果收到模型的文本回复，说明从“代码拉取”到“ API 通信”的整条链路已经打通，本地开发环境的搭建就此完成。后续章节中所有「打开仓库对照阅读」的操作都以这一步为前提——读者在阅读某一章时，可以随时在本地仓库中打开对应的源码文件，结合运行中的 CLI 实例进行实验和验证。</p>
+<h2 id="6-5-后续章节的代码片段约定">6.5 后续章节的代码片段约定</h2>
+<p>后续章节正文中的代码片段都是关键摘录——为突出核心逻辑，会省略错误处理、类型注解、辅助分支和边界条件检查。完整可运行的版本以仓库内对应文件为准。每段代码上方会标注源文件路径，例如：</p>
+<blockquote>
+<p>源码：<code>packages/core/src/agent/loop.ts</code></p>
+</blockquote>
+<p>按这个路径在仓库中打开即可查看完整上下文。当正文中的代码片段与仓库源码存在差异时，以仓库源码为准——正文为突出核心逻辑会进行适度简化，但不会改变代码的语义和执行顺序。</p>
+<h2 id="6-6-小结">6.6 小结</h2>
+<p>本章完成了从源码到首次运行的全部操作。前置环境需要 Node.js 20.19.0 以上、pnpm 10 以上和 Git 三项工具，其中 pnpm 的版本通过仓库 <code>package.json</code> 的 <code>packageManager</code> 字段锁定，Corepack 据此自动激活对应版本。拉取代码时使用 <code>--branch v0.3.3</code> 将工作树固定到与本书正文对应的版本，首次跟读建议使用指定 tag 的方式。构建过程由 <code>tsc -b</code> 编译 core 和 esbuild 打包 cli 两步组成，耗时在数秒量级。API Key 的配置推荐使用用户级环境变量以获得跨终端的持久性，<code>.env</code> 文件作为项目级的补充手段，且不会覆盖已存在的环境变量。启动后若未检测到 Key，CLI 会针对当前 Shell 类型给出具体的配置命令，覆盖 PowerShell、cmd、bash、zsh、fish、sh 六种 Shell。完成本章的操作后，读者手中已经有了一份可运行的 X-Code CLI 源码实例，从下一章（Ch.07）开始，我们将进入第三部分「Agent Loop 引擎」，讨论 Tool Use 协议如何驱动 Agent 循环，每一个机制的讨论都可以在本地仓库中找到对应的源码对照阅读。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-5.html">← CLI 启动流程</a>
+      <a class="next" href="ch-7.html">Tool Use 协议：为什么 Agent Loop 必须是循环 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#6-1-前置要求">6.1 前置要求</a></li>
+      <li class="lv2"><a href="#6-2-拉取代码并构建">6.2 拉取代码并构建</a></li>
+      <li class="lv3"><a href="#6-2-1-克隆仓库">6.2.1 克隆仓库</a></li>
+      <li class="lv3"><a href="#6-2-2-安装依赖并构建">6.2.2 安装依赖并构建</a></li>
+      <li class="lv2"><a href="#6-3-配置-api-key">6.3 配置 API Key</a></li>
+      <li class="lv3"><a href="#6-3-1-环境变量方式">6.3.1 环境变量方式</a></li>
+      <li class="lv3"><a href="#6-3-2-env-文件方式">6.3.2 `.env` 文件方式</a></li>
+      <li class="lv2"><a href="#6-4-启动验证">6.4 启动验证</a></li>
+      <li class="lv2"><a href="#6-5-后续章节的代码片段约定">6.5 后续章节的代码片段约定</a></li>
+      <li class="lv2"><a href="#6-6-小结">6.6 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

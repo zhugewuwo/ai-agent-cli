@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多供应商支持：一个注册表管八家模型 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li class="active"><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>第 9 章 多供应商支持：一个注册表管八家模型</h1>
+<p>上一章实现了 Agent Loop 的生产级循环——模型调用工具、客户端执行、结果回传、再发下一轮。但那里始终只用了一家供应商的模型。现实中，不同供应商在代码生成、长上下文、推理能力和价格上差异显著，开发者往往需要在不同任务之间切换模型。支持多家供应商不只是「多配几个 API Key」这么简单——还涉及模型标识符（Model ID）的统一格式、供应商注册表（Provider Registry）的抽象设计、启动时的自动探测与默认选择、运行时的实时切换与配置持久化，以及不同供应商之间的能力差异屏蔽。本章将分为如下几个部分进行介绍。</p>
+<ul>
+<li>9.1 节列出 X-Code CLI 内置的 8 家供应商及其各自的定位。</li>
+<li>9.2 节讲供应商注册表模式——为什么用一个统一的注册表而不是为每家写适配器。</li>
+<li>9.3 节讨论启动时的供应商探测——可用性扫描和默认模型选择是两件不同的事。</li>
+<li>9.4 节介绍 <code>/model</code> 命令的运行时切换机制。</li>
+<li>9.5 节讲 OpenAI 兼容自定义端点——如何接入内置 8 家以外的供应商。</li>
+<li>9.6 节说明供应商级别的能力差异表及其设计取舍。</li>
+<li>9.7 节给出本章小结。</li>
+</ul>
+<h2 id="9-1-八家内置供应商">9.1 八家内置供应商</h2>
+<p>X-Code CLI 内置 8 家主流模型供应商，如表 9-1 所示。</p>
+<table>
+<thead>
+<tr>
+<th>供应商</th>
+<th>默认模型</th>
+<th>环境变量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Anthropic</td>
+<td>claude-sonnet-4-6</td>
+<td><code>ANTHROPIC_API_KEY</code></td>
+</tr>
+<tr>
+<td>OpenAI</td>
+<td>gpt-4.1</td>
+<td><code>OPENAI_API_KEY</code></td>
+</tr>
+<tr>
+<td>Google</td>
+<td>gemini-2.5-pro</td>
+<td><code>GOOGLE_GENERATIVE_AI_API_KEY</code></td>
+</tr>
+<tr>
+<td>xAI</td>
+<td>grok-3</td>
+<td><code>XAI_API_KEY</code></td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>deepseek-v4-flash</td>
+<td><code>DEEPSEEK_API_KEY</code></td>
+</tr>
+<tr>
+<td>Alibaba</td>
+<td>qwen-max</td>
+<td><code>ALIBABA_API_KEY</code></td>
+</tr>
+<tr>
+<td>Zhipu</td>
+<td>glm-4-plus</td>
+<td><code>ZHIPU_API_KEY</code></td>
+</tr>
+<tr>
+<td>Moonshot</td>
+<td>kimi-k2.5</td>
+<td><code>MOONSHOT_API_KEY</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>表 9-1 X-Code CLI 内置的 8 家供应商</p>
+</blockquote>
+<p>每家供应商通过对应的 AI SDK 适配包（<code>@ai-sdk/anthropic</code>、<code>@ai-sdk/openai</code> 等）接入，唯一的例外是智谱——官方未发布 AI SDK 适配包，因此使用社区维护的 <code>zhipu-ai-provider</code> 包。所有供应商的 API Key 均通过环境变量传入，CLI 不会将 Key 写入任何配置文件。这是一个有意的设计决定：密钥仅存在于进程的环境变量中，避免了密钥明文写入磁盘带来的泄露风险。代价是每次新开终端都需要确保环境变量已经配置好——Ch.06 第 6.3 节已经讨论过环境变量和 <code>.env</code> 文件两种配置方式的适用场景。</p>
+<h2 id="9-2-供应商注册表模式">9.2 供应商注册表模式</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/providers/registry.ts</code></p>
+</blockquote>
+<p>如果为 8 家供应商各写一个适配器类，各自实现创建模型、发送请求、解析响应的逻辑。这看起来不错，不过有个问题——8 家供应商的请求流程本质上是相同的（都是调用 <code>streamText</code>），差异仅在于模型标识符和少量供应商特有参数。AI SDK 提供的供应商注册表（Provider Registry）正是为了消除这种重复而设计的：把所有供应商注册到同一个对象上，通过统一的 <code>provider:model</code> 格式的标识符来获取模型实例。以下是注册代码的核心结构。</p>
+<!-- check:ignore=punctuation -->
+<pre><code class="language-ts">import { createProviderRegistry } from 'ai'
+import { createAnthropic } from '@ai-sdk/anthropic'
+import { createOpenAI } from '@ai-sdk/openai'
+// ...
+
+export function createModelRegistry() {
+  const opts = getProviderOptions()
+  const providers: Record&lt;string, any&gt; = {}
+
+  if (opts.anthropic) providers.anthropic = createAnthropic({ fetch: permanentErrorFetch })
+  if (opts.openai) providers.openai = createOpenAI({ fetch: permanentErrorFetch })
+  if (opts.deepseek) providers.deepseek = createDeepSeek({ fetch: deepseekReasoningFetch })
+  // ... 其余供应商同理
+
+  return createProviderRegistry(providers)
+}
+
+// 使用：统一的 model id 格式 `provider:model`
+const model = registry.languageModel('anthropic:claude-sonnet-4-6')
+</code></pre>
+<p>注册完成后，上层代码只需要一个字符串就能获取任意供应商的模型实例。切换供应商从「重建适配器对象」变成了「替换一个字符串」——Agent Loop 完全不需要知道当前用的是哪家供应商，它只看到一个统一的模型接口。这种设计还带来了一个附带好处：供应商特有的参数（如 Anthropic 的 <code>cache_control</code>、支持推理的模型的 <code>thinking</code> 配置）通过 <code>providerOptions</code> 透传，不需要在注册表的抽象层上添加特殊入口。每家供应商的特殊能力在调用 <code>streamText</code> 时按需拼装，注册表本身保持简洁。</p>
+<h2 id="9-3-启动时的供应商探测">9.3 启动时的供应商探测</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/config/index.ts</code></p>
+</blockquote>
+<p>假设读者同时配置了 DeepSeek 和 Anthropic 两个 API Key。CLI 启动时需要做两件事：列出这两家供应商供 <code>/model</code> 命令的选择列表使用，以及从中挑一个作为默认模型。</p>
+<h3 id="9-3-1-可用性扫描">9.3.1 可用性扫描</h3>
+<p>启动时的第一步是扫描环境变量，找出哪些供应商已经配置了 API Key。</p>
+<pre><code class="language-ts">const ENV_MAP: Record&lt;string, string&gt; = {
+  anthropic: 'ANTHROPIC_API_KEY',
+  openai: 'OPENAI_API_KEY',
+  google: 'GOOGLE_GENERATIVE_AI_API_KEY',
+  xai: 'XAI_API_KEY',
+  deepseek: 'DEEPSEEK_API_KEY',
+  alibaba: 'ALIBABA_API_KEY',
+  zhipu: 'ZHIPU_API_KEY',
+  moonshotai: 'MOONSHOT_API_KEY',
+}
+
+export function getAvailableProviders(): string[] {
+  const providers = Object.keys(ENV_MAP).filter((p) =&gt; getApiKey(p))
+  if (process.env.OPENAI_COMPATIBLE_API_KEY &amp;&amp; process.env.OPENAI_COMPATIBLE_BASE_URL) {
+    providers.push('custom')
+  }
+  return providers
+}
+</code></pre>
+<p>返回的列表按映射表的插入顺序排列（anthropic → openai → google → …）。如果同时配置了 OpenAI 兼容自定义端点所需的两个环境变量（API Key 和 Base URL），则额外追加一个 <code>'custom'</code> 条目。</p>
+<h3 id="9-3-2-默认模型选择">9.3.2 默认模型选择</h3>
+<p>有了可用供应商列表之后，下一步是确定默认使用哪个模型。如果用户没有通过任何方式显式指定模型，CLI 按以下四级优先级依次查找。</p>
+<p>（1）命令行参数 <code>--model</code> 的显式指定。
+（2）配置文件 <code>~/.x-code/config.json</code> 中通过 <code>/model</code> 命令写入的历史选择。
+（3）环境变量 <code>X_CODE_MODEL</code> 的值。
+（4）按供应商探测顺序表，选取第一个环境中存在 API Key 的供应商的默认模型。</p>
+<pre><code class="language-ts">export const PROVIDER_DETECTION_ORDER = [
+  { envKey: 'DEEPSEEK_API_KEY', defaultModel: 'deepseek:deepseek-v4-flash' },
+  { envKey: 'ANTHROPIC_API_KEY', defaultModel: 'anthropic:claude-sonnet-4-6' },
+  { envKey: 'OPENAI_API_KEY', defaultModel: 'openai:gpt-4.1' },
+  { envKey: 'ALIBABA_API_KEY', defaultModel: 'alibaba:qwen-max' },
+  { envKey: 'GOOGLE_GENERATIVE_AI_API_KEY', defaultModel: 'google:gemini-2.5-pro' },
+  { envKey: 'XAI_API_KEY', defaultModel: 'xai:grok-3' },
+  { envKey: 'ZHIPU_API_KEY', defaultModel: 'zhipu:glm-4-plus' },
+  { envKey: 'MOONSHOT_API_KEY', defaultModel: 'moonshotai:kimi-k2.5' },
+] as const
+</code></pre>
+<h3 id="9-3-3-未配置任何供应商时的引导">9.3.3 未配置任何供应商时的引导</h3>
+<p>如果启动时扫描发现没有任何供应商的 API Key，CLI 不会只输出一行错误信息让开发者自己查文档，而是根据当前操作系统和 Shell 类型给出具体的配置命令。</p>
+<pre><code class="language-text">Error: No API key found.
+
+Set at least one provider API key via environment variable:
+
+  DEEPSEEK_API_KEY                 https://platform.deepseek.com
+  ANTHROPIC_API_KEY                https://console.anthropic.com
+  OPENAI_API_KEY                   https://platform.openai.com
+  ...
+  OPENAI_COMPATIBLE_API_KEY        (custom OpenAI-compatible endpoint)
+
+Detected shell: bash
+Persist it so you do not need to set it every session:
+
+  echo 'export ANTHROPIC_API_KEY=sk-ant-...' &gt;&gt; ~/.bashrc &amp;&amp; source ~/.bashrc
+</code></pre>
+<p>输出分为三段：第一段按 <code>PROVIDER_DETECTION_ORDER</code> 逐行列出每家供应商的环境变量名和密钥注册地址；第二段检测当前 Shell 类型（复用 Ch.06 第 6.4 节介绍过的 Shell 侦测逻辑，覆盖 PowerShell、cmd、bash、zsh、fish、sh 六种类型），给出一条与当前 Shell 匹配的持久化命令示例；最后提示也可以使用项目本地的 <code>.env</code> 文件。这样开发者无需翻阅文档，直接复制粘贴终端输出即可完成配置。</p>
+<h2 id="9-4-运行时切换-model-命令">9.4 运行时切换：<code>/model</code> 命令</h2>
+<blockquote>
+<p>源码：<code>packages/cli/src/ui/components/App.tsx</code></p>
+</blockquote>
+<p>供应商探测解决的是启动时的默认选择问题。在会话进行过程中，开发者可能发现当前模型在某类任务上表现不佳，需要临时切换到另一家供应商。<code>/model</code> 命令提供了两种使用方式：不带参数时弹出交互式选择器，列出所有已配置 API Key 的供应商及其可用模型；带参数时直接切换，例如 <code>/model sonnet</code> 会匹配到 <code>anthropic:claude-sonnet-4-6</code>。以下是选择器的界面示例。</p>
+<pre><code class="language-text">? Select a model:
+&gt; anthropic:claude-sonnet-4-6 (current)
+  anthropic:claude-opus-4-7
+  openai:gpt-4.1
+  deepseek:deepseek-v4-flash
+  ...
+</code></pre>
+<p>切换模型时会触发两个副作用。第一，新的模型选择会写入配置文件 <code>~/.x-code/config.json</code>，确保下次启动时仍然使用该模型——这对应 9.3.2 节中默认模型选择的第二级优先级。第二，切换立即生效，下一条用户消息发出时就会使用新模型，不需要重启 CLI。实现这一点的关键是模型实例通过引用持有，切换时只需要更新引用指向的对象，而不需要重建整个组件树。这种设计使得模型切换对用户来说是零感知的——除了模型名称变了之外，整个交互界面和会话状态保持不变。</p>
+<h2 id="9-5-openai-兼容自定义端点">9.5 OpenAI 兼容自定义端点</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/providers/registry.ts</code></p>
+</blockquote>
+<p>内置的 8 家供应商覆盖了主流选择，但开发者可能还需要接入其他供应商——豆包、文心一言、通过 Ollama 运行的本地模型，或者通过 vLLM 部署的自有模型。这些供应商大多兼容 OpenAI 的 API 格式，因此 X-Code CLI 通过 AI SDK 的 <code>@ai-sdk/openai-compatible</code> 包提供了一个通用的接入通道。开发者只需要配置两个环境变量——API Key 和 Base URL——就能将任意兼容端点注册为 <code>custom</code> 供应商。</p>
+<pre><code class="language-bash">export OPENAI_COMPATIBLE_API_KEY=...
+export OPENAI_COMPATIBLE_BASE_URL=https://my-endpoint.com/v1
+xc -m custom:my-model
+</code></pre>
+<p>注册逻辑在 9.2 节展示的 <code>createModelRegistry</code> 函数中执行：如果这两个环境变量同时存在，就创建一个 OpenAI 兼容的供应商实例并注册到 <code>custom</code> 名下。</p>
+<pre><code class="language-ts">if (opts.custom.apiKey &amp;&amp; opts.custom.baseURL) {
+  providers.custom = createOpenAICompatible({
+    name: 'custom',
+    apiKey: opts.custom.apiKey,
+    baseURL: opts.custom.baseURL,
+    fetch: permanentErrorFetch,
+  })
+}
+</code></pre>
+<h2 id="9-6-供应商能力差异表">9.6 供应商能力差异表</h2>
+<blockquote>
+<p>源码：<code>packages/core/src/providers/capabilities.ts</code></p>
+</blockquote>
+<p>不同供应商对视觉（Image）、PDF 和文件 API（Files API）的支持各不相同。X-Code CLI 在源码中维护了一份静态的能力差异表，运行时的附件处理管线根据当前供应商的能力声明来决定走原生通道还是降级方案（详见 Ch.35）。</p>
+<pre><code class="language-ts">const CAPS: Record&lt;string, ProviderCapabilities&gt; = {
+  anthropic: { image: true, pdf: true, filesApi: true },
+  google: { image: true, pdf: true, filesApi: true },
+  deepseek: { image: false, pdf: false, filesApi: false },
+  custom: { image: false, pdf: false, filesApi: false }, // 自定义端点保守默认
+  // ...
+}
+</code></pre>
+<p>这份能力表是供应商级别的粗粒度声明，而非模型级别的精确映射。选择供应商级别的原因是维护成本：每家供应商的模型列表经常更新，逐模型维护能力声明会带来持续的同步负担。供应商级别的粒度在绝大多数场景下足够准确——不支持视觉的 DeepSeek 和自定义端点采用保守的全部标记为不支持的策略，不会误发图片请求；支持视觉的供应商即使偶尔覆盖了一个不支持图片的模型变体，API 也会返回明确的错误信息，不会产生静默的错误行为。这种保守标记、避免误发请求的策略，与 9.5 节中自定义端点的保守默认值是同一种设计思路。</p>
+<h2 id="9-7-小结">9.7 小结</h2>
+<p>本章讨论了 X-Code CLI 如何在一个统一的架构下支持 8 家内置供应商和 1 个 OpenAI 兼容自定义端点。核心设计是 AI SDK 的供应商注册表模式——所有供应商注册到同一个对象上，通过 <code>provider:model</code> 格式的标识符获取模型实例，切换供应商只需要替换一个字符串，Agent Loop 完全不需要感知当前使用的是哪家。启动时的供应商探测分为两个独立步骤：可用性扫描按映射表顺序返回已配置的供应商列表，供 <code>/model</code> 命令的界面渲染使用；默认模型选择按另一份优先级顺序查找，两份顺序分开维护避免了显示逻辑和选择逻辑的耦合。运行时的模型切换通过 <code>/model</code> 命令实现，切换立即生效且会持久化到配置文件。自定义端点通过 <code>@ai-sdk/openai-compatible</code> 包接入，采用保守的能力默认值。供应商之间的能力差异通过一份静态的供应商级能力表管理，粒度选择供应商级而非模型级是在维护成本和精确度之间的权衡。下一章将讨论流式 chunk 处理——模型的响应不是一次性返回的完整文本，而是以流（Stream）的形式逐片段（Chunk）到达，Agent Loop 需要实时解析这些片段并驱动终端界面的增量渲染。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-8.html">← 实现 Agent Loop：从 50 行示例到生产级循环</a>
+      <a class="next" href="ch-10.html">流式 Chunk 处理：从模型输出到终端渲染 →</a>
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#9-1-八家内置供应商">9.1 八家内置供应商</a></li>
+      <li class="lv2"><a href="#9-2-供应商注册表模式">9.2 供应商注册表模式</a></li>
+      <li class="lv2"><a href="#9-3-启动时的供应商探测">9.3 启动时的供应商探测</a></li>
+      <li class="lv3"><a href="#9-3-1-可用性扫描">9.3.1 可用性扫描</a></li>
+      <li class="lv3"><a href="#9-3-2-默认模型选择">9.3.2 默认模型选择</a></li>
+      <li class="lv3"><a href="#9-3-3-未配置任何供应商时的引导">9.3.3 未配置任何供应商时的引导</a></li>
+      <li class="lv2"><a href="#9-4-运行时切换-model-命令">9.4 运行时切换：`/model` 命令</a></li>
+      <li class="lv2"><a href="#9-5-openai-兼容自定义端点">9.5 OpenAI 兼容自定义端点</a></li>
+      <li class="lv2"><a href="#9-6-供应商能力差异表">9.6 供应商能力差异表</a></li>
+      <li class="lv2"><a href="#9-7-小结">9.7 小结</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

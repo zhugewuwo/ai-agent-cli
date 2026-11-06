@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>附录三 术语表 - 从零打造一个 AI Agent CLI</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-logo">◇</span>
+      <span class="brand-name">掘金课程</span>
+      <span class="brand-badge">课程</span>
+    </a>
+    <div class="topbar-title">从零打造一个 AI Agent CLI</div>
+    <div class="topbar-right">
+      <a class="login-btn" href="https://github.com/woai3c/hello-agent" target="_blank" rel="noopener">项目源码</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="buy-card">
+      <div class="buy-tag">限时特惠</div>
+      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
+      <div class="buy-origin">原价 ¥69.9</div>
+    </div>
+    <nav class="chapter-list">
+      <ol>
+        <li><a href="ch-1.html"><span class="num">1</span><span class="info"><span class="t">开篇示例：50 行代码跑通一个 Agent</span><span class="d">学习时长: 18分5秒</span></span></a></li>
+        <li><a href="ch-2.html"><span class="num">2</span><span class="info"><span class="t">Coding Agent 的三个工程层级</span><span class="d">学习时长: 11分59秒</span></span></a></li>
+        <li><a href="ch-3.html"><span class="num">3</span><span class="info"><span class="t">生产级 Agent 要防的 7 类失败</span><span class="d">学习时长: 14分45秒</span></span></a></li>
+        <li><a href="ch-4.html"><span class="num">4</span><span class="info"><span class="t">项目定位与工程基础</span><span class="d">学习时长: 9分56秒</span></span></a></li>
+        <li><a href="ch-5.html"><span class="num">5</span><span class="info"><span class="t">CLI 启动流程</span><span class="d">学习时长: 16分14秒</span></span></a></li>
+        <li><a href="ch-6.html"><span class="num">6</span><span class="info"><span class="t">本地搭建与运行</span><span class="d">学习时长: 8分4秒</span></span></a></li>
+        <li><a href="ch-7.html"><span class="num">7</span><span class="info"><span class="t">Tool Use 协议：为什么 Agent Loop 必须是循环</span><span class="d">学习时长: 11分40秒</span></span></a></li>
+        <li><a href="ch-8.html"><span class="num">8</span><span class="info"><span class="t">实现 Agent Loop：从 50 行示例到生产级循环</span><span class="d">学习时长: 24分24秒</span></span></a></li>
+        <li><a href="ch-9.html"><span class="num">9</span><span class="info"><span class="t">多供应商支持：一个注册表管八家模型</span><span class="d">学习时长: 9分28秒</span></span></a></li>
+        <li><a href="ch-10.html"><span class="num">10</span><span class="info"><span class="t">流式 Chunk 处理：从模型输出到终端渲染</span><span class="d">学习时长: 12分34秒</span></span></a></li>
+        <li><a href="ch-11.html"><span class="num">11</span><span class="info"><span class="t">错误恢复：从 SDK 异常到人类可读提示</span><span class="d">学习时长: 17分26秒</span></span></a></li>
+        <li><a href="ch-12.html"><span class="num">12</span><span class="info"><span class="t">工具系统总览：从注册表到可用工具集</span><span class="d">学习时长: 11分10秒</span></span></a></li>
+        <li><a href="ch-13.html"><span class="num">13</span><span class="info"><span class="t">文件工具：readFile、writeFile 与 edit</span><span class="d">学习时长: 15分5秒</span></span></a></li>
+        <li><a href="ch-14.html"><span class="num">14</span><span class="info"><span class="t">Shell 工具：跨平台命令执行与失败信号传递</span><span class="d">学习时长: 20分42秒</span></span></a></li>
+        <li><a href="ch-15.html"><span class="num">15</span><span class="info"><span class="t">代码库探索：glob、grep 与 listDir</span><span class="d">学习时长: 17分36秒</span></span></a></li>
+        <li><a href="ch-16.html"><span class="num">16</span><span class="info"><span class="t">网络工具：webSearch 与 webFetch</span><span class="d">学习时长: 17分16秒</span></span></a></li>
+        <li><a href="ch-17.html"><span class="num">17</span><span class="info"><span class="t">工具结果处理：截断与配对修复</span><span class="d">学习时长: 19分20秒</span></span></a></li>
+        <li><a href="ch-18.html"><span class="num">18</span><span class="info"><span class="t">控制类工具：askUser、enterPlanMode 与 exitPlanMode</span><span class="d">学习时长: 13分0秒</span></span></a></li>
+        <li><a href="ch-19.html"><span class="num">19</span><span class="info"><span class="t">子 Agent 与 task 工具</span><span class="d">学习时长: 18分27秒</span></span></a></li>
+        <li><a href="ch-20.html"><span class="num">20</span><span class="info"><span class="t">todoWrite：模型自管理的任务清单</span><span class="d">学习时长: 15分43秒</span></span></a></li>
+        <li><a href="ch-21.html"><span class="num">21</span><span class="info"><span class="t">Plan Mode：先计划再开工</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-22.html"><span class="num">22</span><span class="info"><span class="t">Plan Mode、todoWrite、task：三种「让模型自己规划」的形态对比</span><span class="d">学习时长: 8分49秒</span></span></a></li>
+        <li><a href="ch-23.html"><span class="num">23</span><span class="info"><span class="t">Ink + Yoga：CJK 抖动溯源</span><span class="d">学习时长: 16分46秒</span></span></a></li>
+        <li><a href="ch-24.html"><span class="num">24</span><span class="info"><span class="t">单元格级别差异渲染</span><span class="d">学习时长: 18分35秒</span></span></a></li>
+        <li><a href="ch-25.html"><span class="num">25</span><span class="info"><span class="t">跨终端渲染：三条工程原则</span><span class="d">学习时长: 12分21秒</span></span></a></li>
+        <li><a href="ch-26.html"><span class="num">26</span><span class="info"><span class="t">流式输出</span><span class="d">学习时长: 13分15秒</span></span></a></li>
+        <li><a href="ch-27.html"><span class="num">27</span><span class="info"><span class="t">Markdown → ANSI 自研渲染器</span><span class="d">学习时长: 13分37秒</span></span></a></li>
+        <li><a href="ch-28.html"><span class="num">28</span><span class="info"><span class="t">权限对话框与 askUser 模态</span><span class="d">学习时长: 7分41秒</span></span></a></li>
+        <li><a href="ch-29.html"><span class="num">29</span><span class="info"><span class="t">三级权限模型与 shell 命令分级</span><span class="d">学习时长: 8分46秒</span></span></a></li>
+        <li><a href="ch-30.html"><span class="num">30</span><span class="info"><span class="t">Token 经济学：四层防御一览</span><span class="d">学习时长: 9分44秒</span></span></a></li>
+        <li><a href="ch-31.html"><span class="num">31</span><span class="info"><span class="t">上下文压缩：轻量、主动与反应式三层</span><span class="d">学习时长: 13分6秒</span></span></a></li>
+        <li><a href="ch-32.html"><span class="num">32</span><span class="info"><span class="t">循环护栏：doom-loop 检测</span><span class="d">学习时长: 10分17秒</span></span></a></li>
+        <li><a href="ch-33.html"><span class="num">33</span><span class="info"><span class="t">提示词缓存：跨供应商的缓存策略</span><span class="d">学习时长: 11分4秒</span></span></a></li>
+        <li><a href="ch-34.html"><span class="num">34</span><span class="info"><span class="t">思考模式：跨供应商的统一开关</span><span class="d">学习时长: 9分46秒</span></span></a></li>
+        <li><a href="ch-35.html"><span class="num">35</span><span class="info"><span class="t">文件附件与视觉降级</span><span class="d">学习时长: 10分51秒</span></span></a></li>
+        <li><a href="ch-36.html"><span class="num">36</span><span class="info"><span class="t">知识系统与会话状态</span><span class="d">学习时长: 17分13秒</span></span></a></li>
+        <li><a href="ch-37.html"><span class="num">37</span><span class="info"><span class="t">MCP 协议接入</span><span class="d">学习时长: 41分16秒</span></span></a></li>
+        <li><a href="ch-38.html"><span class="num">38</span><span class="info"><span class="t">Skill 系统：按需注入的「指令包」</span><span class="d">学习时长: 27分3秒</span></span></a></li>
+        <li><a href="ch-39.html"><span class="num">39</span><span class="info"><span class="t">插件系统</span><span class="d">学习时长: 26分23秒</span></span></a></li>
+        <li><a href="ch-40.html"><span class="num">40</span><span class="info"><span class="t">插件 marketplace 与分发</span><span class="d">学习时长: 14分54秒</span></span></a></li>
+        <li><a href="ch-41.html"><span class="num">41</span><span class="info"><span class="t">附录一 构建工具链内部</span><span class="d">学习时长: 25分28秒</span></span></a></li>
+        <li><a href="ch-42.html"><span class="num">42</span><span class="info"><span class="t">附录二 完整代码流程串讲</span><span class="d">学习时长: 60分25秒</span></span></a></li>
+        <li class="active"><a href="ch-43.html"><span class="num">43</span><span class="info"><span class="t">附录三 术语表</span><span class="d">学习时长: 26分24秒</span></span></a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <article class="markdown-body">
+      <h1>附录三 术语表</h1>
+<p>本附录是全书术语的集中索引。正文中跨章节复用的术语、缩写和内部标识符按主题分组，每条给出一句话定义并标注详讲章节，方便读者在阅读过程中随时查阅。每个组内按术语首字符 a-z 排序，读者在章节中遇到不熟悉的名词时，可回到本附录查定义并跳转到展开章节。</p>
+<p>本附录按以下 7 个主题分组。</p>
+<ul>
+<li>C.1 Agent Loop：主循环相关的核心函数与状态结构。</li>
+<li>C.2 工具系统：工具定义、注册、权限、截断与执行机制。</li>
+<li>C.3 供应商与流：多供应商适配、流式处理与缓存策略。</li>
+<li>C.4 UI 渲染：终端渲染引擎、cell buffer、frame 管理与协议。</li>
+<li>C.5 上下文管理：会话持久化、压缩、知识加载与记忆提炼。</li>
+<li>C.6 扩展系统：MCP、Skill、插件与 Marketplace 机制。</li>
+<li>C.7 通用 LLM 概念：理解全书所需的大模型基础术语。</li>
+</ul>
+<h2 id="c-1-agent-loop">C.1 Agent Loop</h2>
+<h3 id="abortsignal"><code>abortSignal</code></h3>
+<p>把用户 Esc / Ctrl+C 取消信号从 React UI 一路穿透到 <code>streamText</code> 和 <code>execa</code> 子进程的标准 Web API。<code>runTurn</code> / <code>streamText</code> / 工具 <code>execute</code> 都接 <code>options.abortSignal</code>，缺一环就有孤儿 tool_call。详见 Ch.08。</p>
+<h3 id="agentloop"><code>agentLoop</code></h3>
+<p>多轮工具调用的主循环驱动函数，接收用户消息后反复调用 <code>runTurn</code> 直到 <code>finishReason</code> 为 <code>stop</code>、用户 Esc 取消、或可选的 <code>MAX_TURNS</code> 上限触发。生产级实现比 50 行 demo 额外处理会话元数据、cache_control、orphan 修复等 5 类任务。返回 <code>{ state, turnCount }</code>，其中 state 是长期会话状态，turnCount 是本次调用的局部计数。详见 Ch.08。</p>
+<h3 id="chunk-流式-chunk-事件">chunk（流式 chunk / 事件）</h3>
+<p><code>fullStream</code> 吐出的单个事件。主要类型：<code>text-delta</code>（文本增量）、<code>tool-call</code>（模型决定调工具）、<code>tool-result</code>（工具返回）、<code>reasoning</code>（思维链）、<code>finish</code>（本轮结束带 <code>finishReason</code>）。<code>streamChunksToUI</code> 按类型分流到 UI 不同通道。详见 Ch.10。</p>
+<h3 id="classifyapierror"><code>classifyApiError</code></h3>
+<p>错误恢复层的核心：用 14 条 pattern 把 API / 网络 / 协议异常分类成 <code>retryable: true</code>（可重试）和 <code>retryable: false</code>（不可重试）两档，由 <code>runTurn</code> 的 catch 块据此决定下一步。详见 Ch.11。</p>
+<h3 id="collectturnresponse"><code>collectTurnResponse</code></h3>
+<p><code>runTurn</code> 收尾阶段把 SDK 返回的 <code>response.messages</code> 推入 <code>state.messages</code> 之前先执行 <code>truncateToolResultsInMessages</code> 截断保护，保证下一轮请求体大小可控。详见 Ch.08。</p>
+<h3 id="drainstreamresult"><code>drainStreamResult</code></h3>
+<p>stream 结束后对 SDK 内部的 4 个 sibling promise（<code>response</code> / <code>finishReason</code> / <code>usage</code> / <code>toolCalls</code>）附加空 <code>.catch(noop)</code> 处理，防止 <code>NoOutputGeneratedError</code> 等流外错误变成未处理 rejection。在 <code>streamText</code> 返回后、chunk 分流前执行。详见 Ch.10 流式 chunk 处理。</p>
+<h3 id="finishreason"><code>finishReason</code></h3>
+<p>AI SDK 流结束时给出的取值之一：<code>stop</code> / <code>tool-calls</code> / <code>length</code> / <code>content-filter</code>。<code>agentLoop</code> 据此决定终止、继续工具调用、续写、还是报错。详见 Ch.08。</p>
+<h3 id="loopstate"><code>LoopState</code></h3>
+<p>跨多轮共享的会话级状态容器，含 <code>messages</code> / <code>tokenUsage</code> / <code>sessionId</code> / <code>taskSlug</code> / <code>recentToolCalls</code> / <code>systemPromptCache</code> 等 18 个字段，生命周期等于整个 CLI 会话。本次 <code>agentLoop</code> 调用的轮数计数不在此结构中，它是函数局部变量。详见 Ch.08。</p>
+<h3 id="max_turns"><code>MAX_TURNS</code></h3>
+<p>单次 <code>agentLoop</code> 调用的可选轮数上限。交互模式不传此参数（默认无上限，用户按 Esc 终止）；sub-agent 与 <code>--print</code> 模式各自带具体上限，达到后强制终止循环。详见 Ch.08。</p>
+<h3 id="processtoolcalls"><code>processToolCalls</code></h3>
+<p><code>finishReason === 'tool-calls'</code> 后的执行入口：先 bypass 组（askUser / task / todoWrite / enterPlanMode / exitPlanMode / listMcpResources / readMcpResource）→ loop guard 检测 → permission → 分发到 write / shell。abort 时短路并 push 占位 tool_result。详见 Ch.08。</p>
+<h3 id="repairorphantoolcalls"><code>repairOrphanToolCalls</code></h3>
+<p>每轮 stream 之前把 <code>state.messages</code> 里没配对 tool_result 的 assistant tool_call 修补成合法序列，避免供应商报 “tool_use without tool_result”。详见 Ch.11。</p>
+<h3 id="runturn"><code>runTurn</code></h3>
+<p><code>agentLoop</code> 内的单轮执行单元：前处理（修复 orphan / 降级图像 / cache_control / thinking）→ 调用 <code>streamText</code>（含 <code>maxOutputTokens</code> 参数）→ <code>drainStreamResult</code> 防 rejection → chunk 分流 → 收尾返回 <code>TurnOutcome</code>。详见 Ch.08。</p>
+<h3 id="streamchunkstoui"><code>streamChunksToUI</code></h3>
+<p>把 <code>streamText</code> 的 <code>fullStream</code> 按 chunk 类型分流到 UI：text-delta 走流式 buffer、tool-call 注册到进度通道、tool-result 触发 truncate、error 进 catch。详见 Ch.10。</p>
+<h3 id="sub-agent"><code>sub-agent</code></h3>
+<p><code>task</code> 工具委派出去的子 agent，运行在隔离的 <code>LoopState</code> 中、只把最终 assistant message 返回给父 agent，复用父级的 <code>abortSignal</code>。内置 4 种：<code>explore</code> / <code>general-purpose</code> / <code>plan</code> / <code>code-reviewer</code>。详见 Ch.19。</p>
+<h3 id="turn-轮">turn（轮）</h3>
+<p><code>agentLoop</code> 反复执行的单元。一轮 = 一次「调用 AI → 获取回复或 tool-call → 必要时执行工具 → 把结果加回消息」的往返。一个用户问题往往需要经历多轮才能完成。<code>runTurn</code> 是一轮的执行函数；本次 <code>agentLoop</code> 调用的轮数计数是函数局部变量，不在 <code>LoopState</code> 上。详见 Ch.08。</p>
+<h3 id="turnoutcome">TurnOutcome</h3>
+<p><code>runTurn</code> 的返回值，判别联合 4 种：<code>{ kind: 'done', finishReason, result }</code> / <code>{ kind: 'error' }</code> / <code>{ kind: 'retry' }</code> / <code>{ kind: 'aborted' }</code>。<code>agentLoop</code> 据此走分支处理（done 内部再按 <code>finishReason</code> 分 <code>stop</code> / <code>tool-calls</code> / <code>length</code> / <code>content-filter</code>；retry 回退 turnCount 重试本轮；aborted 不调 onError 直接 break）。详见 Ch.08。</p>
+<h2 id="c-2-工具系统">C.2 工具系统</h2>
+<h3 id="allowrule"><code>AllowRule</code></h3>
+<p>权限层把“don't ask again”决策固化下来的规则结构，三种匹配策略（exact / prefix / tool），运行时存 session、可选持久化到磁盘。详见 Ch.29。</p>
+<h3 id="askuser"><code>askUser</code></h3>
+<p>向用户提问并挂起等待响应的工具，结果作为下一轮 user message 注入。采用单槽 <code>pendingQuestion</code> + resolve 模式（与 permission 的队列式 <code>permissionResolversRef</code> 结构不同，但交互流程类似）。详见 Ch.18。</p>
+<h3 id="bypass_loop_guard_handlers"><code>BYPASS_LOOP_GUARD_HANDLERS</code></h3>
+<p>绕过 loop-guard 检测且自行 push tool_result 的工具白名单：<code>askUser</code> / <code>task</code> / <code>todoWrite</code> / <code>enterPlanMode</code> / <code>exitPlanMode</code> / <code>listMcpResources</code> / <code>readMcpResource</code>，因为这些工具的重复调用属于正常行为。详见 Ch.32。</p>
+<h3 id="edit"><code>edit</code></h3>
+<p>行级文件编辑工具，按 <code>oldString</code> / <code>newString</code> 做唯一匹配替换；要求 oldString 在文件内唯一，否则模型必须扩大上下文重试。详见 Ch.13。</p>
+<h3 id="enterplanmode-exitplanmode"><code>enterPlanMode</code> / <code>exitPlanMode</code></h3>
+<p>让模型进出计划模式的成对控制工具。进入时主 agent 依赖系统提示词约束模型不执行写操作，子 agent 则由 <code>toolFilter</code> 在工具集层面硬禁写工具；退出时把最终 plan 文本作为 user message 注入主对话。详见 Ch.21。</p>
+<h3 id="execute"><code>execute</code></h3>
+<p>每个工具定义的实际执行函数，接 <code>(input, { toolCallId, abortSignal })</code>；可在内部调 <code>reportProgress(toolCallId, msg)</code> 推流式进度。详见 Ch.12。</p>
+<h3 id="glob"><code>glob</code></h3>
+<p>按文件名通配符列文件路径的搜索工具，底层走 ripgrep，按 mtime 排序、尊重 <code>.gitignore</code>。详见 Ch.15。</p>
+<h3 id="grep"><code>grep</code></h3>
+<p>正则搜文件内容的工具，参数包括 <code>pattern</code>（正则）、<code>path</code>（搜索路径）、<code>glob</code>（文件过滤）、<code>headLimit</code>（结果上限）。返回匹配行的文本内容。详见 Ch.15。</p>
+<h3 id="hashtoolcall"><code>hashToolCall</code></h3>
+<p>loop-guard 的指纹函数：<code>SHA-256(toolName + '\x00' + stable-stringify(input))</code>，用空字节分隔工具名和参数以避免哈希碰撞。结果推入 <code>recentToolCalls</code> 滚动窗口（存储上限 16，扫描窗口 8）做重复检测。详见 Ch.32。</p>
+<h3 id="inputschema"><code>inputSchema</code></h3>
+<p>工具的参数 schema，用 Zod 写、AI SDK 在执行前校验；校验失败时 SDK 发 <code>tool-error</code> chunk 而不是 <code>tool-result</code>，需要 <code>repairOrphanToolCalls</code> 做修复保护。详见 Ch.12。</p>
+<h3 id="listdir"><code>listDir</code></h3>
+<p>列目录条目的工具，结果为扁平列表（子目录名后缀 <code>/</code> 标记），按文件系统原始顺序排列；适合让模型先看结构再选要读哪个文件。详见 Ch.15。</p>
+<h3 id="loop-guard">loop guard</h3>
+<p>外部约束机制：通过 <code>hashToolCall</code> 在最近 8 次调用的滑动窗口中检测重复，软阈值 3 / 硬阈值 5。软阈值触发时注入提示让模型自纠，硬阈值触发时短路调用并 push 假结果。详见 Ch.32。</p>
+<h3 id="per_tool_policy"><code>PER_TOOL_POLICY</code></h3>
+<p>按工具名查截断策略的表：<code>readFile</code> / <code>webFetch</code> / <code>webSearch</code> 走 <code>head-tail</code>；<code>grep</code> / <code>glob</code> / <code>listDir</code> 走 <code>head</code> + <code>maxLines = 500</code>；<code>shell</code> 走 <code>head</code>；未登记的工具默认 <code>head-tail</code>。每个方向的工程理由（信息密度分布）详见 Ch.17 决定三。</p>
+<h3 id="permissionmode"><code>permissionMode</code></h3>
+<p><code>LoopState</code> 上的会话级权限模式，三档：<code>default</code> / <code>acceptEdits</code> / <code>plan</code>。决定 <code>checkPermission</code> 是否弹对话框、<code>toolFilter</code> 是否拒绝写工具。<code>bypassPermissions</code> 不在 X-Code 这套实现里，对应到 X-Code 的语义是 <code>--trust</code> CLI 参数走 <code>trustMode</code> 旁路，与 <code>permissionMode</code> 是两个不同的开关。详见 Ch.29。</p>
+<h3 id="plan-mode">plan mode</h3>
+<p>模型只读、不写、不执行命令的规划专用 <code>permissionMode</code>。强制方式分两路：主 agent 依赖 <code>PLAN_MODE_OVERLAY</code> 系统提示软约束（模型若不遵守，写工具仍走正常 ask 路径，由用户在对话框中拒绝）；plan mode 下派出的子 agent 才会被 <code>toolFilter</code> 在工具集合层面硬禁写工具。详见 Ch.21。</p>
+<h3 id="pushtoolresult"><code>pushToolResult</code></h3>
+<p>手动 dispatch 类工具（<code>writeFile</code> / <code>edit</code> / <code>shell</code> 等）把结果写回 messages 数组的入口。截断由调用方在传入前完成（如 <code>pushSuccessfulToolResult</code> 先调 <code>truncateToolResult</code> 再调本函数），<code>pushToolResult</code> 自身只负责 push 消息、清理进度、通知 UI。AI SDK 自动执行类工具不经由此函数。详见 Ch.17。</p>
+<h3 id="readfile"><code>readFile</code></h3>
+<p>读文件内容的工具，head-tail 截断、支持指定行号范围；与 <code>writeFile</code> 配对走“先读后写”模式。详见 Ch.13。</p>
+<h3 id="reportprogress"><code>reportProgress</code></h3>
+<p>工具 <code>execute</code> 内部调用、流式上报当前在做什么的接口，结果挂在 <code>ActiveToolCall.progress</code> 字段被 UI 实时展示。详见 Ch.10。</p>
+<h3 id="shell"><code>shell</code></h3>
+<p>执行 shell 命令的工具，用 execa 子进程、<code>abortSignal</code> 透传以保证 Esc 能 SIGKILL 整条进程树；命中 forbidden patterns 时标记为 deny 级并在对话框显示 <code>[dangerous]</code> 警告，需用户确认后才执行。详见 Ch.14。</p>
+<h3 id="subagentregistry"><code>subAgentRegistry</code></h3>
+<p>CLI 启动时构建、整个会话冻结的子 agent 注册表（built-in + 项目级 <code>.x-code/agents/*.md</code> + 用户级 <code>~/.x-code/agents/*.md</code>）；新增 agent 需要重启 CLI 才能生效。详见 Ch.19。</p>
+<h3 id="task"><code>task</code></h3>
+<p>委派子 agent 的工具：模型给 prompt + 选 sub-agent type，CLI 启动一个隔离的 <code>agentLoop</code> 执行完毕后只把最终 message 返回。子 agent 不能再调 <code>task</code>。详见 Ch.19。</p>
+<h3 id="todowrite"><code>todoWrite</code></h3>
+<p>让模型自己维护任务清单的工具：状态 <code>pending</code> / <code>in_progress</code> / <code>completed</code>、强制单一 in_progress。UI 在终端历史区渲染清单视图。详见 Ch.20。</p>
+<h3 id="toolfilter"><code>toolFilter</code></h3>
+<p><code>buildTools</code> 和 sub-agent runner 用的工具门控结构（<code>{ allow?: string[]; deny?: string[] }</code>），按 <code>permissionMode</code> 或 sub-agent 定义动态拒绝某些工具。与 <code>permissions/</code> 目录下的 <code>checkPermission</code> 机制是两个独立的门控层。详见 Ch.29。</p>
+<h3 id="toolregistry"><code>toolRegistry</code></h3>
+<p><code>tools/index.ts</code> barrel export 出来的工具总注册表，<code>buildTools(options)</code> 在它基础上叠加 <code>task</code> 工具和 <code>toolFilter</code> 后生成最终 effectiveTools。详见 Ch.12。</p>
+<h3 id="truncatetoolresult-truncatetoolresultsinmessages"><code>truncateToolResult</code> / <code>truncateToolResultsInMessages</code></h3>
+<p>工具结果截断器：前者切单条结果（按 <code>PER_TOOL_POLICY</code>），后者在 messages 数组上就地修改 <code>output.value</code>，对 AI SDK 自动执行类工具做截断保护。详见 Ch.17。</p>
+<h3 id="webfetch"><code>webFetch</code></h3>
+<p>抓取一个 URL 并把 HTML 转 Markdown 的工具：流式读取 + 10 MB 硬封顶 + 15 分钟 LRU 缓存 + Cloudflare cf-mitigated 检测后 UA 降级 + SSRF 私有 IP / link-local 黑名单。详见 Ch.16。</p>
+<h3 id="websearch"><code>webSearch</code></h3>
+<p>按关键词搜索 Web 的工具，Tavily 优先、Brave 降级备选，description 里注入当前年份提升时效性。详见 Ch.16。</p>
+<h3 id="writefile"><code>writeFile</code></h3>
+<p>写整个文件的工具，要求模型先 <code>readFile</code> 拿到当前内容才能覆盖，避免不带上下文的盲写。详见 Ch.13。</p>
+<h2 id="c-3-供应商与流">C.3 供应商与流</h2>
+<h3 id="applycachecontrol"><code>applyCacheControl</code></h3>
+<p>每轮 stream 之前对 system + messages + tools 注入供应商特定的 cache 控制元数据：Anthropic 显式 <code>cache_control</code> breakpoint（共 4 个：system / 最后一个 tool / 最后两条消息）、OpenAI 注 <code>promptCacheKey</code>、自动 prefix caching 的供应商无需额外处理。详见 Ch.33。</p>
+<h3 id="cache_control"><code>cache_control</code></h3>
+<p>Anthropic 协议里的显式缓存 breakpoint 字段：在 system / 最后一个 tool 定义 / messages 上标 <code>{ type: 'ephemeral' }</code> 让前缀进缓存，命中后按约 10% 价格计费；每请求最多 4 个 breakpoint。详见 Ch.33。</p>
+<h3 id="cachereadtokens-cachecreationtokens"><code>cacheReadTokens</code> / <code>cacheCreationTokens</code></h3>
+<p>X-Code CLI 在 token 用量里上报的两个细分字段：本轮命中缓存读了多少 token、新写入缓存的多少。<code>cacheCreationTokens</code> 来自 AI SDK <code>inputTokenDetails.cacheWriteTokens</code>（本项目内部字段名为 <code>cacheCreationTokens</code>）。结合定价能算出真实节省。详见 Ch.33。</p>
+<h3 id="createproviderregistry"><code>createProviderRegistry</code></h3>
+<p>AI SDK 把多家供应商装进一个 registry 的工厂，调用时按 <code>'&lt;provider&gt;:&lt;model&gt;'</code> 字符串路由到正确的 client。详见 Ch.09。</p>
+<h3 id="downgradebinarypartsforprovider"><code>downgradeBinaryPartsForProvider</code></h3>
+<p>针对 DeepSeek / 自定义端点等纯文本供应商，把消息里的 ImagePart 就地替换成本地 OCR（<code>ocrBuffer</code>，基于 tesseract.js）生成的文本描述；多模态供应商走短路。与 <a href="#vision-fallback">vision-fallback</a> 是两个不同机制。详见 Ch.35。</p>
+<h3 id="finishreason-1">finishReason</h3>
+<p>见 Agent Loop 组。</p>
+<h3 id="fullstream"><code>fullStream</code></h3>
+<p><code>streamText</code> 返回的统一 chunk 流，含 text-delta / tool-call / tool-result / reasoning / error / finish 等所有事件类型。详见 Ch.10。</p>
+<h3 id="generatetext"><code>generateText</code></h3>
+<p>AI SDK 的一次性非流式调用，X-Code CLI 用在会话摘要 / 压缩 / 视觉降级 / 记忆提炼这类后台任务。详见 Ch.04。</p>
+<h3 id="getmaxoutputtokens"><code>getMaxOutputTokens</code></h3>
+<p>按 modelId 查“本轮最多让模型输出多少 token”的上限，给 <code>streamText</code> 当 <code>maxOutputTokens</code> 参数；过小会被 finish=length 截断、过大浪费预算。详见 Ch.08。</p>
+<h3 id="getthinkingprovideroptions"><code>getThinkingProviderOptions</code></h3>
+<p>把统一的 <code>thinking: boolean</code> 翻译成 8 家供应商各自的 thinking 参数（<code>thinking: { type: 'enabled' }</code> / <code>thinkingConfig: { thinkingBudget }</code> / <code>reasoning_effort</code> 等）。详见 Ch.34。</p>
+<h3 id="languagemodel"><code>LanguageModel</code></h3>
+<p>AI SDK 的统一模型类型，<code>createProviderRegistry</code> 返回的 model 都满足这个接口，下游用 <code>streamText</code> / <code>generateText</code> 时不再关心是哪家供应商。详见 Ch.04。</p>
+<h3 id="promptcachekey"><code>promptCacheKey</code></h3>
+<p>OpenAI 协议里显式的 cache key，让用户标 “下面这段前缀我希望复用缓存”；OpenAI 兼容端点（DeepSeek / Moonshot 等）多数走自动 prefix caching，不需要。详见 Ch.33。</p>
+<h3 id="provideroptions"><code>providerOptions</code></h3>
+<p><code>streamText</code> 按供应商透传的参数袋，cache_control / thinking 这类协议差异都装在这里；<code>mergeThinkingOptions</code> 合并时不能覆盖用户已有字段。详见 Ch.34。</p>
+<h3 id="provider_detection_order"><code>PROVIDER_DETECTION_ORDER</code></h3>
+<p>启动时按这个顺序探测环境变量，第一个有 key 的就当默认供应商。X-Code CLI 把 DeepSeek 排首位（面向国内开发者的有意选择）。详见 Ch.09。</p>
+<h3 id="reasoning_content"><code>reasoning_content</code></h3>
+<p>DeepSeek-V4 在多轮 thinking 模式下把思维链单独放在这个字段；上游 SDK 存在兼容问题时 <code>ensureReasoningContentParts</code> 做 shim 将其写回 messages 以保持 cache 命中。详见 Ch.34。</p>
+<h3 id="reasoning_effort"><code>reasoning_effort</code></h3>
+<p>OpenAI o-series 模型的 thinking 参数，由 <code>getThinkingProviderOptions</code> 从统一布尔翻译而来：<code>true</code> 映射为 <code>'high'</code>，<code>false</code> 映射为 <code>'minimal'</code>。详见 Ch.34。</p>
+<h3 id="streamtext"><code>streamText</code></h3>
+<p>AI SDK 的流式入口：传 model + messages + tools，返回 <code>fullStream</code>。X-Code CLI 的 <code>runTurn</code> 围着它构建。详见 Ch.04。</p>
+<h3 id="systempromptcache"><code>systemPromptCache</code></h3>
+<p><code>LoopState</code> 上保存的系统提示词字节串，整个会话期间必须保持字节级稳定（包括子 agent 列表）才能让 OpenAI 兼容供应商命中自动 prefix caching。详见 Ch.33。</p>
+<h3 id="thinking-mode">thinking mode</h3>
+<p>把 8 家供应商不同的“开启推理”机制统一成一个布尔开关，用户用 <code>/thinking on|off</code> 切换、<code>thinkingRef</code> 现读现用做到立刻生效。详见 Ch.34。</p>
+<h3 id="vision-fallback">vision-fallback</h3>
+<p>DeepSeek 等纯文本供应商用户贴图时，自动借一个多模态供应商当 caption 子 agent，把图描述成文本注入用户消息；结果 session 内缓存。详见 Ch.35。</p>
+<h2 id="c-4-ui-渲染">C.4 UI 渲染</h2>
+<h3 id="appendmessage"><code>appendMessage</code></h3>
+<p>往 React <code>messages</code> 数组追加一条消息（含 <code>streamingChunk: true</code> 标记），由 <code>ChatInput</code> 的 useEffect 经 <code>writeMessageToStdout</code> 写到终端历史区。详见 Ch.26。</p>
+<h3 id="bracketed-paste-括号粘贴模式">bracketed paste（括号粘贴模式）</h3>
+<p>终端的工作模式：应用发 <code>ESC[?2004h</code> 开启后，终端会在每段粘贴文本前后插入 <code>\x1b[200~</code> / <code>\x1b[201~</code> 标记。<code>usePromptInput</code> 据此把&quot;整块粘贴&quot;和&quot;逐键输入&quot;分开走 <code>onPaste</code> / <code>onText</code>，避免长贴入被当成几千次连续敲键。详见 Ch.25。</p>
+<h3 id="bsu-esu"><code>BSU</code> / <code>ESU</code></h3>
+<p>DEC 2026 同步更新的开启 / 结束序列（<code>\x1b[?2026h</code> / <code>\x1b[?2026l</code>）。一对之间的所有 stdout 写入对用户原子可见，避免边写边渲染产生撕裂。详见 [Ch.24]。</p>
+<h3 id="cell">cell</h3>
+<p>终端按字符格子排布显示，一格称为一个 cell（中文字符占 2 cell）。X-Code CLI 按 cell 粒度做对比和重绘，规避 Ink 按字符串 / 逻辑行的粗粒度测宽问题。详见 Ch.24。</p>
+<h3 id="cell-buffer">cell buffer</h3>
+<p><code>ChatInput</code> 维护的内存 2D 网格，每个 cell 存 <code>{ char, style, width: 1 | 2 }</code>；状态变化时算 diff、用绝对定位 <code>\x1b行;列H</code> 跳过去只写变化 cell。详见 [Ch.24。</p>
+<h3 id="cjk-宽度">CJK 宽度</h3>
+<p>汉字 / 全角符号在终端占两列宽，<code>stringWidth</code> / <code>string-width</code> 等通用库对部分字符算错；X-Code CLI 用 <code>text-width.ts</code> 自维护 Unicode 表绕开。详见 Ch.24。</p>
+<h3 id="commit-提交到终端历史区">commit（提交到终端历史区）</h3>
+<p>把 frame 中的实时行沉淀到 scrollback：工具运行完成后调用 <code>writeMessageToStdout</code> 把最终态写到终端历史区，再从 frame 中移除运行行；AI 流式文本累积到安全切点也执行 commit。本质是「从临时区搬运到永久区」的动作。详见 Ch.26。</p>
+<h3 id="commit_batch_ms"><code>COMMIT_BATCH_MS</code></h3>
+<p>流式 text-delta 合并窗口（150ms）：首切片 arm timer、期内后续切片合并进同一次 <code>appendMessage</code>，避免连发“段落 → 分隔 → 标题”触发三次大 frame 重绘。详见 Ch.26。</p>
+<h3 id="dec-2026">DEC 2026</h3>
+<p>终端协议扩展（Synchronized Update Mode），定义了 BSU/ESU 让终端在收到 ESU 前暂停渲染、原子提交一帧；iTerm2 / Windows Terminal / Alacritty 等原生支持，老 ConHost 忽略仍可用。详见 Ch.24。</p>
+<h3 id="decsc-decrc">DECSC / DECRC</h3>
+<p>VT 终端协议的「保存光标位置 / 恢复光标位置」转义（<code>\x1b7</code> / <code>\x1b8</code>）。终端层面只有一个保存槽位，任何系统调用一次 DECSC 都会覆盖前一次。X-Code CLI 不使用 DECSC 定位 frame（fork 的 log-update 已占用该槽位），frame 采用按行绝对定位 <code>\x1b[absRow;colH</code>。详见 Ch.24。</p>
+<h3 id="diff-cell-级别-diff">diff（cell 级别 diff）</h3>
+<p>比较新 cell buffer 与上一帧的差异，只把有变化的 cell 通过 ANSI 光标跳转 + 重写输出，避免整块擦除重画。是 <code>ChatInput</code> 高频重绘开销低的核心机制。详见 Ch.24。</p>
+<h3 id="frame-帧">frame（帧）</h3>
+<p><code>&lt;ChatInput&gt;</code> 自行维护的临时显示区，浮动定位在终端历史区下方。包含输入框以及上方的进度指示器、工具调用运行行、权限对话框等。每次状态变化即重画一帧；帧内容不进终端历史区，只覆盖在终端底部，需要保留时通过 commit 写入 scrollback。详见 Ch.24。</p>
+<h3 id="freeblanksaboveframeref"><code>freeBlanksAboveFrameRef</code></h3>
+<p>记录当前帧顶部上方有多少行可用空白，下一次帧重绘时据此决定要不要先 <code>\n</code> 推一行触发 auto-scroll 把旧内容保留到终端历史区。</p>
+<h3 id="ink">Ink</h3>
+<p>React-for-CLI 渲染器，X-Code CLI 把 <code>ink</code> 别名到 <code>@jrichman/ink@6.6.9</code>（Gemini CLI 同款 fork），但只使用其 lifecycle 能力：mount / unmount / Ctrl+C / stdin raw mode。所有动态 UI 均不经由 Ink 子树渲染。详见 Ch.23。</p>
+<h3 id="ink-动态区-ink-dynamic-region">Ink 动态区（Ink dynamic region）</h3>
+<p>Ink 自带的「可重绘」区域，Ink 在此区域内反复擦除旧内容重新绘制。X-Code CLI 不使用 Ink 动态区，该区域始终为空，所有可见 UI 均通过 <a href="#cell-buffer">cell buffer</a> 渲染。详见 Ch.23。</p>
+<h3 id="is_legacy_terminal"><code>IS_LEGACY_TERMINAL</code></h3>
+<p><code>terminal-glyphs.ts</code> 里的运行时检测常量，判定是不是老 ConHost；为真则把 <code>❯→&gt;</code> / <code>⎿→|</code> / <code>⏸→=</code> / <code>⚡→*</code> 等 Unicode glyph 整体降级到 ASCII。详见 Ch.25。</p>
+<h3 id="live-实时行">live（实时行）</h3>
+<p>frame 里那些跟着状态变化、还没提交到终端历史区的临时行（运行中的工具进度、流式打字过程等）。完成时通过 commit 落到 scrollback。详见 Ch.26。</p>
+<h3 id="rendermarkdown"><code>renderMarkdown</code></h3>
+<p>把 Markdown 字符串 ANSI 化的入口函数（<code>cli/src/ui/render-markdown.ts</code>）。复用 <code>marked</code> 的 <code>lexer()</code> 获取 AST，渲染器是自行实现的 <code>formatToken()</code> 递归，不使用 <code>marked-terminal</code> 包装层。表格对齐用 <code>stripAnsi</code> + 自定义 <code>visualWidth</code> 计算可见宽度而非 <code>string.length</code>；删除线 tokenizer 被禁用。详见 Ch.27。</p>
+<h3 id="scrollback">scrollback</h3>
+<p>终端的历史区，向上滚屏看到的内容。X-Code CLI 在 <code>termRows</code> 行写 <code>\n</code> 触发 auto-scroll 把顶部行推进 scrollback（这是跨终端唯一可靠的保留方式，SU 序列会被多数终端 splice 忽略）。详见 Ch.24。</p>
+<h3 id="spinner">spinner</h3>
+<p>进度指示器，X-Code CLI 用「原地呼吸」动画而非 braille 旋转。富终端使用 6 帧基础序列（<code>·</code> / <code>✢</code> / <code>*</code> / <code>✶</code> / <code>✻</code> / <code>✽</code>），老 ConHost 降级为 ASCII 序列（<code>·</code> / <code>:</code> / <code>+</code> / <code>*</code> / <code>+</code> / <code>:</code>），正反各走一遍形成 12 帧呼吸循环。详见 Ch.25。</p>
+<h3 id="usestreambuffer"><code>useStreamBuffer</code></h3>
+<p>流式 chunk 节流 hook：text-delta 攒在 <code>useRef</code> buffer 里，扫到不在开放 markdown 结构里的安全边界（如换行）才切片，再走 150ms 合并窗口 <code>appendMessage</code>。详见 Ch.26。</p>
+<h3 id="writemessagetostdout"><code>writeMessageToStdout</code></h3>
+<p><code>ChatInput</code> 的 effect 把 messages 数组里新增的 streaming / final 消息经 <code>renderMarkdown</code> 化后写出。函数签名接收 <code>write: InkWrite</code> 回调参数，内容先缓冲到 <code>pendingScrollbackRef</code>，随后在 BSU/ESU 原子帧内一并刷出到终端历史区。cell buffer 不渲染半截 markdown 预览，避免视觉跳动。详见 Ch.26。</p>
+<h3 id="yoga">Yoga</h3>
+<p>Facebook 的跨平台 Flexbox 布局引擎，Ink 默认用它算盒模型。X-Code CLI 绕开是因为它对 CJK / IME / 长流式文本算宽度有误，每秒几十次重算还会放大错误。详见 Ch.23。</p>
+<h2 id="c-5-上下文管理">C.5 上下文管理</h2>
+<h3 id="agents-md">AGENTS.md</h3>
+<p>人工编写的项目说明文件（位于项目根目录，不在隐藏目录中），事实标准之一。X-Code CLI 找不到时降级读取 <code>CLAUDE.md</code>，写入永远只往 AGENTS.md 写。详见 Ch.36。</p>
+<h3 id="auto-memory">auto-memory</h3>
+<p>也称 Memory / 自动记忆。AI 在 <code>finishReason='stop'</code> 后台运行的 memory extractor 把对话中学到的事实写到 <code>~/.x-code/memory/auto.md</code>（用户级）或 <code>.x-code/memory/auto.md</code>（项目级）；均不纳入版本控制。4 类严格分类：<code>user / feedback / project / reference</code>；同 <code>(category, key)</code> 自动覆盖；90 天 TTL 驱逐。与人工编写的 <a href="#knowledge">Knowledge</a> 严格分开。详见 Ch.36。</p>
+<h3 id="checkandcompresscontext"><code>checkAndCompressContext</code></h3>
+<p>每轮 stream 之前的 proactive 检查：用上一轮 API 返回的 <code>lastInputTokens</code> 比对模型上下文上限，超过 <code>COMPRESSION_TRIGGER_RATIO</code> 就先压一次。详见 Ch.31。</p>
+<h3 id="claude-md-fallback">CLAUDE.md fallback</h3>
+<p>各层目录优先读 AGENTS.md、找不到才回退读 CLAUDE.md。让 Claude Code 用户切过来零迁移成本，但 <code>/init</code> 只往 AGENTS.md 写。详见 Ch.36。</p>
+<h3 id="compact-boundary"><code>compact-boundary</code></h3>
+<p>JSONL transcript 里的特殊行，标记一次压缩事件发生过（light compaction、tool-result truncation、LLM summary、reactive 压缩四条路径完成后均会写入）。<code>/resume</code> 重放时跳过这条边界之前的内容，避免把已丢弃的 loop-guard 配对从磁盘复活。详见 Ch.31。</p>
+<h3 id="compressmessages"><code>compressMessages</code></h3>
+<p>reactive / proactive 走到 LLM summary 这一步时调的函数：用 <code>generateText</code> 把老消息总结成一段文字，配 <code>KEEP_RECENT</code> 最近 6 条原文保留。详见 Ch.31。</p>
+<h3 id="compression_trigger_ratio"><code>COMPRESSION_TRIGGER_RATIO</code></h3>
+<p>proactive 压缩触发阈值（0.8）：token 用量到模型上下文窗口的 80% 就先压，留 20% 给压缩本身的请求 + 输出空间。详见 Ch.31。</p>
+<h3 id="handlecontexttoolong"><code>handleContextTooLong</code></h3>
+<p>reactive 压缩入口：stream 抛出错误且匹配上下文超限 pattern 时立即压缩、不计这一轮、重试当前 turn，用户感知不到这次重试。详见 Ch.31。</p>
+<h3 id="jsonl-transcript">JSONL transcript</h3>
+<p>每条消息独立写一行的会话记录文件（<code>&lt;slug&gt;-&lt;sessionId&gt;.jsonl</code>），加载时按行重放。崩溃恢复 + 跨进程接续 + <code>/resume</code> 历史选择器全靠它。详见 Ch.36。</p>
+<h3 id="keep_recent"><code>KEEP_RECENT</code></h3>
+<p>压缩保留区大小（6）：最近 6 条消息永远保留原文，保持当前工作上下文不被压走；保留头还会跳过悬空 <code>tool</code> 角色消息避免供应商拒收。详见 Ch.31。</p>
+<h3 id="knowledge">Knowledge</h3>
+<p>也称知识系统。人工编写的项目说明与偏好，长期不变。文件：每个目录的 <code>AGENTS.md</code>（项目根 / monorepo 子包 / 用户级 <code>~/.x-code/</code>），缺失时回退 <code>CLAUDE.md</code>；本地偏好 <code>AGENTS.local.md</code>（项目根，gitignored）。AGENTS.md / CLAUDE.md 纳入版本控制跟随项目，AGENTS.local.md 不纳入版本控制。与 AI 写入的 <a href="#auto-memory">auto-memory</a> 严格分开。详见 Ch.36。</p>
+<h3 id="light-compaction">light compaction</h3>
+<p>纯本地 O(n) 压缩：删除 loop-guard 命中的失败工具调用并剥离对应 tool-call/result 配对，不调用 LLM。proactive 触发时先执行此步骤，仍超阈值才进入 LLM summary。详见 Ch.31。</p>
+<h3 id="memory-extractor">memory extractor</h3>
+<p><code>finishReason='stop'</code> 后台运行的子流程，分析当轮对话并挑出值得记录的事实增量写入 auto.md；主 agent 自身不写记忆文件，避免每轮污染 systemPromptCache。详见 Ch.36。</p>
+<h3 id="proactive-压缩">proactive 压缩</h3>
+<p>主动型：每轮 stream 之前比对 token 用量与阈值，超过即先压缩再请求。共 3 步依次尝试：（1）light compaction 删除 loop-guard 失败配对；（2）<code>truncateOldToolResults</code> 截断旧的大型 tool_result 为紧凑 stub；（3）仍超阈值才进入 <code>compressMessages</code> LLM summary。每步完成后检查是否已降至阈值以下，是则提前返回。详见 Ch.31。</p>
+<h3 id="reactive-压缩">reactive 压缩</h3>
+<p>被动型：stream 抛出错误且匹配上下文超限 pattern 时立即压缩并重试当前 turn；7 条 <code>CONTEXT_TOO_LONG_PATTERNS</code> 覆盖 OpenAI / Anthropic / 通用三家错误措辞。详见 Ch.31。</p>
+<h3 id="recenttoolcalls"><code>recentToolCalls</code></h3>
+<p><code>LoopState</code> 上的滚动窗口（存储上限 16，扫描窗口 8），存最近若干次 <code>{ toolName, hash }</code> 供 loop-guard 判重使用。详见 Ch.32。</p>
+<h3 id="resume"><code>/resume</code></h3>
+<p>历史会话选择器 slash command：列出本项目的 JSONL transcript 让用户选一个续接。恢复时通过 <code>hydrateLoopState</code> 重建消息历史和 token 用量等会话状态，历史消息回显到终端 scrollback。<code>pendingWork</code> 字段存在于 <code>SessionSummary</code> 类型中，但 resume 流程不会自动将其注入为 user message。详见 Ch.36。</p>
+<h3 id="taskslug"><code>taskSlug</code></h3>
+<p>首条用户消息推导的人类可读短串，用作 <code>&lt;slug&gt;-&lt;sessionId&gt;.jsonl</code> 文件名。只设一次永不更新，中途修改会导致本会话文件名错位留下孤儿文件。详见 Ch.08。</p>
+<h2 id="c-6-扩展系统">C.6 扩展系统</h2>
+<h3 id="mcp-transport">MCP transport</h3>
+<p>MCP 客户端与 server 之间的传输协议。X-Code CLI 支持两种：stdio（client 启动一个本地子进程与 server 通过 stdin/stdout 通信）和 HTTP（client 通过 HTTP POST 与远端 server 通信，需要 OAuth 认证）。前者运行本地 binary（如 <code>node mcp-server.js</code>），后者连接远端服务（如 <code>https://mcp.linear.app/mcp</code>）。详见 Ch.37。</p>
+<h3 id="server-__-tool"><code>&lt;server&gt;__&lt;tool&gt;</code></h3>
+<p>MCP 远端工具映射到本地工具时的命名规则：server 名加双下划线加 tool 名（如 <code>linear__create_issue</code>）。X-Code CLI 有意不加 <code>mcp__</code> 总前缀（Claude Code 加此前缀），原因在于每个工具描述都进 system prompt，多一段 <code>mcp__</code> 会额外消耗 token。详见 Ch.37 + Ch.39。</p>
+<h3 id="oauth-2-1-callback-server-token-storage"><code>OAuth 2.1</code> / <code>callback-server</code> / <code>token-storage</code></h3>
+<p>远端 HTTP MCP server 的认证机制：<code>/mcp auth &lt;name&gt;</code> 触发后 CLI 启动一个本地 HTTP server 接收 callback，浏览器打开授权页，授权完 token 存到 <code>~/.x-code/mcp-auth.json</code>（<code>0o600</code> 文件，不用 OS keychain）。详见 Ch.37。</p>
+<h3 id="consent-consent-preview"><code>consent</code> / <code>consent preview</code></h3>
+<p>插件安装第一道门：在文件写入磁盘前把&quot;这个插件包含什么、会运行什么子进程&quot;展示给用户、等显式同意。预览里特别强调有&quot;安全爆炸半径&quot;的两类：hook 事件名（要执行 shell）和 MCP server 名（要起子进程）。详见 Ch.39。</p>
+<h3 id="userconfig"><code>userConfig</code></h3>
+<p>插件 manifest 里声明的&quot;安装时要问用户的字段&quot;，如 <code>LINEAR_API_KEY</code>。安装时 installer 逐项 prompt 用户输入、写到 <code>~/.x-code/plugins/user-config.json</code>（<code>0o600</code>），运行时由 <code>getPluginUserConfigEnv()</code> 注入到 MCP server / hook 子进程的 env。<code>sensitive: true</code> 控制输入回显（git 风格 <code>*</code> 代替字符）。详见 Ch.39。</p>
+<h3 id="skill-md-frontmatter"><code>SKILL.md</code> / frontmatter</h3>
+<p>skill 文件格式：YAML frontmatter（<code>name</code> + <code>description</code> 两字段）+ Markdown body。文件按 scope 分两层组织（user / project），CLI 启动一次性加载，激活时 body 注入消息历史。详见 Ch.38。</p>
+<h3 id="activateskill"><code>activateSkill</code></h3>
+<p>模型自主激活 skill 的工具。模型在工具调用中给出 skill 名，CLI 把对应 SKILL.md 的 body 包在 <code>&lt;activated_skill&gt;</code> envelope 里作为 <code>tool_result</code> 回填。只有当 registry 里至少有一条 enabled skill 时这个工具才注册。详见 Ch.38。</p>
+<h3 id="disabledskills"><code>disabledSkills</code></h3>
+<p><code>settings.json</code>（user scope：<code>~/.x-code/settings.json</code>）或 <code>settings.local.json</code>（project scope：<code>&lt;repo&gt;/.x-code/settings.local.json</code>）中的顶层数组，列出本 scope 禁用的 skill 名。两层 scope 采用并集语义，任一层列出即视为 disabled。详见 Ch.38。</p>
+<h3 id="plugin-manifest"><code>plugin manifest</code></h3>
+<p><code>.x-code-plugin/plugin.json</code> 或 <code>.claude-plugin/plugin.json</code>（或裸 <code>plugin.json</code>），三条候选路径按优先级探测、第一条命中胜出。<code>name</code> 必填、其他都 optional；五个扩展字段（<code>skills</code> / <code>agents</code> / <code>commands</code> / <code>mcpServers</code> / <code>hooks</code>）走两段式解析：显式声明优先、缺字段走约定目录探测。详见 Ch.39。</p>
+<h3 id="enabledplugins"><code>enabledPlugins</code></h3>
+<p><code>settings.json</code> 顶层 boolean map（<code>{ &quot;linear@anthropic-marketplace&quot;: true, ... }</code>），缺省按 <code>DEFAULT_ENABLED = true</code>。两层 scope（project &gt; user），高优先级 scope 显式赋值即胜出。之所以使用 boolean map 而非 set，是为了允许 project 单独打开 user 已禁用的插件。详见 Ch.39。</p>
+<h3 id="pluginloaderror"><code>PluginLoadError</code></h3>
+<p><code>loadAllPlugins</code> 为每个插件包裹 try/catch，因此某个插件 manifest 损坏不会阻塞 CLI 启动，错误进 <code>PluginLoadError[]</code> 跟 <code>LoadedPlugin[]</code> 一起放进 <code>PluginRegistry</code>、<code>/plugin doctor</code> 命令读取展示。详见 Ch.39。</p>
+<h3 id="hookeventname-decisionevent"><code>HookEventName</code> / <code>DecisionEvent</code></h3>
+<p><code>HookEventName</code> 是 10 个固定枚举（<code>SessionStart</code> / <code>UserPromptSubmit</code> / <code>PreToolUse</code> / <code>PostToolUse</code> / <code>PreCompact</code> / <code>PostCompact</code> / <code>SubagentStart</code> / <code>SubagentStop</code> / <code>TurnComplete</code> / <code>SessionEnd</code>）。<code>DecisionEvent</code> 是其中 3 个的子集（<code>UserPromptSubmit</code> / <code>PreToolUse</code> / <code>PostToolUse</code>），只有这三个事件的 hook 通过 stdout 返回的 JSON 能影响 agent 下一步。其余 7 个是 fire-and-forget。详见 Ch.39。</p>
+<h3 id="matcher"><code>matcher</code></h3>
+<p><code>HookConfigEntry</code> 字段，正则字符串，只对 <code>PreToolUse</code> / <code>PostToolUse</code> 生效，因为其他事件没有 tool name 概念。格式无效的正则降级到 <code>return true</code>（「匹配每个工具」）而非 <code>false</code>（「一个都不匹配」），让 hook 不至于静默失效。详见 Ch.39。</p>
+<h3 id="failurepolicy"><code>failurePolicy</code></h3>
+<p><code>HookConfigEntry</code> 字段，<code>'allow'</code>（默认）或 <code>'block'</code>。hook 子进程非零退出 / 超时 / crash 时，前者把失败视为同意（permissive 默认）、后者拒绝当前操作。<code>block</code> 是需要作者主动启用的危险开关。详见 Ch.39。</p>
+<h3 id="marketplace-json"><code>marketplace.json</code></h3>
+<p>marketplace 的索引文件，列出本 marketplace 提供的所有 plugin entry（<code>plugins[]</code> 数组，每条带 <code>name</code> / <code>description</code> / <code>source</code> 等）。通常放在 <code>.claude-plugin/marketplace.json</code>（Claude Code 约定），CLI 也接受根目录 <code>marketplace.json</code>。详见 Ch.40。</p>
+<h3 id="known_marketplaces-json"><code>known_marketplaces.json</code></h3>
+<p>用户订阅列表，路径 <code>~/.x-code/plugins/known_marketplaces.json</code>。每条记录含 <code>name</code>（本地别名）/ <code>source</code>（git URL 或 HTTPS）/ <code>reservedName?</code> / <code>officialSource?</code>。顶层还可以有 <code>strictKnownMarketplaces</code> 和 <code>blockedPlugins</code> 两个企业部署 gate。详见 Ch.40。</p>
+<h3 id="wire-form-vs-pluginsource">wire form vs <code>PluginSource</code></h3>
+<p><code>marketplace.json</code> 里 <code>source</code> 字段有 8 种 distinct wire form 分支：3 种字符串简写（相对路径 <code>&quot;./plugins/foo&quot;</code>、<code>&quot;github:owner/repo[#ref]&quot;</code>、原始 git URL <code>&quot;https://…&quot;</code> / <code>&quot;git@…&quot;</code>）+ 5 种对象形态（<code>{source:'git-subdir'}</code> / <code>{source:'url'}</code> / <code>{source:'git'}</code> / <code>{source:'github'}</code> / <code>{source:'local'}</code>）。对象形态的 discriminator 字段名可以是 <code>source</code> 也可以是 <code>kind</code>（后者是 X-Code CLI 自家 legacy 写法，代码里 <code>o.source ?? o.kind</code> 都接），但逻辑共用，因此不算独立分支。这 8 种由 <code>normalizeMarketplaceSource</code> 归一成统一的 <code>PluginSource</code> 类型，installer 只看 <code>PluginSource</code>。详见 Ch.40。</p>
+<h3 id="sha-pinning">sha pinning</h3>
+<p><code>marketplace.json</code> 里每条 plugin entry 可以声明 <code>sha</code>（7-40 字符 hex commit hash），installer clone 完成后执行 <code>git rev-parse HEAD</code> 用 <code>startsWith</code> 前缀匹配，不匹配则拒绝安装。防御 force-push / repo 被攻陷。<code>anthropic-marketplace</code> 里 153 个远程源 100% 都 pin 了 sha。详见 Ch.40。</p>
+<h3 id="reserved_marketplace_names"><code>RESERVED_MARKETPLACE_NAMES</code></h3>
+<p>marketplace.ts 里的常量映射表，把几个特定 marketplace 名（<code>anthropic-marketplace</code> / <code>claude-plugins</code> / <code>x-code-official</code>）钉死到对应的 GitHub org（<code>anthropics</code> / <code>anthropics</code> / <code>woai3c</code>）。注册时 <code>addKnownMarketplace</code> 校验 source 必须在那个 org 下，防止冒充。详见 Ch.40。</p>
+<h3 id="claude_plugin_root-claude_plugin_data"><code>${CLAUDE_PLUGIN_ROOT}</code> / <code>${CLAUDE_PLUGIN_DATA}</code></h3>
+<p>slash 命令模板中的变量。前者展开成插件根目录的绝对路径（版本化 cache 目录，重装时擦除），后者展开成持久数据目录（<code>~/.x-code/plugins/data/&lt;id&gt;/</code>，跨重装保留，第一次替换时 CLI 自动 <code>mkdir -p</code>）。<code>expandCommandBody</code> 完成替换。Hook 中有同名变量 <code>${pluginDir}</code> / <code>${pluginDataDir}</code>，功能相同。详见 Ch.39。</p>
+<h3 id="plugin-refresh"><code>/plugin refresh</code></h3>
+<p>会话内热加载插件变更的单一入口。先重建 plugin 主 registry，再将变更合并到五个子 registry（skill / sub-agent / command / hook / MCP），其中 MCP 部分与 user + project MCP 合并后调 <code>restartAll</code>。重建后 system prompt cache 失效，下一条消息会 cache miss 一次。详见 Ch.39。</p>
+<h2 id="c-7-通用-llm-概念">C.7 通用 LLM 概念</h2>
+<h3 id="agentic">agentic</h3>
+<p>形容词，指 AI 能自主拆解任务、调用工具、读写文件、执行命令的能力维度。AI Coding 2023-2024 年开始从 inline completion 转向 agentic。详见 序章。</p>
+<h3 id="bpe">BPE</h3>
+<p>Byte-Pair Encoding，主流 LLM tokenizer 算法：从单字节开始把训练语料里最常一起出现的字节对合并成新 token、反复迭代。OpenAI 的 <code>tiktoken</code> 是常用实现，中英文 token 密度差异通常在 0-15% 量级。详见 Ch.30。</p>
+<h3 id="cot-chain-of-thought">CoT（Chain-of-Thought）</h3>
+<p>思维链 prompting：让模型在输出最终答案前先写中间推理步骤，多步推理任务准确率显著提升。thinking mode 是 CoT 的工程化进化。详见 Ch.34。</p>
+<h3 id="doom-loop">doom-loop</h3>
+<p>LLM 在低 temperature 下反复尝试同一个失败操作的结构性失败模式（自回归推理强化重复 + 缺乏元认知 + 错误反馈不够明确），依赖模型自身无法跳出，必须由 loop guard 进行外部约束。详见 Ch.32。</p>
+<h3 id="function-calling">function calling</h3>
+<p>OpenAI 2023 年提出的工具调用协议：模型按 JSON Schema 输出 <code>tool_call</code>，客户端执行后把 <code>tool_result</code> 喂回模型。MCP 是它的网络化扩展。详见 Ch.07。</p>
+<h3 id="kv-cache">KV cache</h3>
+<p>Transformer 推理标配优化：把每个 token 算注意力时产生的 K/V 张量缓存在 GPU 显存里，下一个 token 只算自己的 K/V，前面的直接复用，复杂度 O(n²)→O(n)。prompt caching 是它的服务端跨请求拓展。详见 Ch.33。</p>
+<h3 id="mcp-model-context-protocol">MCP（Model Context Protocol）</h3>
+<p>Anthropic 2024-11 提出的开放协议，把工具定义从单一应用拓展为跨应用标准；任何 MCP 工具服务器能被任何 MCP 客户端接入。当前是工具生态事实标准。详见 Ch.07。</p>
+<h3 id="prompt-caching">prompt caching</h3>
+<p>KV cache 的服务端跨请求拓展：服务端发现同一前缀的 KV 张量被反复计算时跨请求保存，下次同前缀直接复用，因此前缀必须字节级一致才能命中。这是当前 token 优化的最大单点杠杆。详见 Ch.33。</p>
+<h3 id="prompt-injection">prompt injection</h3>
+<p>恶意输入诱导模型偏离原意，比如让 webFetch 抓内网元数据地址泄露凭据。webFetch 私有 IP 黑名单必须包含 <code>169.254.169.254</code> 这条 link-local 元数据服务地址。详见 Ch.16。</p>
+<h3 id="rag-retrieval-augmented-generation">RAG（Retrieval-Augmented Generation）</h3>
+<p>把事实存入向量数据库，每轮对话前先做向量检索拼入 prompt。优点是信息容量无限，缺点是召回质量依赖 embedding。X-Code CLI 不采用 RAG，而是采用「长上下文 + 工具按需读取」路径。详见 Ch.36。</p>
+<h3 id="react">ReAct</h3>
+<p>Yao et al. 2022 提出的 Reasoning + Acting 框架：模型在同一个生成中交替输出推理和行动，先描述意图与原因再调用工具，获取结果后再决定下一步。当前所有主流 agent CLI 的核心循环都是 ReAct 的工程化版本。详见 Ch.08。</p>
+<h3 id="slash-command">slash command</h3>
+<p>用户在 ChatInput 里以 <code>/</code> 开头触发的本地命令，定义在 <code>SLASH_COMMANDS</code>：<code>/help</code> / <code>/model</code> / <code>/thinking</code> / <code>/plan</code> / <code>/clear</code> / <code>/compact</code> / <code>/resume</code> / <code>/init</code> / <code>/review</code> / <code>/memory</code> / <code>/exit</code> 等。详见 Ch.36。</p>
+<h3 id="temperature">temperature</h3>
+<p>采样温度参数，控制下一个 token 分布的尖锐度。agent 场景通常使用低 temperature（0-0.3）保证确定性，但低温度也意味着采样退化，一旦某个 token 概率最高就会持续被采样，这是 doom-loop 的成因之一。详见 Ch.32。</p>
+<h3 id="tool_call-tool_result">tool_call / tool_result</h3>
+<p>Tool Use 协议里成对出现的两个消息内容块：模型在 assistant message 里输出 <code>tool_call</code>（含 <code>toolCallId</code> / <code>toolName</code> / <code>input</code>）、客户端执行后用对应 <code>toolCallId</code> 在 user message 中回填 <code>tool_result</code>。少一边就是 orphan，下一轮请求会被供应商拒。详见 Ch.07。</p>
+<h3 id="vlm-vision-language-model">VLM（Vision Language Model）</h3>
+<p>能直接接收图像 part 的多模态模型，DeepSeek 等纯文本供应商不支持。X-Code CLI 通过 vision-fallback 子 agent 借用任意一家 VLM 为图片生成 caption，再将文本注入纯文本供应商的对话。详见 Ch.35。</p>
+
+    </article>
+    <div class="pager">
+      <a class="prev" href="ch-42.html">← 附录二 完整代码流程串讲</a>
+      
+    </div>
+  </main>
+
+  <aside class="toc">
+    <div class="toc-head"><span>目录</span><span class="toc-toggle">≫</span></div>
+    <ul><li class="lv2"><a href="#c-1-agent-loop">C.1 Agent Loop</a></li>
+      <li class="lv3"><a href="#abortsignal">`abortSignal`</a></li>
+      <li class="lv3"><a href="#agentloop">`agentLoop`</a></li>
+      <li class="lv3"><a href="#chunk-流式-chunk-事件">chunk（流式 chunk / 事件）</a></li>
+      <li class="lv3"><a href="#classifyapierror">`classifyApiError`</a></li>
+      <li class="lv3"><a href="#collectturnresponse">`collectTurnResponse`</a></li>
+      <li class="lv3"><a href="#drainstreamresult">`drainStreamResult`</a></li>
+      <li class="lv3"><a href="#finishreason">`finishReason`</a></li>
+      <li class="lv3"><a href="#loopstate">`LoopState`</a></li>
+      <li class="lv3"><a href="#max_turns">`MAX_TURNS`</a></li>
+      <li class="lv3"><a href="#processtoolcalls">`processToolCalls`</a></li>
+      <li class="lv3"><a href="#repairorphantoolcalls">`repairOrphanToolCalls`</a></li>
+      <li class="lv3"><a href="#runturn">`runTurn`</a></li>
+      <li class="lv3"><a href="#streamchunkstoui">`streamChunksToUI`</a></li>
+      <li class="lv3"><a href="#sub-agent">`sub-agent`</a></li>
+      <li class="lv3"><a href="#turn-轮">turn（轮）</a></li>
+      <li class="lv3"><a href="#turnoutcome">TurnOutcome</a></li>
+      <li class="lv2"><a href="#c-2-工具系统">C.2 工具系统</a></li>
+      <li class="lv3"><a href="#allowrule">`AllowRule`</a></li>
+      <li class="lv3"><a href="#askuser">`askUser`</a></li>
+      <li class="lv3"><a href="#bypass_loop_guard_handlers">`BYPASS_LOOP_GUARD_HANDLERS`</a></li>
+      <li class="lv3"><a href="#edit">`edit`</a></li>
+      <li class="lv3"><a href="#enterplanmode-exitplanmode">`enterPlanMode` / `exitPlanMode`</a></li>
+      <li class="lv3"><a href="#execute">`execute`</a></li>
+      <li class="lv3"><a href="#glob">`glob`</a></li>
+      <li class="lv3"><a href="#grep">`grep`</a></li>
+      <li class="lv3"><a href="#hashtoolcall">`hashToolCall`</a></li>
+      <li class="lv3"><a href="#inputschema">`inputSchema`</a></li>
+      <li class="lv3"><a href="#listdir">`listDir`</a></li>
+      <li class="lv3"><a href="#loop-guard">loop guard</a></li>
+      <li class="lv3"><a href="#per_tool_policy">`PER_TOOL_POLICY`</a></li>
+      <li class="lv3"><a href="#permissionmode">`permissionMode`</a></li>
+      <li class="lv3"><a href="#plan-mode">plan mode</a></li>
+      <li class="lv3"><a href="#pushtoolresult">`pushToolResult`</a></li>
+      <li class="lv3"><a href="#readfile">`readFile`</a></li>
+      <li class="lv3"><a href="#reportprogress">`reportProgress`</a></li>
+      <li class="lv3"><a href="#shell">`shell`</a></li>
+      <li class="lv3"><a href="#subagentregistry">`subAgentRegistry`</a></li>
+      <li class="lv3"><a href="#task">`task`</a></li>
+      <li class="lv3"><a href="#todowrite">`todoWrite`</a></li>
+      <li class="lv3"><a href="#toolfilter">`toolFilter`</a></li>
+      <li class="lv3"><a href="#toolregistry">`toolRegistry`</a></li>
+      <li class="lv3"><a href="#truncatetoolresult-truncatetoolresultsinmessages">`truncateToolResult` / `truncateToolResultsInMessages`</a></li>
+      <li class="lv3"><a href="#webfetch">`webFetch`</a></li>
+      <li class="lv3"><a href="#websearch">`webSearch`</a></li>
+      <li class="lv3"><a href="#writefile">`writeFile`</a></li>
+      <li class="lv2"><a href="#c-3-供应商与流">C.3 供应商与流</a></li>
+      <li class="lv3"><a href="#applycachecontrol">`applyCacheControl`</a></li>
+      <li class="lv3"><a href="#cache_control">`cache_control`</a></li>
+      <li class="lv3"><a href="#cachereadtokens-cachecreationtokens">`cacheReadTokens` / `cacheCreationTokens`</a></li>
+      <li class="lv3"><a href="#createproviderregistry">`createProviderRegistry`</a></li>
+      <li class="lv3"><a href="#downgradebinarypartsforprovider">`downgradeBinaryPartsForProvider`</a></li>
+      <li class="lv3"><a href="#finishreason-1">finishReason</a></li>
+      <li class="lv3"><a href="#fullstream">`fullStream`</a></li>
+      <li class="lv3"><a href="#generatetext">`generateText`</a></li>
+      <li class="lv3"><a href="#getmaxoutputtokens">`getMaxOutputTokens`</a></li>
+      <li class="lv3"><a href="#getthinkingprovideroptions">`getThinkingProviderOptions`</a></li>
+      <li class="lv3"><a href="#languagemodel">`LanguageModel`</a></li>
+      <li class="lv3"><a href="#promptcachekey">`promptCacheKey`</a></li>
+      <li class="lv3"><a href="#provideroptions">`providerOptions`</a></li>
+      <li class="lv3"><a href="#provider_detection_order">`PROVIDER_DETECTION_ORDER`</a></li>
+      <li class="lv3"><a href="#reasoning_content">`reasoning_content`</a></li>
+      <li class="lv3"><a href="#reasoning_effort">`reasoning_effort`</a></li>
+      <li class="lv3"><a href="#streamtext">`streamText`</a></li>
+      <li class="lv3"><a href="#systempromptcache">`systemPromptCache`</a></li>
+      <li class="lv3"><a href="#thinking-mode">thinking mode</a></li>
+      <li class="lv3"><a href="#vision-fallback">vision-fallback</a></li>
+      <li class="lv2"><a href="#c-4-ui-渲染">C.4 UI 渲染</a></li>
+      <li class="lv3"><a href="#appendmessage">`appendMessage`</a></li>
+      <li class="lv3"><a href="#bracketed-paste-括号粘贴模式">bracketed paste（括号粘贴模式）</a></li>
+      <li class="lv3"><a href="#bsu-esu">`BSU` / `ESU`</a></li>
+      <li class="lv3"><a href="#cell">cell</a></li>
+      <li class="lv3"><a href="#cell-buffer">cell buffer</a></li>
+      <li class="lv3"><a href="#cjk-宽度">CJK 宽度</a></li>
+      <li class="lv3"><a href="#commit-提交到终端历史区">commit（提交到终端历史区）</a></li>
+      <li class="lv3"><a href="#commit_batch_ms">`COMMIT_BATCH_MS`</a></li>
+      <li class="lv3"><a href="#dec-2026">DEC 2026</a></li>
+      <li class="lv3"><a href="#decsc-decrc">DECSC / DECRC</a></li>
+      <li class="lv3"><a href="#diff-cell-级别-diff">diff（cell 级别 diff）</a></li>
+      <li class="lv3"><a href="#frame-帧">frame（帧）</a></li>
+      <li class="lv3"><a href="#freeblanksaboveframeref">`freeBlanksAboveFrameRef`</a></li>
+      <li class="lv3"><a href="#ink">Ink</a></li>
+      <li class="lv3"><a href="#ink-动态区-ink-dynamic-region">Ink 动态区（Ink dynamic region）</a></li>
+      <li class="lv3"><a href="#is_legacy_terminal">`IS_LEGACY_TERMINAL`</a></li>
+      <li class="lv3"><a href="#live-实时行">live（实时行）</a></li>
+      <li class="lv3"><a href="#rendermarkdown">`renderMarkdown`</a></li>
+      <li class="lv3"><a href="#scrollback">scrollback</a></li>
+      <li class="lv3"><a href="#spinner">spinner</a></li>
+      <li class="lv3"><a href="#usestreambuffer">`useStreamBuffer`</a></li>
+      <li class="lv3"><a href="#writemessagetostdout">`writeMessageToStdout`</a></li>
+      <li class="lv3"><a href="#yoga">Yoga</a></li>
+      <li class="lv2"><a href="#c-5-上下文管理">C.5 上下文管理</a></li>
+      <li class="lv3"><a href="#agents-md">AGENTS.md</a></li>
+      <li class="lv3"><a href="#auto-memory">auto-memory</a></li>
+      <li class="lv3"><a href="#checkandcompresscontext">`checkAndCompressContext`</a></li>
+      <li class="lv3"><a href="#claude-md-fallback">CLAUDE.md fallback</a></li>
+      <li class="lv3"><a href="#compact-boundary">`compact-boundary`</a></li>
+      <li class="lv3"><a href="#compressmessages">`compressMessages`</a></li>
+      <li class="lv3"><a href="#compression_trigger_ratio">`COMPRESSION_TRIGGER_RATIO`</a></li>
+      <li class="lv3"><a href="#handlecontexttoolong">`handleContextTooLong`</a></li>
+      <li class="lv3"><a href="#jsonl-transcript">JSONL transcript</a></li>
+      <li class="lv3"><a href="#keep_recent">`KEEP_RECENT`</a></li>
+      <li class="lv3"><a href="#knowledge">Knowledge</a></li>
+      <li class="lv3"><a href="#light-compaction">light compaction</a></li>
+      <li class="lv3"><a href="#memory-extractor">memory extractor</a></li>
+      <li class="lv3"><a href="#proactive-压缩">proactive 压缩</a></li>
+      <li class="lv3"><a href="#reactive-压缩">reactive 压缩</a></li>
+      <li class="lv3"><a href="#recenttoolcalls">`recentToolCalls`</a></li>
+      <li class="lv3"><a href="#resume">`/resume`</a></li>
+      <li class="lv3"><a href="#taskslug">`taskSlug`</a></li>
+      <li class="lv2"><a href="#c-6-扩展系统">C.6 扩展系统</a></li>
+      <li class="lv3"><a href="#mcp-transport">MCP transport</a></li>
+      <li class="lv3"><a href="#server-__-tool">`&lt;server&gt;__&lt;tool&gt;`</a></li>
+      <li class="lv3"><a href="#oauth-2-1-callback-server-token-storage">`OAuth 2.1` / `callback-server` / `token-storage`</a></li>
+      <li class="lv3"><a href="#consent-consent-preview">`consent` / `consent preview`</a></li>
+      <li class="lv3"><a href="#userconfig">`userConfig`</a></li>
+      <li class="lv3"><a href="#skill-md-frontmatter">`SKILL.md` / frontmatter</a></li>
+      <li class="lv3"><a href="#activateskill">`activateSkill`</a></li>
+      <li class="lv3"><a href="#disabledskills">`disabledSkills`</a></li>
+      <li class="lv3"><a href="#plugin-manifest">`plugin manifest`</a></li>
+      <li class="lv3"><a href="#enabledplugins">`enabledPlugins`</a></li>
+      <li class="lv3"><a href="#pluginloaderror">`PluginLoadError`</a></li>
+      <li class="lv3"><a href="#hookeventname-decisionevent">`HookEventName` / `DecisionEvent`</a></li>
+      <li class="lv3"><a href="#matcher">`matcher`</a></li>
+      <li class="lv3"><a href="#failurepolicy">`failurePolicy`</a></li>
+      <li class="lv3"><a href="#marketplace-json">`marketplace.json`</a></li>
+      <li class="lv3"><a href="#known_marketplaces-json">`known_marketplaces.json`</a></li>
+      <li class="lv3"><a href="#wire-form-vs-pluginsource">wire form vs `PluginSource`</a></li>
+      <li class="lv3"><a href="#sha-pinning">sha pinning</a></li>
+      <li class="lv3"><a href="#reserved_marketplace_names">`RESERVED_MARKETPLACE_NAMES`</a></li>
+      <li class="lv3"><a href="#claude_plugin_root-claude_plugin_data">`${CLAUDE_PLUGIN_ROOT}` / `${CLAUDE_PLUGIN_DATA}`</a></li>
+      <li class="lv3"><a href="#plugin-refresh">`/plugin refresh`</a></li>
+      <li class="lv2"><a href="#c-7-通用-llm-概念">C.7 通用 LLM 概念</a></li>
+      <li class="lv3"><a href="#agentic">agentic</a></li>
+      <li class="lv3"><a href="#bpe">BPE</a></li>
+      <li class="lv3"><a href="#cot-chain-of-thought">CoT（Chain-of-Thought）</a></li>
+      <li class="lv3"><a href="#doom-loop">doom-loop</a></li>
+      <li class="lv3"><a href="#function-calling">function calling</a></li>
+      <li class="lv3"><a href="#kv-cache">KV cache</a></li>
+      <li class="lv3"><a href="#mcp-model-context-protocol">MCP（Model Context Protocol）</a></li>
+      <li class="lv3"><a href="#prompt-caching">prompt caching</a></li>
+      <li class="lv3"><a href="#prompt-injection">prompt injection</a></li>
+      <li class="lv3"><a href="#rag-retrieval-augmented-generation">RAG（Retrieval-Augmented Generation）</a></li>
+      <li class="lv3"><a href="#react">ReAct</a></li>
+      <li class="lv3"><a href="#slash-command">slash command</a></li>
+      <li class="lv3"><a href="#temperature">temperature</a></li>
+      <li class="lv3"><a href="#tool_call-tool_result">tool_call / tool_result</a></li>
+      <li class="lv3"><a href="#vlm-vision-language-model">VLM（Vision Language Model）</a></li></ul>
+  </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="assets/app.js"></script>
+</body>
+</html>
