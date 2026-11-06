@@ -93,7 +93,7 @@ PAGE = """<!DOCTYPE html>
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="index.html">
-      <span class="brand-logo">◇</span>
+      <svg class="brand-logo" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#1e80ff" d="M12 2.2 22 10l-2.9 2.3L12 6.6 4.9 12.3 2 10z"/><path fill="#1e80ff" d="M7.1 12.9 12 16.9l4.9-4 2.9 2.3L12 21.8 2.2 15.2z"/></svg>
       <span class="brand-name">稀土掘金</span>
       <span class="brand-badge">课程</span>
     </a>
@@ -219,7 +219,7 @@ def main():
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand" href="index.html">
-      <span class="brand-logo">◇</span>
+      <svg class="brand-logo" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#1e80ff" d="M12 2.2 22 10l-2.9 2.3L12 6.6 4.9 12.3 2 10z"/><path fill="#1e80ff" d="M7.1 12.9 12 16.9l4.9-4 2.9 2.3L12 21.8 2.2 15.2z"/></svg>
       <span class="brand-name">稀土掘金</span>
       <span class="brand-badge">课程</span>
     </a>
