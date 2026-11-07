@@ -120,7 +120,7 @@ dayjs 文档                                      ← 浅蓝 #93a5ff + 下划线
 <h2 id="27-1-整体思路-复用-lexer-自研-renderer">27.1 整体思路：复用 lexer，自研 renderer</h2>
 <p>示例中的那段 Markdown 交给渲染器后，经历了怎样的转换流程？自研不意味着从零造轮子。<code>marked</code> 的 lexer 是一个稳定且仍在积极维护的 Markdown 解析器，X-Code CLI 把它当作「Markdown → AST」的前端，只复用解析能力；renderer 部分则完全自己实现，根据 token 类型输出 ANSI 转义序列。整条流水线如下：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">   原始 markdown 字符串
+<pre><code class="diagram language-text" style="font-size:13.5px">   原始 markdown 字符串
           │
           │ 先快速检测：&quot;这串文本里有没有 markdown 标记&quot;
           ▼
@@ -266,7 +266,7 @@ export function renderMarkdown(text: string): string {
 <h2 id="27-3-表格渲染">27.3 表格渲染</h2>
 <p>示例中的回复恰好没有表格，但模型经常输出 Markdown 表格来比较方案或列出参数。表格在终端里需要特别处理，原因在于 ANSI 颜色码不计入字符宽度，但 CJK 字符占两列宽，对齐算法不能简单用 <code>string.length</code>。</p>
 <p>下面的例子展示了按 <code>string.length</code> 算宽度时的对齐错位（中文字符算 1 字符宽，但终端渲染占 2 列）：</p>
-<pre><code class="language-text">错误做法（按 string.length 算）：
+<pre><code class="diagram language-text" style="font-size:13.5px">错误做法（按 string.length 算）：
    ┌────────────┬──────────┬──────┐
    │ 列名       │ 中文列   │ 数字 │   ← string.length 把&quot;中文列&quot;算成 3 字符
    │ hello      │ 世界    │ 42   │   ← 但终端实际占 6 列，右边线整体走位
@@ -318,7 +318,7 @@ function padAligned(
 </code></pre>
 <p>代码块只开了 <code>```</code> 还没闭合，<code>marked.lexer</code> 解析到这里会抛错。整条容错链路：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">   renderMarkdown(text)
+<pre><code class="diagram language-text" style="font-size:13.5px">   renderMarkdown(text)
           │
           ▼
    try:
@@ -383,7 +383,7 @@ case 'text': {
 }
 </code></pre>
 <p>下面用一个示意图完整展示无序列表和有序列表在各层级的渲染结果。左侧是模型输出的 markdown 原文，右侧是终端实际显示的效果（颜色用文字标注）：</p>
-<pre><code class="language-text">markdown 原文                          终端渲染结果（缩进 + bullet/编号）
+<pre><code class="diagram language-text" style="font-size:13.5px">markdown 原文                          终端渲染结果（缩进 + bullet/编号）
 ─────────────────────────              ─────────────────────────────────────
 - 第一项                               • 第一项                    ← 第 1 层，无序: •
   - 嵌套项 A                             • 嵌套项 A                ← 第 2 层，无序: •
@@ -403,7 +403,7 @@ bullet 字符：无序统一用 • (ConHost 降级为 -)
 <p>按嵌套深度切换 ordered 列表样式的好处是：模型经常在同一段里写出三层嵌套列表，统一用 “1. 2. 3.” 从外到内重复会让读者难以判断当前在哪一层。数字、字母、罗马数字三种样式在视觉上形成足够的区分度，读者扫一眼前缀就能定位自己在第几层。</p>
 <h3 id="链接-osc-8-超链接与降级">链接：OSC 8 超链接与降级</h3>
 <p>示例中的 <code>[dayjs 文档](https://day.js.org)</code> 渲染后在终端上显示为浅蓝色下划线文字，但这个链接能不能点击，取决于终端是否支持 OSC 8 协议。X-Code CLI 的做法是把「显示文字 + 跳转目标」封装进一段 OSC 8 转义序列，由终端自己决定如何呈现。同一段 ANSI 字节在两种终端上的行为如下：</p>
-<pre><code class="language-text">markdown 输入：
+<pre><code class="diagram language-text" style="font-size:10.7px">markdown 输入：
    [Anthropic](https://anthropic.com)
         │
         ▼

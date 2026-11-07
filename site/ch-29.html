@@ -161,7 +161,7 @@
 </code></pre>
 <p>走一遍真实命令。模型生成 <code>ls -la &amp;&amp; rm -rf ./tmp</code>，判定过程如下：</p>
 <!-- check:ignore=punctuation -->
-<pre><code class="language-text">  cmd = 'ls -la &amp;&amp; rm -rf ./tmp'
+<pre><code class="diagram language-text" style="font-size:13.5px">  cmd = 'ls -la &amp;&amp; rm -rf ./tmp'
               │
               ▼   拆子命令
         ['ls -la', 'rm -rf ./tmp']

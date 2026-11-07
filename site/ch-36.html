@@ -129,7 +129,7 @@
 </table>
 <p><code>AGENTS.md</code> 放在项目根目录而不在隐藏目录，这是行业已经形成的供应商约定。好处在于：用户如果已经为其他 CLI 写过同名文件，安装 X-Code CLI 后立刻能用，零迁移成本。完整的目录结构如下：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">项目根/
+<pre><code class="diagram language-text" style="font-size:13.5px">项目根/
 ├── AGENTS.md                       ← 项目说明（用户写，git 追踪）
 ├── AGENTS.local.md                 ← 个人项目偏好（用户写，gitignored）
 └── .x-code/                        ← CLI 内部状态（不建议手工编辑）

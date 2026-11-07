@@ -93,7 +93,7 @@
 <p>（2）<code>COMPRESSION_TRIGGER_RATIO = 0.8</code>：如果 token 用量达到模型上下文窗口的 80%，就触发压缩。阈值留出 20% 的缓冲区，原因在于压缩自身也需要发起 API 请求，如果等到 95% 才触发，压缩请求本身就可能因为上下文不足而失败。</p>
 <p>三条路径在一轮 turn 生命周期中分别介入不同环节：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">   每轮 agent loop 开头：
+<pre><code class="diagram language-text" style="font-size:13.5px">   每轮 agent loop 开头：
    ┌─────────────────────────────────────────────────────────────┐
    │ 检查 token：                                                  │
    │   lastInputTokens &gt; 80% 阈值                                  │
@@ -136,7 +136,7 @@
               直接调用 compressMessages，无须等待阈值触发
 </code></pre>
 <p>压缩动作落到消息历史上的效果如下：</p>
-<pre><code class="language-text">压缩前（50 条消息接近窗口上限）：
+<pre><code class="diagram language-text" style="font-size:13.5px">压缩前（50 条消息接近窗口上限）：
 ┌──────────────────────────────────────────────────────────┐
 │ msg1  msg2  msg3  msg4  msg5  ...  msg40  msg41  msg42   │
 │ msg43 msg44 msg45 msg46 msg47 msg48 msg49 msg50          │
@@ -156,7 +156,7 @@
 <p>轻量压缩的思路是扫一遍消息历史，删除被循环护栏阻断后留下的 tool-call / tool-result 对。凡是 tool-result 内容以 <code>[loop-guard]</code> 开头的合成结果，连同对应的 assistant tool-call 部分一起删除。这里只需要理解一点：被阻断的调用在后续轮次中不会再提供有用的信息，是纯粹的冗余内容。</p>
 <p>以一个具体例子说明。假设模型对同一个 <code>pnpm test</code> 反复重试并触发了循环护栏，消息历史会呈现以下形态：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">压缩前 messages 历史：
+<pre><code class="diagram language-text" style="font-size:13.5px">压缩前 messages 历史：
    ┌──────────────────────────────────────────────────────────────┐
    │ [user]  &quot;看看 pnpm test 能跑吗&quot;                                │
    │ [asst]  → tool_call(id_1) shell { command: 'pnpm test' }      │
@@ -274,7 +274,7 @@ if (!needsCompression || state.messages.length &lt;= KEEP_RECENT) return
 <h2 id="31-6-压缩边界与-jsonl-会话存档">31.6 压缩边界与 JSONL 会话存档</h2>
 <p>X-Code CLI 把每个会话写成一份 append-only 的 <code>.jsonl</code> 文件，每条用户输入、每个工具调用、每条 assistant 消息按顺序追加到 <code>.x-code/sessions/&lt;slug&gt;-&lt;sessionId&gt;.jsonl</code>。<code>/resume</code> 启动时读这份文件 replay 即可把对话恢复到内存里。</p>
 <p>但压缩打破了一个前提假设：直接重放 JSONL 文件就能恢复完整对话。压缩之后，内存里只有 <code>[Previous summary]</code> 加最近 6 条消息，但磁盘 JSONL 上还保存着原始 50 条旧消息。如果 <code>/resume</code> 从头重放整个文件，刚压缩省下的 token 全部又被读回来，等于压缩无效。解决办法是在 JSONL 里写入一条压缩边界（compact-boundary）：</p>
-<pre><code class="language-text">JSONL 内容（按时间从上往下追加）：
+<pre><code class="diagram language-text" style="font-size:13.5px">JSONL 内容（按时间从上往下追加）：
 
    msg1
    msg2

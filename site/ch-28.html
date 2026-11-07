@@ -85,7 +85,7 @@
 <p>agentLoop 在两个地方需要暂停：权限确认（<code>writeFile</code> / <code>edit</code> / <code>shell</code> 在执行前问用户 Yes / Yes don't ask again / No）和 askUser 工具（模型显式向用户提问，等用户在选项中做选择）。两者的实现思路一致，都利用了 JavaScript 中 Promise 的阻塞语义。<code>await somePromise</code> 会让当前 async 函数停在这一行，直到 Promise 被 <code>resolve</code> 才继续。X-Code CLI 让 agentLoop <code>await</code> 一个 Promise，把这个 Promise 的 <code>resolve</code> 函数交给 UI 保管。用户在 UI 上选择 Yes / No 后，UI 调用这个 <code>resolve</code> 函数把决定（<code>'yes'</code> / <code>'no'</code> / <code>'always'</code>）传回去，<code>await</code> 才拿到结果继续执行。</p>
 <p>整套流程分四个阶段：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">阶段 1 — agentLoop 调回调请求确认，自己 await 等待
+<pre><code class="diagram language-text" style="font-size:13.5px">阶段 1 — agentLoop 调回调请求确认，自己 await 等待
    ┌─────────────────────────────────────────────────────────────┐
    │ agentLoop (core 层):                                          │
    │                                                               │
@@ -145,7 +145,7 @@
 <p>源码：<code>packages/cli/src/ui/components/ChatInput.tsx</code> + <code>chat-input/permission.ts</code></p>
 </blockquote>
 <p>触发时机：<code>writeFile</code> / <code>edit</code> / <code>shell</code> / <code>enterPlanMode</code> 走 ask 路径时（详见 Ch.29）。对话框结构由标题、参数预览、选项行三段组成。先看 edit 工具的对话框：</p>
-<pre><code class="language-text">   ┌────────────────────────────────────────────────────────┐
+<pre><code class="diagram language-text" style="font-size:13.5px">   ┌────────────────────────────────────────────────────────┐
    │ X-Code wants to edit a file                            │  ← 标题
    │                                                         │
    │ src/auth/login.ts                                       │  ← 参数预览
@@ -157,7 +157,7 @@
    y / n 单字母快捷键  ·  ↑↓ 切换  ·  Enter 确认
 </code></pre>
 <p>shell 工具会多一个风险标签（read-only / write / dangerous），按级别染色：</p>
-<pre><code class="language-text">   ┌────────────────────────────────────────────────────────┐
+<pre><code class="diagram language-text" style="font-size:13.5px">   ┌────────────────────────────────────────────────────────┐
    │ X-Code wants to run a shell command                    │
    │                                                         │
    │ $ rm -rf node_modules  [dangerous]                      │  ← [dangerous] 染红
@@ -214,7 +214,7 @@
 <p>源码：<code>packages/cli/src/ui/components/ChatInput.tsx</code></p>
 </blockquote>
 <p>触发时机：模型调用 <code>askUser(question, options)</code> 工具时，挂起 Agent、把问题和选项交给 UI，等用户做选择再恢复。挂起和恢复用的是跟权限对话框同一种 Promise + resolve 模式。对话框的结构如下：</p>
-<pre><code class="language-text">   ┌────────────────────────────────────────────────────────┐
+<pre><code class="diagram language-text" style="font-size:13.5px">   ┌────────────────────────────────────────────────────────┐
    │ ? 数据库用哪个方案？                                    │  ← 标题（模型传入的问题）
    │                                                         │
    │ ❯ PostgreSQL — 关系型，适合复杂查询                     │  ← 选项 1

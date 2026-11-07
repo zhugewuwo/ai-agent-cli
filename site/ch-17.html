@@ -157,7 +157,7 @@ if (origLines &lt;= maxLines &amp;&amp; origBytes &lt;= maxBytes) return result
 <p>如果用 <code>.length</code> 做预算，「50000 字符上限」对纯 ASCII 等于 50 KB 数据，但对纯中文却等于 150 KB 数据——同一个数字在不同语言下放进请求体的实际数据量相差三倍。token 量不直接等于字节数（每家 tokenizer 的切分方式不同），但跨语言对比时 UTF-8 字节是更稳定的代理量：从 ASCII 到中文，字节数和 token 数都按同样的方向增长，比例落在大致接近的区间。用字节做预算之后，「50 KB 单条上限」对纯 ASCII、纯中文、中英混合三种内容下放出的请求体大小一致，给模型的 token 量也大致可控。</p>
 <h3 id="截断必须走-utf-8-边界回退">截断必须走 UTF-8 边界回退</h3>
 <p>按字节切分的代价是可能切在多字节字符中段。以一个具体例子说明：</p>
-<pre><code class="language-text">&quot;你好世界&quot; 在 UTF-8 下是 12 个字节：
+<pre><code class="diagram language-text" style="font-size:13.5px">&quot;你好世界&quot; 在 UTF-8 下是 12 个字节：
 
   你    好    世    界
  ┌──┐ ┌──┐ ┌──┐ ┌──┐
@@ -165,7 +165,7 @@ if (origLines &lt;= maxLines &amp;&amp; origBytes &lt;= maxBytes) return result
  0  1  2  3  4  5  6  7  8  9  10 11
 </code></pre>
 <p>假设字节预算是 7，要保留前 7 字节。直接 <code>buf.subarray(0, 7)</code> 切出来的是：</p>
-<pre><code class="language-text">E4 BD A0 E5 A5 BD E4
+<pre><code class="diagram language-text" style="font-size:13.5px">E4 BD A0 E5 A5 BD E4
 └── 你 ──┘└── 好 ──┘└半个&quot;世&quot;
 </code></pre>
 <p>最后一个字节 <code>E4</code> 是「世」这个字符的开头，但后面两个字节（<code>B8 96</code>）被切掉了。解码器拿到这串字节会发现「世」的字节序列不完整，将其替换成 U+FFFD（终端中显示为 <code>□</code> 或 <code>?</code>）。<code>sliceBytes</code> 函数在切分之前先把切点往回移到合法的 codepoint 起点：</p>

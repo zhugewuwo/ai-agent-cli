@@ -84,7 +84,7 @@
 <p>不同终端仿真器对 Unicode 字符的字体覆盖范围、对控制序列的支持程度、对滚动区域的实现方式各不相同。一套写入策略在 Windows Terminal 上表现正常，换到老 ConHost 上可能出现缺字框或宽度错位。我们的解决思路不是为每种终端写一条独立的渲染路径，而是在启动时一次性检测当前终端属于哪一档能力等级，主路径保持统一，能力不达标的部分走降级分支。</p>
 <p>以 X-Code CLI 的 Unicode 装饰字符为例。产品在输入框、工具状态、任务清单等位置使用了十余个扩展 Unicode 字符：用户输入提示符 <code>❯</code>、工具结果折角 <code>⎿</code>、计划模式标记 <code>⏸</code>、accept-edits 标记 <code>⚡</code>、任务状态 <code>✓</code> / <code>◼</code> / <code>◻</code>、引用块边条 <code>▎</code>、列表项 <code>•</code> 等。这些字符在 Windows Terminal（默认字体 Cascadia Mono）、VS Code 内嵌终端、macOS 和 Linux 的主流终端仿真器上都能正常显示。但在老 ConHost（即 <code>cmd.exe</code> 或 Windows PowerShell 在 Windows Terminal 之外打开的窗口）上，默认可用的字体只有 Lucida Console、Consolas、SimSun 等几款，全都不包含这些扩展字符。结果是部分字符渲染成缺字框，部分字符的渲染宽度与 cell buffer 记录的宽度不一致，从该字符起整行后续内容全部错位。下面用任务清单和输入框的场景直观展示这种错位：</p>
 <!-- check:ignore=punctuation -->
-<pre><code class="language-text">  Windows Terminal（正常）              老 ConHost（缺字框 + 错位）
+<pre><code class="diagram language-text" style="font-size:13.5px">  Windows Terminal（正常）              老 ConHost（缺字框 + 错位）
 
   ✓ 读取配置文件                        □  读取配置文件
   ◻ 生成类型定义                        □  生成类型定义
@@ -116,7 +116,7 @@ export const GLYPH_TODO_PENDING   = IS_LEGACY_TERMINAL ? '-'  : '◻'
 <h2 id="25-2-消除帧写入路径上的副作用字节">25.2 消除帧写入路径上的副作用字节</h2>
 <p>回到示例场景：模型正在流式回复，进度指示器每 200 毫秒切换一帧，旋转符号从 <code>·</code> 变成 <code>✢</code>——整帧只有这一个字符发生了变化。读者可能预期终端也只需要处理这一个字符的更新，但实际上一次帧刷新发往终端的字节流远不止于此。如果不做优化，终端收到的写入如下图左侧所示——8 条序列中只有 1 条是真正的帧内容更新，其余 7 条都是与画面变化无关的「副作用字节」（光标隐藏/显示、经过未变行的光标跳转）；优化后如右侧所示，只剩 3 条序列：</p>
 <!-- check:ignore=punctuation -->
-<pre><code class="language-text">  优化前（8 条序列）                        优化后（3 条序列）
+<pre><code class="diagram language-text" style="font-size:13.5px">  优化前（8 条序列）                        优化后（3 条序列）
 
   \x1b[?25l       ← 隐藏光标      ┐
   \x1b[?2026h     ← BSU           │       \x1b[?2026h     ← BSU
@@ -131,7 +131,7 @@ export const GLYPH_TODO_PENDING   = IS_LEGACY_TERMINAL ? '-'  : '◻'
 <h3 id="光标可见性的反复切换">光标可见性的反复切换</h3>
 <p>上面字节流图中的第一条 <code>\x1b[?25l</code>（隐藏光标）和最后一条 <code>\x1b[?25h</code>（显示光标）就属于这一类。通常每帧写入前隐藏光标、写入后恢复光标，避免用户看到光标在不同位置跳转的中间过程。问题出在「恢复光标」上。终端的文本光标自带一个「亮 → 暗 → 亮 → 暗」的闪烁周期，大约 1 秒一轮。Windows Terminal、xterm.js、老 ConHost 在执行 <code>\x1b[?25h</code> 时不只是把光标显示出来，还会把这个闪烁周期强行拉回起点——光标被重置为「亮」状态，重新开始计时。下面的时间线展示了这一过程：</p>
 <!-- check:ignore=punctuation -->
-<pre><code class="language-text">  时间（ms）     终端收到的序列              光标闪烁周期的状态
+<pre><code class="diagram language-text" style="font-size:13.5px">  时间（ms）     终端收到的序列              光标闪烁周期的状态
   ─────────────────────────────────────────────────────────────
       0          \x1b[?25h（第 1 帧结束）    → 重置为「亮」，开始计时
     100          （光标自然闪烁中……）          亮

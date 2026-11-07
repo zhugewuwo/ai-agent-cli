@@ -5,6 +5,7 @@ import os
 import re
 import html
 import shutil
+import unicodedata
 from markdown_it import MarkdownIt
 
 SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content")
@@ -12,6 +13,37 @@ OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
 BOOK_TITLE = "从零打造一个 AI Agent CLI"
 BOOK_SUBTITLE = "从 50 行代码到生产级 AI 编程助手"
 REPO = "https://github.com/woai3c/x-code-cli/tree/v0.3.3"
+
+# Box-drawing / arrow glyphs used by the ASCII flow charts in the course.
+BOX_CHARS = set("─│┌┐└┘├┤┬┴┼▶◀▼▲╭╮╯╰═║╔╗╚╝━┃┏┓┗┛┣┫┳┻╋")
+# Usable inner width of the article column, in CSS px (800 max-width - 2*16 padding - scrollbar).
+DIAGRAM_INNER = 736
+DIAGRAM_MIN_FONT = 9.0
+DIAGRAM_MAX_FONT = 13.5
+
+
+def cell_width(s):
+    """Terminal cell count: East-Asian wide glyphs count as two columns."""
+    return sum(2 if unicodedata.east_asian_width(c) in ("W", "F") else 1 for c in s)
+
+
+def diagram_font_size(content):
+    cells = max((cell_width(line) for line in content.splitlines()), default=0)
+    if cells == 0:
+        return None
+    # Monospace advance width is roughly 0.6em; shrink so the widest line fits.
+    size = DIAGRAM_INNER / (cells * 0.6)
+    return round(max(DIAGRAM_MIN_FONT, min(DIAGRAM_MAX_FONT, size)), 1)
+
+
+def is_diagram(content):
+    """True for hand-drawn ASCII flow charts (not code that happens to contain a dash)."""
+    if not any(c in BOX_CHARS for c in content):
+        return False
+    cells = max((cell_width(line) for line in content.splitlines()), default=0)
+    # Diagrams in this course are at most ~160 columns wide; wider blocks are JSON/code.
+    return cells <= 170
+
 
 
 def read_chapters():
@@ -76,6 +108,11 @@ def render_chapter(md, text):
             hid = base if idx == 0 else f"{base}-{idx}"
             tok.attrSet("id", hid)
             toc.append({"id": hid, "text": title, "level": int(tok.tag[1])})
+        elif tok.type == "fence" and is_diagram(tok.content):
+            size = diagram_font_size(tok.content)
+            tok.attrSet("class", "diagram")
+            if size is not None:
+                tok.attrSet("style", f"font-size:{size}px")
     body = md.renderer.render(tokens, md.options, {})
     return body, toc
 

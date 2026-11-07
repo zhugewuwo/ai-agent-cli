@@ -164,7 +164,7 @@ const result = streamText({
 <p>这种分层为未来的扩展方向提供了基础。如果要开发 VS Code 插件，只需复用 core 的 Agent 逻辑，将 cli 那套 Ink 渲染替换为 Webview 中的 React，core 的代码无需改动。如果要提供 Web 版，将 core 包装到一个 HTTP server 后面即可。如果要以 SDK 形式发布，将 core 的 <code>index.ts</code> 补全导出即可——架构上已经就绪。</p>
 <h2 id="4-4-core-内部模块地图">4.4 core 内部模块地图</h2>
 <p><code>@x-code-cli/core</code> 内部按职责分目录。读者完全不必现在就读完每个文件——这张地图的作用是让后续章节出现「打开 <code>agent/loop.ts</code> 看一下」这类指引时，读者能立刻知道它在项目中属于哪一层。</p>
-<pre><code class="language-text">packages/core/src/
+<pre><code class="diagram language-text" style="font-size:13.5px">packages/core/src/
 ├── agent/          Agent 引擎主体
 │   ├── loop.ts            Agent Loop 主循环               → Ch.08
 │   ├── loop-state.ts      LoopState 状态容器              → Ch.08

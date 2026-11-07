@@ -89,7 +89,7 @@
 [ 最新用户消息 ]                       ← 完全新增
 </code></pre>
 <p>这里有两个容易产生误解的地方需要先澄清。第一，「基础提示词」和「知识库」不是两个独立通道。<code>buildSystemPrompt()</code> 把它们拼成一段字符串再放入 <code>system</code> 字段，下文讲「system prompt 字节稳定」时把这一整段当一个原子单元在维护。第二，10% 折扣不是 system 字段独享。命中范围是 <code>cache_control</code> 断点之前的整段前缀，里面所有 token 都按约 10% 计费，不分角色：</p>
-<pre><code class="language-text">缓存命中范围（breakpoint 之前的整段前缀）：
+<pre><code class="diagram language-text" style="font-size:13.5px">缓存命中范围（breakpoint 之前的整段前缀）：
 
    ┌─ system 字段        ←─┐
    │   基础提示词 + 知识库   │
@@ -111,7 +111,7 @@
 <p>缓存命中需要满足几个共性条件。前缀必须字节级稳定，任何字符变化（包括时间戳、随机 ID）都会使缓存失效。长度有最低门槛，Anthropic 各模型阈值不同（Sonnet 4.x 为 1024 token 起算，Haiku 3.5 为 2048 token，Opus 4.5+ / Haiku 4.5 为 4096 token），OpenAI 兼容端点没有文档化但太短的前缀也不会被缓存。TTL 通常为 5 分钟（Anthropic 1 小时档需付费）。</p>
 <p>下面这张反面对照图展示了字节级稳定的含义：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">首轮（建立缓存）：     第二轮 system 字节稳定：   第二轮 system 加了时间戳：
+<pre><code class="diagram language-text" style="font-size:13.5px">首轮（建立缓存）：     第二轮 system 字节稳定：   第二轮 system 加了时间戳：
 ┌────────────┐         ┌────────────┐             ┌────────────┐
 │ system     │         │ system     │             │ system'    │
 │  hash=A    │  写入    │  hash=A    │  命中       │  hash=B    │  未命中
@@ -132,7 +132,7 @@
 <p>Anthropic 采用显式标记：在消息里加 <code>cache_control: { type: 'ephemeral' }</code>。标记位置叫断点（breakpoint），每个断点之前的所有内容会被缓存。每次请求最多 4 个断点。</p>
 <p>X-Code CLI 的策略是 4 个断点全部用满：system prompt 上打一个，最后一个 tool 定义上打一个（把整张 tools schema 折进同一段缓存前缀），最后 2 条非 system 消息各打一个。位置如下：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">请求结构（按 Anthropic API 字段顺序）：
+<pre><code class="diagram language-text" style="font-size:13.5px">请求结构（按 Anthropic API 字段顺序）：
 
    ┌────────────────────────────────┐
    │ system 字段                    │ ◀──── breakpoint #1
@@ -154,7 +154,7 @@
 </code></pre>
 <p>要看懂为什么是这 4 个位置，需要先理解单个断点如何在两轮请求之间接力。每个断点让 Anthropic 写一条缓存，内容是从开头到该断点（含）的整段前缀。下一轮请求来时，Anthropic 拿请求的实际前缀去对照所有已存缓存，找当前请求里最长能匹配的那一条，命中部分按约 10% 计费。下面走一遍具体流程。本轮请求是 <code>[system, msg1, msg2, msg3]</code>，在 system 和 msg3 各打一个断点：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">本轮（第 N 轮）：                 写入缓存（两条）：
+<pre><code class="diagram language-text" style="font-size:13.5px">本轮（第 N 轮）：                 写入缓存（两条）：
 [ system ]    ◀── bp #1           条目 A = [ system ]
 [ msg1 ]                          条目 B = [ system, msg1, msg2, msg3 ]
 [ msg2 ]

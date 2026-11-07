@@ -110,7 +110,7 @@
 <p>源码：<code>packages/cli/src/ui/hooks/use-stream-buffer.ts</code></p>
 </blockquote>
 <p>先看 <code>useStreamBuffer</code> 在整体流水线里的位置。从模型 SDK 到终端屏幕，文本要经过三个互不重叠的处理层，<code>useStreamBuffer</code> 只负责其中第一层——把 text-delta 累积、切割、合并成一条消息。下面的示意图展示了一个 text-delta 从进入缓冲区到最终写入终端历史区的完整路径：</p>
-<pre><code class="language-text">   模型流式 SDK             useStreamBuffer (本章)             ChatInput (Ch.24)         终端 (Ch.25)
+<pre><code class="diagram language-text" style="font-size:12.1px">   模型流式 SDK             useStreamBuffer (本章)             ChatInput (Ch.24)         终端 (Ch.25)
    ───────────             ────────────────────             ──────────────────         ──────────
 
    text-delta ──→ 累加到 bufferRef
@@ -134,7 +134,7 @@
 <p>图中三层各有明确的职责边界。第一层是本章讨论的 <code>useStreamBuffer</code>，负责决定何时把哪段文本变成一条消息——按安全 markdown 边界切片，再用 150ms 合并窗口将密集到达的切片聚合成一次提交。第二层是 Ch.24 讨论的 ChatInput 渲染逻辑，负责消息进入数组后如何渲染到终端——通过 cell-level diff 比对差异，由 <code>writeMessageToStdout</code> 经换行符触发 auto-scroll 把内容推入终端历史区。第三层是 Ch.25 讨论的跨终端写入层，负责包装写入的字节流使其在不同终端上都稳定——BSU/ESU 原子帧、消除副作用写入等。三层之间的分工意味着本章只需要关心「在哪个位置切割文本」和「在什么时机把切片提交给 UI」，不需要关心写入终端的底层细节。</p>
 <h3 id="两段缓存的设计">两段缓存的设计</h3>
 <p>每个 text-delta 到达后不直接推送到屏幕，而是依次经过两段缓存。第一段是 <code>bufferRef</code>，累加所有尚未切割的原始文本；第二段是 <code>pendingChunksRef</code>，存放已经通过安全边界检测、等待合并窗口到期后统一提交的切片。下面的示意图展示了一个 text-delta 从到达缓冲区到最终推送给 UI 的完整路径：</p>
-<pre><code class="language-text">   模型 text-delta（每次 1-5 字符）
+<pre><code class="diagram language-text" style="font-size:13.5px">   模型 text-delta（每次 1-5 字符）
           │
           ▼
    ┌──────────────────────────────────────────────┐
@@ -157,7 +157,7 @@
 <p>回到开头的示例：用户提交请求后，模型的 text-delta 源源不断到达缓冲区。在一次完整的流式输出过程中，缓冲区会遇到三种不同的情况，<code>useStreamBuffer</code> 为每种情况提供了对应的处理方式。</p>
 <p>第一种是常规流入。每个 text-delta 到达时调用 <code>appendTextDelta</code>，delta 累加到 <code>bufferRef</code>，扫描安全边界，能切就切到 <code>pendingChunksRef</code>，首个切片启动 150ms 定时器。定时器到点时内部的 <code>drainPending</code> 把所有等待中的切片拼起来，作为一条带 <code>streamingChunk: true</code> 标记的消息推给 UI。这是绝大多数时间里缓冲区的工作状态——text-delta 持续到达、累积到安全边界即切片、定时器到期即提交。</p>
 <p>第二种是被工具调用打断。回想示例中模型写到「好的，我先看一下这个文件的当前实现」后突然决定调 <code>readFile</code>——这时 <code>bufferRef</code> 里可能还有没到安全边界的残留文本。如果不处理，用户会先看到工具调用、后看到文字，顺序错乱。下面的时序图对比了不做 flush 和做 flush 两种走法：</p>
-<pre><code class="language-text">时间轴 ──→
+<pre><code class="diagram language-text" style="font-size:13.5px">时间轴 ──→
 
 不 flush（错乱）：
    t1: stream &quot;好的，我先 readFile X&quot; ──→ 落到 bufferRef，等 \n
@@ -273,7 +273,7 @@ function findSafeBoundary(text: string): number {
 }
 </code></pre>
 <p><code>hasOpenMarkdownBlock(prefix)</code> 检测两种未闭合结构：一是奇数个 <code>```</code>，表明当前还在 code fence 内部，在此处切割会把 code fence 切断；二是末行以 <code>|</code> 开头的 markdown 表格行——表格至少需要表头、分隔行、数据行三行才能被 <code>marked.lexer</code> 识别为 table token，在行数不足时切割会导致切出去的片段无法被解析为表格。下面通过两个例子说明这个算法的具体工作过程。例 1 是 buffer 当前正好停在 code fence 中间的情况：</p>
-<pre><code class="language-text">bufferRef 当前内容（每行末尾的 \n 是潜在切点）：
+<pre><code class="diagram language-text" style="font-size:13.5px">bufferRef 当前内容（每行末尾的 \n 是潜在切点）：
    ┌─────────────────────────────────────────────┐
    │ 你好。\n                ← ✓ 安全切点         │
    │ 这是代码示例：\n        ← ✓ 安全切点         │
@@ -290,7 +290,7 @@ function findSafeBoundary(text: string): number {
    等下游 delta 把 fence 闭合（再来一个 ``` ）再切
 </code></pre>
 <p>例 2 是 buffer 停在表格中间的情况：</p>
-<pre><code class="language-text">   ┌─────────────────────────────────────────────┐
+<pre><code class="diagram language-text" style="font-size:13.5px">   ┌─────────────────────────────────────────────┐
    │ 这是一个表格：\n        ← ✓ 安全切点         │
    │ | 列名 | 类型 |\n       ← ✗ 末行是表格行     │
    │ | ---- | ---- |         ← (还没换行)         │
@@ -302,7 +302,7 @@ function findSafeBoundary(text: string): number {
 <p>读者可能会问，为什么按单个 <code>\n</code> 切而不是按段落分隔符（<code>\n\n</code>）切。原因在于按段切会产生成块出现的效果，长回答会一段一段弹出来；按行切则让每行依次落定，更贴近打字机式逐行流出的阅读节奏。</p>
 <h2 id="26-3-streamingchunk-标记与片段拼接">26.3 streamingChunk 标记与片段拼接</h2>
 <p>回到开头的示例：模型的回答被 <code>readFile</code> 工具调用分成了前后两段，但用户看到的是一段连贯的文字，中间没有多余的空行或分隔线。这个视觉效果靠的是 <code>streamingChunk</code> 标记。缓冲区每次刷出时，累积的文本作为一条 <code>DisplayMessage</code> 推给 messages 数组，这条消息带有 <code>streamingChunk: true</code> 标记。普通 assistant 消息末尾会自动加一个空行（在视觉上分隔多条消息），而带 <code>streamingChunk</code> 标记的消息不加——这样多个片段在终端上连续成一段，用户看到的不是一条一条独立的消息，而是同一段文字逐段出现。直观对比：</p>
-<pre><code class="language-text">streamingChunk: false（普通 assistant 消息）：
+<pre><code class="diagram language-text" style="font-size:13.5px">streamingChunk: false（普通 assistant 消息）：
    ┌─────────────────────────────────┐
    │ 好的，我帮你看一下这个文件。      │
    │                                  │  ← 末尾自动加空行

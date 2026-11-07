@@ -184,6 +184,20 @@ a { color: inherit; text-decoration: none; }
   font-size: 13.5px;
 }
 
+/* ASCII / box-drawing flow charts: preserve alignment, allow horizontal scroll */
+.markdown-body pre:has(> code.diagram) {
+  background: #fafbfc;
+  padding: 14px 16px;
+}
+.markdown-body code.diagram {
+  white-space: pre;
+  font-family: "Cascadia Mono", "JetBrains Mono", "Sarasa Mono SC",
+    "Noto Sans Mono CJK SC", "Source Han Mono", Consolas, "SF Mono", Menlo,
+    "Courier New", monospace;
+  line-height: 1.45;
+  color: #24292f;
+}
+
 .markdown-body img {
   max-width: 100%;
   border-radius: 6px;

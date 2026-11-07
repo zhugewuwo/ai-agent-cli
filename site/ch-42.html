@@ -98,7 +98,7 @@
 <p>两个核心包 <code>cli</code> → <code>core</code> 构成单向依赖，详见 Ch.04。</p>
 <p>渲染层面，Ink 动态区始终为空，<code>App</code> 组件只返回单个 <code>&lt;ChatInput /&gt;</code>，没有 Ink 子树。所有 UI 元素（输入框、进度指示器、对话框、终端历史区提交）都由 <code>&lt;ChatInput&gt;</code> 自己通过 cell 级别 diff + <code>process.stdout.write</code> 渲染。Yoga 抖动溯源与 cell buffer 实现详见 Ch.23 和 Ch.24。</p>
 <p>下面这张终端区域示意图作为速查（按区域划分 ChatInput 内部 cell buffer 的渲染元素）：</p>
-<pre><code>+----------------------------------------------------------+
+<pre><code class="diagram" style="font-size:13.5px">+----------------------------------------------------------+
 |                      CLI 层 (cli/)                         |
 |  index.ts → app.tsx → App.tsx (App return 单个 &lt;ChatInput&gt;)|
 |                                                            |
@@ -258,7 +258,7 @@
 <h2 id="b-4-具体示例">B.4 具体示例</h2>
 <p>用户输入：「帮忙分析一下项目产品功能以及优化点」</p>
 <h3 id="完整执行流程">完整执行流程</h3>
-<pre><code>
+<pre><code class="diagram" style="font-size:13.3px">
 1. 用户在终端输入 &quot;帮忙分析一下项目产品功能以及优化点&quot;，按 Enter
 
 2. ChatInput 组件
@@ -415,7 +415,7 @@
 </code></pre>
 <h3 id="ai-回复中可能的工具调用序列示意">AI 回复中可能的工具调用序列示意</h3>
 <p>对于“分析项目产品功能以及优化点”这类问题，AI 可能执行如下工具调用链：</p>
-<pre><code>
+<pre><code class="diagram" style="font-size:13.5px">
 Turn 1: AI 需要了解项目结构
 ├─ glob({ pattern: &quot;\*\*/package.json&quot; }) → 找到 monorepo 结构
 ├─ readFile({ filePath: &quot;package.json&quot; }) → 根 package.json
@@ -439,16 +439,16 @@ Turn 4: AI 生成最终分析报告 (纯文本回复, 无工具调用)
 <h2 id="b-5-阶段一-cli-启动">B.5 阶段一：CLI 启动</h2>
 <p>入口文件：<code>cli/src/index.ts</code> → <code>main()</code></p>
 <h3 id="步骤-1-node-版本检查">步骤 1: Node 版本检查</h3>
-<pre><code>main()
+<pre><code class="diagram" style="font-size:13.5px">main()
   └─ checkNodeVersion()    // 要求 Node &gt;= 20.19.0，不满足则 process.exit(1)
 </code></pre>
 <h3 id="步骤-2-加载环境变量">步骤 2: 加载环境变量</h3>
-<pre><code>main()
+<pre><code class="diagram" style="font-size:13.5px">main()
   └─ loadEnvFile()         // 从 cwd 向上查找 .env 文件
        └─ process.loadEnvFile(envPath)  // 原生加载 .env
 </code></pre>
 <h3 id="步骤-3-解析-cli-参数">步骤 3: 解析 CLI 参数</h3>
-<pre><code>main()
+<pre><code class="diagram" style="font-size:13.5px">main()
   └─ yargs(hideBin(process.argv))
        --model / -m    模型选择 (如 sonnet, deepseek, openai:gpt-4.1)
        --trust / -t    信任模式 (跳过所有权限确认，含破坏性命令)
@@ -464,7 +464,7 @@ Turn 4: AI 生成最终分析报告 (纯文本回复, 无工具调用)
        --version / -v  显示版本
 </code></pre>
 <h3 id="步骤-4-配置-模型与子系统注册表">步骤 4: 配置、模型与子系统注册表</h3>
-<pre><code>main()
+<pre><code class="diagram" style="font-size:12.0px">main()
   ├─ getAvailableProviders()       // 检测哪些供应商有 API Key（env 变量扫描）
   ├─ resolveModelId(argv.model)
   │    ├─ 优先级: --model 参数 &gt; config.json model 字段 &gt; X_CODE_MODEL &gt; 自动检测
@@ -608,7 +608,7 @@ if (argv.continue) {
 <h3 id="会话内动态刷新-refreshplugincontributions-单一入口">会话内动态刷新：<code>refreshPluginContributions</code> 单一入口</h3>
 <p>启动序列把 plugin、skill、command、MCP、hook 都装在了对应 registry 里。但 registry 是一次性加载、会话内冻结的。如果会话期间用户装了新插件、改了订阅或修改了 user-config，要让 CLI 看见新状态该怎么处理？</p>
 <p>X-Code CLI 不做 fs.watch 自动检测，而是要求用户显式执行 <code>/plugin refresh</code>（详见 Ch.39 决定四）。这个命令背后是 <code>refreshPluginContributions()</code> 一个单一入口，五件事按固定顺序执行：</p>
-<pre><code>PluginRefreshTargets 字段:
+<pre><code class="diagram" style="font-size:13.0px">PluginRefreshTargets 字段:
   pluginRegistry: PluginRegistry        // 必填 — 主 registry, 永远需要重 reload
   skillRegistry?: SkillRegistry         // 可选 — 不传则跳过 skill 折回
   subAgentRegistry?: SubAgentRegistry   // 可选 — 不传则跳过 sub-agent 折回
@@ -641,13 +641,13 @@ refreshPluginContributions(targets):
 <h2 id="b-6-阶段二-ui-渲染初始化">B.6 阶段二：UI 渲染初始化</h2>
 <p>入口文件：<code>cli/src/app.tsx</code> → <code>startApp()</code></p>
 <h3 id="步骤-6-打印启动-banner">步骤 6: 打印启动 Banner</h3>
-<pre><code>startApp()
+<pre><code class="diagram" style="font-size:13.5px">startApp()
   └─ printHeader(modelId)    // 直接 process.stdout.write，在 Ink 启动前执行
        ├─ 根据终端宽度选择 Logo (&gt;= 52列: 大Logo, &gt;= 30列: 紧凑, 否则: 文字)
        └─ 输出: Logo + 版本 + 模型名 + 帮助提示
 </code></pre>
 <p>终端显示效果如下：</p>
-<pre><code>  ██╗  ██╗       ██████╗ ██████╗ ██████╗ ███████╗
+<pre><code class="diagram" style="font-size:13.5px">  ██╗  ██╗       ██████╗ ██████╗ ██████╗ ███████╗
   ╚██╗██╔╝      ██╔════╝██╔═══██╗██╔══██╗██╔════╝
    ╚███╔╝ █████╗██║     ██║   ██║██║  ██║█████╗
    ██╔██╗ ╚════╝██║     ██║   ██║██║  ██║██╔══╝
@@ -657,7 +657,7 @@ refreshPluginContributions(targets):
  Type /help for commands, Ctrl+C to abort
 </code></pre>
 <h3 id="步骤-7-ink-react-应用渲染">步骤 7: Ink React 应用渲染</h3>
-<pre><code>startApp(model, options, initialPrompt, { initialSession, resumeIntent })
+<pre><code class="diagram" style="font-size:13.5px">startApp(model, options, initialPrompt, { initialSession, resumeIntent })
   └─ render(&lt;App model={model} options={options}
                  initialPrompt={...}
                  initialSession={...}     // 来自 -c / --resume &lt;id&gt;
@@ -792,7 +792,7 @@ Paste 辅助：<code>cli/src/ui/paste-refs.ts</code></p>
 </ol>
 <p>paste 入口统一做 <code>\r\n?/g → \n</code> 归一化（裸 <code>\r</code> 在终端里会被当 carriage return 覆盖之前的字符）。完整实现 + 阈值常量论证详见 [Ch.24。</p>
 <h3 id="chatinput-的-onpaste-ontext-onkey-处理">ChatInput 的 onPaste / onText / onKey 处理</h3>
-<pre><code>onPaste(content)
+<pre><code class="diagram" style="font-size:13.0px">onPaste(content)
   ├─ lineCount = content.split(/\r\n|\r|\n/).length
   ├─ isLarge = lineCount &gt;= 3 || content.length &gt;= 400
   │    ├─ 是 → nextPasteIdRef++ → setPastedContents({ [id]: { content, lineCount } })
@@ -855,7 +855,7 @@ onKey('up/down') → 切换补全候选项
 </code></pre>
 <h3 id="提交处理">提交处理</h3>
 <p>组件：<code>cli/src/ui/components/App.tsx</code> → <code>handleSubmit()</code></p>
-<pre><code>handleSubmit(text)
+<pre><code class="diagram" style="font-size:12.8px">handleSubmit(text)
   ├─ 以 / 开头 → switch (command)
   │    ├─ /help          → addInfoMessage(HELP_TEXT)
   │    ├─ /model         → handleModelSwitch() （interactive picker | 显式 alias）
@@ -902,7 +902,7 @@ onKey('up/down') → 切换补全候选项
 <p>Hook：<code>cli/src/ui/hooks/use-agent.ts</code> → <code>submit()</code>
 Core：<code>core/src/agent/loop.ts</code> → <code>agentLoop()</code></p>
 <h3 id="步骤-9-useagent-submit-准备阶段">步骤 9: useAgent.submit() — 准备阶段</h3>
-<pre><code>submit(text)
+<pre><code class="diagram" style="font-size:11.9px">submit(text)
   │
   ├─ 1. initialize() (仅首次调用)
   │    ├─ initMemories()          // 加载用户级 + 项目 AutoMemory
@@ -981,7 +981,7 @@ Core：<code>core/src/agent/loop.ts</code> → <code>agentLoop()</code></p>
        └─ setState({ isLoading: false, activeToolCalls: [] })
 </code></pre>
 <h3 id="步骤-10-agentloop-核心循环">步骤 10: agentLoop() — 核心循环</h3>
-<pre><code>agentLoop(userMessage, model, options, callbacks, existingState)
+<pre><code class="diagram" style="font-size:9.0px">agentLoop(userMessage, model, options, callbacks, existingState)
   │
   ├─ 1. 初始化或复用 LoopState（共 18 个字段，仅列出主线相关的）
   │    {
@@ -1238,7 +1238,7 @@ agentLoop 末尾依次:
 <p>注：Session Context（上一次 session 的 SessionSummary）不注入 system prompt。原因在于把上次 pendingWork 自动注入 system prompt 会让模型把「hi」也当成「continue exploring」。会话续接由 UI 显式驱动：用户在 picker 里选了 session 之后，pending work 作为第一条 user 消息显式送入对话，而不是注入 system prompt。</p>
 </blockquote>
 <h3 id="工具注册表">工具注册表</h3>
-<pre><code>toolRegistry (core/src/tools/index.ts) — 13 静态 + 4 组动态注入
+<pre><code class="diagram" style="font-size:13.3px">toolRegistry (core/src/tools/index.ts) — 13 静态 + 4 组动态注入
   静态 13 个:
   ├─ readFile        读取文件内容 (带行号)          — 自动允许
   ├─ writeFile       创建/覆盖文件                  — 需要确认
@@ -1272,7 +1272,7 @@ agentLoop 末尾依次:
 <p>Plan mode 下，工具集合本身不被过滤，<code>writeFile</code>、<code>edit</code>、<code>shell</code> 仍在 schema 里。<code>buildSystemPrompt()</code> 注入的 plan-mode overlay 用强 prompt 约束告诉模型只能调读 + <code>enterPlanMode</code> / <code>exitPlanMode</code> / <code>todoWrite</code> / <code>task</code>（只读子 agent），写工具被 hard rule 禁止。这是纯 prompt 层面的约束，<code>tool-execution.ts</code> 没有专门的 plan-mode 写工具拦截——如果模型不遵守仍 emit 写工具 tool-call，走普通 <code>permission</code> 流程，用户在对话框拒绝即可。详见 Ch.21。</p>
 </blockquote>
 <h3 id="工具调用处理流程">工具调用处理流程</h3>
-<pre><code>processToolCalls(toolCalls, state, options, callbacks, parentModel)  // tool-execution.ts
+<pre><code class="diagram" style="font-size:13.5px">processToolCalls(toolCalls, state, options, callbacks, parentModel)  // tool-execution.ts
   │
   ├─ collectActiveAssistantToolCallIds(state) — 把上一条 assistant 消息里
   │    实际声明的 tool_call id 提出来,SDK rejected 的 ghost call 直接跳过
@@ -1360,7 +1360,7 @@ agentLoop 末尾依次:
 </code></pre>
 <h3 id="折叠连续只读工具-read-group-collapser">折叠连续只读工具（read-group collapser）</h3>
 <p><code>onToolCall</code> / <code>onToolResult</code> 路径上，UI 对连续的只读工具链做特殊处理。典型场景如「分析一下项目」会立即触发：模型连发若干 <code>readFile</code> / <code>glob</code>，逐条显示进度行会刷出一长串闪烁，折叠成一行摘要更可读。</p>
-<pre><code>判定: isCollapsibleReadOnlyTool(toolName) — readFile / glob / grep / listDir
+<pre><code class="diagram" style="font-size:13.5px">判定: isCollapsibleReadOnlyTool(toolName) — readFile / glob / grep / listDir
                                             的统一别名集合返回 true
 
 只读工具进入 frame 的路径:
@@ -1410,7 +1410,7 @@ agentLoop 末尾依次:
 <p>三级 <code>PermissionLevel</code>（<code>always-allow</code> / <code>ask</code> / <code>deny</code>） + Shell 智能分级（<code>splitShellCommands</code> / <code>isReadOnly</code> / <code>isDestructive</code>，混合命令 → <code>ask</code>） + Trust Mode（<code>--trust</code> 跳过所有权限确认，含 deny 级）。详见 Ch.29；对话框 UI（edit 走结构化 diff + <code>(a)ccept-edits</code> 切 <code>permissionMode</code>）详见 Ch.28。</p>
 <h3 id="子-agent-嵌套循环">子 Agent 嵌套循环</h3>
 <p>当父 turn 命中 <code>tool-call: task({ agentName, prompt, model? })</code> 时，<code>processToolCalls</code> 走 <code>runSubAgent</code> 而不是普通 execute：</p>
-<pre><code>runSubAgent(parentState, toolCall, parentCallbacks)
+<pre><code class="diagram" style="font-size:12.9px">runSubAgent(parentState, toolCall, parentCallbacks)
   │
   ├─ 1. 读 agent 注册表 (内置 + .x-code/agents/*.md 自定义) 拿 agentDef:
   │    {
@@ -1454,7 +1454,7 @@ agentLoop 末尾依次:
 <h2 id="b-10-阶段六-终端-ui-渲染">B.10 阶段六：终端 UI 渲染</h2>
 <h3 id="渲染架构">渲染架构</h3>
 <p>X-Code CLI 用 Ink（React for CLI）渲染终端 UI，但消息历史完全不走 Ink 的布局引擎，而是直接打到终端的滚动缓冲区。Ink 只管底部一小块动态区。</p>
-<pre><code>┌─────────────────────────────────────────┐
+<pre><code class="diagram" style="font-size:13.5px">┌─────────────────────────────────────────┐
 │  终端滚动缓冲区 (由终端自己管理)           │  ← 不走 Ink 布局
 │  - 启动 Banner (printHeader, Ink 外)     │
 │  - 历史消息 (走 ChatInput 内部提交)       │
@@ -1484,7 +1484,7 @@ agentLoop 末尾依次:
 </code></pre>
 <p>为什么消息历史不走 Ink 布局、Ink 动态区永远为空、对话框统一进 ChatInput cell buffer，详见 Ch.23（Yoga 抖动溯源 + 混合方案）。</p>
 <h3 id="消息写入管线-stdout-writer-ts-chatinput-useeffect">消息写入管线（<code>stdout-writer.ts</code> + ChatInput useEffect）</h3>
-<pre><code>use-agent.ts setState({ messages: [...prev, newMsg] })
+<pre><code class="diagram" style="font-size:13.5px">use-agent.ts setState({ messages: [...prev, newMsg] })
   │
   └─ React commit
        │
@@ -1516,7 +1516,7 @@ agentLoop 末尾依次:
                抢同一个 cursor 寄存器
 </code></pre>
 <p><code>writeMessageToStdout</code> 的消息格式化流程如下：</p>
-<pre><code>writeMessageToStdout(write, msg)
+<pre><code class="diagram" style="font-size:13.5px">writeMessageToStdout(write, msg)
   ├─ 归一化 \r\n / \r → \n
   ├─ user message     → write(&quot;❯ &lt;line1&gt;\n  &lt;line2&gt;...\n\n&quot;)
   ├─ assistant toolCalls:
@@ -1545,7 +1545,7 @@ agentLoop 末尾依次:
 <li>跨平台 Unicode glyph 降级方面，老式 ConHost 缺装饰字符时由 <code>cli/src/ui/terminal-glyphs.ts</code> 单点降级（<code>●→*</code>、<code>❯→&gt;</code>、<code>⎿→|</code>、spinner 走 ASCII palindrome）。检测逻辑与完整降级表详见 Ch.25。</li>
 </ul>
 <h3 id="markdown-渲染">Markdown 渲染</h3>
-<pre><code>renderMarkdown(text)  (cli/src/ui/render-markdown.ts)
+<pre><code class="diagram" style="font-size:13.5px">renderMarkdown(text)  (cli/src/ui/render-markdown.ts)
   ├─ marked.lexer(text) → AST Token 树 (禁用 del 扩展防 ~/path 误判)
   ├─ renderTokens(tokens) 递归 → ANSI (主题色从 theme.ts import)
   └─ 外层 try/catch 容错 → 半截 fence 时直接 return 原文不崩
@@ -1562,7 +1562,7 @@ agentLoop 末尾依次:
 <p>强制刷出时机：onToolCall 前 / submit 收尾 / 轮中断（resetBuffer）。完整实现 + <code>CODE_FENCE_COMMIT_THRESHOLD</code> 容错常量 + “按行切 vs 按段切” 取舍详见 Ch.26。</p>
 <h3 id="spinner-footer-todo-面板-cell-buffer-内的非滚动元素">Spinner / Footer / Todo 面板（cell buffer 内的非滚动元素）</h3>
 <p>ChatInput 的 cell buffer frame 自下而上依次包含：</p>
-<pre><code>[error 行]                        ← 仅 state.error 非空
+<pre><code class="diagram" style="font-size:13.5px">[error 行]                        ← 仅 state.error 非空
 [active tool 块]                  ← activeToolCalls 过滤掉只读后的逐项
                                     ` ● Tool(preview)\n   ⎿  Running…`
 [permission 对话框]               ← permissionQueue[0] 存在时
@@ -1628,7 +1628,7 @@ Paragraph text...
 <hr />
 <h2 id="b-11-阶段七-退出与清理">B.11 阶段七：退出与清理</h2>
 <h3 id="正常退出流程">正常退出流程</h3>
-<pre><code>
+<pre><code class="diagram" style="font-size:13.5px">
 /exit 命令 或 Ctrl+C 双击
 │
 ├─ 触发源
@@ -1679,7 +1679,7 @@ Paragraph text...
 <p>注：退出不打印 token 用量摘要。原因在于 pnpm/tsx 多级 stdout 缓冲会让该行在 shell 提示符之后才闪现，观感像 bug。退出只打印一行「想回看这次会话用 <code>xc --resume</code>」的恢复提示。要查看本会话 token 用量，应在交互态使用 <code>/usage</code> 命令。</p>
 </blockquote>
 <h3 id="ctrl-c-处理-双层">Ctrl+C 处理（双层）</h3>
-<pre><code>
+<pre><code class="diagram" style="font-size:13.5px">
 Layer 1 — App.handleCtrlC (主路径，cli/src/ui/components/App.tsx)
 ├─ ctrlCArmedAtRef = 0  默认值（未 arm）
 ├─ ctrlCArmWindowMs = 2000
@@ -1707,7 +1707,7 @@ Layer 2 — process.on('SIGINT') (cli/src/index.ts) — 安全网
 </blockquote>
 <hr />
 <h2 id="b-12-关键数据流总结">B.12 关键数据流总结</h2>
-<pre><code>┌─────────────┐ onSubmit  ┌──────────┐ submit() ┌────────────┐
+<pre><code class="diagram" style="font-size:13.5px">┌─────────────┐ onSubmit  ┌──────────┐ submit() ┌────────────┐
 │ ChatInput   │──────────&gt;│   App    │─────────&gt;│  useAgent  │
 │ (cell buf)  │           │ (React)  │          │   (Hook)   │
 └─────────────┘           └──────────┘          └─────┬──────┘

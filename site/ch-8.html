@@ -96,7 +96,7 @@
 <p>（4）多种结束分支：正常结束、工具调用继续、截断自动续写、不可恢复错误、用户取消——每种情况对应不同的处理策略。</p>
 <p>（5）退出时的收尾工作：后台提炼可复用记忆写入磁盘、将未持久化的消息刷写到日志文件。</p>
 <p>这五类工作将在后续各节中，沿着示例请求的执行轨迹逐一展开。以下是「改 formatDate 支持时区」这条请求在三方之间的完整执行轨迹：</p>
-<pre><code class="language-text">用户输入「帮我把 formatDate 改成支持时区参数」
+<pre><code class="diagram language-text" style="font-size:13.5px">用户输入「帮我把 formatDate 改成支持时区参数」
   │
   ├─ 会话初始化：生成文件名标识、探测 Git 仓库、加载知识上下文（8.2 节）
   │
@@ -120,7 +120,7 @@
   └─ 退出后：后台提炼记忆、刷写日志
 </code></pre>
 <p>以下时序图展示了同一请求在用户、助手、工具三方之间的流转——每一次 assistant → tool 的往返对应一轮 <code>runTurn</code>：</p>
-<pre><code class="language-text">    user                 assistant              tool
+<pre><code class="diagram language-text" style="font-size:13.5px">    user                 assistant              tool
      │                       │                    │
      │&quot;改 formatDate 支持时区&quot;│                    │
      │ ─────────────────────▶│                    │
@@ -270,7 +270,7 @@ while (options.maxTurns === undefined || turn &lt; options.maxTurns) {
 </code></pre>
 <p>六步准备中任何一步缺失都会在某个供应商或某个使用场景下引发问题。例如第 1 步：如果上一轮因为网络中断导致模型发出了 <code>tool_call</code> 但客户端没有返回 <code>tool_result</code>，消息数组中就会出现孤立调用。供应商严格要求 <code>tool_call</code> 与 <code>tool_result</code> 配对，发现不配对会拒绝整个请求（HTTP 400）。<code>repairOrphanToolCalls</code> 在每轮开头扫描一遍消息数组，为任何缺少结果的 <code>tool_call</code> 补上一条合成的错误结果，使请求体恢复合法。这一步幂等执行——每轮都跑，代价极低（线性扫描），但防御了所有可能导致消息不配对的边界情况。各步骤的详细机制将在后续章节中逐一展开。</p>
 <p>第 6 步需要特别说明。AI SDK 在调用 <code>streamText</code> 后会同时创建多个 Promise（<code>response</code>、<code>usage</code>、<code>finishReason</code>、<code>toolCalls</code>），它们共享同一个底层流。如果流在传输中出错，所有 Promise 都会在同一个事件循环 tick 中被拒绝。以下示意图对比了没有预捕获和有预捕获两种情况下的 Promise 状态变化：</p>
-<pre><code class="language-text">没有 drainStreamResult 的情况
+<pre><code class="diagram language-text" style="font-size:13.5px">没有 drainStreamResult 的情况
 ──────────────────────────────────────────────────────────
   streamText() 创建四个兄弟 Promise
   ┌─────────┐ ┌─────────┐ ┌──────────────┐ ┌───────────┐
@@ -319,7 +319,7 @@ while (options.maxTurns === undefined || turn &lt; options.maxTurns) {
 <p>源码：<code>packages/core/src/agent/tool-execution.ts</code> — <code>processToolCalls</code></p>
 </blockquote>
 <!-- check:ignore=punctuation -->
-<pre><code>result.toolCalls（模型本轮返回的全部调用）
+<pre><code class="diagram" style="font-size:13.5px">result.toolCalls（模型本轮返回的全部调用）
 ┌──────────────────────────────────────┐
 │  readFile  call-1  ← SDK 已自动执行  │
 │  edit      call-2                    │

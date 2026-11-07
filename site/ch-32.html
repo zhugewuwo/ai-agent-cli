@@ -131,7 +131,7 @@ const priorMatches = window.filter((e) =&gt; e.hash === currentHash).length
 </code></pre>
 <p>下面这张图展示了 8 格滑动窗口的心智模型，窗口里同 hash 重复出现 3 次触发软阻断、5 次触发硬退出：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">recentToolCalls 滑动窗口（LOOP_WINDOW_SIZE = 8）：
+<pre><code class="diagram language-text" style="font-size:13.5px">recentToolCalls 滑动窗口（LOOP_WINDOW_SIZE = 8）：
 
 最早                                         最新
  ┌────┬────┬────┬────┬────┬────┬────┬────┐

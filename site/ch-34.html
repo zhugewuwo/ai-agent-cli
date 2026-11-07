@@ -150,7 +150,7 @@
 <p>源码：<code>packages/core/src/providers/thinking.ts</code></p>
 </blockquote>
 <!-- check:ignore=punctuation -->
-<pre><code class="language-ts">case 'xai':
+<pre><code class="diagram language-ts" style="font-size:11.9px">case 'xai':
   // 只有 grok-3-mini / grok-4-mini honour reasoningEffort；grok-3 / grok-4
   // 收到这个字段会被 API 静默丢弃 ── 透传是安全的
   return enabled ? { xai: { reasoningEffort: 'high' } } : { xai: { reasoningEffort: 'low' } }

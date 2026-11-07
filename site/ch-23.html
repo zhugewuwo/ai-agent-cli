@@ -85,7 +85,7 @@
 </ul>
 <h2 id="23-1-ink-的渲染模型-动态区与逐帧重绘">23.1 Ink 的渲染模型：动态区与逐帧重绘</h2>
 <p>要理解抖动的来源，首先需要理解 Ink 如何把 React 组件树渲染到终端屏幕上。Ink 的工作模式是在终端底部维护一块「动态区」（Dynamic Area）——一片可以反复擦除重写的区域。每次 React 状态发生变化，Ink 重新计算组件树的布局尺寸，然后通过 <code>log-update</code> 库执行一轮「光标退回到动态区起点 → 擦除原有内容 → 写入新内容」的循环。终端的整片可视区域因此被分为两部分：上方是静态区（终端历史滚动缓冲区，Ink 不触碰这里的内容），下方是 Ink 接管的动态区（每次状态变化时整片擦除重写）。下面的示意图展示了这种分区结构：</p>
-<pre><code class="language-text"> ┌─ 终端可视区域 ─────────────────────────────────────┐
+<pre><code class="diagram language-text" style="font-size:13.5px"> ┌─ 终端可视区域 ─────────────────────────────────────┐
  │                                                    │
  │   $ ls                       ← 历史 shell 输出     │
  │   src/  package.json         （Ink 不动这里）      │
@@ -123,7 +123,7 @@
 <p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0316114d299943d7a4a066283eeaaa14~tplv-k3u1fbpfcp-jj-mark:0:0:0:0:q75.image#?w=527&amp;h=735&amp;s=51873&amp;e=png&amp;b=fefefe" alt="image.png" /></p>
 <h2 id="23-3-流式输出场景下的抖动放大效应">23.3 流式输出场景下的抖动放大效应</h2>
 <p>上述宽度偏差在静态文本中可能只是偶尔出现一次视觉错位，用户甚至不一定注意到。但在 AI 编程助手的核心使用场景——流式输出（Streaming Output）中，问题会被急剧放大。模型的回复以 <code>text-delta</code> 事件逐块到达前端，每个事件都触发一次 React 状态更新，进而触发一次 Ink 的擦除—重绘循环。一段数百字的中文回复可能产生几十到上百次重绘，每次重绘都经过 Yoga → <code>string-width</code> 的宽度计算路径。如果其中包含宽度被算错的字符，视觉错位会在多次重绘中逐帧累积，很快达到肉眼可见的程度。下面用一个具体的 emoji 场景说明这一累积过程：</p>
-<pre><code class="language-text">模型上一轮回复里出现了一个 emoji，Ink 上次画了这一帧（假设终端 40 列宽）：
+<pre><code class="diagram language-text" style="font-size:12.3px">模型上一轮回复里出现了一个 emoji，Ink 上次画了这一帧（假设终端 40 列宽）：
    ⠋ Thinking...
    ✨ 太棒了！这就是我的方案：👨‍👩‍👧 全家适用
    ─────

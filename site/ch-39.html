@@ -201,7 +201,7 @@ $ARGUMENTS
 <p>hook 在协议层面采用 shell + JSON 的组合。具体流程是：插件作者在 <code>hooks.json</code> 里声明一行 shell 命令和它要监听的事件名；当事件触发时，CLI 启动一个子进程执行这行命令，把事件上下文（事件名、工具名、工具参数等）序列化成 JSON 写入子进程的 stdin；子进程读取 stdin 完成处理后，通过 stdout 输出一行 JSON 返回决策结果（<code>allow</code> / <code>deny</code> / <code>modify</code>）；CLI 读取这行 JSON 决定是否放行当前操作。整条链路通过 stdin/stdout 完成，hook 运行在独立子进程里，跟 CLI 主进程的内存完全隔离。写 hook 的门槛因此很低，一段 bash 脚本或者一个 <code>node hook.js</code> 就是完整的 hook，不需要引入任何 SDK 依赖。代价有两项：每次触发都要启动一次子进程（开销在毫秒级），以及 hook 出错时只能通过 stderr 和 debug 日志排查。</p>
 <h3 id="写一个最小-lint-hook">写一个最小 lint hook</h3>
 <p>假设读者想让 agent 每次往 <code>*.ts</code> 写代码前都先过一道 ESLint，失败就拦下。X-Code CLI 没有内置 lint，但插件 + hook 机制能把它挂上去。一个最小可运行的插件目录结构如下：</p>
-<pre><code>my-lint-plugin/
+<pre><code class="diagram" style="font-size:13.5px">my-lint-plugin/
 ├── .x-code-plugin/
 │   └── plugin.json
 └── hooks/
@@ -296,7 +296,7 @@ if (r.status === 0) {
 <p>表格里的「能否影响 agent 决策」一列把 10 个事件分成了两类。<code>UserPromptSubmit</code>、<code>PreToolUse</code>、<code>PostToolUse</code> 三个是决策事件，hook 返回的 JSON 直接决定 agent 的下一步动作——放行、拦截或修改内容。其余 7 个是通知事件，hook 可以写日志、推通知、留检查点，但 agent 不读 stdout，无法影响决策流程。</p>
 <p>以这次 lint hook 被 <code>PreToolUse</code> 触发为例，完整的调用链路如下：</p>
 <!-- check:ignore=punctuation -->
-<pre><code class="language-text">  agent loop              hook bus               lint.js
+<pre><code class="diagram language-text" style="font-size:13.5px">  agent loop              hook bus               lint.js
       │                      │                      │
   ①   │── 派发 writeFile ───&gt;│                      │
       │                      │                      │

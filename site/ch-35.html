@@ -175,7 +175,7 @@
 </blockquote>
 <p>纯文本供应商不支持视觉，X-Code CLI 在文件摄入阶段就处理掉这个差异。<code>ingestFile</code> 检测到当前供应商不支持图片时，调用 <code>pickVisionProvider()</code> 从用户已配 API key 的多模态供应商中按优先级挑选一个，再用 <code>captionImage()</code> 让它把图片描述成结构化文字图注，最后作为 TextPart 注入消息体。整条链路如下：</p>
 <!-- check:ignore=code-block-size -->
-<pre><code class="language-text">用户输入: 帮我看下 @login.png 这个登录页有什么 UX 问题
+<pre><code class="diagram language-text" style="font-size:13.5px">用户输入: 帮我看下 @login.png 这个登录页有什么 UX 问题
        │
        ▼  extractFileReferences  →  FileReference { path: 'login.png' }
        │

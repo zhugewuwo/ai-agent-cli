@@ -270,7 +270,7 @@
 <p>模型收到 <code>tool_result</code> 后继续推理，可能再调用一次 <code>sentry__get_sentry_resource(issue-12345)</code> 获取具体 issue 的细节，重复「tool_use → registry 查询 → tools/call → content → tool_result」的过程，直到模型不再发起新调用、给出最终自然语言答复。</p>
 <h3 id="整条链路一览">整条链路一览</h3>
 <p>把上述所有步骤连起来，沿着时间轴看就是这样一张时序图：</p>
-<pre><code class="language-text">   CLI            MCP client       Anthropic API     sentry server
+<pre><code class="diagram language-text" style="font-size:13.5px">   CLI            MCP client       Anthropic API     sentry server
     │                 │                  │                  │
     │  ──── 启动期间(每个 MCP server 各执行一次) ────       │
     │ ── connect ──→  │                  │                  │
