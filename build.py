@@ -11,7 +11,7 @@ SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "content")
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site")
 BOOK_TITLE = "从零打造一个 AI Agent CLI"
 BOOK_SUBTITLE = "从 50 行代码到生产级 AI 编程助手"
-REPO = "https://github.com/woai3c/hello-agent"
+REPO = "https://github.com/woai3c/x-code-cli/tree/v0.3.3"
 
 
 def read_chapters():
@@ -85,6 +85,7 @@ PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 <title>{page_title} - {book_title}</title>
 <link rel="stylesheet" href="assets/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
@@ -92,25 +93,15 @@ PAGE = """<!DOCTYPE html>
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="index.html">
-      <svg class="brand-logo" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#1e80ff" d="M12 2.2 22 10l-2.9 2.3L12 6.6 4.9 12.3 2 10z"/><path fill="#1e80ff" d="M7.1 12.9 12 16.9l4.9-4 2.9 2.3L12 21.8 2.2 15.2z"/></svg>
-      <span class="brand-name">稀土掘金</span>
-      <span class="brand-badge">课程</span>
-    </a>
-    <div class="topbar-title">{book_title}</div>
+    <a class="topbar-title" href="index.html">{book_title}</a>
     <div class="topbar-right">
-      <a class="login-btn" href="{repo}" target="_blank" rel="noopener">项目源码</a>
+      <a class="login-btn" href="{repo}" target="_blank" rel="noopener">课程源码</a>
     </div>
   </div>
 </header>
 
 <div class="layout">
   <aside class="sidebar">
-    <div class="buy-card">
-      <div class="buy-tag">限时特惠</div>
-      <div class="buy-price"><span class="cur">¥</span>34.95 <button class="buy-btn">立即学习</button></div>
-      <div class="buy-origin">原价 ¥69.9</div>
-    </div>
     <nav class="chapter-list">
       <ol>
         {chapter_items}
@@ -212,20 +203,16 @@ def main():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 <title>{html.escape(BOOK_TITLE)}</title>
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body class="landing-body">
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="index.html">
-      <svg class="brand-logo" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="#1e80ff" d="M12 2.2 22 10l-2.9 2.3L12 6.6 4.9 12.3 2 10z"/><path fill="#1e80ff" d="M7.1 12.9 12 16.9l4.9-4 2.9 2.3L12 21.8 2.2 15.2z"/></svg>
-      <span class="brand-name">稀土掘金</span>
-      <span class="brand-badge">课程</span>
-    </a>
-    <div class="topbar-title">{html.escape(BOOK_TITLE)}</div>
+    <a class="topbar-title" href="index.html">{html.escape(BOOK_TITLE)}</a>
     <div class="topbar-right">
-      <a class="login-btn" href="{REPO}" target="_blank" rel="noopener">项目源码</a>
+      <a class="login-btn" href="{REPO}" target="_blank" rel="noopener">课程源码</a>
     </div>
   </div>
 </header>
